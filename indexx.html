@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="ar" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <title>تسجيل الدخول - NC Miner</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="app-container">
+  <div class="header" style="justify-content:center;">
+    <h1 style="-webkit-text-fill-color:white; background:none;">⛏️ NC MINER</h1>
+  </div>
+  <div class="content" style="display:flex; flex-direction:column; justify-content:center;">
+    <div class="card">
+      <div class="card-title">مرحباً بك</div>
+      <div class="input-group">
+        <label>البريد الإلكتروني</label>
+        <input type="email" id="loginEmail" placeholder="example@mail.com">
+      </div>
+      <div class="input-group">
+        <label>كلمة السر</label>
+        <input type="password" id="loginPassword" placeholder="••••••••">
+      </div>
+      <button class="btn-primary" id="loginBtn">دخول</button>
+      <p class="text-center mt-10" style="color:#666;">ليس لديك حساب؟ <span id="goToSignup" style="color:#1A5CFF;cursor:pointer;">أنشئ واحداً</span></p>
+    </div>
+
+    <!-- نموذج التسجيل (مخفي) -->
+    <div class="card hidden" id="signupCard">
+      <div class="card-title">حساب جديد</div>
+      <div class="input-group">
+        <label>البريد الإلكتروني</label>
+        <input type="email" id="signupEmail" placeholder="example@mail.com">
+      </div>
+      <div class="input-group">
+        <label>كلمة السر</label>
+        <input type="password" id="signupPassword" placeholder="••••••••">
+      </div>
+      <button class="btn-primary" id="signupBtn">إنشاء الحساب</button>
+      <p class="text-center mt-10" style="color:#666;">لديك حساب؟ <span id="goToLogin" style="color:#1A5CFF;cursor:pointer;">سجل دخول</span></p>
+    </div>
+  </div>
+</div>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-functions-compat.js"></script>
+<script src="firebase-config.js"></script>
+<script>
+  // تبديل بين الدخول والتسجيل
+  document.getElementById('goToSignup').onclick = () => { document.getElementById('signupCard').classList.remove('hidden'); };
+  document.getElementById('goToLogin').onclick = () => { document.getElementById('signupCard').classList.add('hidden'); };
+
+  // تسجيل الدخول
+  document.getElementById('loginBtn').onclick = () => {
+    const email = document.getElementById('loginEmail').value;
+    const pass = document.getElementById('loginPassword').value;
+    auth.signInWithEmailAndPassword(email, pass)
+      .then(() => { window.location.href = 'dashboard.html'; })
+      .catch(err => alert('خطأ: ' + err.message));
+  };
+
+  // إنشاء حساب
+  document.getElementById('signupBtn').onclick = () => {
+    const email = document.getElementById('signupEmail').value;
+    const pass = document.getElementById('signupPassword').value;
+    auth.createUserWithEmailAndPassword(email, pass)
+      .then(async (cred) => {
+        // إنشاء محفظة للمستخدم الجديد في Firestore
+        await db.collection('wallets').doc(cred.user.uid).set({
+          nc_balance: 0, cash_balance: 0,
+          nc_capacity: 100000, cash_capacity: 1000,
+          mining_level: 0, cash_mining_unlocked: false,
+          totalEarned: 0
+        });
+        alert('تم إنشاء الحساب!');
+        window.location.href = 'dashboard.html';
+      })
+      .catch(err => alert('خطأ: ' + err.message));
+  };
+</script>
+</body>
+</html>
