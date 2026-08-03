@@ -3,16 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>HyeX Exchange - الألعاب</title>
+    <title>HyeX Exchange - مزرعة التعدين</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        /* ===== كل التصميم السابق نفسه (مع تعديلات بسيطة) ===== */
+        /* ===== كل التصميم السابق نفسه ===== */
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; }
         html, body { height: 100%; width: 100%; overflow: hidden; background: #0A0A0F; }
         body { display: flex; justify-content: center; align-items: center; direction: rtl; padding: 0; margin: 0; }
         .app { max-width: 480px; width: 100%; height: 100dvh; max-height: 100dvh; background: #13131C; display: flex; flex-direction: column; overflow: hidden; position: relative; border: none; border-radius: 0; }
 
-        /* ===== الرأس ===== */
         .corp-header {
             flex-shrink: 0;
             background: linear-gradient(135deg, #0B1320, #1A1F2E);
@@ -28,7 +27,6 @@
         .corp-header .subtitle { font-size: 8px; color: #8E8E9A; letter-spacing: 0.3px; }
         .corp-header .badge { background: #1E2A3A; padding: 2px 8px; border-radius: 30px; font-size: 9px; border: 1px solid #C9A84C55; color: #C9A84C; white-space: nowrap; }
 
-        /* ===== شريط السعر ===== */
         .price-ticker {
             flex-shrink: 0;
             background: #0A0A10;
@@ -42,7 +40,6 @@
         }
         .price-ticker span { color: #C9A84C; font-weight: 700; }
 
-        /* ===== المحتوى ===== */
         .tab-content {
             flex: 1 1 auto;
             overflow-y: auto;
@@ -57,7 +54,6 @@
         .tab-content::-webkit-scrollbar-track { background: #1A1A22; }
         .tab-content::-webkit-scrollbar-thumb { background: #4A9CFF55; border-radius: 10px; }
 
-        /* ===== التبويبات السفلية ===== */
         .bottom-nav {
             flex-shrink: 0;
             background: #11111B;
@@ -82,7 +78,6 @@
         .bottom-nav .nav-item.active { color: #C9A84C; }
         .bottom-nav .nav-item.active i { color: #C9A84C; text-shadow: 0 0 15px #C9A84C44; }
 
-        /* ===== البطاقات ===== */
         .card {
             background: #1C1C28;
             border-radius: 18px;
@@ -100,7 +95,6 @@
             justify-content: space-between;
         }
 
-        /* ===== المحفظة ===== */
         .wallet-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -120,8 +114,10 @@
         .wallet-item .balance.ncr { color: #FF6B8A; }
         .wallet-item .balance.bitnc { color: #FFA500; }
         .wallet-item .balance.linc { color: #A29BFE; }
+        .wallet-item .balance.ncpower { color: #FFD700; }
+        .wallet-item .balance.nchash { color: #00CED1; }
+        .wallet-item .balance.ncblock { color: #9370DB; }
 
-        /* ===== التعدين ===== */
         .mining-actions {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -170,7 +166,6 @@
         }
         .log-item .time { color: #777; font-size: 9px; }
 
-        /* ===== المتجر ===== */
         .shop-item {
             display: flex;
             justify-content: space-between;
@@ -194,7 +189,6 @@
         }
         .shop-item .buy-btn:disabled { opacity: 0.3; cursor: not-allowed; }
 
-        /* ===== الإعدادات ===== */
         .settings-item {
             display: flex;
             justify-content: space-between;
@@ -245,89 +239,74 @@
         .switch input:checked+.slider { background: #4A9CFF; }
         .switch input:checked+.slider::after { left: 17px; }
 
-        /* ===== قسم الألعاب (بدون iframe) ===== */
-        .games-grid {
+        /* ===== مزرعة التعدين ===== */
+        .farm-stats {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 8px;
-            margin-bottom: 10px;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 6px;
+            margin-bottom: 8px;
         }
-        .game-card {
-            background: #11111B;
-            border-radius: 14px;
-            padding: 12px 6px;
+        .farm-stat {
+            background: #0E0E16;
+            border-radius: 12px;
+            padding: 8px 4px;
             text-align: center;
             border: 1px solid #2A2A35;
-            cursor: pointer;
-            transition: 0.25s;
-            text-decoration: none;
-            color: inherit;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 80px;
         }
-        .game-card:hover {
-            border-color: #C9A84C;
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px #C9A84C22;
-        }
-        .game-card .game-emoji { font-size: 32px; margin-bottom: 4px; line-height: 1; }
-        .game-card .game-name { font-size: 10px; color: #C0C0D0; font-weight: 600; line-height: 1.2; }
-        .game-card .game-badge {
-            position: absolute;
-            top: 4px;
-            right: 4px;
-            background: #4A9CFF33;
-            color: #4A9CFF;
-            font-size: 7px;
-            padding: 1px 6px;
-            border-radius: 10px;
-            border: 1px solid #4A9CFF44;
-        }
+        .farm-stat .label { font-size: 8px; color: #8E8E9A; }
+        .farm-stat .value { font-weight: 700; font-size: 16px; color: #C9A84C; margin-top: 2px; }
+        .farm-stat .value.green { color: #7BED9F; }
+        .farm-stat .value.blue { color: #4A9CFF; }
+        .farm-stat .value.gold { color: #FFD700; }
 
-        /* نظام المكافآت */
-        .game-rewards {
-            display: flex;
-            gap: 12px;
-            justify-content: center;
-            background: #0E0E16;
-            padding: 8px 12px;
-            border-radius: 12px;
-            border: 1px solid #2A2A35;
-            margin-top: 6px;
-            flex-wrap: wrap;
-        }
-        .game-rewards .reward-item { text-align: center; }
-        .game-rewards .reward-item .label { font-size: 8px; color: #8E8E9A; }
-        .game-rewards .reward-item .value { font-weight: 700; font-size: 14px; }
-        .game-rewards .reward-item .value.gold { color: #C9A84C; }
-        .game-rewards .reward-item .value.green { color: #7BED9F; }
-        .game-rewards .reward-item .value.blue { color: #4A9CFF; }
-        .game-rewards .reward-item .value.red { color: #FF6B8A; }
-
-        .game-controls {
-            display: flex;
+        .farm-devices {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
             gap: 6px;
-            flex-wrap: wrap;
-            justify-content: center;
-            margin-top: 8px;
+            margin-bottom: 8px;
         }
-        .game-controls .btn {
-            padding: 6px 14px;
-            border-radius: 30px;
+        .farm-device {
+            background: #11111B;
+            border-radius: 14px;
+            padding: 10px 8px;
+            border: 1px solid #2A2A35;
+            text-align: center;
+            transition: 0.3s;
+        }
+        .farm-device:hover { border-color: #C9A84C44; }
+        .farm-device .device-icon { font-size: 28px; margin-bottom: 2px; }
+        .farm-device .device-name { font-size: 11px; font-weight: 700; color: #C0C0D0; }
+        .farm-device .device-info { font-size: 9px; color: #8E8E9A; }
+        .farm-device .device-count { font-size: 16px; font-weight: 700; color: #C9A84C; margin: 2px 0; }
+        .farm-device .device-buy {
+            background: #1A2A4A;
+            color: #4A9CFF;
             border: none;
+            padding: 3px 12px;
+            border-radius: 30px;
+            font-size: 10px;
             font-weight: 700;
-            font-size: 11px;
             cursor: pointer;
             transition: 0.2s;
+            margin-top: 4px;
         }
-        .game-controls .btn:active { transform: scale(0.94); }
-        .btn-gold { background: #C9A84C; color: #0A0A0F; }
-        .btn-gold:disabled { opacity: 0.4; cursor: not-allowed; }
+        .farm-device .device-buy:hover { background: #2A3A5A; }
+        .farm-device .device-buy:disabled { opacity: 0.3; cursor: not-allowed; }
 
-        /* ===== الملف الشخصي (نافذة منزلقة) ===== */
+        .farm-production {
+            background: #0E0E16;
+            border-radius: 12px;
+            padding: 8px 12px;
+            border: 1px solid #2A2A35;
+            margin-top: 6px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .farm-production .prod-label { font-size: 10px; color: #8E8E9A; }
+        .farm-production .prod-value { font-weight: 700; font-size: 16px; color: #7BED9F; }
+
+        /* ===== الملف الشخصي ===== */
         .profile-slide {
             position: fixed;
             top: 0;
@@ -502,7 +481,7 @@
                 <h1>🏛️ HyeX Exchange</h1>
                 <div class="subtitle">منصة محلية قيد التطوير (نسخة تجريبية)</div>
             </div>
-            <div class="badge"><i class="fas fa-shield-alt"></i> v10.0</div>
+            <div class="badge"><i class="fas fa-shield-alt"></i> v11.0</div>
         </div>
 
         <!-- ===== شريط السعر ===== -->
@@ -537,10 +516,12 @@
                     <div style="display:flex; gap:4px; flex-wrap:wrap;">
                         <select id="convertFrom" style="flex:1; background:#0A0A0F; border:1px solid #333; color:#E0E0E0; padding:4px 8px; border-radius:10px; font-size:11px;">
                             <option value="NC">NC</option><option value="NCR">NCR</option><option value="BitNC">BitNC</option><option value="LiNC">LiNC</option><option value="Cash">Cash</option>
+                            <option value="NC-Power">NC-Power</option><option value="NC-Hash">NC-Hash</option><option value="NC-Block">NC-Block</option>
                         </select>
                         <input type="number" id="convertAmount" placeholder="المبلغ" value="1" style="flex:1.5; background:#0A0A0F; border:1px solid #333; color:#E0E0E0; padding:4px 8px; border-radius:10px; font-size:11px;">
                         <select id="convertTo" style="flex:1; background:#0A0A0F; border:1px solid #333; color:#E0E0E0; padding:4px 8px; border-radius:10px; font-size:11px;">
                             <option value="NC">NC</option><option value="NCR">NCR</option><option value="BitNC">BitNC</option><option value="LiNC">LiNC</option><option value="Cash">Cash</option>
+                            <option value="NC-Power">NC-Power</option><option value="NC-Hash">NC-Hash</option><option value="NC-Block">NC-Block</option>
                         </select>
                         <button id="executeConvertBtn" style="flex:0.8; background:#C9A84C; border:none; color:#0A0A0F; font-weight:700; border-radius:30px; cursor:pointer; font-size:11px; padding:4px;">تنفيذ</button>
                     </div>
@@ -557,7 +538,10 @@
                     <div class="wallet-item"><div class="symbol">NCR</div><div class="balance ncr" id="balNCR">0.00</div></div>
                     <div class="wallet-item"><div class="symbol">BitNC</div><div class="balance bitnc" id="balBitNC">0.00</div></div>
                     <div class="wallet-item"><div class="symbol">LiNC</div><div class="balance linc" id="balLiNC">0.00</div></div>
-                    <div class="wallet-item" style="grid-column:span 3;"><div class="symbol">💵 Cash (دولار)</div><div class="balance usd" id="balCash">0.00</div></div>
+                    <div class="wallet-item"><div class="symbol">💵 Cash</div><div class="balance usd" id="balCash">0.00</div></div>
+                    <div class="wallet-item"><div class="symbol">⚡ NC-Power</div><div class="balance ncpower" id="balNCPower">0.00</div></div>
+                    <div class="wallet-item"><div class="symbol">🔗 NC-Hash</div><div class="balance nchash" id="balNCHash">0.00</div></div>
+                    <div class="wallet-item"><div class="symbol">🧱 NC-Block</div><div class="balance ncblock" id="balNCBlock">0.00</div></div>
                 </div>
             </div>
             <div class="card" style="text-align:center; color:#8E8E9A; font-size:10px;"><i class="fas fa-lock"></i> جميع الأرصدة مشفرة ومركزية (للترفيه)</div>
@@ -571,43 +555,68 @@
             </div>
         </div>
 
-        <!-- ===== تبويب الألعاب (بدون iframe) ===== -->
-        <div id="tab-games" class="tab-content">
+        <!-- ===== تبويب مزرعة التعدين (الجديد) ===== -->
+        <div id="tab-farm" class="tab-content">
             <div class="card">
                 <div class="card-title">
-                    <span>🎮 الألعاب</span>
-                    <span style="color:#4A9CFF; font-size:10px;" id="gameCount">0 لعبة</span>
+                    <span>🌱 مزرعة التعدين</span>
+                    <span style="color:#7BED9F; font-size:10px;">⚡ نشطة</span>
                 </div>
 
-                <!-- شبكة الألعاب (روابط مباشرة) -->
-                <div class="games-grid" id="gamesGrid"></div>
-
-                <!-- نظام المكافآت -->
-                <div class="game-rewards">
-                    <div class="reward-item">
+                <!-- إحصائيات المزرعة -->
+                <div class="farm-stats">
+                    <div class="farm-stat">
+                        <div class="label">⚡ الإنتاج/ساعة</div>
+                        <div class="value green" id="farmProduction">0.0000 NC</div>
+                    </div>
+                    <div class="farm-stat">
+                        <div class="label">🖥️ الأجهزة</div>
+                        <div class="value blue" id="farmTotalDevices">0</div>
+                    </div>
+                    <div class="farm-stat">
                         <div class="label">💰 أرباح اليوم</div>
-                        <div class="value gold" id="dailyGameProfit">0.0000 NC</div>
-                    </div>
-                    <div class="reward-item">
-                        <div class="label">🎮 جلسات اليوم</div>
-                        <div class="value blue" id="dailyGameSessions">0</div>
-                    </div>
-                    <div class="reward-item">
-                        <div class="label">⏳ المكافأة القادمة</div>
-                        <div class="value red" id="nextRewardTimer">جاهز</div>
+                        <div class="value gold" id="farmDailyProfit">0.0000 NC</div>
                     </div>
                 </div>
 
-                <!-- أزرار التحكم -->
-                <div class="game-controls">
+                <!-- قائمة الأجهزة -->
+                <div class="farm-devices" id="farmDevices"></div>
+
+                <!-- إنتاجية المزرعة -->
+                <div class="farm-production">
+                    <div>
+                        <div class="prod-label">⏳ الإنتاج التالي</div>
+                        <div style="font-size:13px; font-weight:700; color:#C9A84C;" id="farmNextProduction">--</div>
+                    </div>
+                    <div style="text-align:left;">
+                        <div class="prod-label">📦 المخزون</div>
+                        <div style="font-size:13px; font-weight:700; color:#4A9CFF;" id="farmInventory">0.0000 NC</div>
+                    </div>
+                </div>
+
+                <!-- زر جمع الإنتاج -->
+                <button class="btn btn-gold" id="farmCollectBtn" style="width:100%; margin-top:8px; padding:10px 0; border-radius:14px; font-weight:700; font-size:14px;">
+                    <i class="fas fa-hand-holding-usd"></i> جمع الإنتاج
+                </button>
+
+                <!-- سجل المزرعة -->
+                <div class="card-title" style="margin-top:8px;"><span>📋 سجل المزرعة</span> <span id="farmLogCount">0</span></div>
+                <div class="log-container" id="farmLogList">
+                    <div class="log-item" style="color:#777;text-align:center;">لا توجد عمليات</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== تبويب الألعاب ===== -->
+        <div id="tab-games" class="tab-content">
+            <div class="card">
+                <div class="card-title"><span>🎮 الألعاب</span> <span style="color:#4A9CFF; font-size:10px;" id="gameCount">0 لعبة</span></div>
+                <div class="games-grid" id="gamesGrid" style="display:grid; grid-template-columns:repeat(3,1fr); gap:8px;"></div>
+                <div class="game-controls" style="display:flex; gap:6px; flex-wrap:wrap; justify-content:center; margin-top:8px;">
                     <button class="btn btn-gold" id="claimRewardBtn"><i class="fas fa-gift"></i> احصل على مكافأة اللعب</button>
                 </div>
-
-                <!-- سجل الألعاب -->
                 <div class="card-title" style="margin-top:8px;"><span>📋 سجل الألعاب</span> <span id="gameLogCount">0</span></div>
-                <div class="log-container" id="gameLogList">
-                    <div class="log-item" style="color:#777;text-align:center;">لا توجد جلسات بعد</div>
-                </div>
+                <div class="log-container" id="gameLogList"><div class="log-item" style="color:#777;text-align:center;">لا توجد جلسات بعد</div></div>
             </div>
         </div>
 
@@ -636,6 +645,7 @@
             <div class="nav-item active" data-tab="mining"><i class="fas fa-hard-hat"></i><span>تعدين</span></div>
             <div class="nav-item" data-tab="wallet"><i class="fas fa-wallet"></i><span>محفظة</span></div>
             <div class="nav-item" data-tab="shop"><i class="fas fa-store"></i><span>متجر</span></div>
+            <div class="nav-item" data-tab="farm"><i class="fas fa-tractor"></i><span>مزرعة</span></div>
             <div class="nav-item" data-tab="games"><i class="fas fa-gamepad"></i><span>ألعاب</span></div>
             <div class="nav-item" data-tab="settings"><i class="fas fa-cog"></i><span>إعدادات</span></div>
         </div>
@@ -666,8 +676,8 @@
                 <div class="stat-grid">
                     <div class="stat-item"><div class="stat-label">💰 إجمالي الأرباح</div><div class="stat-value green" id="modalTotalProfit">0.00 Cash</div></div>
                     <div class="stat-item"><div class="stat-label">⛏️ إجمالي التعدين</div><div class="stat-value blue" id="modalTotalMined">0.00 NC</div></div>
-                    <div class="stat-item"><div class="stat-label">🎮 أرباح الألعاب</div><div class="stat-value pink" id="modalGameProfit">0.00 NC</div></div>
-                    <div class="stat-item"><div class="stat-label">🏆 جلسات الألعاب</div><div class="stat-value" id="modalGameSessions">0</div></div>
+                    <div class="stat-item"><div class="stat-label">🌱 إنتاج المزرعة</div><div class="stat-value gold" id="modalFarmProduction">0.00 NC</div></div>
+                    <div class="stat-item"><div class="stat-label">🖥️ أجهزة المزرعة</div><div class="stat-value" id="modalFarmDevices">0</div></div>
                 </div>
 
                 <button class="save-btn" onclick="saveProfile()">💾 حفظ التغييرات</button>
@@ -682,24 +692,37 @@
         // ================================================================
         const STORAGE_KEY = 'hyex_data';
         let data = {
-            wallet: { NC: 0, NCR: 0, BitNC: 0, LiNC: 0, Cash: 1000 },
+            wallet: { NC: 0, NCR: 0, BitNC: 0, LiNC: 0, Cash: 1000, 'NC-Power': 0, 'NC-Hash': 0, 'NC-Block': 0 },
             pendingNC: 0,
             isMining: false,
             log: [],
             upgrades: { speed: 0, bonus: 0 },
             settings: { sound: true, vibe: true },
-            // بيانات الألعاب
             gameLog: [],
-            gameStats: {
-                totalSessions: 0,
-                totalProfit: 0,
-                dailySessions: 0,
-                dailyProfit: 0,
-                lastClaimDate: null,
-                claimCount: 0
+            gameStats: { totalSessions: 0, totalProfit: 0, dailySessions: 0, dailyProfit: 0, lastClaimDate: null,
+                claimCount: 0 },
+            // بيانات المزرعة
+            farm: {
+                devices: {
+                    'NC-Power': { count: 0, production: 0.0001 },
+                    'NC-Hash': { count: 0, production: 0.0005 },
+                    'NC-Block': { count: 0, production: 0.002 }
+                },
+                inventory: 0,
+                totalProduced: 0,
+                lastCollect: null,
+                dailyProduction: 0,
+                log: []
             },
             profile: { name: 'مستخدم جديد', level: 1, xp: 0, totalProfit: 0, totalMined: 0, image: null }
         };
+
+        // تعريف الأجهزة
+        const DEVICES = [
+            { id: 'NC-Power', name: '⚡ NC-Power', emoji: '⚡', baseCost: 0.5, production: 0.0001, desc: '+0.0001 NC/ساعة' },
+            { id: 'NC-Hash', name: '🔗 NC-Hash', emoji: '🔗', baseCost: 1.5, production: 0.0005, desc: '+0.0005 NC/ساعة' },
+            { id: 'NC-Block', name: '🧱 NC-Block', emoji: '🧱', baseCost: 3.0, production: 0.002, desc: '+0.002 NC/ساعة' }
+        ];
 
         let prices = { NC: 1.00, NCR: 0.05, BitNC: 0.50, LiNC: 0.20 };
 
@@ -721,17 +744,35 @@
                                 'مستخدم جديد' : (p === 'level' ? 1 : 0));
                         } else if (key === 'gameStats') {
                             for (let g in parsed.gameStats) data.gameStats[g] = parsed.gameStats[g] || 0;
+                        } else if (key === 'farm') {
+                            if (parsed.farm.devices) {
+                                for (let d in parsed.farm.devices) {
+                                    if (data.farm.devices[d]) {
+                                        data.farm.devices[d].count = parsed.farm.devices[d].count || 0;
+                                    }
+                                }
+                            }
+                            data.farm.inventory = parsed.farm.inventory || 0;
+                            data.farm.totalProduced = parsed.farm.totalProduced || 0;
+                            data.farm.lastCollect = parsed.farm.lastCollect || null;
+                            data.farm.dailyProduction = parsed.farm.dailyProduction || 0;
+                            if (parsed.farm.log) data.farm.log = parsed.farm.log;
                         } else data[key] = parsed[key];
                     }
                 }
-            } catch (e) {}
+            } catch (e) { console.warn('Load error', e); }
             if (!data.log) data.log = [];
             if (!data.gameLog) data.gameLog = [];
-            if (!data.upgrades) data.upgrades = { speed: 0, bonus: 0 };
+            if (!data.farm.log) data.farm.log = [];
             if (!data.gameStats) data.gameStats = { totalSessions: 0, totalProfit: 0, dailySessions: 0, dailyProfit: 0,
                 lastClaimDate: null, claimCount: 0 };
-            if (!data.profile) data.profile = { name: 'مستخدم جديد', level: 1, xp: 0, totalProfit: 0, totalMined: 0,
-                image: null };
+            if (!data.farm.devices) {
+                data.farm.devices = {
+                    'NC-Power': { count: 0, production: 0.0001 },
+                    'NC-Hash': { count: 0, production: 0.0005 },
+                    'NC-Block': { count: 0, production: 0.002 }
+                };
+            }
         }
 
         function saveData() { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); }
@@ -779,7 +820,7 @@
         }
 
         // ================================================================
-        // 4. التعدين
+        // 4. التعدين (نفسه)
         // ================================================================
         let miningInterval = null;
 
@@ -875,6 +916,9 @@
             document.getElementById('balBitNC').textContent = data.wallet.BitNC.toFixed(6);
             document.getElementById('balLiNC').textContent = data.wallet.LiNC.toFixed(6);
             document.getElementById('balCash').textContent = data.wallet.Cash.toFixed(2);
+            document.getElementById('balNCPower').textContent = data.wallet['NC-Power'].toFixed(6);
+            document.getElementById('balNCHash').textContent = data.wallet['NC-Hash'].toFixed(6);
+            document.getElementById('balNCBlock').textContent = data.wallet['NC-Block'].toFixed(6);
             document.getElementById('pendingDisplay').textContent = data.pendingNC.toFixed(8) + ' NC';
             document.getElementById('headerPrice').textContent = prices.NC.toFixed(3);
         }
@@ -918,38 +962,166 @@
         // 6. أسعار الصرف
         // ================================================================
         function getRate(from, to) {
-            const base = { NC: 1, Cash: 1, NCR: 0.05, BitNC: 0.5, LiNC: 0.2 };
+            const base = { NC: 1, Cash: 1, NCR: 0.05, BitNC: 0.5, LiNC: 0.2, 'NC-Power': 0.3, 'NC-Hash': 0.8,
+                'NC-Block': 1.5 };
             if (from === to) return 1;
             return base[to] / base[from];
         }
 
         // ================================================================
-        // 7. قسم الألعاب (بدون iframe)
+        // 7. مزرعة التعدين
         // ================================================================
 
-        // قائمة الألعاب (روابط مباشرة)
+        // حساب الإنتاج الكلي في الساعة
+        function calculateTotalProduction() {
+            let total = 0;
+            for (let d in data.farm.devices) {
+                total += data.farm.devices[d].count * data.farm.devices[d].production;
+            }
+            return total;
+        }
+
+        // عرض الأجهزة
+        function renderFarmDevices() {
+            const container = document.getElementById('farmDevices');
+            container.innerHTML = '';
+            DEVICES.forEach(device => {
+                const count = data.farm.devices[device.id]?.count || 0;
+                const cost = Math.floor(device.baseCost * (1 + count * 0.15) * 100) / 100;
+                const canBuy = data.wallet.NC >= cost;
+
+                const div = document.createElement('div');
+                div.className = 'farm-device';
+                div.innerHTML = `
+                    <div class="device-icon">${device.emoji}</div>
+                    <div class="device-name">${device.name}</div>
+                    <div class="device-info">${device.desc}</div>
+                    <div class="device-count">${count}</div>
+                    <button class="device-buy" data-id="${device.id}" data-cost="${cost}" ${!canBuy ? 'disabled' : ''}>
+                        شراء (${cost.toFixed(2)} NC)
+                    </button>
+                `;
+                container.appendChild(div);
+            });
+
+            // ربط أزرار الشراء
+            document.querySelectorAll('.farm-device .device-buy').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const id = this.dataset.id;
+                    const cost = parseFloat(this.dataset.cost);
+                    if (data.wallet.NC < cost) { playBeep(200, 0.1); return; }
+                    data.wallet.NC -= cost;
+                    data.farm.devices[id].count++;
+                    addFarmLog(`🛠️ شراء جهاز ${id} مقابل ${cost.toFixed(2)} NC`);
+                    playBeep(1000, 0.2);
+                    doVibe();
+                    updateAllUI();
+                    updateFarmUI();
+                    saveData();
+                });
+            });
+        }
+
+        // تحديث واجهة المزرعة
+        function updateFarmUI() {
+            const totalDevices = Object.values(data.farm.devices).reduce((s, d) => s + d.count, 0);
+            const production = calculateTotalProduction();
+
+            document.getElementById('farmTotalDevices').textContent = totalDevices;
+            document.getElementById('farmProduction').textContent = production.toFixed(4) + ' NC';
+            document.getElementById('farmInventory').textContent = data.farm.inventory.toFixed(4) + ' NC';
+            document.getElementById('farmDailyProfit').textContent = data.farm.dailyProduction.toFixed(4) + ' NC';
+
+            // حساب الإنتاج التالي
+            const nextProd = production / 3600; // في الثانية
+            document.getElementById('farmNextProduction').textContent = nextProd.toFixed(6) + ' NC/ث';
+
+            // إعادة عرض الأجهزة
+            renderFarmDevices();
+
+            // تحديث إحصائيات الملف الشخصي
+            document.getElementById('modalFarmProduction').textContent = data.farm.totalProduced.toFixed(4) + ' NC';
+            document.getElementById('modalFarmDevices').textContent = totalDevices;
+        }
+
+        // إضافة سجل المزرعة
+        function addFarmLog(text) {
+            const now = new Date();
+            const timeStr = now.toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+            data.farm.log.unshift({ time: timeStr, text: text });
+            if (data.farm.log.length > 50) data.farm.log.pop();
+            saveData();
+            renderFarmLog();
+        }
+
+        function renderFarmLog() {
+            const list = document.getElementById('farmLogList');
+            const count = document.getElementById('farmLogCount');
+            count.textContent = data.farm.log.length;
+            if (data.farm.log.length === 0) {
+                list.innerHTML = '<div class="log-item" style="color:#777;text-align:center;">لا توجد عمليات</div>';
+                return;
+            }
+            list.innerHTML = data.farm.log.slice(0, 30).map(l =>
+                `<div class="log-item"><span>${l.text}</span><span class="time">${l.time}</span></div>`
+            ).join('');
+        }
+
+        // جمع الإنتاج
+        document.getElementById('farmCollectBtn').addEventListener('click', function() {
+            const production = calculateTotalProduction();
+            if (production === 0) {
+                alert('⚠️ لا يوجد أجهزة تعدين في المزرعة! اشترِ جهازاً أولاً.');
+                return;
+            }
+
+            // حساب المدة منذ آخر جمع (افتراضي 1 ساعة إذا لم يكن هناك)
+            const now = Date.now();
+            const lastCollect = data.farm.lastCollect || (now - 3600000); // ساعة افتراضية
+            const elapsedHours = Math.min((now - lastCollect) / 3600000, 24); // حد أقصى 24 ساعة
+            const earned = production * elapsedHours;
+
+            if (earned < 0.0001) {
+                alert('⏳ لا يوجد إنتاج كافٍ للجمع. انتظر ساعة على الأقل.');
+                return;
+            }
+
+            // إضافة للمحفظة والمخزون
+            data.wallet.NC += earned;
+            data.farm.inventory += earned;
+            data.farm.totalProduced += earned;
+            data.farm.dailyProduction += earned;
+            data.farm.lastCollect = now;
+            data.profile.totalProfit += earned * 0.5;
+
+            addFarmLog(`💰 جمعت ${earned.toFixed(4)} NC من المزرعة`);
+            playBeep(1200, 0.3);
+            doVibe();
+
+            updateAllUI();
+            updateFarmUI();
+            updateProfileUI();
+            saveData();
+        });
+
+        // تحديث المزرعة تلقائياً كل دقيقة (لحساب الإنتاج التالي)
+        setInterval(() => {
+            updateFarmUI();
+        }, 60000);
+
+        // ================================================================
+        // 8. الألعاب (نفسها)
+        // ================================================================
+
         const GAMES_LIST = [
             { id: 'snake', name: '🐍 ثعبان', url: 'https://sausi-7.github.io/games/games/snake/index.html' },
             { id: 'pacman', name: '🟡 باك مان', url: 'https://sausi-7.github.io/games/games/pacman/index.html' },
             { id: 'tetris', name: '🧩 تيترس', url: 'https://sausi-7.github.io/games/games/tetris/index.html' },
             { id: '2048', name: '🔢 2048', url: 'https://sausi-7.github.io/games/games/2048/index.html' },
             { id: 'flappy', name: '🐤 فلافي بيرد', url: 'https://sausi-7.github.io/games/games/flappy/index.html' },
-            { id: 'doodle', name: '🦘 دودل جمب', url: 'https://sausi-7.github.io/games/games/doodle-jump/index.html' },
-            { id: 'chess', name: '♟️ شطرنج', url: 'https://sausi-7.github.io/games/games/chess/index.html' },
-            { id: 'sudoku', name: '🧮 سودوكو', url: 'https://sausi-7.github.io/games/games/sudoku/index.html' },
-            { id: 'bubble', name: '🫧 مطلق فقاعات', url: 'https://sausi-7.github.io/games/games/bubble-shooter/index.html' },
-            { id: 'space', name: '👾 غزاة الفضاء', url: 'https://sausi-7.github.io/games/games/space-invaders/index.html' },
-            { id: 'breakout', name: '🧱 كسر الطوب', url: 'https://sausi-7.github.io/games/games/breakout/index.html' },
-            { id: 'memory', name: '🧠 ذاكرة', url: 'https://sausi-7.github.io/games/games/memory/index.html' },
-            { id: 'runner', name: '🏃 عداء', url: 'https://sausi-7.github.io/games/games/runner/index.html' },
-            { id: 'puzzle', name: '🧩 بازل', url: 'https://sausi-7.github.io/games/games/puzzle/index.html' },
-            { id: 'zombie', name: '🧟 زومبي', url: 'https://sausi-7.github.io/games/games/zombie/index.html' },
-            { id: 'car-race', name: '🏎️ سباق سيارات', url: 'https://sausi-7.github.io/games/games/car-race/index.html' },
-            { id: 'crossy', name: '🚗 كروسي رود', url: 'https://sausi-7.github.io/games/games/crossy-road/index.html' },
-            { id: 'ludo', name: '🎲 لودو', url: 'https://sausi-7.github.io/games/games/ludo/index.html' }
+            { id: 'doodle', name: '🦘 دودل جمب', url: 'https://sausi-7.github.io/games/games/doodle-jump/index.html' }
         ];
 
-        // ===== بناء شبكة الألعاب =====
         function renderGames() {
             const grid = document.getElementById('gamesGrid');
             grid.innerHTML = '';
@@ -959,15 +1131,23 @@
                 card.href = game.url;
                 card.target = '_blank';
                 card.rel = 'noopener noreferrer';
-                card.dataset.id = game.id;
+                card.style.cssText =
+                    'background:#11111B; border-radius:14px; padding:12px 6px; text-align:center; border:1px solid #2A2A35; cursor:pointer; transition:0.25s; text-decoration:none; color:inherit; display:flex; flex-direction:column; align-items:center; justify-content:center; min-height:80px;';
                 card.innerHTML = `
                     <div style="font-size:32px;">${game.name.split(' ')[0]}</div>
-                    <div class="game-name">${game.name}</div>
+                    <div style="font-size:10px; color:#C0C0D0; font-weight:600;">${game.name}</div>
                 `;
-                // تسجيل جلسة عند النقر
+                card.addEventListener('mouseenter', function() {
+                    this.style.borderColor = '#C9A84C';
+                    this.style.transform = 'translateY(-3px)';
+                    this.style.boxShadow = '0 8px 25px #C9A84C22';
+                });
+                card.addEventListener('mouseleave', function() {
+                    this.style.borderColor = '#2A2A35';
+                    this.style.transform = 'translateY(0)';
+                    this.style.boxShadow = 'none';
+                });
                 card.addEventListener('click', function(e) {
-                    // لا نمنع الافتراضي لأننا نريد فتح الرابط
-                    // فقط نسجل الجلسة
                     setTimeout(() => {
                         recordGameSession(game.id);
                     }, 500);
@@ -977,49 +1157,32 @@
             document.getElementById('gameCount').textContent = GAMES_LIST.length + ' لعبة';
         }
 
-        // ===== تسجيل جلسة لعب =====
         function recordGameSession(gameId) {
             const game = GAMES_LIST.find(g => g.id === gameId);
             if (!game) return;
-
-            // تحديث الإحصائيات
             data.gameStats.totalSessions++;
             data.gameStats.dailySessions++;
-
-            // إضافة إلى السجل
-            const now = new Date();
-            const timeStr = now.toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-            data.gameLog.unshift({
-                time: timeStr,
-                text: `🎮 تم تشغيل: ${game.name}`
-            });
+            const timeStr = new Date().toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+            data.gameLog.unshift({ time: timeStr, text: `🎮 تم تشغيل: ${game.name}` });
             if (data.gameLog.length > 50) data.gameLog.pop();
-
-            // تحديث الواجهة
-            updateGameUI();
-            updateProfileUI();
-            saveData();
-
-            playBeep(600, 0.1);
-            doVibe();
-
-            // عرض رسالة
             document.getElementById('gameLogList').innerHTML = data.gameLog.slice(0, 30).map(l =>
                 `<div class="log-item"><span>${l.text}</span><span class="time">${l.time}</span></div>`
             ).join('');
             document.getElementById('gameLogCount').textContent = data.gameLog.length;
+            updateProfileUI();
+            saveData();
+            playBeep(600, 0.1);
+            doVibe();
         }
 
-        // ===== نظام المكافآت =====
-        const REWARD_AMOUNT = 0.001; // 0.001 NC لكل مكافأة
-        const CLAIM_COOLDOWN = 10; // 10 دقائق بين كل مكافأة
-        const DAILY_LIMIT = 10; // الحد الأقصى 10 مكافآت في اليوم
+        // ===== نظام مكافآت الألعاب =====
+        const REWARD_AMOUNT = 0.001;
+        const CLAIM_COOLDOWN = 10;
+        const DAILY_LIMIT = 10;
 
         function updateGameUI() {
             document.getElementById('dailyGameProfit').textContent = data.gameStats.dailyProfit.toFixed(4) + ' NC';
             document.getElementById('dailyGameSessions').textContent = data.gameStats.dailySessions;
-
-            // تحديث المؤقت
             updateRewardTimer();
             updateClaimButton();
         }
@@ -1027,29 +1190,22 @@
         function updateRewardTimer() {
             const btn = document.getElementById('claimRewardBtn');
             const timerEl = document.getElementById('nextRewardTimer');
-
-            // التحقق من إعادة ضبط اليوم
             const today = new Date().toDateString();
             if (data.gameStats.lastClaimDate !== today) {
-                // يوم جديد: إعادة تعيين العداد
                 data.gameStats.dailySessions = 0;
                 data.gameStats.dailyProfit = 0;
                 data.gameStats.claimCount = 0;
                 data.gameStats.lastClaimDate = today;
                 saveData();
             }
-
-            // التحقق من الحد اليومي
             if (data.gameStats.claimCount >= DAILY_LIMIT) {
                 timerEl.textContent = 'تم الوصول للحد اليومي';
                 btn.disabled = true;
                 return;
             }
-
-            // التحقق من الكول داون
             const lastClaim = localStorage.getItem('last_claim_time');
             if (lastClaim) {
-                const elapsed = (Date.now() - parseInt(lastClaim)) / 60000; // دقائق
+                const elapsed = (Date.now() - parseInt(lastClaim)) / 60000;
                 if (elapsed < CLAIM_COOLDOWN) {
                     const remaining = Math.ceil(CLAIM_COOLDOWN - elapsed);
                     timerEl.textContent = `${remaining} دقيقة`;
@@ -1057,7 +1213,6 @@
                     return;
                 }
             }
-
             timerEl.textContent = 'جاهز!';
             btn.disabled = false;
         }
@@ -1073,17 +1228,12 @@
             }
         }
 
-        // ===== الحصول على المكافأة =====
         document.getElementById('claimRewardBtn').addEventListener('click', function() {
             const today = new Date().toDateString();
-
-            // التحقق من الحد اليومي
             if (data.gameStats.claimCount >= DAILY_LIMIT) {
                 alert('لقد حصلت على الحد الأقصى اليومي (10 مكافآت)');
                 return;
             }
-
-            // التحقق من الكول داون
             const lastClaim = localStorage.getItem('last_claim_time');
             if (lastClaim) {
                 const elapsed = (Date.now() - parseInt(lastClaim)) / 60000;
@@ -1093,53 +1243,36 @@
                     return;
                 }
             }
-
-            // منح المكافأة
             data.wallet.NC += REWARD_AMOUNT;
             data.gameStats.dailyProfit += REWARD_AMOUNT;
             data.gameStats.totalProfit += REWARD_AMOUNT;
             data.gameStats.claimCount++;
             data.gameStats.lastClaimDate = today;
             data.profile.totalProfit += REWARD_AMOUNT * 0.5;
-
-            // تسجيل الوقت
             localStorage.setItem('last_claim_time', Date.now().toString());
-
-            // تحديث السجل
             const timeStr = new Date().toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-            data.gameLog.unshift({
-                time: timeStr,
-                text: `💰 حصلت على مكافأة +${REWARD_AMOUNT.toFixed(3)} NC`
-            });
+            data.gameLog.unshift({ time: timeStr, text: `💰 حصلت على مكافأة +${REWARD_AMOUNT.toFixed(3)} NC` });
             if (data.gameLog.length > 50) data.gameLog.pop();
-
-            // تحديث الواجهة
             updateAllUI();
             updateGameUI();
             updateProfileUI();
             saveData();
-
             playBeep(1200, 0.25);
             doVibe();
-
-            // تحديث سجل الألعاب
             document.getElementById('gameLogList').innerHTML = data.gameLog.slice(0, 30).map(l =>
                 `<div class="log-item"><span>${l.text}</span><span class="time">${l.time}</span></div>`
             ).join('');
             document.getElementById('gameLogCount').textContent = data.gameLog.length;
-
-            // تحديث المؤقت
             updateRewardTimer();
             updateClaimButton();
         });
 
-        // تحديث المؤقت كل 10 ثوانٍ
         setInterval(() => {
             updateRewardTimer();
         }, 10000);
 
         // ================================================================
-        // 8. الملف الشخصي
+        // 9. الملف الشخصي
         // ================================================================
 
         function toggleProfile() {
@@ -1159,7 +1292,8 @@
 
         function updateProfileUI() {
             let xp = data.profile.totalMined * 100 + data.profile.totalProfit * 0.5 +
-                data.gameStats.totalSessions * 1 + data.gameStats.totalProfit * 2;
+                data.gameStats.totalSessions * 1 + data.gameStats.totalProfit * 2 +
+                data.farm.totalProduced * 10;
             data.profile.xp = Math.floor(xp);
             let level = Math.floor(xp / 500) + 1;
             data.profile.level = Math.min(level, 100);
@@ -1171,8 +1305,9 @@
             document.getElementById('modalLevelBar').style.width = progress + '%';
             document.getElementById('modalTotalProfit').textContent = data.profile.totalProfit.toFixed(2) + ' Cash';
             document.getElementById('modalTotalMined').textContent = data.profile.totalMined.toFixed(6) + ' NC';
-            document.getElementById('modalGameProfit').textContent = data.gameStats.totalProfit.toFixed(4) + ' NC';
-            document.getElementById('modalGameSessions').textContent = data.gameStats.totalSessions;
+            document.getElementById('modalFarmProduction').textContent = data.farm.totalProduced.toFixed(4) + ' NC';
+            const totalDevices = Object.values(data.farm.devices).reduce((s, d) => s + d.count, 0);
+            document.getElementById('modalFarmDevices').textContent = totalDevices;
 
             document.getElementById('settingsProfileName').textContent = data.profile.name || 'مستخدم جديد';
 
@@ -1219,7 +1354,7 @@
         }
 
         // ================================================================
-        // 9. التنقل بين التبويبات
+        // 10. التنقل بين التبويبات
         // ================================================================
         document.querySelectorAll('.nav-item').forEach(item => {
             item.addEventListener('click', function() {
@@ -1231,10 +1366,13 @@
                 playBeep(300, 0.03);
                 if (tabId === 'wallet') updateWalletUI();
                 if (tabId === 'shop') renderShop();
+                if (tabId === 'farm') {
+                    updateFarmUI();
+                    renderFarmLog();
+                }
                 if (tabId === 'games') {
                     renderGames();
                     updateGameUI();
-                    // عرض السجل
                     document.getElementById('gameLogList').innerHTML = data.gameLog.slice(0, 30).map(l =>
                         `<div class="log-item"><span>${l.text}</span><span class="time">${l.time}</span></div>`
                     ).join('');
@@ -1245,7 +1383,7 @@
         });
 
         // ================================================================
-        // 10. الإعدادات
+        // 11. الإعدادات
         // ================================================================
         document.getElementById('soundToggle').addEventListener('change', function() { data.settings.sound = this.checked;
             saveData(); });
@@ -1259,7 +1397,7 @@
         });
 
         // ================================================================
-        // 11. التهيئة عند تحميل الصفحة
+        // 12. التهيئة عند تحميل الصفحة
         // ================================================================
         window.onload = function() {
             loadData();
@@ -1270,15 +1408,16 @@
             renderLog();
             renderGames();
             updateGameUI();
+            updateFarmUI();
+            renderFarmLog();
             updateProfileUI();
 
-            // عرض سجل الألعاب
             document.getElementById('gameLogList').innerHTML = data.gameLog.slice(0, 30).map(l =>
                 `<div class="log-item"><span>${l.text}</span><span class="time">${l.time}</span></div>`
             ).join('');
             document.getElementById('gameLogCount').textContent = data.gameLog.length;
 
-            addLog('🏛️ مرحباً في HyeX Exchange - الإصدار 10.0 (ألعاب بدون iframe)');
+            addLog('🏛️ مرحباً في HyeX Exchange - الإصدار 11.0 (مزرعة التعدين)');
             if (data.pendingNC > 0) document.getElementById('pendingDisplay').textContent = data.pendingNC.toFixed(8) +
                 ' NC';
         };
@@ -1286,4 +1425,4 @@
         setInterval(() => saveData(), 5000);
     </script>
 </body>
-                        </html>
+    </html>
