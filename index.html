@@ -2,168 +2,605 @@
 <html lang="ar">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🚀 منجمي الوهمي - تسلية</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <title>🚀 منجمي - Samsung One UI Dark</title>
+    <!-- خطوط وأيقونات تشبه سامسونغ -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
-            background: #0b0e1a;
-            color: #00ffd0;
-            font-family: 'Segoe UI', Tahoma, sans-serif;
+            background: #0A0A0F;
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
             display: flex;
             justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            color: #f0f0f0;
             direction: rtl;
         }
-        .card {
-            background: #141a2b;
-            padding: 40px 50px;
-            border-radius: 30px;
-            text-align: center;
-            border: 2px solid #00ffd0;
-            box-shadow: 0 0 40px #00ffd055;
-            width: 350px;
+
+        /* حاوية رئيسية تشبه شاشة جوال سامسونغ */
+        .app-container {
+            max-width: 420px;
+            width: 100%;
+            background: #12121A;
+            border-radius: 40px;
+            padding: 24px 20px 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.9);
+            border: 1px solid #2A2A35;
+            position: relative;
+            overflow: hidden;
         }
-        h1 {
-            font-size: 28px;
-            margin-bottom: 5px;
-            color: #fff;
+
+        /* خلفية نجوم متحركة (Canvas) */
+        #starfield {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+            opacity: 0.5;
         }
-        .sub {
-            color: #8892b0;
-            margin-top: -5px;
-            font-size: 14px;
+
+        /* كل المحتوى فوق الخلفية */
+        .content {
+            position: relative;
+            z-index: 2;
         }
-        .stat-box {
-            background: #0f1422;
-            padding: 15px;
-            border-radius: 15px;
-            margin: 15px 0;
-            border: 1px solid #2a3355;
+
+        /* الهيدر - مثل تطبيقات سامسونغ */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #2A2A35;
+            margin-bottom: 20px;
         }
-        .stat-box p {
-            margin: 8px 0;
-            font-size: 18px;
-        }
-        .stat-box span {
-            color: #fff;
-            font-weight: bold;
+        .header h1 {
             font-size: 22px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #4A9CFF, #6C63FF);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
-        .hash-rate {
-            color: #f5a623;
+        .header i {
+            font-size: 28px;
+            color: #4A9CFF;
+            background: #1C1C26;
+            padding: 10px;
+            border-radius: 50%;
         }
-        .coins {
-            color: #ffd700;
+
+        /* البطاقات - تصميم One UI */
+        .card {
+            background: #1C1C26;
+            border-radius: 24px;
+            padding: 20px;
+            margin-bottom: 18px;
+            border: 1px solid #2C2C38;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
         }
-        .usd {
-            color: #7bed9f;
+
+        .card-title {
+            font-size: 13px;
+            text-transform: uppercase;
+            color: #8E8E9A;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
         }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            text-align: center;
+        }
+        .stat-item {
+            background: #12121A;
+            border-radius: 16px;
+            padding: 12px 5px;
+            border: 1px solid #2A2A35;
+        }
+        .stat-item .label {
+            font-size: 11px;
+            color: #8E8E9A;
+        }
+        .stat-item .value {
+            font-size: 18px;
+            font-weight: 700;
+            margin-top: 4px;
+            font-variant-numeric: tabular-nums;
+        }
+        .value.gold { color: #FFD700; }
+        .value.blue { color: #4A9CFF; }
+        .value.green { color: #7BED9F; }
+        .value.pink { color: #FF6B8A; }
+
+        /* أزرار العملات (تحويل العملة) */
+        .currency-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+        .currency-tabs button {
+            flex: 1;
+            background: #12121A;
+            border: 2px solid #2A2A35;
+            color: #8E8E9A;
+            padding: 10px;
+            border-radius: 18px;
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .currency-tabs button.active {
+            border-color: #4A9CFF;
+            background: #1A2A4A;
+            color: #4A9CFF;
+            box-shadow: 0 0 15px #4A9CFF33;
+        }
+
         .btn-group {
             display: flex;
-            gap: 15px;
-            justify-content: center;
-            margin-top: 20px;
+            gap: 12px;
+            margin-top: 15px;
         }
-        button {
-            padding: 12px 30px;
+        .btn {
+            flex: 1;
+            padding: 14px;
             border: none;
-            border-radius: 50px;
-            font-size: 18px;
-            font-weight: bold;
+            border-radius: 30px;
+            font-size: 17px;
+            font-weight: 700;
             cursor: pointer;
-            transition: 0.3s;
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
         }
-        #startBtn {
-            background: #00ffd0;
-            color: #0b0e1a;
-        }
-        #startBtn:hover {
-            box-shadow: 0 0 20px #00ffd0;
-        }
-        #stopBtn {
-            background: #ff4757;
+        .btn-primary {
+            background: #4A9CFF;
             color: #fff;
+            box-shadow: 0 4px 20px #4A9CFF55;
         }
-        #stopBtn:hover {
-            box-shadow: 0 0 20px #ff4757;
+        .btn-primary:active { transform: scale(0.96); }
+        .btn-danger {
+            background: #3A2A30;
+            color: #FF6B8A;
+            border: 1px solid #552A35;
         }
-        .fan {
-            font-size: 50px;
-            display: inline-block;
-            animation: spin 2s linear infinite;
+        .btn-danger:active { transform: scale(0.96); }
+        .btn-success {
+            background: #1A3A2A;
+            color: #7BED9F;
+            border: 1px solid #2A5535;
         }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+        .btn-success:active { transform: scale(0.96); }
+
+        /* منطقة الترقيات */
+        .upgrade-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #12121A;
+            padding: 12px 16px;
+            border-radius: 16px;
+            margin-bottom: 10px;
+            border: 1px solid #2A2A35;
         }
-        .footer {
-            margin-top: 20px;
-            font-size: 12px;
-            color: #556;
+        .upgrade-item .info { font-size: 14px; }
+        .upgrade-item .info small { color: #8E8E9A; display: block; }
+        .upgrade-item .btn-buy {
+            background: #2A3A5A;
+            border: none;
+            color: #4A9CFF;
+            padding: 6px 20px;
+            border-radius: 30px;
+            font-weight: 700;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .upgrade-item .btn-buy:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        /* زر الهدية */
+        .gift-section {
+            display: flex;
+            justify-content: center;
+            margin: 10px 0;
+        }
+        #giftBtn {
+            background: linear-gradient(145deg, #FFD700, #FFA500);
+            border: none;
+            color: #12121A;
+            padding: 12px 30px;
+            border-radius: 50px;
+            font-weight: 800;
+            font-size: 16px;
+            box-shadow: 0 0 30px #FFD70055;
+            transition: 0.3s;
+            cursor: pointer;
+            display: none; /* يظهر بالتوقيت */
+        }
+        #giftBtn:active { transform: scale(0.9); }
+
+        /* الإنجازات (Toasts) */
+        .toast-container {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 999;
+            width: 90%;
+            max-width: 380px;
+        }
+        .toast {
+            background: #1C1C26;
+            border: 2px solid #FFD700;
+            color: #fff;
+            padding: 14px 20px;
+            border-radius: 30px;
+            margin-bottom: 8px;
+            text-align: center;
+            font-weight: 600;
+            box-shadow: 0 10px 40px #000000aa;
+            animation: slideUp 0.5s ease;
+            backdrop-filter: blur(10px);
+        }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .footer-text {
+            text-align: center;
+            font-size: 11px;
+            color: #4A4A55;
+            margin-top: 15px;
         }
     </style>
 </head>
 <body>
 
-<div class="card">
-    <div class="fan">🌀</div>
-    <h1>⚡ منجمي الوهمي</h1>
-    <p class="sub">للترفيه فقط - ما بتعدن شي والله 😂</p>
+<div class="app-container">
+    <canvas id="starfield"></canvas> <!-- خلفية النجوم -->
 
-    <div class="stat-box">
-        <p>⚙️ سرعة التعدين: <br> <span class="hash-rate" id="hashrate">0.0</span> MH/s</p>
-        <p>🪙 العملات المستخرجة: <br> <span class="coins" id="coins">0.00000000</span> BTC</p>
-        <p>💵 الأرباح (وهمية): <br> <span class="usd" id="earnings">$0.00</span></p>
-    </div>
+    <div class="content">
+        <!-- الهيدر -->
+        <div class="header">
+            <h1><i class="fas fa-microchip" style="margin-left: 10px;"></i> منجمي</h1>
+            <i class="fas fa-fan"></i>
+        </div>
 
-    <div class="btn-group">
-        <button id="startBtn">▶ اشتغل</button>
-        <button id="stopBtn">⏹ أوقف</button>
+        <!-- بطاقة الإحصائيات -->
+        <div class="card">
+            <div class="card-title">
+                <span>⚡ سرعة التعدين</span>
+                <span id="hashDisplay">0.0 MH/s</span>
+            </div>
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="label">🪙 العملة</div>
+                    <div class="value gold" id="coinDisplay">0.00000000</div>
+                </div>
+                <div class="stat-item">
+                    <div class="label">💰 الأرباح</div>
+                    <div class="value green" id="earnDisplay">$0.00</div>
+                </div>
+                <div class="stat-item">
+                    <div class="label">📈 المضاعف</div>
+                    <div class="value blue" id="multiDisplay">x1.0</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- أزرار العملات -->
+        <div class="currency-tabs">
+            <button class="active" data-curr="BTC">₿ BTC</button>
+            <button data-curr="ETH">⟠ ETH</button>
+            <button data-curr="DOGE">Ð DOGE</button>
+        </div>
+
+        <!-- أزرار التشغيل والإيقاف -->
+        <div class="btn-group">
+            <button class="btn btn-primary" id="startBtn"><i class="fas fa-play"></i> اشتغل</button>
+            <button class="btn btn-danger" id="stopBtn"><i class="fas fa-stop"></i> أوقف</button>
+        </div>
+
+        <!-- زر الهدية -->
+        <div class="gift-section">
+            <button id="giftBtn"><i class="fas fa-gift"></i> هدية مجانية!</button>
+        </div>
+
+        <!-- قائمة الترقيات -->
+        <div class="card" style="margin-top: 5px;">
+            <div class="card-title"><span>🛠️ تطوير الجهاز</span> <span id="upgradeCount">0</span></div>
+            <div id="upgradeList"></div>
+        </div>
+
+        <!-- الإنجازات (تظهر كـ Toast) -->
+        <div class="toast-container" id="toastContainer"></div>
+
+        <div class="footer-text">
+            <i class="fas fa-bolt"></i> للترفيه فقط - كل الأرقام وهمية
+        </div>
     </div>
-    <p class="footer">🔄 كل ما تضغط اشتغل، الأرقام بتطير!</p>
 </div>
 
 <script>
+    // ------------------- 1. نجوم الخلفية (Canvas) -------------------
+    const canvas = document.getElementById('starfield');
+    const ctx = canvas.getContext('2d');
+    function resizeCanvas() {
+        canvas.width = canvas.parentElement.offsetWidth;
+        canvas.height = canvas.parentElement.offsetHeight;
+    }
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
+
+    const stars = [];
+    for (let i = 0; i < 80; i++) {
+        stars.push({
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height,
+            r: Math.random() * 1.8,
+            dx: (Math.random() - 0.5) * 0.3,
+            dy: (Math.random() - 0.5) * 0.3
+        });
+    }
+    function drawStars() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        stars.forEach(s => {
+            s.x += s.dx;
+            s.y += s.dy;
+            if (s.x < 0 || s.x > canvas.width) s.dx *= -1;
+            if (s.y < 0 || s.y > canvas.height) s.dy *= -1;
+            ctx.beginPath();
+            ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+            ctx.fillStyle = '#4A9CFF';
+            ctx.shadowColor = '#4A9CFF';
+            ctx.shadowBlur = 8;
+            ctx.fill();
+        });
+        requestAnimationFrame(drawStars);
+    }
+    drawStars();
+
+    // ------------------- 2. المتغيرات الأساسية -------------------
+    let isMining = false;
     let miningInterval = null;
     let coins = 0;
+    let baseHash = 50; // أساس السرعة
+    let multiplier = 1.0;
+    let currentCurrency = 'BTC';
+    let totalUpgrades = 0;
+    let earnedAchievements = new Set();
+
+    // أسعار وهمية للعملات
+    const prices = {
+        BTC: 60000,
+        ETH: 3000,
+        DOGE: 0.15
+    };
+
+    // قائمة الترقيات
+    const upgrades = [
+        { id: 'fan', name: '🌀 مروحة تبريد', cost: 0.001, level: 0, maxLevel: 5, addMulti: 0.3 },
+        { id: 'power', name: '⚡ رفع التيار', cost: 0.003, level: 0, maxLevel: 5, addMulti: 0.5 },
+        { id: 'cpu', name: '🖥️ معالج فائق', cost: 0.01, level: 0, maxLevel: 5, addMulti: 1.0 }
+    ];
+
+    // ------------------- 3. دوال الصوت (نغمات بسيطة) -------------------
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    function playBeep(freq, duration, type = 'sine') {
+        try {
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.type = type;
+            osc.frequency.value = freq;
+            gain.gain.value = 0.08;
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start();
+            osc.stop(audioCtx.currentTime + duration);
+        } catch (e) { /* أمان */ }
+    }
+
+    // ------------------- 4. دوال الإنجازات (Toast) -------------------
+    function showToast(message) {
+        const container = document.getElementById('toastContainer');
+        const toast = document.createElement('div');
+        toast.className = 'toast';
+        toast.innerHTML = '🏆 ' + message;
+        container.appendChild(toast);
+        playBeep(880, 0.2, 'square');
+        setTimeout(() => { if (toast.parentNode) toast.remove(); }, 3000);
+    }
+
+    function checkAchievements() {
+        const targets = [0.001, 0.01, 0.1];
+        const names = ['أول 0.001 BTC وهمي!', '0.01 BTC وهمي! (مبروك المعدن)', '0.1 BTC وهمي! (أسطورة)'];
+        targets.forEach((t, i) => {
+            if (coins >= t && !earnedAchievements.has(i)) {
+                earnedAchievements.add(i);
+                showToast(names[i]);
+                playBeep(1200, 0.3);
+            }
+        });
+        // إنجاز خاص للتحديثات
+        if (totalUpgrades >= 5 && !earnedAchievements.has('up5')) {
+            earnedAchievements.add('up5');
+            showToast('🔧 طورت جهازك 5 مرات!');
+        }
+    }
+
+    // ------------------- 5. تحديث واجهة المستخدم -------------------
+    function updateUI() {
+        const price = prices[currentCurrency] || 60000;
+        const earn = coins * price;
+        document.getElementById('coinDisplay').textContent = coins.toFixed(8);
+        document.getElementById('earnDisplay').textContent = (currentCurrency === 'DOGE' ? 'Ð' : '$') + earn.toFixed(2);
+        document.getElementById('multiDisplay').textContent = 'x' + multiplier.toFixed(1);
+        document.getElementById('hashDisplay').textContent = (baseHash * multiplier).toFixed(1) + ' MH/s';
+        document.getElementById('upgradeCount').textContent = totalUpgrades;
+        renderUpgrades();
+    }
+
+    // ------------------- 6. التعدين (الأساسي) -------------------
+    function miningLoop() {
+        if (!isMining) return;
+        // سرعة عشوائية حول القاعدة
+        let currentHash = (baseHash * multiplier) * (0.8 + Math.random() * 0.4);
+        let mined = (currentHash / 10000) * (Math.random() * 0.5 + 0.5);
+        coins += mined;
+        checkAchievements();
+        updateUI();
+        // تغيير لون الهاش بشكل وهمي
+    }
 
     function startMining() {
-        if (miningInterval) return; // إذا شغال ما نعيد تشغيله
-
-        // نضيف صوت وهمي بالاهتزاز (تأثير بصري)
-        document.querySelector('.fan').style.animation = 'spin 0.5s linear infinite';
-
-        miningInterval = setInterval(() => {
-            // سرعة عشوائية بين 50 و 200 ميغا هاش
-            let randomHash = (Math.random() * 150 + 50).toFixed(1);
-            document.getElementById('hashrate').innerHTML = randomHash;
-
-            // نزيد العملات الوهمية بكميات عشوائية صغيرة
-            let mined = (Math.random() * 0.002).toFixed(8);
-            coins = coins + parseFloat(mined);
-            document.getElementById('coins').innerHTML = coins.toFixed(8);
-
-            // نحسب أرباح وهمية (سعر البيتكوين 60 ألف دولار وهمي)
-            let earnings = coins * 60000;
-            document.getElementById('earnings').innerHTML = earnings.toFixed(2);
-
-        }, 400); // كل 0.4 ثانية تتغير الأرقام
+        if (isMining) return;
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+        isMining = true;
+        playBeep(600, 0.1);
+        // تأثيرات اهتزاز (لو على جوال)
+        if (navigator.vibrate) navigator.vibrate(50);
+        miningInterval = setInterval(miningLoop, 400);
+        document.getElementById('startBtn').style.opacity = '0.7';
     }
 
     function stopMining() {
+        if (!isMining) return;
+        isMining = false;
         clearInterval(miningInterval);
         miningInterval = null;
-        document.querySelector('.fan').style.animation = 'spin 2s linear infinite';
-        // ما نحذف الأرقام عشان تفضل شغالة
+        playBeep(300, 0.2);
+        document.getElementById('startBtn').style.opacity = '1';
     }
 
+    // ------------------- 7. الترقيات -------------------
+    function renderUpgrades() {
+        const container = document.getElementById('upgradeList');
+        container.innerHTML = '';
+        upgrades.forEach((up, index) => {
+            const div = document.createElement('div');
+            div.className = 'upgrade-item';
+            const canBuy = coins >= up.cost && up.level < up.maxLevel;
+            div.innerHTML = `
+                <div class="info">
+                    ${up.name} (${up.level}/${up.maxLevel})
+                    <small>السعر: ${up.cost.toFixed(4)} BTC</small>
+                </div>
+                <button class="btn-buy" data-idx="${index}" ${!canBuy ? 'disabled' : ''}>
+                    ${up.level >= up.maxLevel ? 'مكتمل' : 'طور'}
+                </button>
+            `;
+            container.appendChild(div);
+        });
+
+        document.querySelectorAll('.btn-buy').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const idx = parseInt(this.dataset.idx);
+                buyUpgrade(idx);
+            });
+        });
+    }
+
+    function buyUpgrade(idx) {
+        const up = upgrades[idx];
+        if (coins < up.cost || up.level >= up.maxLevel) return;
+        coins -= up.cost;
+        up.level++;
+        totalUpgrades++;
+        // زيادة المضاعف
+        multiplier += up.addMulti;
+        up.cost = up.cost * 2.5; // السعر يتضاعف كل مرة
+        playBeep(1000, 0.15, 'square');
+        if (navigator.vibrate) navigator.vibrate(30);
+        updateUI();
+        checkAchievements(); // لعلنا نحرز إنجاز الترقيات
+        renderUpgrades();
+        showToast('🚀 تم تطوير ' + up.name + '!');
+    }
+
+    // ------------------- 8. الهدية المجانية -------------------
+    let giftTimer = null;
+    let giftVisible = false;
+
+    function showGift() {
+        if (giftVisible) return;
+        const btn = document.getElementById('giftBtn');
+        btn.style.display = 'block';
+        giftVisible = true;
+        playBeep(1400, 0.1);
+        // نختفي بعد 7 ثواني إذا ما ضغطها
+        setTimeout(() => {
+            if (giftVisible) {
+                btn.style.display = 'none';
+                giftVisible = false;
+            }
+        }, 7000);
+    }
+
+    document.getElementById('giftBtn').addEventListener('click', function() {
+        if (!giftVisible) return;
+        const bonus = 0.005 + Math.random() * 0.02;
+        coins += bonus;
+        playBeep(1800, 0.3, 'sine');
+        if (navigator.vibrate) navigator.vibrate([50, 50, 50]);
+        showToast('🎁 هدية! +' + bonus.toFixed(5) + ' BTC');
+        this.style.display = 'none';
+        giftVisible = false;
+        updateUI();
+        checkAchievements();
+        // نضبط المؤقت من جديد
+        clearTimeout(giftTimer);
+        scheduleGift();
+    });
+
+    function scheduleGift() {
+        clearTimeout(giftTimer);
+        const delay = 15000 + Math.random() * 10000; // 15-25 ثانية
+        giftTimer = setTimeout(showGift, delay);
+    }
+
+    // ------------------- 9. تبديل العملات -------------------
+    document.querySelectorAll('.currency-tabs button').forEach(btn => {
+        btn.addEventListener('click', function() {
+            document.querySelectorAll('.currency-tabs button').forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+            currentCurrency = this.dataset.curr;
+            updateUI();
+            playBeep(500, 0.05);
+        });
+    });
+
+    // ------------------- 10. أزرار التشغيل والإيقاف -------------------
     document.getElementById('startBtn').addEventListener('click', startMining);
     document.getElementById('stopBtn').addEventListener('click', stopMining);
 
-    // نبدأ تشغيل تلقائي عند فتح الصفحة عشان تكون حلوة
-    window.onload = startMining;
+    // ------------------- 11. بدء التشغيل التلقائي -------------------
+    window.onload = function() {
+        startMining();
+        scheduleGift();
+        updateUI();
+        // إنجاز ترحيبي
+        setTimeout(() => { showToast('👋 مرحباً في منجمك الوهمي!'); }, 1500);
+    };
 </script>
 
 </body>
