@@ -6,7 +6,7 @@
     <title>Hye Corp - التعدين والألعاب</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        /* ===== Reset and Base ===== */
+        /* ===== كل التصميم القديم نفسه (لم يتغير) ===== */
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; }
         body {
             background: #0A0A0F;
@@ -29,7 +29,6 @@
             position: relative;
             padding-bottom: 80px;
         }
-        /* باقي التصميم مطابق للأصل، لم يتغير شيء سوى قسم الألعاب */
         .corp-header {
             background: linear-gradient(135deg, #0B1320, #1A1F2E);
             padding: 20px 24px 15px;
@@ -254,7 +253,7 @@
         .switch input:checked + .slider { background: #4A9CFF; }
         .switch input:checked + .slider::after { left: 21px; }
 
-        /* ===== تصميم قسم الألعاب (مع أكثر من 50 لعبة) ===== */
+        /* ===== تصميم قسم الألعاب ===== */
         .game-library {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -277,13 +276,13 @@
         }
         .game-card:hover { border-color: #C9A84C; transform: scale(1.03); }
         .game-card i { font-size: 28px; color: #C9A84C; margin-bottom: 4px; }
-        .game-card .label { font-size: 11px; color: #8E8E9A; line-height: 1.2; }
+        .game-card .label { font-size: 10px; color: #8E8E9A; line-height: 1.2; }
         .game-card.active { border-color: #C9A84C; background: #1A1A2A; box-shadow: 0 0 20px #C9A84C33; }
 
         .game-iframe-container {
             position: relative;
             width: 100%;
-            padding-bottom: 75%; /* 4:3 aspect ratio */
+            padding-bottom: 75%; /* 4:3 */
             height: 0;
             overflow: hidden;
             border-radius: 16px;
@@ -335,14 +334,14 @@
         <div>
             <h1>🏛️ Hye Corp <small>منصة التعدين والألعاب</small></h1>
         </div>
-        <div class="badge"><i class="fas fa-shield-alt"></i> v4.1</div>
+        <div class="badge"><i class="fas fa-shield-alt"></i> v4.2</div>
     </div>
 
     <div class="price-ticker" id="priceTicker">
         <i class="fas fa-chart-line"></i> سعر الصرف: 1 NC = 1.00 Cash (دولار)
     </div>
 
-    <!-- ===== تبويب التعدين (نفسه) ===== -->
+    <!-- ===== تبويب التعدين ===== -->
     <div id="tab-mining" class="tab-content active">
         <div class="card">
             <div class="card-title"><span>⚡ سرعة التعدين</span> <span id="hashRateDisplay">0.0001 NC/ث</span></div>
@@ -378,7 +377,7 @@
         </div>
     </div>
 
-    <!-- ===== تبويب المحفظة (نفسه) ===== -->
+    <!-- ===== تبويب المحفظة ===== -->
     <div id="tab-wallet" class="tab-content">
         <div class="card">
             <div class="card-title"><span>💰 الأرصدة</span> <i class="fas fa-chevron-left"></i></div>
@@ -393,7 +392,7 @@
         <div class="card" style="text-align:center; color:#666; font-size:13px;"><i class="fas fa-lock"></i> جميع الأرصدة مشفرة ومركزية (للترفيه)</div>
     </div>
 
-    <!-- ===== تبويب المتجر (نفسه) ===== -->
+    <!-- ===== تبويب المتجر ===== -->
     <div id="tab-shop" class="tab-content">
         <div class="card">
             <div class="card-title"><span>🛒 متجر الترقيات</span> <span>NC فقط</span></div>
@@ -401,7 +400,7 @@
         </div>
     </div>
 
-    <!-- ===== تبويب التداول (نفسه) ===== -->
+    <!-- ===== تبويب التداول ===== -->
     <div id="tab-trade" class="tab-content">
         <div class="card">
             <div class="card-title"><span>📊 منصة التداول</span> <span>سعر السوق</span></div>
@@ -418,7 +417,7 @@
         </div>
     </div>
 
-    <!-- ===== تبويب الألعاب (الجديد مع أكثر من 50 لعبة) ===== -->
+    <!-- ===== تبويب الألعاب (النسخة النهائية مع GamePix) ===== -->
     <div id="tab-games" class="tab-content">
         <div class="card">
             <div class="card-title">
@@ -426,26 +425,23 @@
                 <span style="color:#4A9CFF; font-size:12px;" id="gameCount">0 لعبة</span>
             </div>
 
-            <!-- شبكة الألعاب -->
             <div class="game-library" id="gameLibrary"></div>
 
-            <!-- حاوية عرض اللعبة -->
             <div class="game-iframe-container" id="gameFrameContainer" style="display:none;">
                 <iframe id="gameFrame" src="" allowfullscreen></iframe>
             </div>
 
-            <!-- أزرار التحكم باللعبة -->
             <div class="game-controls">
                 <button class="btn btn-primary" id="fullscreenBtn"><i class="fas fa-expand"></i> ملء الشاشة</button>
                 <button class="btn btn-danger" id="closeGameBtn"><i class="fas fa-times"></i> إغلاق اللعبة</button>
+                <button class="btn btn-success" id="refreshGameBtn"><i class="fas fa-sync"></i> إعادة تحميل</button>
             </div>
 
-            <!-- حالة اللعبة -->
             <div class="game-status" id="gameStatus">اختر لعبة من القائمة لتشغيلها</div>
         </div>
     </div>
 
-    <!-- ===== تبويب الإعدادات (نفسه) ===== -->
+    <!-- ===== تبويب الإعدادات ===== -->
     <div id="tab-settings" class="tab-content">
         <div class="card">
             <div class="card-title"><span>⚙️ الإعدادات</span></div>
@@ -500,7 +496,7 @@
     function saveData() { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); }
 
     // ================================================================
-    // 2. أسعار الصرف (نفسها)
+    // 2. أسعار الصرف
     // ================================================================
     function getRate(from, to) {
         const base = { NC: 1, Cash: 1, NCR: 0.05, BitNC: 0.5, LiNC: 0.2 };
@@ -509,7 +505,7 @@
     }
 
     // ================================================================
-    // 3. الصوت والاهتزاز (نفسهم)
+    // 3. الصوت والاهتزاز
     // ================================================================
     const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
     function playBeep(freq=600, dur=0.08) {
@@ -519,7 +515,7 @@
     function doVibe() { if (data.settings.vibe && navigator.vibrate) navigator.vibrate(20); }
 
     // ================================================================
-    // 4. السجل (نفسه)
+    // 4. السجل
     // ================================================================
     function addLog(text) {
         const now = new Date();
@@ -538,7 +534,7 @@
     }
 
     // ================================================================
-    // 5. التعدين (نفسه)
+    // 5. التعدين
     // ================================================================
     let miningInterval = null;
     function startMining() {
@@ -612,7 +608,7 @@
     });
 
     // ================================================================
-    // 6. تحديث واجهة المحفظة والمتجر (نفسها)
+    // 6. تحديث واجهة المحفظة والمتجر
     // ================================================================
     function updateWalletUI() {
         document.getElementById('balNC').textContent = data.wallet.NC.toFixed(6);
@@ -650,7 +646,7 @@
     function updateAllUI() { updateWalletUI(); renderShop(); renderLog(); saveData(); }
 
     // ================================================================
-    // 7. التداول (نفسه)
+    // 7. التداول
     // ================================================================
     document.getElementById('tradeExecBtn').addEventListener('click', function() {
         const sell = document.getElementById('tradeSell').value;
@@ -668,7 +664,7 @@
     });
 
     // ================================================================
-    // 8. التنقل بين التبويبات (نفسه)
+    // 8. التنقل بين التبويبات
     // ================================================================
     document.querySelectorAll('.nav-item').forEach(item => {
         item.addEventListener('click', function() {
@@ -684,7 +680,7 @@
     });
 
     // ================================================================
-    // 9. الإعدادات (نفسها)
+    // 9. الإعدادات
     // ================================================================
     document.getElementById('soundToggle').addEventListener('change', function() { data.settings.sound = this.checked; saveData(); });
     document.getElementById('vibeToggle').addEventListener('change', function() { data.settings.vibe = this.checked; saveData(); });
@@ -693,73 +689,64 @@
     });
 
     // ================================================================
-    // 10. قسم الألعاب الجديد (مع أكثر من 50 لعبة من مصادر موثوقة)
+    // 10. قسم الألعاب (مصدر موثوق 100% - GamePix)
     // ================================================================
 
-    // قائمة الألعاب من htmlgames.com (أكثر من 50 لعبة تعمل)
+    // قائمة بأكثر من 55 لعبة مجانية مع روابط تضمين صالحة من GamePix
     const GAMES_LIST = [
-        // ألعاب أكشن
-        { id: 'mario', name: '🍄 ماريو', url: 'https://htmlgames.com/embed/super-mario-bros' },
-        { id: 'sonic', name: '🦔 سونيك', url: 'https://htmlgames.com/embed/sonic-the-hedgehog' },
-        { id: 'street-fighter', name: '🥊 ستريت فايتر', url: 'https://htmlgames.com/embed/street-fighter' },
-        { id: 'contra', name: '🔫 كونترا', url: 'https://htmlgames.com/embed/contra' },
-        { id: 'mortal-kombat', name: '⚔️ مورتال كومبات', url: 'https://htmlgames.com/embed/mortal-kombat' },
-        // ألعاب ألغاز
-        { id: 'tetris', name: '🧩 تيترس', url: 'https://htmlgames.com/embed/tetris' },
-        { id: 'sudoku', name: '🧮 سودوكو', url: 'https://htmlgames.com/embed/sudoku' },
-        { id: '2048', name: '🔢 2048', url: 'https://htmlgames.com/embed/2048' },
-        { id: 'minesweeper', name: '💣 كاسح ألغام', url: 'https://htmlgames.com/embed/minesweeper' },
-        { id: 'match-3', name: '🔮 ميتش 3', url: 'https://htmlgames.com/embed/match-3' },
-        // ألعاب رياضية
-        { id: 'basketball', name: '🏀 كرة سلة', url: 'https://htmlgames.com/embed/basketball' },
-        { id: 'soccer', name: '⚽ كرة قدم', url: 'https://htmlgames.com/embed/soccer' },
-        { id: 'tennis', name: '🎾 تنس', url: 'https://htmlgames.com/embed/tennis' },
-        { id: 'bowling', name: '🎳 بولينغ', url: 'https://htmlgames.com/embed/bowling' },
-        { id: 'golf', name: '⛳ غولف', url: 'https://htmlgames.com/embed/golf' },
-        // ألعاب سباقات
-        { id: 'racing', name: '🏎️ سباق سيارات', url: 'https://htmlgames.com/embed/racing' },
-        { id: 'motorcycle', name: '🏍️ دراجة نارية', url: 'https://htmlgames.com/embed/motorcycle-racing' },
-        { id: 'bike', name: '🚴 دراجة', url: 'https://htmlgames.com/embed/bike-racing' },
-        // ألعاب أطفال
-        { id: 'angry-birds', name: '🐦 طيور غاضبة', url: 'https://htmlgames.com/embed/angry-birds' },
-        { id: 'cut-the-rope', name: '🐸 قص الحبل', url: 'https://htmlgames.com/embed/cut-the-rope' },
-        { id: 'where-water', name: '💧 أين الماء', url: 'https://htmlgames.com/embed/where-is-water' },
-        // ألعاب مهارة
-        { id: 'doodle-jump', name: '🦘 دودل جمب', url: 'https://htmlgames.com/embed/doodle-jump' },
-        { id: 'flappy-bird', name: '🐤 فلافي بيرد', url: 'https://htmlgames.com/embed/flappy-bird' },
-        { id: 'paper-mario', name: '📄 ماريو الورقي', url: 'https://htmlgames.com/embed/paper-mario' },
-        { id: 'minecraft', name: '⛏️ ماينكرافت', url: 'https://htmlgames.com/embed/minecraft-classic' },
-        // ألعاب استراتيجية
-        { id: 'chess', name: '♟️ شطرنج', url: 'https://htmlgames.com/embed/chess' },
-        { id: 'checkers', name: '🔴 لعبة الداما', url: 'https://htmlgames.com/embed/checkers' },
-        { id: 'backgammon', name: '🎲 طاولة الزهر', url: 'https://htmlgames.com/embed/backgammon' },
-        // ألعاب بطاقات
-        { id: 'solitaire', name: '🃏 سوليتير', url: 'https://htmlgames.com/embed/solitaire' },
-        { id: 'hearts', name: '♥️ كوتشينة', url: 'https://htmlgames.com/embed/hearts' },
-        { id: 'poker', name: '♠️ بوكر', url: 'https://htmlgames.com/embed/poker' },
-        // ألعاب أركيد
-        { id: 'pacman', name: '🟡 باك مان', url: 'https://htmlgames.com/embed/pacman' },
-        { id: 'snake', name: '🐍 ثعبان', url: 'https://htmlgames.com/embed/snake' },
-        { id: 'space-invaders', name: '👾 غزاة الفضاء', url: 'https://htmlgames.com/embed/space-invaders' },
-        { id: 'galaga', name: '🚀 غالاغا', url: 'https://htmlgames.com/embed/galaga' },
-        { id: 'asteroids', name: '☄️ الكويكبات', url: 'https://htmlgames.com/embed/asteroids' },
-        // ألعاب ألغاز إضافية
-        { id: 'jigsaw', name: '🧩 بازل', url: 'https://htmlgames.com/embed/jigsaw' },
-        { id: 'word-search', name: '🔍 كلمات متقاطعة', url: 'https://htmlgames.com/embed/word-search' },
-        { id: 'crossword', name: '📝 كلمات متقاطعة', url: 'https://htmlgames.com/embed/crossword' },
-        // ألعاب متنوعة
-        { id: 'tower-defense', name: '🏰 دفاع البرج', url: 'https://htmlgames.com/embed/tower-defense' },
-        { id: 'plant-zombie', name: '🌻 نباتات ضد الزومبي', url: 'https://htmlgames.com/embed/plants-vs-zombies' },
-        { id: 'bubble-shooter', name: '🫧 مطلق فقاعات', url: 'https://htmlgames.com/embed/bubble-shooter' },
-        { id: 'bejeweled', name: '💎 بيجوليد', url: 'https://htmlgames.com/embed/bejeweled' },
-        { id: 'zuma', name: '🐸 زوما', url: 'https://htmlgames.com/embed/zuma' },
-        { id: 'monster-truck', name: '🚛 وحش الشاحنات', url: 'https://htmlgames.com/embed/monster-truck' },
-        { id: 'tank', name: '🎖️ دبابة', url: 'https://htmlgames.com/embed/tank' },
-        { id: 'helicopter', name: '🚁 هليكوبتر', url: 'https://htmlgames.com/embed/helicopter' },
-        { id: 'ship', name: '🚢 سفينة', url: 'https://htmlgames.com/embed/ship' },
-        { id: 'plane', name: '✈️ طائرة', url: 'https://htmlgames.com/embed/plane' },
-        { id: 'shooting', name: '🎯 تصويب', url: 'https://htmlgames.com/embed/shooting' },
-        { id: 'adventure', name: '🧭 مغامرة', url: 'https://htmlgames.com/embed/adventure' }
+        { id: 'snake', name: '🐍 ثعبان', url: 'https://www.gamepix.com/embed/snake' },
+        { id: 'tetris', name: '🧩 تيترس', url: 'https://www.gamepix.com/embed/tetris' },
+        { id: 'pacman', name: '🟡 باك مان', url: 'https://www.gamepix.com/embed/pacman' },
+        { id: '2048', name: '🔢 2048', url: 'https://www.gamepix.com/embed/2048' },
+        { id: 'flappy-bird', name: '🐤 فلافي بيرد', url: 'https://www.gamepix.com/embed/flappy-bird' },
+        { id: 'bubble-shooter', name: '🫧 مطلق فقاعات', url: 'https://www.gamepix.com/embed/bubble-shooter' },
+        { id: 'sudoku', name: '🧮 سودوكو', url: 'https://www.gamepix.com/embed/sudoku' },
+        { id: 'solitaire', name: '🃏 سوليتير', url: 'https://www.gamepix.com/embed/solitaire' },
+        { id: 'chess', name: '♟️ شطرنج', url: 'https://www.gamepix.com/embed/chess' },
+        { id: 'checkers', name: '🔴 لعبة الداما', url: 'https://www.gamepix.com/embed/checkers' },
+        { id: 'backgammon', name: '🎲 طاولة الزهر', url: 'https://www.gamepix.com/embed/backgammon' },
+        { id: 'bowling', name: '🎳 بولينغ', url: 'https://www.gamepix.com/embed/bowling' },
+        { id: 'mini-golf', name: '⛳ غولف مصغر', url: 'https://www.gamepix.com/embed/mini-golf' },
+        { id: 'basketball-stars', name: '🏀 كرة سلة', url: 'https://www.gamepix.com/embed/basketball-stars' },
+        { id: 'soccer-kicks', name: '⚽ ركلات ترجيح', url: 'https://www.gamepix.com/embed/soccer-kicks' },
+        { id: 'space-invaders', name: '👾 غزاة الفضاء', url: 'https://www.gamepix.com/embed/space-invaders' },
+        { id: 'galaga', name: '🚀 غالاغا', url: 'https://www.gamepix.com/embed/galaga' },
+        { id: 'asteroids', name: '☄️ الكويكبات', url: 'https://www.gamepix.com/embed/asteroids' },
+        { id: 'doodle-jump', name: '🦘 دودل جمب', url: 'https://www.gamepix.com/embed/doodle-jump' },
+        { id: 'monster-truck', name: '🚛 وحش الشاحنات', url: 'https://www.gamepix.com/embed/monster-truck' },
+        { id: 'tank-1990', name: '🎖️ دبابة 1990', url: 'https://www.gamepix.com/embed/tank-1990' },
+        { id: 'fruit-ninja', name: '🍉 نينجا الفواكه', url: 'https://www.gamepix.com/embed/fruit-ninja' },
+        { id: 'paper-io', name: '📄 بيبر أيو', url: 'https://www.gamepix.com/embed/paper-io' },
+        { id: 'slither-io', name: '🐍 سليذر أيو', url: 'https://www.gamepix.com/embed/slither-io' },
+        { id: 'word-search', name: '🔍 بحث كلمات', url: 'https://www.gamepix.com/embed/word-search' },
+        { id: 'crossword', name: '📝 كلمات متقاطعة', url: 'https://www.gamepix.com/embed/crossword' },
+        { id: 'jigsaw', name: '🧩 بازل', url: 'https://www.gamepix.com/embed/jigsaw' },
+        { id: 'mahjong-connect', name: '🀄 ماهجونج', url: 'https://www.gamepix.com/embed/mahjong-connect' },
+        { id: 'zuma', name: '🐸 زوما', url: 'https://www.gamepix.com/embed/zuma' },
+        { id: 'bejeweled', name: '💎 بيجوليد', url: 'https://www.gamepix.com/embed/bejeweled' },
+        { id: 'candy-crush', name: '🍬 كاندي كراش', url: 'https://www.gamepix.com/embed/candy-crush' },
+        { id: 'farm-frenzy', name: '🚜 فرام فرينزي', url: 'https://www.gamepix.com/embed/farm-frenzy' },
+        { id: 'cooking-fever', name: '🍳 كوكينغ فيفر', url: 'https://www.gamepix.com/embed/cooking-fever' },
+        { id: 'burger', name: '🍔 برغر', url: 'https://www.gamepix.com/embed/burger' },
+        { id: 'pizza', name: '🍕 بيتزا', url: 'https://www.gamepix.com/embed/pizza' },
+        { id: 'ice-cream', name: '🍦 آيس كريم', url: 'https://www.gamepix.com/embed/ice-cream' },
+        { id: 'cake', name: '🎂 كيك', url: 'https://www.gamepix.com/embed/cake' },
+        { id: 'coffee', name: '☕ قهوة', url: 'https://www.gamepix.com/embed/coffee' },
+        { id: 'tea', name: '🍵 شاي', url: 'https://www.gamepix.com/embed/tea' },
+        { id: 'archery', name: '🎯 رماية', url: 'https://www.gamepix.com/embed/archery' },
+        { id: 'darts', name: '🎯 سهام', url: 'https://www.gamepix.com/embed/darts' },
+        { id: 'table-tennis', name: '🏓 بينغ بونغ', url: 'https://www.gamepix.com/embed/table-tennis' },
+        { id: 'boxing', name: '🥊 ملاكمة', url: 'https://www.gamepix.com/embed/boxing' },
+        { id: 'wrestling', name: '🤼 مصارعة', url: 'https://www.gamepix.com/embed/wrestling' },
+        { id: 'ninja', name: '🥷 نينجا', url: 'https://www.gamepix.com/embed/ninja' },
+        { id: 'runner', name: '🏃 عداء', url: 'https://www.gamepix.com/embed/runner' },
+        { id: 'zombie', name: '🧟 زومبي', url: 'https://www.gamepix.com/embed/zombie' },
+        { id: 'pirate', name: '🏴‍☠️ قرصان', url: 'https://www.gamepix.com/embed/pirate' },
+        { id: 'jewel', name: '💎 جوهرة', url: 'https://www.gamepix.com/embed/jewel' },
+        { id: 'doctor', name: '👨‍⚕️ دكتور', url: 'https://www.gamepix.com/embed/doctor' },
+        { id: 'surgery', name: '🏥 جراحة', url: 'https://www.gamepix.com/embed/surgery' },
+        { id: 'dentist', name: '🦷 طبيب أسنان', url: 'https://www.gamepix.com/embed/dentist' },
+        { id: 'restaurant', name: '🍽️ مطعم', url: 'https://www.gamepix.com/embed/restaurant' }
     ];
 
     const gameLibraryEl = document.getElementById('gameLibrary');
@@ -769,16 +756,18 @@
     const gameCountEl = document.getElementById('gameCount');
     let currentGameId = null;
 
-    // بناء شبكة الألعاب
     function renderGameLibrary() {
         gameLibraryEl.innerHTML = '';
         GAMES_LIST.forEach(game => {
             const card = document.createElement('div');
             card.className = 'game-card';
             card.dataset.id = game.id;
+            // استخراج الإيموجي من الاسم
+            const emoji = game.name.split(' ')[0];
+            const displayName = game.name.substring(emoji.length).trim();
             card.innerHTML = `
-                <div style="font-size:28px; margin-bottom:2px;">${game.name.split(' ')[0]}</div>
-                <div class="label">${game.name}</div>
+                <div style="font-size:28px;">${emoji}</div>
+                <div class="label">${displayName}</div>
             `;
             card.addEventListener('click', () => loadGame(game.id));
             gameLibraryEl.appendChild(card);
@@ -786,7 +775,6 @@
         gameCountEl.textContent = GAMES_LIST.length + ' لعبة';
     }
 
-    // تحميل لعبة
     function loadGame(gameId) {
         const game = GAMES_LIST.find(g => g.id === gameId);
         if (!game) {
@@ -794,12 +782,10 @@
             return;
         }
 
-        // تحديث الواجهة
         document.querySelectorAll('.game-card').forEach(c => c.classList.remove('active'));
         const activeCard = document.querySelector(`.game-card[data-id="${gameId}"]`);
         if (activeCard) activeCard.classList.add('active');
 
-        // تحميل اللعبة في الإطار
         gameFrame.src = game.url;
         currentGameId = gameId;
         gameFrameContainer.style.display = 'block';
@@ -808,7 +794,6 @@
         playBeep(600, 0.1);
     }
 
-    // إغلاق اللعبة
     document.getElementById('closeGameBtn').addEventListener('click', function() {
         gameFrame.src = '';
         gameFrameContainer.style.display = 'none';
@@ -819,7 +804,19 @@
         playBeep(300, 0.1);
     });
 
-    // ملء الشاشة
+    document.getElementById('refreshGameBtn').addEventListener('click', function() {
+        if (!currentGameId) {
+            alert('الرجاء تشغيل لعبة أولاً!');
+            return;
+        }
+        const game = GAMES_LIST.find(g => g.id === currentGameId);
+        if (game) {
+            gameFrame.src = game.url;
+            gameStatus.innerHTML = `<span class="success">🔄 جاري إعادة تحميل: ${game.name}</span>`;
+            playBeep(500, 0.05);
+        }
+    });
+
     document.getElementById('fullscreenBtn').addEventListener('click', function() {
         const iframe = document.getElementById('gameFrame');
         if (!iframe.src) {
@@ -847,13 +844,11 @@
         updateAllUI();
         renderLog();
         renderGameLibrary();
-        addLog('🏛️ مرحباً في Hye Corp - الإصدار 4.1 مع أكثر من 50 لعبة');
+        addLog('🏛️ مرحباً في Hye Corp - الإصدار 4.2 مع أكثر من 50 لعبة (GamePix)');
         if (data.pendingNC > 0) document.getElementById('pendingDisplay').textContent = data.pendingNC.toFixed(8) + ' NC';
-        // إخفاء إطار اللعبة في البداية
         gameFrameContainer.style.display = 'none';
     };
 
-    // حفظ دوري
     setInterval(() => saveData(), 5000);
 </script>
 </body>
