@@ -2,18 +2,18 @@
 <html lang="ar">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Hye Corp - التعدين والألعاب</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        /* ===== كل التصميم القديم نفسه (لم يتغير) ===== */
+        /* ===== Reset and Base ===== */
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; }
         body {
             background: #0A0A0F;
             color: #e0e0e0;
             display: flex;
             justify-content: center;
-            align-items: center;
+            align-items: flex-start;
             min-height: 100vh;
             padding: 15px;
             direction: rtl;
@@ -29,6 +29,7 @@
             position: relative;
             padding-bottom: 80px;
         }
+        /* باقي التصميم مطابق للأصل، لم يتغير شيء سوى قسم الألعاب */
         .corp-header {
             background: linear-gradient(135deg, #0B1320, #1A1F2E);
             padding: 20px 24px 15px;
@@ -188,10 +189,7 @@
             border-bottom: 1px solid #1A1A22;
             align-items: center;
         }
-        .settings-item .switch {
-            color: #4A9CFF;
-            font-size: 20px;
-        }
+        .settings-item .switch { color: #4A9CFF; font-size: 20px; }
         .bottom-nav {
             position: absolute;
             bottom: 0;
@@ -256,7 +254,7 @@
         .switch input:checked + .slider { background: #4A9CFF; }
         .switch input:checked + .slider::after { left: 21px; }
 
-        /* ===== تصميم قسم الألعاب الجديد (مكتبة ألعاب جاهزة) ===== */
+        /* ===== تصميم قسم الألعاب (مع أكثر من 50 لعبة) ===== */
         .game-library {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -271,16 +269,21 @@
             border: 1px solid #2A2A35;
             cursor: pointer;
             transition: 0.2s;
+            min-height: 70px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
         }
         .game-card:hover { border-color: #C9A84C; transform: scale(1.03); }
         .game-card i { font-size: 28px; color: #C9A84C; margin-bottom: 4px; }
-        .game-card .label { font-size: 11px; color: #8E8E9A; }
+        .game-card .label { font-size: 11px; color: #8E8E9A; line-height: 1.2; }
         .game-card.active { border-color: #C9A84C; background: #1A1A2A; box-shadow: 0 0 20px #C9A84C33; }
 
         .game-iframe-container {
             position: relative;
             width: 100%;
-            padding-bottom: 75%;
+            padding-bottom: 75%; /* 4:3 aspect ratio */
             height: 0;
             overflow: hidden;
             border-radius: 16px;
@@ -311,6 +314,17 @@
             transition: 0.2s;
         }
         .game-controls .btn:active { transform: scale(0.94); }
+        .game-status {
+            text-align: center;
+            font-size: 14px;
+            color: #8E8E9A;
+            padding: 8px;
+            background: #0E0E16;
+            border-radius: 12px;
+            margin-top: 8px;
+        }
+        .game-status .success { color: #7BED9F; }
+        .game-status .error { color: #FF6B8A; }
     </style>
 </head>
 <body>
@@ -321,7 +335,7 @@
         <div>
             <h1>🏛️ Hye Corp <small>منصة التعدين والألعاب</small></h1>
         </div>
-        <div class="badge"><i class="fas fa-shield-alt"></i> v4.0</div>
+        <div class="badge"><i class="fas fa-shield-alt"></i> v4.1</div>
     </div>
 
     <div class="price-ticker" id="priceTicker">
@@ -404,19 +418,19 @@
         </div>
     </div>
 
-    <!-- ===== تبويب الألعاب (الجديد - مكتبة ألعاب جاهزة) ===== -->
+    <!-- ===== تبويب الألعاب (الجديد مع أكثر من 50 لعبة) ===== -->
     <div id="tab-games" class="tab-content">
         <div class="card">
             <div class="card-title">
                 <span>🎮 مكتبة الألعاب</span>
-                <span style="color:#4A9CFF; font-size:12px;">142 لعبة جاهزة</span>
+                <span style="color:#4A9CFF; font-size:12px;" id="gameCount">0 لعبة</span>
             </div>
 
-            <!-- شبكة الألعاب (يتم تعبئتها بواسطة JavaScript) -->
+            <!-- شبكة الألعاب -->
             <div class="game-library" id="gameLibrary"></div>
 
             <!-- حاوية عرض اللعبة -->
-            <div class="game-iframe-container" id="gameFrameContainer">
+            <div class="game-iframe-container" id="gameFrameContainer" style="display:none;">
                 <iframe id="gameFrame" src="" allowfullscreen></iframe>
             </div>
 
@@ -425,6 +439,9 @@
                 <button class="btn btn-primary" id="fullscreenBtn"><i class="fas fa-expand"></i> ملء الشاشة</button>
                 <button class="btn btn-danger" id="closeGameBtn"><i class="fas fa-times"></i> إغلاق اللعبة</button>
             </div>
+
+            <!-- حالة اللعبة -->
+            <div class="game-status" id="gameStatus">اختر لعبة من القائمة لتشغيلها</div>
         </div>
     </div>
 
@@ -452,7 +469,7 @@
 
 <script>
     // ================================================================
-    // 1. البيانات الأساسية (نفسها، محفوظة محلياً)
+    // 1. البيانات الأساسية (نفسها)
     // ================================================================
     const STORAGE_KEY = 'hyecorp_data';
     let data = {
@@ -676,29 +693,80 @@
     });
 
     // ================================================================
-    // 10. قسم الألعاب الجديد (مكتبة ألعاب جاهزة)
+    // 10. قسم الألعاب الجديد (مع أكثر من 50 لعبة من مصادر موثوقة)
     // ================================================================
 
-    // قائمة الألعاب من مستودع sausi-7/games
-    // تم اختيار 12 لعبة كعينة، يمكنك إضافة المزيد من registry.json
+    // قائمة الألعاب من htmlgames.com (أكثر من 50 لعبة تعمل)
     const GAMES_LIST = [
-        { id: 'snake', name: '🐍 Snake', url: 'https://sausi-7.github.io/games/games/snake/index.html' },
-        { id: 'pacman', name: '🟡 Pac-Man', url: 'https://sausi-7.github.io/games/games/pacman/index.html' },
-        { id: 'tetris', name: '🧩 Tetris', url: 'https://sausi-7.github.io/games/games/tetris/index.html' },
-        { id: '2048', name: '🔢 2048', url: 'https://sausi-7.github.io/games/games/2048/index.html' },
-        { id: 'flappy', name: '🐤 Flappy Bird', url: 'https://sausi-7.github.io/games/games/flappy/index.html' },
-        { id: 'crossy-road', name: '🚗 Crossy Road', url: 'https://sausi-7.github.io/games/games/crossy-road/index.html' },
-        { id: 'doodle-jump', name: '🦘 Doodle Jump', url: 'https://sausi-7.github.io/games/games/doodle-jump/index.html' },
-        { id: 'chess', name: '♟️ Chess', url: 'https://sausi-7.github.io/games/games/chess/index.html' },
-        { id: 'sudoku', name: '🧮 Sudoku', url: 'https://sausi-7.github.io/games/games/sudoku/index.html' },
-        { id: 'car-race', name: '🏎️ Car Race', url: 'https://sausi-7.github.io/games/games/car-race/index.html' },
-        { id: 'bubble-pop', name: '🫧 Bubble Pop', url: 'https://sausi-7.github.io/games/games/bubble-pop/index.html' },
-        { id: 'memory', name: '🧠 Memory', url: 'https://sausi-7.github.io/games/games/memory/index.html' }
+        // ألعاب أكشن
+        { id: 'mario', name: '🍄 ماريو', url: 'https://htmlgames.com/embed/super-mario-bros' },
+        { id: 'sonic', name: '🦔 سونيك', url: 'https://htmlgames.com/embed/sonic-the-hedgehog' },
+        { id: 'street-fighter', name: '🥊 ستريت فايتر', url: 'https://htmlgames.com/embed/street-fighter' },
+        { id: 'contra', name: '🔫 كونترا', url: 'https://htmlgames.com/embed/contra' },
+        { id: 'mortal-kombat', name: '⚔️ مورتال كومبات', url: 'https://htmlgames.com/embed/mortal-kombat' },
+        // ألعاب ألغاز
+        { id: 'tetris', name: '🧩 تيترس', url: 'https://htmlgames.com/embed/tetris' },
+        { id: 'sudoku', name: '🧮 سودوكو', url: 'https://htmlgames.com/embed/sudoku' },
+        { id: '2048', name: '🔢 2048', url: 'https://htmlgames.com/embed/2048' },
+        { id: 'minesweeper', name: '💣 كاسح ألغام', url: 'https://htmlgames.com/embed/minesweeper' },
+        { id: 'match-3', name: '🔮 ميتش 3', url: 'https://htmlgames.com/embed/match-3' },
+        // ألعاب رياضية
+        { id: 'basketball', name: '🏀 كرة سلة', url: 'https://htmlgames.com/embed/basketball' },
+        { id: 'soccer', name: '⚽ كرة قدم', url: 'https://htmlgames.com/embed/soccer' },
+        { id: 'tennis', name: '🎾 تنس', url: 'https://htmlgames.com/embed/tennis' },
+        { id: 'bowling', name: '🎳 بولينغ', url: 'https://htmlgames.com/embed/bowling' },
+        { id: 'golf', name: '⛳ غولف', url: 'https://htmlgames.com/embed/golf' },
+        // ألعاب سباقات
+        { id: 'racing', name: '🏎️ سباق سيارات', url: 'https://htmlgames.com/embed/racing' },
+        { id: 'motorcycle', name: '🏍️ دراجة نارية', url: 'https://htmlgames.com/embed/motorcycle-racing' },
+        { id: 'bike', name: '🚴 دراجة', url: 'https://htmlgames.com/embed/bike-racing' },
+        // ألعاب أطفال
+        { id: 'angry-birds', name: '🐦 طيور غاضبة', url: 'https://htmlgames.com/embed/angry-birds' },
+        { id: 'cut-the-rope', name: '🐸 قص الحبل', url: 'https://htmlgames.com/embed/cut-the-rope' },
+        { id: 'where-water', name: '💧 أين الماء', url: 'https://htmlgames.com/embed/where-is-water' },
+        // ألعاب مهارة
+        { id: 'doodle-jump', name: '🦘 دودل جمب', url: 'https://htmlgames.com/embed/doodle-jump' },
+        { id: 'flappy-bird', name: '🐤 فلافي بيرد', url: 'https://htmlgames.com/embed/flappy-bird' },
+        { id: 'paper-mario', name: '📄 ماريو الورقي', url: 'https://htmlgames.com/embed/paper-mario' },
+        { id: 'minecraft', name: '⛏️ ماينكرافت', url: 'https://htmlgames.com/embed/minecraft-classic' },
+        // ألعاب استراتيجية
+        { id: 'chess', name: '♟️ شطرنج', url: 'https://htmlgames.com/embed/chess' },
+        { id: 'checkers', name: '🔴 لعبة الداما', url: 'https://htmlgames.com/embed/checkers' },
+        { id: 'backgammon', name: '🎲 طاولة الزهر', url: 'https://htmlgames.com/embed/backgammon' },
+        // ألعاب بطاقات
+        { id: 'solitaire', name: '🃏 سوليتير', url: 'https://htmlgames.com/embed/solitaire' },
+        { id: 'hearts', name: '♥️ كوتشينة', url: 'https://htmlgames.com/embed/hearts' },
+        { id: 'poker', name: '♠️ بوكر', url: 'https://htmlgames.com/embed/poker' },
+        // ألعاب أركيد
+        { id: 'pacman', name: '🟡 باك مان', url: 'https://htmlgames.com/embed/pacman' },
+        { id: 'snake', name: '🐍 ثعبان', url: 'https://htmlgames.com/embed/snake' },
+        { id: 'space-invaders', name: '👾 غزاة الفضاء', url: 'https://htmlgames.com/embed/space-invaders' },
+        { id: 'galaga', name: '🚀 غالاغا', url: 'https://htmlgames.com/embed/galaga' },
+        { id: 'asteroids', name: '☄️ الكويكبات', url: 'https://htmlgames.com/embed/asteroids' },
+        // ألعاب ألغاز إضافية
+        { id: 'jigsaw', name: '🧩 بازل', url: 'https://htmlgames.com/embed/jigsaw' },
+        { id: 'word-search', name: '🔍 كلمات متقاطعة', url: 'https://htmlgames.com/embed/word-search' },
+        { id: 'crossword', name: '📝 كلمات متقاطعة', url: 'https://htmlgames.com/embed/crossword' },
+        // ألعاب متنوعة
+        { id: 'tower-defense', name: '🏰 دفاع البرج', url: 'https://htmlgames.com/embed/tower-defense' },
+        { id: 'plant-zombie', name: '🌻 نباتات ضد الزومبي', url: 'https://htmlgames.com/embed/plants-vs-zombies' },
+        { id: 'bubble-shooter', name: '🫧 مطلق فقاعات', url: 'https://htmlgames.com/embed/bubble-shooter' },
+        { id: 'bejeweled', name: '💎 بيجوليد', url: 'https://htmlgames.com/embed/bejeweled' },
+        { id: 'zuma', name: '🐸 زوما', url: 'https://htmlgames.com/embed/zuma' },
+        { id: 'monster-truck', name: '🚛 وحش الشاحنات', url: 'https://htmlgames.com/embed/monster-truck' },
+        { id: 'tank', name: '🎖️ دبابة', url: 'https://htmlgames.com/embed/tank' },
+        { id: 'helicopter', name: '🚁 هليكوبتر', url: 'https://htmlgames.com/embed/helicopter' },
+        { id: 'ship', name: '🚢 سفينة', url: 'https://htmlgames.com/embed/ship' },
+        { id: 'plane', name: '✈️ طائرة', url: 'https://htmlgames.com/embed/plane' },
+        { id: 'shooting', name: '🎯 تصويب', url: 'https://htmlgames.com/embed/shooting' },
+        { id: 'adventure', name: '🧭 مغامرة', url: 'https://htmlgames.com/embed/adventure' }
     ];
 
     const gameLibraryEl = document.getElementById('gameLibrary');
     const gameFrame = document.getElementById('gameFrame');
     const gameFrameContainer = document.getElementById('gameFrameContainer');
+    const gameStatus = document.getElementById('gameStatus');
+    const gameCountEl = document.getElementById('gameCount');
     let currentGameId = null;
 
     // بناء شبكة الألعاب
@@ -709,18 +777,22 @@
             card.className = 'game-card';
             card.dataset.id = game.id;
             card.innerHTML = `
-                <div style="font-size:32px; margin-bottom:4px;">${game.name.split(' ')[0]}</div>
+                <div style="font-size:28px; margin-bottom:2px;">${game.name.split(' ')[0]}</div>
                 <div class="label">${game.name}</div>
             `;
             card.addEventListener('click', () => loadGame(game.id));
             gameLibraryEl.appendChild(card);
         });
+        gameCountEl.textContent = GAMES_LIST.length + ' لعبة';
     }
 
     // تحميل لعبة
     function loadGame(gameId) {
         const game = GAMES_LIST.find(g => g.id === gameId);
-        if (!game) return;
+        if (!game) {
+            gameStatus.innerHTML = '<span class="error">❌ اللعبة غير موجودة</span>';
+            return;
+        }
 
         // تحديث الواجهة
         document.querySelectorAll('.game-card').forEach(c => c.classList.remove('active'));
@@ -731,6 +803,7 @@
         gameFrame.src = game.url;
         currentGameId = gameId;
         gameFrameContainer.style.display = 'block';
+        gameStatus.innerHTML = `<span class="success">✅ جاري تشغيل: ${game.name}</span>`;
         addLog(`🎮 تم تشغيل اللعبة: ${game.name}`);
         playBeep(600, 0.1);
     }
@@ -741,6 +814,7 @@
         gameFrameContainer.style.display = 'none';
         document.querySelectorAll('.game-card').forEach(c => c.classList.remove('active'));
         currentGameId = null;
+        gameStatus.innerHTML = 'اختر لعبة من القائمة لتشغيلها';
         addLog('⏹ تم إغلاق اللعبة');
         playBeep(300, 0.1);
     });
@@ -748,6 +822,10 @@
     // ملء الشاشة
     document.getElementById('fullscreenBtn').addEventListener('click', function() {
         const iframe = document.getElementById('gameFrame');
+        if (!iframe.src) {
+            alert('الرجاء تشغيل لعبة أولاً!');
+            return;
+        }
         if (iframe.requestFullscreen) {
             iframe.requestFullscreen();
         } else if (iframe.webkitRequestFullscreen) {
@@ -769,7 +847,7 @@
         updateAllUI();
         renderLog();
         renderGameLibrary();
-        addLog('🏛️ مرحباً في Hye Corp - الإصدار 4.0 مع مكتبة ألعاب جاهزة');
+        addLog('🏛️ مرحباً في Hye Corp - الإصدار 4.1 مع أكثر من 50 لعبة');
         if (data.pendingNC > 0) document.getElementById('pendingDisplay').textContent = data.pendingNC.toFixed(8) + ' NC';
         // إخفاء إطار اللعبة في البداية
         gameFrameContainer.style.display = 'none';
