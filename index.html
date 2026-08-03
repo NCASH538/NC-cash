@@ -52,12 +52,10 @@
             justify-content: space-between;
             align-items: center;
             z-index: 10;
-            position: relative;
         }
         .corp-header .title-group {
             display: flex;
             flex-direction: column;
-            margin-right: 48px;
         }
         .corp-header h1 {
             font-size: 18px;
@@ -72,54 +70,14 @@
             color: #8E8E9A;
             letter-spacing: 0.3px;
         }
-
-        /* ===== صورة الملف الشخصي (دائرة احترافية) ===== */
-        .profile-circle {
-            position: absolute;
-            top: 6px;
-            left: 10px;
-            width: 38px;
-            height: 38px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #1A2A4A, #2A3A5A);
-            border: 2px solid #C9A84C;
-            cursor: pointer;
-            overflow: hidden;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 18px;
+        .corp-header .badge {
+            background: #1E2A3A;
+            padding: 2px 8px;
+            border-radius: 30px;
+            font-size: 9px;
+            border: 1px solid #C9A84C55;
             color: #C9A84C;
-            box-shadow: 0 0 20px #C9A84C44, inset 0 0 10px #C9A84C22;
-            transition: 0.3s;
-            z-index: 20;
-        }
-        .profile-circle:hover {
-            transform: scale(1.08);
-            border-color: #4A9CFF;
-            box-shadow: 0 0 30px #4A9CFF55, inset 0 0 15px #4A9CFF33;
-        }
-        .profile-circle img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        .profile-circle .level-badge {
-            position: absolute;
-            bottom: -2px;
-            right: -2px;
-            background: linear-gradient(135deg, #4A9CFF, #6C63FF);
-            color: #fff;
-            font-size: 7px;
-            font-weight: 700;
-            border-radius: 50%;
-            width: 16px;
-            height: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: 2px solid #13131C;
-            box-shadow: 0 0 10px #4A9CFF77;
+            white-space: nowrap;
         }
 
         /* ===== شريط السعر ===== */
@@ -387,6 +345,35 @@
             align-items: center;
             color: #C0C0D0;
         }
+        .settings-item .profile-trigger {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            background: #1A2A4A;
+            padding: 6px 14px 6px 10px;
+            border-radius: 30px;
+            border: 1px solid #C9A84C55;
+            transition: 0.3s;
+            color: #C9A84C;
+            font-weight: 700;
+            font-size: 12px;
+        }
+        .settings-item .profile-trigger:hover {
+            background: #2A3A5A;
+            border-color: #C9A84C;
+            box-shadow: 0 0 20px #C9A84C33;
+        }
+        .settings-item .profile-trigger img {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 1px solid #C9A84C;
+        }
+        .settings-item .profile-trigger i {
+            font-size: 18px;
+        }
         .switch input {
             display: none;
         }
@@ -534,7 +521,7 @@
             font-size: 9px;
         }
 
-        /* ===== الملف الشخصي (نافذة منزلقة احترافية) ===== */
+        /* ===== الملف الشخصي (نافذة منزلقة) ===== */
         .profile-slide {
             position: fixed;
             top: 0;
@@ -775,7 +762,6 @@
         .text-blue {
             color: #4A9CFF;
         }
-
         .badge {
             background: #1E2A3A;
             padding: 2px 8px;
@@ -791,18 +777,13 @@
 
     <div class="app" id="app">
 
-        <!-- ===== الرأس ===== -->
+        <!-- ===== الرأس (بدون دائرة الملف الشخصي) ===== -->
         <div class="corp-header">
-            <div class="profile-circle" id="profileCircle" onclick="toggleProfile()">
-                <i class="fas fa-user" id="profileIcon"></i>
-                <img id="profileImage" style="display:none;" alt="صورة">
-                <div class="level-badge" id="levelBadge">1</div>
-            </div>
             <div class="title-group">
                 <h1>🏛️ HyeX Exchange</h1>
                 <div class="subtitle">منصة محلية قيد التطوير (نسخة تجريبية)</div>
             </div>
-            <div class="badge"><i class="fas fa-shield-alt"></i> v8.0</div>
+            <div class="badge"><i class="fas fa-shield-alt"></i> v8.1</div>
         </div>
 
         <!-- ===== شريط السعر ===== -->
@@ -871,7 +852,7 @@
             </div>
         </div>
 
-        <!-- ===== تبويب التداول (بـ Canvas بدل المكتبة) ===== -->
+        <!-- ===== تبويب التداول ===== -->
         <div id="tab-trade" class="tab-content">
             <div class="card">
                 <div class="card-title">
@@ -910,10 +891,20 @@
             </div>
         </div>
 
-        <!-- ===== تبويب الإعدادات ===== -->
+        <!-- ===== تبويب الإعدادات (مع الملف الشخصي) ===== -->
         <div id="tab-settings" class="tab-content">
             <div class="card">
                 <div class="card-title"><span>⚙️ الإعدادات</span></div>
+                <!-- زر الملف الشخصي -->
+                <div class="settings-item" style="border-bottom: 2px solid #2A2A35; padding-bottom: 12px; margin-bottom: 6px;">
+                    <span style="color:#C0C0D0;">👤 الملف الشخصي</span>
+                    <div class="profile-trigger" onclick="toggleProfile()">
+                        <i class="fas fa-user" id="settingsProfileIcon"></i>
+                        <img id="settingsProfileImage" style="display:none; width:24px; height:24px; border-radius:50%; border:1px solid #C9A84C;" alt="صورة">
+                        <span id="settingsProfileName">مستخدم جديد</span>
+                        <i class="fas fa-chevron-left" style="font-size:10px;"></i>
+                    </div>
+                </div>
                 <div class="settings-item"><span>🔊 المؤثرات الصوتية</span> <label class="switch"><input type="checkbox" id="soundToggle" checked><span class="slider"></span></label></div>
                 <div class="settings-item"><span>📳 الاهتزاز</span> <label class="switch"><input type="checkbox" id="vibeToggle" checked><span class="slider"></span></label></div>
                 <div class="settings-item"><span>🏦 اسم المنصة</span> <span class="text-gold">HyeX Exchange</span></div>
@@ -1205,7 +1196,7 @@
         }
 
         // ================================================================
-        // 7. الرسم البياني بـ Canvas (مضمون 100%)
+        // 7. الرسم البياني بـ Canvas
         // ================================================================
 
         let chartCanvas = null;
@@ -1215,15 +1206,9 @@
             if (!canvas) return;
             canvasCtx = canvas.getContext('2d');
             chartCanvas = canvas;
-
-            // ضبط الحجم
             resizeChartCanvas();
-
-            // توليد بيانات أولية
             generateChartData(30);
             drawChart();
-
-            // تحديث عند تغيير الحجم
             const ro = new ResizeObserver(() => { resizeChartCanvas();
                 drawChart(); });
             ro.observe(canvas);
@@ -1270,7 +1255,6 @@
 
             ctx.clearRect(0, 0, w, h);
 
-            // حساب الحدود
             let minPrice = Math.min(...chartData.map(d => d.low)) * 0.995;
             let maxPrice = Math.max(...chartData.map(d => d.high)) * 1.005;
             let range = maxPrice - minPrice || 0.01;
@@ -1279,7 +1263,6 @@
             const chartW = w - padding.left - padding.right;
             const chartH = h - padding.top - padding.bottom;
 
-            // رسم الشبكة
             ctx.strokeStyle = '#1A1A22';
             ctx.lineWidth = 0.5;
             for (let i = 0; i < 5; i++) {
@@ -1290,7 +1273,6 @@
                 ctx.stroke();
             }
 
-            // رسم الشموع
             const candleWidth = Math.min(6, (chartW / chartData.length) * 0.7);
             const spacing = chartW / chartData.length;
 
@@ -1304,14 +1286,11 @@
                 const isUp = d.close >= d.open;
                 ctx.strokeStyle = isUp ? '#7BED9F' : '#FF6B8A';
                 ctx.lineWidth = 1;
-
-                // الفتيل (wick)
                 ctx.beginPath();
                 ctx.moveTo(x, highY);
                 ctx.lineTo(x, lowY);
                 ctx.stroke();
 
-                // جسم الشمعة
                 ctx.fillStyle = isUp ? '#7BED9F' : '#FF6B8A';
                 const bodyTop = Math.min(openY, closeY);
                 const bodyBottom = Math.max(openY, closeY);
@@ -1319,7 +1298,6 @@
                 ctx.fillRect(x - candleWidth / 2, bodyTop, candleWidth, bodyH);
             });
 
-            // رسم السعر الحالي
             const last = chartData[chartData.length - 1];
             const lastY = padding.top + (1 - (last.close - minPrice) / range) * chartH;
             ctx.fillStyle = '#C9A84C';
@@ -1327,7 +1305,6 @@
             ctx.textAlign = 'right';
             ctx.fillText(last.close.toFixed(3), w - padding.right, lastY - 4);
 
-            // خط السعر الحالي
             ctx.strokeStyle = '#C9A84C44';
             ctx.lineWidth = 1;
             ctx.setLineDash([2, 2]);
@@ -1337,7 +1314,6 @@
             ctx.stroke();
             ctx.setLineDash([]);
 
-            // تحديث المؤشرات
             updateLivePrice();
         }
 
@@ -1490,16 +1466,19 @@
             document.getElementById('modalWinRate').textContent = data.profile.totalTrades > 0 ?
                 (data.profile.totalProfit / (data.profile.totalTrades * 0.1)).toFixed(0) + '%' : '0%';
 
+            // تحديث اسم المستخدم في الإعدادات
+            document.getElementById('settingsProfileName').textContent = data.profile.name || 'مستخدم جديد';
+
             if (data.profile.image) {
-                document.getElementById('profileImage').src = data.profile.image;
-                document.getElementById('profileImage').style.display = 'block';
-                document.getElementById('profileIcon').style.display = 'none';
+                document.getElementById('settingsProfileImage').src = data.profile.image;
+                document.getElementById('settingsProfileImage').style.display = 'block';
+                document.getElementById('settingsProfileIcon').style.display = 'none';
                 document.getElementById('modalProfileImage').src = data.profile.image;
                 document.getElementById('modalProfileImage').style.display = 'block';
                 document.getElementById('modalProfileIcon').style.display = 'none';
             } else {
-                document.getElementById('profileImage').style.display = 'none';
-                document.getElementById('profileIcon').style.display = 'block';
+                document.getElementById('settingsProfileImage').style.display = 'none';
+                document.getElementById('settingsProfileIcon').style.display = 'block';
                 document.getElementById('modalProfileImage').style.display = 'none';
                 document.getElementById('modalProfileIcon').style.display = 'block';
             }
@@ -1553,6 +1532,7 @@
                         drawChart();
                     }, 150);
                 }
+                if (tabId === 'settings') updateProfileUI();
             });
         });
 
@@ -1583,7 +1563,6 @@
             renderTradeLog();
             updateProfileUI();
 
-            // تهيئة الرسم البياني
             setTimeout(() => {
                 initChartCanvas();
                 setInterval(() => {
@@ -1591,7 +1570,7 @@
                 }, 3000);
             }, 300);
 
-            addLog('🏛️ مرحباً في HyeX Exchange - الإصدار 8.0 (رسم بياني بـ Canvas)');
+            addLog('🏛️ مرحباً في HyeX Exchange - الإصدار 8.1 (الملف الشخصي في الإعدادات)');
             if (data.pendingNC > 0) document.getElementById('pendingDisplay').textContent = data.pendingNC.toFixed(8) +
                 ' NC';
         };
