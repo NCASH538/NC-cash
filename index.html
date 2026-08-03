@@ -1,84 +1,170 @@
 <!DOCTYPE html>
-<html lang="ar" dir="ltr">
+<html lang="ar">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-  <title>تسجيل الدخول - NC Miner</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🚀 منجمي الوهمي - تسلية</title>
+    <style>
+        body {
+            background: #0b0e1a;
+            color: #00ffd0;
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            direction: rtl;
+        }
+        .card {
+            background: #141a2b;
+            padding: 40px 50px;
+            border-radius: 30px;
+            text-align: center;
+            border: 2px solid #00ffd0;
+            box-shadow: 0 0 40px #00ffd055;
+            width: 350px;
+        }
+        h1 {
+            font-size: 28px;
+            margin-bottom: 5px;
+            color: #fff;
+        }
+        .sub {
+            color: #8892b0;
+            margin-top: -5px;
+            font-size: 14px;
+        }
+        .stat-box {
+            background: #0f1422;
+            padding: 15px;
+            border-radius: 15px;
+            margin: 15px 0;
+            border: 1px solid #2a3355;
+        }
+        .stat-box p {
+            margin: 8px 0;
+            font-size: 18px;
+        }
+        .stat-box span {
+            color: #fff;
+            font-weight: bold;
+            font-size: 22px;
+        }
+        .hash-rate {
+            color: #f5a623;
+        }
+        .coins {
+            color: #ffd700;
+        }
+        .usd {
+            color: #7bed9f;
+        }
+        .btn-group {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        button {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 50px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        #startBtn {
+            background: #00ffd0;
+            color: #0b0e1a;
+        }
+        #startBtn:hover {
+            box-shadow: 0 0 20px #00ffd0;
+        }
+        #stopBtn {
+            background: #ff4757;
+            color: #fff;
+        }
+        #stopBtn:hover {
+            box-shadow: 0 0 20px #ff4757;
+        }
+        .fan {
+            font-size: 50px;
+            display: inline-block;
+            animation: spin 2s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .footer {
+            margin-top: 20px;
+            font-size: 12px;
+            color: #556;
+        }
+    </style>
 </head>
 <body>
-<div class="app-container">
-  <div class="header" style="justify-content:center;">
-    <h1 style="-webkit-text-fill-color:white; background:none;">⛏️ NC MINER</h1>
-  </div>
-  <div class="content" style="display:flex; flex-direction:column; justify-content:center;">
-    <div class="card">
-      <div class="card-title">مرحباً بك</div>
-      <div class="input-group">
-        <label>البريد الإلكتروني</label>
-        <input type="email" id="loginEmail" placeholder="example@mail.com">
-      </div>
-      <div class="input-group">
-        <label>كلمة السر</label>
-        <input type="password" id="loginPassword" placeholder="••••••••">
-      </div>
-      <button class="btn-primary" id="loginBtn">دخول</button>
-      <p class="text-center mt-10" style="color:#666;">ليس لديك حساب؟ <span id="goToSignup" style="color:#1A5CFF;cursor:pointer;">أنشئ واحداً</span></p>
+
+<div class="card">
+    <div class="fan">🌀</div>
+    <h1>⚡ منجمي الوهمي</h1>
+    <p class="sub">للترفيه فقط - ما بتعدن شي والله 😂</p>
+
+    <div class="stat-box">
+        <p>⚙️ سرعة التعدين: <br> <span class="hash-rate" id="hashrate">0.0</span> MH/s</p>
+        <p>🪙 العملات المستخرجة: <br> <span class="coins" id="coins">0.00000000</span> BTC</p>
+        <p>💵 الأرباح (وهمية): <br> <span class="usd" id="earnings">$0.00</span></p>
     </div>
 
-    <!-- نموذج التسجيل (مخفي) -->
-    <div class="card hidden" id="signupCard">
-      <div class="card-title">حساب جديد</div>
-      <div class="input-group">
-        <label>البريد الإلكتروني</label>
-        <input type="email" id="signupEmail" placeholder="example@mail.com">
-      </div>
-      <div class="input-group">
-        <label>كلمة السر</label>
-        <input type="password" id="signupPassword" placeholder="••••••••">
-      </div>
-      <button class="btn-primary" id="signupBtn">إنشاء الحساب</button>
-      <p class="text-center mt-10" style="color:#666;">لديك حساب؟ <span id="goToLogin" style="color:#1A5CFF;cursor:pointer;">سجل دخول</span></p>
+    <div class="btn-group">
+        <button id="startBtn">▶ اشتغل</button>
+        <button id="stopBtn">⏹ أوقف</button>
     </div>
-  </div>
+    <p class="footer">🔄 كل ما تضغط اشتغل، الأرقام بتطير!</p>
 </div>
-<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-functions-compat.js"></script>
-<script src="firebase-config.js"></script>
+
 <script>
-  // تبديل بين الدخول والتسجيل
-  document.getElementById('goToSignup').onclick = () => { document.getElementById('signupCard').classList.remove('hidden'); };
-  document.getElementById('goToLogin').onclick = () => { document.getElementById('signupCard').classList.add('hidden'); };
+    let miningInterval = null;
+    let coins = 0;
 
-  // تسجيل الدخول
-  document.getElementById('loginBtn').onclick = () => {
-    const email = document.getElementById('loginEmail').value;
-    const pass = document.getElementById('loginPassword').value;
-    auth.signInWithEmailAndPassword(email, pass)
-      .then(() => { window.location.href = 'dashboard.html'; })
-      .catch(err => alert('خطأ: ' + err.message));
-  };
+    function startMining() {
+        if (miningInterval) return; // إذا شغال ما نعيد تشغيله
 
-  // إنشاء حساب
-  document.getElementById('signupBtn').onclick = () => {
-    const email = document.getElementById('signupEmail').value;
-    const pass = document.getElementById('signupPassword').value;
-    auth.createUserWithEmailAndPassword(email, pass)
-      .then(async (cred) => {
-        // إنشاء محفظة للمستخدم الجديد في Firestore
-        await db.collection('wallets').doc(cred.user.uid).set({
-          nc_balance: 0, cash_balance: 0,
-          nc_capacity: 100000, cash_capacity: 1000,
-          mining_level: 0, cash_mining_unlocked: false,
-          totalEarned: 0
-        });
-        alert('تم إنشاء الحساب!');
-        window.location.href = 'dashboard.html';
-      })
-      .catch(err => alert('خطأ: ' + err.message));
-  };
+        // نضيف صوت وهمي بالاهتزاز (تأثير بصري)
+        document.querySelector('.fan').style.animation = 'spin 0.5s linear infinite';
+
+        miningInterval = setInterval(() => {
+            // سرعة عشوائية بين 50 و 200 ميغا هاش
+            let randomHash = (Math.random() * 150 + 50).toFixed(1);
+            document.getElementById('hashrate').innerHTML = randomHash;
+
+            // نزيد العملات الوهمية بكميات عشوائية صغيرة
+            let mined = (Math.random() * 0.002).toFixed(8);
+            coins = coins + parseFloat(mined);
+            document.getElementById('coins').innerHTML = coins.toFixed(8);
+
+            // نحسب أرباح وهمية (سعر البيتكوين 60 ألف دولار وهمي)
+            let earnings = coins * 60000;
+            document.getElementById('earnings').innerHTML = earnings.toFixed(2);
+
+        }, 400); // كل 0.4 ثانية تتغير الأرقام
+    }
+
+    function stopMining() {
+        clearInterval(miningInterval);
+        miningInterval = null;
+        document.querySelector('.fan').style.animation = 'spin 2s linear infinite';
+        // ما نحذف الأرقام عشان تفضل شغالة
+    }
+
+    document.getElementById('startBtn').addEventListener('click', startMining);
+    document.getElementById('stopBtn').addEventListener('click', stopMining);
+
+    // نبدأ تشغيل تلقائي عند فتح الصفحة عشان تكون حلوة
+    window.onload = startMining;
 </script>
+
 </body>
 </html>
