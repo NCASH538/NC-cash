@@ -3,19 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Hye Corp - التعدين والألعاب</title>
+    <title>HyeX Exchange - التداول الافتراضي</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        /* ===== كل التصميم نفسه (لم يتغير) ===== */
+        /* ===== إعادة تعيين ===== */
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; }
         html, body {
             height: 100%;
             width: 100%;
             overflow: hidden;
+            background: #0A0A0F;
         }
         body {
-            background: #0A0A0F;
-            color: #e0e0e0;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -23,46 +22,75 @@
             padding: 0;
             margin: 0;
         }
+
+        /* ===== الحاوية الرئيسية (تأخذ كامل الشاشة) ===== */
         .app {
             max-width: 480px;
             width: 100%;
-            height: 100vh;
-            max-height: 100vh;
+            height: 100dvh; /* استخدام dvh بدلاً من vh لتجنب أشرطة المتصفح */
+            max-height: 100dvh;
             background: #13131C;
-            border-radius: 0;
-            box-shadow: 0 25px 60px rgba(0,0,0,0.9);
-            border: none;
-            overflow: hidden;
-            position: relative;
             display: flex;
             flex-direction: column;
+            overflow: hidden;
+            position: relative;
+            border: none;
+            border-radius: 0;
+            box-shadow: none;
         }
+
+        /* ===== الرأس ===== */
         .corp-header {
             flex-shrink: 0;
             background: linear-gradient(135deg, #0B1320, #1A1F2E);
-            padding: 16px 24px 14px;
+            padding: 14px 20px 12px;
             border-bottom: 1px solid #2A2A35;
             display: flex;
             justify-content: space-between;
             align-items: center;
             z-index: 10;
         }
-        .corp-header h1 { font-size: 20px; font-weight: 800; letter-spacing: 1px; color: #C9A84C; text-shadow: 0 0 20px #C9A84C33; }
-        .corp-header h1 small { font-size: 11px; color: #888; font-weight: 400; display: block; letter-spacing: 0; }
-        .corp-header .badge { background: #1E2A3A; padding: 4px 12px; border-radius: 30px; font-size: 11px; border: 1px solid #C9A84C55; color: #C9A84C; }
+        .corp-header .title-group {
+            display: flex;
+            flex-direction: column;
+        }
+        .corp-header h1 {
+            font-size: 22px;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            color: #C9A84C;
+            text-shadow: 0 0 20px #C9A84C33;
+            line-height: 1.1;
+        }
+        .corp-header .subtitle {
+            font-size: 10px;
+            color: #8E8E9A;
+            letter-spacing: 0.3px;
+            margin-top: 2px;
+        }
+        .corp-header .badge {
+            background: #1E2A3A;
+            padding: 4px 12px;
+            border-radius: 30px;
+            font-size: 11px;
+            border: 1px solid #C9A84C55;
+            color: #C9A84C;
+            white-space: nowrap;
+        }
+
+        /* ===== شريط السعر ===== */
         .price-ticker {
             flex-shrink: 0;
             background: #0A0A10;
-            border-radius: 0;
-            padding: 6px 18px;
+            padding: 5px 18px;
             text-align: center;
             font-size: 12px;
-            border: none;
             border-bottom: 1px solid #1A1A22;
             color: #8E8E9A;
-            margin: 0;
         }
         .price-ticker span { color: #C9A84C; font-weight: 700; }
+
+        /* ===== المحتوى (الجزء القابل للتمرير) ===== */
         .tab-content {
             flex: 1 1 auto;
             overflow-y: auto;
@@ -73,16 +101,19 @@
         }
         .tab-content.active { display: block; }
         @keyframes fade { from { opacity: 0.3; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+
         .tab-content::-webkit-scrollbar { width: 4px; }
         .tab-content::-webkit-scrollbar-track { background: #1A1A22; }
         .tab-content::-webkit-scrollbar-thumb { background: #4A9CFF55; border-radius: 10px; }
+
+        /* ===== التبويبات السفلية ===== */
         .bottom-nav {
             flex-shrink: 0;
             background: #11111B;
             border-top: 1px solid #2A2A35;
             display: flex;
             justify-content: space-around;
-            padding: 8px 5px 10px;
+            padding: 6px 5px 10px;
             backdrop-filter: blur(10px);
             z-index: 10;
         }
@@ -94,13 +125,13 @@
             font-size: 9px;
             cursor: pointer;
             transition: 0.2s;
-            padding: 0 8px;
+            padding: 0 6px;
         }
         .bottom-nav .nav-item i { font-size: 20px; margin-bottom: 1px; }
         .bottom-nav .nav-item.active { color: #C9A84C; }
         .bottom-nav .nav-item.active i { color: #C9A84C; text-shadow: 0 0 15px #C9A84C44; }
 
-        /* ===== البطاقات والعناصر (نفس التصميم) ===== */
+        /* ===== باقي التصميم (بطاقات، محفظة، متجر، تداول، إعدادات) ===== */
         .card {
             background: #1C1C28;
             border-radius: 20px;
@@ -208,37 +239,6 @@
         }
         .shop-item .buy-btn:disabled { opacity: 0.3; cursor: not-allowed; }
 
-        .trade-row {
-            display: flex;
-            gap: 8px;
-            align-items: center;
-            background: #11111B;
-            padding: 8px 10px;
-            border-radius: 16px;
-            margin-bottom: 6px;
-            flex-wrap: wrap;
-        }
-        .trade-row select, .trade-row input {
-            background: #0A0A0F;
-            border: 1px solid #333;
-            color: #fff;
-            padding: 6px 10px;
-            border-radius: 12px;
-            flex: 1;
-            font-size: 13px;
-            min-width: 50px;
-        }
-        .trade-row input { width: 70px; flex: 1.5; }
-        .trade-row .trade-exec {
-            background: #4A9CFF;
-            border: none;
-            color: #fff;
-            padding: 6px 14px;
-            border-radius: 30px;
-            font-weight: 700;
-            cursor: pointer;
-        }
-
         .settings-item {
             display: flex;
             justify-content: space-between;
@@ -271,89 +271,75 @@
         .switch input:checked + .slider { background: #4A9CFF; }
         .switch input:checked + .slider::after { left: 19px; }
 
-        /* ===== تصميم الألعاب (مع روابط مضمونة 100%) ===== */
-        .game-library {
+        /* ===== قسم التداول الجديد ===== */
+        .trade-market {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: 1fr 1fr;
             gap: 8px;
             margin-bottom: 12px;
         }
-        .game-card {
+        .trade-market .asset {
             background: #11111B;
             border-radius: 16px;
-            padding: 10px 6px;
+            padding: 10px 8px;
             text-align: center;
             border: 1px solid #2A2A35;
-            cursor: pointer;
-            transition: 0.2s;
-            min-height: 60px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
         }
-        .game-card:hover { border-color: #C9A84C; transform: scale(1.02); }
-        .game-card i { font-size: 24px; color: #C9A84C; margin-bottom: 2px; }
-        .game-card .label { font-size: 10px; color: #8E8E9A; }
-        .game-card.active { border-color: #C9A84C; background: #1A1A2A; box-shadow: 0 0 15px #C9A84C33; }
+        .trade-market .asset .name { font-weight: 700; font-size: 14px; color: #C9A84C; }
+        .trade-market .asset .price { font-size: 16px; font-weight: 700; margin-top: 2px; }
+        .trade-market .asset .price.up { color: #7BED9F; }
+        .trade-market .asset .price.down { color: #FF6B8A; }
+        .trade-market .asset .change { font-size: 11px; color: #8E8E9A; }
 
-        .game-container {
-            width: 100%;
-            min-height: 260px;
-            background: #0A0A10;
-            border-radius: 16px;
-            border: 2px solid #2A2A35;
-            overflow: hidden;
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .game-container iframe {
-            width: 100%;
-            height: 320px;
-            border: none;
-        }
-        .game-container .placeholder {
-            color: #666;
-            font-size: 14px;
-            text-align: center;
-            padding: 16px;
-        }
-        .game-container .placeholder i {
-            font-size: 40px;
-            color: #C9A84C44;
-            margin-bottom: 8px;
-        }
-        .game-controls {
+        .trade-control {
             display: flex;
             gap: 8px;
             flex-wrap: wrap;
-            justify-content: center;
-            margin-top: 10px;
+            margin-top: 8px;
+            align-items: center;
         }
-        .game-controls .btn {
+        .trade-control select, .trade-control input {
+            background: #0A0A0F;
+            border: 1px solid #333;
+            color: #fff;
+            padding: 8px 10px;
+            border-radius: 14px;
+            flex: 1;
+            font-size: 13px;
+            min-width: 60px;
+        }
+        .trade-control input { width: 80px; flex: 1.5; }
+        .trade-control .btn {
             padding: 8px 16px;
-            border-radius: 30px;
             border: none;
+            border-radius: 30px;
             font-weight: 700;
-            font-size: 13px;
             cursor: pointer;
-            transition: 0.2s;
-        }
-        .game-controls .btn:active { transform: scale(0.94); }
-        .game-status {
-            text-align: center;
             font-size: 13px;
-            color: #8E8E9A;
-            padding: 6px;
-            background: #0E0E16;
-            border-radius: 12px;
-            margin-top: 6px;
         }
-        .game-status .success { color: #7BED9F; }
-        .game-status .error { color: #FF6B8A; }
-        .game-status .info { color: #4A9CFF; }
+        .trade-control .btn:active { transform: scale(0.94); }
+        .btn-buy { background: #1A3A2A; color: #7BED9F; border: 1px solid #2A5A3A; }
+        .btn-sell { background: #3A1A1A; color: #FF6B8A; border: 1px solid #5A2A2A; }
+
+        .trade-history {
+            max-height: 120px;
+            overflow-y: auto;
+            background: #0E0E16;
+            border-radius: 16px;
+            padding: 6px 12px;
+            border: 1px solid #222;
+            margin-top: 8px;
+        }
+        .trade-history .entry {
+            font-size: 12px;
+            padding: 4px 0;
+            border-bottom: 1px solid #1A1A22;
+            display: flex;
+            justify-content: space-between;
+            color: #aaa;
+        }
+        .trade-history .entry .win { color: #7BED9F; }
+        .trade-history .entry .lose { color: #FF6B8A; }
     </style>
 </head>
 <body>
@@ -362,19 +348,19 @@
 
     <!-- ===== الرأس ===== -->
     <div class="corp-header">
-        <div>
-            <h1>🏛️ Hye Corp <small>منصة التعدين والألعاب</small></h1>
+        <div class="title-group">
+            <h1>🏛️ HyeX Exchange</h1>
+            <div class="subtitle">منصة محلية قيد التطوير (نسخة تجريبية)</div>
         </div>
-        <div class="badge"><i class="fas fa-shield-alt"></i> v5.2</div>
+        <div class="badge"><i class="fas fa-shield-alt"></i> v6.0</div>
     </div>
 
     <!-- ===== شريط السعر ===== -->
     <div class="price-ticker" id="priceTicker">
-        <i class="fas fa-chart-line"></i> سعر الصرف: 1 NC = 1.00 Cash (دولار)
+        <i class="fas fa-chart-line"></i> أسعار لحظية متغيرة
     </div>
 
-    <!-- ===== المحتوى ===== -->
-    <!-- تبويب التعدين (مختصر) -->
+    <!-- ===== تبويب التعدين (نفسه) ===== -->
     <div id="tab-mining" class="tab-content active">
         <div class="card">
             <div class="card-title"><span>⚡ سرعة التعدين</span> <span id="hashRateDisplay">0.0001 NC/ث</span></div>
@@ -410,7 +396,7 @@
         </div>
     </div>
 
-    <!-- تبويب المحفظة -->
+    <!-- ===== تبويب المحفظة (نفسه) ===== -->
     <div id="tab-wallet" class="tab-content">
         <div class="card">
             <div class="card-title"><span>💰 الأرصدة</span> <i class="fas fa-chevron-left"></i></div>
@@ -425,7 +411,7 @@
         <div class="card" style="text-align:center; color:#666; font-size:12px;"><i class="fas fa-lock"></i> جميع الأرصدة مشفرة ومركزية (للترفيه)</div>
     </div>
 
-    <!-- تبويب المتجر -->
+    <!-- ===== تبويب المتجر (نفسه) ===== -->
     <div id="tab-shop" class="tab-content">
         <div class="card">
             <div class="card-title"><span>🛒 متجر الترقيات</span> <span>NC فقط</span></div>
@@ -433,55 +419,47 @@
         </div>
     </div>
 
-    <!-- تبويب التداول -->
+    <!-- ===== تبويب التداول (الجديد بدل الألعاب) ===== -->
     <div id="tab-trade" class="tab-content">
         <div class="card">
-            <div class="card-title"><span>📊 منصة التداول</span> <span>سعر السوق</span></div>
-            <div id="tradeRates" style="margin-bottom:10px; font-size:13px; background:#0E0E16; padding:10px; border-radius:16px;">
-                <div>1 NC = 1.00 Cash</div><div>1 NCR = 0.05 NC</div><div>1 BitNC = 0.50 NC</div><div>1 LiNC = 0.20 NC</div>
+            <div class="card-title"><span>📊 منصة التداول الافتراضي</span> <span id="tradeBalance" style="color:#7BED9F;">0.00 Cash</span></div>
+
+            <!-- الأسعار الحية -->
+            <div class="trade-market" id="marketPrices">
+                <div class="asset"><div class="name">NC</div><div class="price up" id="priceNC">1.000</div><div class="change">+0.00%</div></div>
+                <div class="asset"><div class="name">NCR</div><div class="price up" id="priceNCR">0.050</div><div class="change">+0.00%</div></div>
+                <div class="asset"><div class="name">BitNC</div><div class="price up" id="priceBitNC">0.500</div><div class="change">+0.00%</div></div>
+                <div class="asset"><div class="name">LiNC</div><div class="price up" id="priceLiNC">0.200</div><div class="change">+0.00%</div></div>
             </div>
-            <div class="trade-row">
-                <select id="tradeSell"><option value="NC">NC</option><option value="NCR">NCR</option><option value="BitNC">BitNC</option><option value="LiNC">LiNC</option><option value="Cash">Cash</option></select>
-                <input type="number" id="tradeAmount" placeholder="الكمية" value="1">
-                <span style="color:#555;">➡️</span>
-                <select id="tradeBuy"><option value="Cash">Cash</option><option value="NC">NC</option><option value="NCR">NCR</option><option value="BitNC">BitNC</option><option value="LiNC">LiNC</option></select>
-                <button class="trade-exec" id="tradeExecBtn">بيع</button>
+
+            <!-- أدوات التداول -->
+            <div class="trade-control">
+                <select id="tradeAsset">
+                    <option value="NC">NC</option>
+                    <option value="NCR">NCR</option>
+                    <option value="BitNC">BitNC</option>
+                    <option value="LiNC">LiNC</option>
+                </select>
+                <input type="number" id="tradeAmount" placeholder="الكمية" value="1" min="0.0001" step="0.0001">
+                <button class="btn btn-buy" id="buyBtn"><i class="fas fa-arrow-up"></i> شراء</button>
+                <button class="btn btn-sell" id="sellBtn"><i class="fas fa-arrow-down"></i> بيع</button>
+            </div>
+
+            <!-- سجل الصفقات -->
+            <div class="card-title" style="margin-top:12px;"><span>📋 سجل التداول</span> <span id="tradeLogCount">0</span></div>
+            <div class="trade-history" id="tradeLogList">
+                <div class="entry" style="color:#555;text-align:center;">لا توجد صفقات بعد</div>
             </div>
         </div>
     </div>
 
-    <!-- ===== قسم الألعاب (بمصادر مضمونة 100%) ===== -->
-    <div id="tab-games" class="tab-content">
-        <div class="card">
-            <div class="card-title">
-                <span>🎮 مكتبة الألعاب</span>
-                <span style="color:#4A9CFF; font-size:11px;" id="gameCount">0 لعبة</span>
-            </div>
-            <div class="game-library" id="gameLibrary"></div>
-            <div class="game-container" id="gameContainer">
-                <div class="placeholder" id="gamePlaceholder">
-                    <i class="fas fa-gamepad"></i>
-                    <div>اختر لعبة من القائمة</div>
-                    <div style="font-size:11px; color:#555; margin-top:4px;">جميع الألعاب مجانية وتعمل على الجوال</div>
-                </div>
-                <iframe id="gameFrame" style="display:none; width:100%; height:320px; border:none;" allowfullscreen></iframe>
-            </div>
-            <div class="game-controls">
-                <button class="btn btn-primary" id="fullscreenBtn"><i class="fas fa-expand"></i> ملء</button>
-                <button class="btn btn-danger" id="closeGameBtn"><i class="fas fa-times"></i> إغلاق</button>
-                <button class="btn btn-success" id="refreshGameBtn"><i class="fas fa-sync"></i> إعادة</button>
-            </div>
-            <div class="game-status" id="gameStatus">اختر لعبة من القائمة لتشغيلها</div>
-        </div>
-    </div>
-
-    <!-- تبويب الإعدادات -->
+    <!-- ===== تبويب الإعدادات (نفسه) ===== -->
     <div id="tab-settings" class="tab-content">
         <div class="card">
             <div class="card-title"><span>⚙️ الإعدادات</span></div>
             <div class="settings-item"><span>🔊 المؤثرات الصوتية</span> <label class="switch"><input type="checkbox" id="soundToggle" checked><span class="slider"></span></label></div>
             <div class="settings-item"><span>📳 الاهتزاز</span> <label class="switch"><input type="checkbox" id="vibeToggle" checked><span class="slider"></span></label></div>
-            <div class="settings-item"><span>🏦 اسم الشركة</span> <span style="color:#C9A84C;">Hye Corp</span></div>
+            <div class="settings-item"><span>🏦 اسم المنصة</span> <span style="color:#C9A84C;">HyeX Exchange</span></div>
             <div class="settings-item"><span>🔄 إعادة تعيين البيانات</span> <button id="resetBtn" style="background:#3A1A1A; border:none; color:#FF6B8A; padding:4px 18px; border-radius:30px; cursor:pointer;">إعادة تعيين</button></div>
         </div>
     </div>
@@ -492,7 +470,6 @@
         <div class="nav-item" data-tab="wallet"><i class="fas fa-wallet"></i><span>محفظة</span></div>
         <div class="nav-item" data-tab="shop"><i class="fas fa-store"></i><span>متجر</span></div>
         <div class="nav-item" data-tab="trade"><i class="fas fa-chart-pie"></i><span>تداول</span></div>
-        <div class="nav-item" data-tab="games"><i class="fas fa-gamepad"></i><span>ألعاب</span></div>
         <div class="nav-item" data-tab="settings"><i class="fas fa-cog"></i><span>إعدادات</span></div>
     </div>
 
@@ -500,16 +477,26 @@
 
 <script>
     // ================================================================
-    // 1. البيانات الأساسية
+    // البيانات الأساسية
     // ================================================================
-    const STORAGE_KEY = 'hyecorp_data';
+    const STORAGE_KEY = 'hyex_data';
     let data = {
-        wallet: { NC: 0, NCR: 0, BitNC: 0, LiNC: 0, Cash: 0 },
+        wallet: { NC: 0, NCR: 0, BitNC: 0, LiNC: 0, Cash: 1000 }, // رصيد ابتدائي للتداول
         pendingNC: 0,
         isMining: false,
         log: [],
         upgrades: { speed: 0, bonus: 0 },
-        settings: { sound: true, vibe: true }
+        settings: { sound: true, vibe: true },
+        tradeLog: [],
+        tradeBalance: 1000 // رصيد التداول
+    };
+
+    // أسعار العملات (تتغير بشكل دوري)
+    let prices = {
+        NC: 1.00,
+        NCR: 0.05,
+        BitNC: 0.50,
+        LiNC: 0.20
     };
 
     function loadData() {
@@ -526,12 +513,15 @@
             }
         } catch(e) {}
         if (!data.log) data.log = [];
+        if (!data.tradeLog) data.tradeLog = [];
         if (!data.upgrades) data.upgrades = { speed: 0, bonus: 0 };
+        // التأكد من وجود رصيد تداول
+        if (!data.tradeBalance) data.tradeBalance = 1000;
     }
     function saveData() { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); }
 
     // ================================================================
-    // 2. دوال مساعدة (صوت، اهتزاز، سجل)
+    // الصوت والاهتزاز
     // ================================================================
     const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
     function playBeep(freq=600, dur=0.08) {
@@ -540,6 +530,9 @@
     }
     function doVibe() { if (data.settings.vibe && navigator.vibrate) navigator.vibrate(20); }
 
+    // ================================================================
+    // السجل العام
+    // ================================================================
     function addLog(text) {
         const now = new Date();
         const timeStr = now.toLocaleTimeString('ar-EG', { hour:'2-digit', minute:'2-digit', second:'2-digit' });
@@ -557,7 +550,7 @@
     }
 
     // ================================================================
-    // 3. التعدين
+    // التعدين (نفسه)
     // ================================================================
     let miningInterval = null;
     function startMining() {
@@ -631,7 +624,7 @@
     });
 
     // ================================================================
-    // 4. المحفظة والمتجر
+    // تحديث واجهة المحفظة والمتجر
     // ================================================================
     function updateWalletUI() {
         document.getElementById('balNC').textContent = data.wallet.NC.toFixed(6);
@@ -640,7 +633,10 @@
         document.getElementById('balLiNC').textContent = data.wallet.LiNC.toFixed(6);
         document.getElementById('balCash').textContent = data.wallet.Cash.toFixed(2);
         document.getElementById('pendingDisplay').textContent = data.pendingNC.toFixed(8) + ' NC';
+        // تحديث رصيد التداول
+        document.getElementById('tradeBalance').textContent = data.wallet.Cash.toFixed(2) + ' Cash';
     }
+
     function renderShop() {
         const list = document.getElementById('shopList');
         const items = [
@@ -664,33 +660,118 @@
             });
         });
     }
+
     function updateAllUI() { updateWalletUI(); renderShop(); renderLog(); saveData(); }
 
     // ================================================================
-    // 5. التداول
+    // أسعار الصرف (للتحويل)
     // ================================================================
     function getRate(from, to) {
         const base = { NC: 1, Cash: 1, NCR: 0.05, BitNC: 0.5, LiNC: 0.2 };
         if (from === to) return 1;
         return base[to] / base[from];
     }
-    document.getElementById('tradeExecBtn').addEventListener('click', function() {
-        const sell = document.getElementById('tradeSell').value;
-        const buy = document.getElementById('tradeBuy').value;
-        let amount = parseFloat(document.getElementById('tradeAmount').value);
-        if (isNaN(amount) || amount <= 0 || sell === buy) { alert('بيانات غير صحيحة'); return; }
-        const rate = getRate(sell, buy);
-        const receive = amount * rate;
-        if (data.wallet[sell] < amount) { addLog(`❌ رصيد غير كاف من ${sell}`); playBeep(200,0.15); return; }
-        data.wallet[sell] -= amount;
-        data.wallet[buy] = (data.wallet[buy] || 0) + receive;
-        addLog(`📊 تداول: بيع ${amount.toFixed(6)} ${sell} → شراء ${receive.toFixed(6)} ${buy}`);
-        playBeep(1400,0.2); doVibe();
-        updateAllUI(); saveData();
-    });
 
     // ================================================================
-    // 6. التنقل بين التبويبات
+    // نظام التداول الجديد
+    // ================================================================
+    function updateMarketPrices() {
+        // تغيير الأسعار عشوائياً
+        for (let key in prices) {
+            let change = (Math.random() - 0.48) * 0.02; // تقلب ±2%
+            prices[key] = Math.max(0.001, prices[key] + change);
+            // تحديث العرض
+            const el = document.getElementById('price' + key);
+            if (el) {
+                el.textContent = prices[key].toFixed(3);
+                // تحديد اللون حسب الحركة
+                const changePercent = ((prices[key] - getPreviousPrice(key)) / getPreviousPrice(key) * 100);
+                el.className = 'price ' + (changePercent >= 0 ? 'up' : 'down');
+                // تحديث نسبة التغير
+                const changeEl = el.parentElement.querySelector('.change');
+                if (changeEl) changeEl.textContent = (changePercent >= 0 ? '+' : '') + changePercent.toFixed(2) + '%';
+            }
+        }
+        savePrices();
+    }
+
+    let previousPrices = { NC: 1, NCR: 0.05, BitNC: 0.5, LiNC: 0.2 };
+    function getPreviousPrice(key) { return previousPrices[key] || prices[key]; }
+
+    function savePrices() {
+        for (let key in prices) {
+            previousPrices[key] = prices[key];
+        }
+    }
+
+    // تنفيذ صفقة شراء
+    document.getElementById('buyBtn').addEventListener('click', function() {
+        const asset = document.getElementById('tradeAsset').value;
+        const amount = parseFloat(document.getElementById('tradeAmount').value);
+        if (isNaN(amount) || amount <= 0) { alert('أدخل كمية صحيحة'); return; }
+        const totalCost = amount * prices[asset];
+        if (data.wallet.Cash < totalCost) {
+            alert('❌ رصيد كاش غير كاف');
+            playBeep(200,0.2);
+            return;
+        }
+        data.wallet.Cash -= totalCost;
+        data.wallet[asset] = (data.wallet[asset] || 0) + amount;
+        addTradeLog(`شراء ${amount.toFixed(4)} ${asset} بسعر ${prices[asset].toFixed(3)} (التكلفة: ${totalCost.toFixed(2)} Cash)`, 'win');
+        playBeep(1000,0.2); doVibe();
+        updateAllUI();
+        saveData();
+    });
+
+    // تنفيذ صفقة بيع
+    document.getElementById('sellBtn').addEventListener('click', function() {
+        const asset = document.getElementById('tradeAsset').value;
+        const amount = parseFloat(document.getElementById('tradeAmount').value);
+        if (isNaN(amount) || amount <= 0) { alert('أدخل كمية صحيحة'); return; }
+        if ((data.wallet[asset] || 0) < amount) {
+            alert('❌ رصيد غير كاف من ' + asset);
+            playBeep(200,0.2);
+            return;
+        }
+        const totalRevenue = amount * prices[asset];
+        data.wallet[asset] -= amount;
+        data.wallet.Cash += totalRevenue;
+        addTradeLog(`بيع ${amount.toFixed(4)} ${asset} بسعر ${prices[asset].toFixed(3)} (الإيراد: ${totalRevenue.toFixed(2)} Cash)`, 'win');
+        playBeep(1100,0.2); doVibe();
+        updateAllUI();
+        saveData();
+    });
+
+    // سجل التداول
+    function addTradeLog(text, type = 'win') {
+        const now = new Date();
+        const timeStr = now.toLocaleTimeString('ar-EG', { hour:'2-digit', minute:'2-digit', second:'2-digit' });
+        data.tradeLog.unshift({ time: timeStr, text: text, type: type });
+        if (data.tradeLog.length > 50) data.tradeLog.pop();
+        saveData();
+        renderTradeLog();
+    }
+
+    function renderTradeLog() {
+        const list = document.getElementById('tradeLogList');
+        const count = document.getElementById('tradeLogCount');
+        count.textContent = data.tradeLog.length;
+        if (data.tradeLog.length === 0) {
+            list.innerHTML = '<div class="entry" style="color:#555;text-align:center;">لا توجد صفقات بعد</div>';
+            return;
+        }
+        list.innerHTML = data.tradeLog.slice(0, 30).map(l =>
+            `<div class="entry"><span>${l.text}</span><span class="${l.type}">${l.time}</span></div>`
+        ).join('');
+    }
+
+    // تحديث الأسعار كل 3 ثوانٍ
+    setInterval(() => {
+        updateMarketPrices();
+    }, 3000);
+
+    // ================================================================
+    // التنقل بين التبويبات
     // ================================================================
     document.querySelectorAll('.nav-item').forEach(item => {
         item.addEventListener('click', function() {
@@ -702,174 +783,24 @@
             playBeep(300,0.03);
             if (tabId === 'wallet') updateWalletUI();
             if (tabId === 'shop') renderShop();
+            if (tabId === 'trade') { updateMarketPrices(); renderTradeLog(); }
         });
     });
 
     // ================================================================
-    // 7. الإعدادات
+    // الإعدادات
     // ================================================================
     document.getElementById('soundToggle').addEventListener('change', function() { data.settings.sound = this.checked; saveData(); });
     document.getElementById('vibeToggle').addEventListener('change', function() { data.settings.vibe = this.checked; saveData(); });
     document.getElementById('resetBtn').addEventListener('click', function() {
-        if (confirm('هل أنت متأكد؟ سيتم حذف جميع الأرصدة والسجلات!')) { localStorage.removeItem(STORAGE_KEY); location.reload(); }
+        if (confirm('هل أنت متأكد؟ سيتم حذف جميع الأرصدة والسجلات!')) {
+            localStorage.removeItem(STORAGE_KEY);
+            location.reload();
+        }
     });
 
     // ================================================================
-    // 8. قسم الألعاب (مصادر مضمونة 100% تعمل على الجوال)
-    // ================================================================
-
-    // قائمة الألعاب من مصادر موثوقة (GamePix + HTML5 Games)
-    // جميع الروابط تم اختبارها وهي صالحة
-    const GAMES_LIST = [
-        // ألعاب كلاسيكية من GamePix
-        { id: 'snake', name: '🐍 ثعبان', url: 'https://www.gamepix.com/embed/snake' },
-        { id: 'tetris', name: '🧩 تيترس', url: 'https://www.gamepix.com/embed/tetris' },
-        { id: 'pacman', name: '🟡 باك مان', url: 'https://www.gamepix.com/embed/pacman' },
-        { id: '2048', name: '🔢 2048', url: 'https://www.gamepix.com/embed/2048' },
-        { id: 'flappy-bird', name: '🐤 فلافي بيرد', url: 'https://www.gamepix.com/embed/flappy-bird' },
-        { id: 'bubble-shooter', name: '🫧 مطلق فقاعات', url: 'https://www.gamepix.com/embed/bubble-shooter' },
-        { id: 'sudoku', name: '🧮 سودوكو', url: 'https://www.gamepix.com/embed/sudoku' },
-        { id: 'solitaire', name: '🃏 سوليتير', url: 'https://www.gamepix.com/embed/solitaire' },
-        { id: 'chess', name: '♟️ شطرنج', url: 'https://www.gamepix.com/embed/chess' },
-        { id: 'checkers', name: '🔴 لعبة الداما', url: 'https://www.gamepix.com/embed/checkers' },
-        { id: 'bowling', name: '🎳 بولينغ', url: 'https://www.gamepix.com/embed/bowling' },
-        { id: 'doodle-jump', name: '🦘 دودل جمب', url: 'https://www.gamepix.com/embed/doodle-jump' },
-        { id: 'fruit-ninja', name: '🍉 نينجا الفواكه', url: 'https://www.gamepix.com/embed/fruit-ninja' },
-        { id: 'paper-io', name: '📄 بيبر أيو', url: 'https://www.gamepix.com/embed/paper-io' },
-        { id: 'slither-io', name: '🐍 سليذر أيو', url: 'https://www.gamepix.com/embed/slither-io' },
-        { id: 'tank-1990', name: '🎖️ دبابة 1990', url: 'https://www.gamepix.com/embed/tank-1990' },
-        { id: 'space-invaders', name: '👾 غزاة الفضاء', url: 'https://www.gamepix.com/embed/space-invaders' },
-        { id: 'galaga', name: '🚀 غالاغا', url: 'https://www.gamepix.com/embed/galaga' },
-        { id: 'asteroids', name: '☄️ الكويكبات', url: 'https://www.gamepix.com/embed/asteroids' },
-        { id: 'zuma', name: '🐸 زوما', url: 'https://www.gamepix.com/embed/zuma' },
-        { id: 'bejeweled', name: '💎 بيجوليد', url: 'https://www.gamepix.com/embed/bejeweled' },
-        { id: 'mahjong-connect', name: '🀄 ماهجونج', url: 'https://www.gamepix.com/embed/mahjong-connect' },
-        { id: 'jigsaw', name: '🧩 بازل', url: 'https://www.gamepix.com/embed/jigsaw' },
-        { id: 'word-search', name: '🔍 بحث كلمات', url: 'https://www.gamepix.com/embed/word-search' },
-        { id: 'crossword', name: '📝 كلمات متقاطعة', url: 'https://www.gamepix.com/embed/crossword' },
-
-        // ألعاب إضافية من HTML5 Games
-        { id: 'mario', name: '🍄 ماريو', url: 'https://html5games.com/embed/super-mario-bros' },
-        { id: 'sonic', name: '🦔 سونيك', url: 'https://html5games.com/embed/sonic-the-hedgehog' },
-        { id: 'contra', name: '🔫 كونترا', url: 'https://html5games.com/embed/contra' },
-        { id: 'street-fighter', name: '🥊 ستريت فايتر', url: 'https://html5games.com/embed/street-fighter' },
-        { id: 'mortal-kombat', name: '⚔️ مورتال كومبات', url: 'https://html5games.com/embed/mortal-kombat' },
-        { id: 'basketball', name: '🏀 كرة سلة', url: 'https://html5games.com/embed/basketball' },
-        { id: 'soccer', name: '⚽ كرة قدم', url: 'https://html5games.com/embed/soccer' },
-        { id: 'tennis', name: '🎾 تنس', url: 'https://html5games.com/embed/tennis' },
-        { id: 'racing', name: '🏎️ سباق سيارات', url: 'https://html5games.com/embed/racing' },
-        { id: 'angry-birds', name: '🐦 طيور غاضبة', url: 'https://html5games.com/embed/angry-birds' },
-        { id: 'cut-the-rope', name: '🐸 قص الحبل', url: 'https://html5games.com/embed/cut-the-rope' },
-        { id: 'minecraft', name: '⛏️ ماينكرافت', url: 'https://html5games.com/embed/minecraft-classic' },
-        { id: 'plants-zombie', name: '🌻 نباتات ضد الزومبي', url: 'https://html5games.com/embed/plants-vs-zombies' },
-        { id: 'tower-defense', name: '🏰 دفاع البرج', url: 'https://html5games.com/embed/tower-defense' }
-    ];
-
-    const gameLibraryEl = document.getElementById('gameLibrary');
-    const gameFrame = document.getElementById('gameFrame');
-    const gameContainer = document.getElementById('gameContainer');
-    const gamePlaceholder = document.getElementById('gamePlaceholder');
-    const gameStatus = document.getElementById('gameStatus');
-    const gameCountEl = document.getElementById('gameCount');
-    let currentGameId = null;
-
-    function renderGameLibrary() {
-        gameLibraryEl.innerHTML = '';
-        GAMES_LIST.forEach(game => {
-            const card = document.createElement('div');
-            card.className = 'game-card';
-            card.dataset.id = game.id;
-            const emoji = game.name.split(' ')[0];
-            const displayName = game.name.substring(emoji.length).trim();
-            card.innerHTML = `
-                <div style="font-size:28px;">${emoji}</div>
-                <div class="label">${displayName}</div>
-            `;
-            card.addEventListener('click', () => loadGame(game.id));
-            gameLibraryEl.appendChild(card);
-        });
-        gameCountEl.textContent = GAMES_LIST.length + ' لعبة';
-    }
-
-    function loadGame(gameId) {
-        const game = GAMES_LIST.find(g => g.id === gameId);
-        if (!game) {
-            gameStatus.innerHTML = '<span class="error">❌ اللعبة غير موجودة</span>';
-            return;
-        }
-
-        // إخفاء المكان المؤقت وعرض الإطار
-        gamePlaceholder.style.display = 'none';
-        gameFrame.style.display = 'block';
-
-        // تحميل اللعبة
-        gameFrame.src = game.url;
-        currentGameId = gameId;
-        gameStatus.innerHTML = `<span class="info">⏳ جاري تحميل: ${game.name}...</span>`;
-
-        // محاولة التحقق من تحميل اللعبة (بعد 5 ثوانٍ)
-        setTimeout(() => {
-            // لا يمكننا التحقق من نجاح التحميل مباشرة، لكن نعطي رسالة نجاح افتراضية
-            gameStatus.innerHTML = `<span class="success">✅ جاري تشغيل: ${game.name}</span>`;
-        }, 3000);
-
-        addLog(`🎮 تم تشغيل اللعبة: ${game.name}`);
-        playBeep(600, 0.1);
-
-        // تحديث البطاقات
-        document.querySelectorAll('.game-card').forEach(c => c.classList.remove('active'));
-        const activeCard = document.querySelector(`.game-card[data-id="${gameId}"]`);
-        if (activeCard) activeCard.classList.add('active');
-    }
-
-    // إغلاق اللعبة
-    document.getElementById('closeGameBtn').addEventListener('click', function() {
-        gameFrame.src = '';
-        gameFrame.style.display = 'none';
-        gamePlaceholder.style.display = 'flex';
-        document.querySelectorAll('.game-card').forEach(c => c.classList.remove('active'));
-        currentGameId = null;
-        gameStatus.innerHTML = 'اختر لعبة من القائمة لتشغيلها';
-        addLog('⏹ تم إغلاق اللعبة');
-        playBeep(300, 0.1);
-    });
-
-    // إعادة تحميل اللعبة
-    document.getElementById('refreshGameBtn').addEventListener('click', function() {
-        if (!currentGameId) {
-            alert('الرجاء تشغيل لعبة أولاً!');
-            return;
-        }
-        const game = GAMES_LIST.find(g => g.id === currentGameId);
-        if (game) {
-            gameFrame.src = game.url;
-            gameStatus.innerHTML = `<span class="info">🔄 جاري إعادة تحميل: ${game.name}...</span>`;
-            playBeep(500, 0.05);
-            setTimeout(() => {
-                gameStatus.innerHTML = `<span class="success">✅ جاري تشغيل: ${game.name}</span>`;
-            }, 2000);
-        }
-    });
-
-    // ملء الشاشة
-    document.getElementById('fullscreenBtn').addEventListener('click', function() {
-        const iframe = document.getElementById('gameFrame');
-        if (!iframe.src) {
-            alert('الرجاء تشغيل لعبة أولاً!');
-            return;
-        }
-        if (iframe.requestFullscreen) {
-            iframe.requestFullscreen();
-        } else if (iframe.webkitRequestFullscreen) {
-            iframe.webkitRequestFullscreen();
-        } else if (iframe.msRequestFullscreen) {
-            iframe.msRequestFullscreen();
-        }
-        playBeep(500, 0.05);
-    });
-
-    // ================================================================
-    // 9. التهيئة عند تحميل الصفحة
+    // التهيئة عند تحميل الصفحة
     // ================================================================
     window.onload = function() {
         loadData();
@@ -878,11 +809,11 @@
         startMining();
         updateAllUI();
         renderLog();
-        renderGameLibrary();
-        addLog('🏛️ مرحباً في Hye Corp - الإصدار 5.2 (ألعاب مضمونة)');
+        renderTradeLog();
+        // تحديث الأسعار الأولية
+        updateMarketPrices();
+        addLog('🏛️ مرحباً في HyeX Exchange - الإصدار 6.0 (نظام التداول الافتراضي)');
         if (data.pendingNC > 0) document.getElementById('pendingDisplay').textContent = data.pendingNC.toFixed(8) + ' NC';
-        gamePlaceholder.style.display = 'flex';
-        gameFrame.style.display = 'none';
     };
 
     setInterval(() => saveData(), 5000);
