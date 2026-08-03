@@ -3,605 +3,738 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-    <title>🚀 منجمي - Samsung One UI Dark</title>
-    <!-- خطوط وأيقونات تشبه سامسونغ -->
+    <title>Hye Corp - التعدين الرسمي</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; }
         body {
             background: #0A0A0F;
-            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+            color: #e0e0e0;
             display: flex;
             justify-content: center;
-            padding: 20px;
+            align-items: center;
             min-height: 100vh;
-            color: #f0f0f0;
+            padding: 15px;
             direction: rtl;
         }
-
-        /* حاوية رئيسية تشبه شاشة جوال سامسونغ */
-        .app-container {
-            max-width: 420px;
+        .app {
+            max-width: 480px;
             width: 100%;
-            background: #12121A;
-            border-radius: 40px;
-            padding: 24px 20px 30px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.9);
+            background: #13131C;
+            border-radius: 38px;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.9);
             border: 1px solid #2A2A35;
-            position: relative;
             overflow: hidden;
-        }
-
-        /* خلفية نجوم متحركة (Canvas) */
-        #starfield {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 0;
-            pointer-events: none;
-            opacity: 0.5;
-        }
-
-        /* كل المحتوى فوق الخلفية */
-        .content {
             position: relative;
-            z-index: 2;
+            padding-bottom: 80px;
         }
-
-        /* الهيدر - مثل تطبيقات سامسونغ */
-        .header {
+        /* رأس الشركة */
+        .corp-header {
+            background: linear-gradient(135deg, #0B1320, #1A1F2E);
+            padding: 20px 24px 15px;
+            border-bottom: 1px solid #2A2A35;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding-bottom: 15px;
-            border-bottom: 1px solid #2A2A35;
-            margin-bottom: 20px;
         }
-        .header h1 {
+        .corp-header h1 {
             font-size: 22px;
-            font-weight: 700;
-            background: linear-gradient(135deg, #4A9CFF, #6C63FF);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            font-weight: 800;
+            letter-spacing: 1px;
+            color: #C9A84C;
+            text-shadow: 0 0 20px #C9A84C33;
         }
-        .header i {
-            font-size: 28px;
-            color: #4A9CFF;
-            background: #1C1C26;
-            padding: 10px;
-            border-radius: 50%;
-        }
+        .corp-header h1 small { font-size: 12px; color: #888; font-weight: 400; display: block; letter-spacing: 0; }
+        .corp-header .badge { background: #1E2A3A; padding: 6px 14px; border-radius: 30px; font-size: 12px; border: 1px solid #C9A84C55; color: #C9A84C; }
 
-        /* البطاقات - تصميم One UI */
+        /* المحتوى الرئيسي */
+        .tab-content { padding: 20px 18px; display: none; animation: fade 0.3s ease; }
+        .tab-content.active { display: block; }
+        @keyframes fade { from { opacity: 0.3; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* البطاقات */
         .card {
-            background: #1C1C26;
-            border-radius: 24px;
-            padding: 20px;
-            margin-bottom: 18px;
-            border: 1px solid #2C2C38;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+            background: #1C1C28;
+            border-radius: 20px;
+            padding: 18px;
+            margin-bottom: 16px;
+            border: 1px solid #2C2C3A;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
         }
-
         .card-title {
             font-size: 13px;
-            text-transform: uppercase;
             color: #8E8E9A;
             letter-spacing: 1px;
-            margin-bottom: 10px;
+            margin-bottom: 12px;
             display: flex;
             justify-content: space-between;
         }
 
-        .stats-grid {
+        /* شبكة المحفظة */
+        .wallet-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 8px;
-            text-align: center;
+            gap: 10px;
         }
-        .stat-item {
-            background: #12121A;
+        .wallet-item {
+            background: #11111B;
             border-radius: 16px;
             padding: 12px 5px;
+            text-align: center;
             border: 1px solid #2A2A35;
         }
-        .stat-item .label {
-            font-size: 11px;
-            color: #8E8E9A;
-        }
-        .stat-item .value {
-            font-size: 18px;
-            font-weight: 700;
-            margin-top: 4px;
-            font-variant-numeric: tabular-nums;
-        }
-        .value.gold { color: #FFD700; }
-        .value.blue { color: #4A9CFF; }
-        .value.green { color: #7BED9F; }
-        .value.pink { color: #FF6B8A; }
+        .wallet-item .symbol { font-weight: 700; font-size: 15px; color: #C9A84C; }
+        .wallet-item .balance { font-weight: 700; font-size: 16px; margin-top: 4px; font-variant-numeric: tabular-nums; }
+        .wallet-item .balance.usd { color: #7BED9F; }
+        .wallet-item .balance.nc { color: #4A9CFF; }
+        .wallet-item .balance.ncr { color: #FF6B8A; }
+        .wallet-item .balance.bitnc { color: #FFA500; }
+        .wallet-item .balance.linc { color: #A29BFE; }
 
-        /* أزرار العملات (تحويل العملة) */
-        .currency-tabs {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 10px;
+        /* أزرار التعدين الأربعة */
+        .mining-actions {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-top: 10px;
         }
-        .currency-tabs button {
-            flex: 1;
-            background: #12121A;
-            border: 2px solid #2A2A35;
-            color: #8E8E9A;
-            padding: 10px;
+        .mining-actions .btn {
+            padding: 14px 0;
+            border: none;
             border-radius: 18px;
             font-weight: 700;
-            font-size: 14px;
+            font-size: 15px;
             cursor: pointer;
-            transition: 0.2s;
-        }
-        .currency-tabs button.active {
-            border-color: #4A9CFF;
-            background: #1A2A4A;
-            color: #4A9CFF;
-            box-shadow: 0 0 15px #4A9CFF33;
-        }
-
-        .btn-group {
-            display: flex;
-            gap: 12px;
-            margin-top: 15px;
-        }
-        .btn {
-            flex: 1;
-            padding: 14px;
-            border: none;
-            border-radius: 30px;
-            font-size: 17px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: 0.2s;
+            transition: 0.15s;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 8px;
         }
-        .btn-primary {
-            background: #4A9CFF;
-            color: #fff;
-            box-shadow: 0 4px 20px #4A9CFF55;
-        }
-        .btn-primary:active { transform: scale(0.96); }
-        .btn-danger {
-            background: #3A2A30;
-            color: #FF6B8A;
-            border: 1px solid #552A35;
-        }
-        .btn-danger:active { transform: scale(0.96); }
-        .btn-success {
-            background: #1A3A2A;
-            color: #7BED9F;
-            border: 1px solid #2A5535;
-        }
-        .btn-success:active { transform: scale(0.96); }
+        .mining-actions .btn:active { transform: scale(0.94); }
+        .btn-start { background: #0F3B3A; color: #7BED9F; border: 1px solid #2A6A5A; }
+        .btn-start.active { background: #3A1A1A; color: #FF6B8A; border-color: #6A2A2A; }
+        .btn-collect { background: #1A2A4A; color: #4A9CFF; border: 1px solid #2A4A6A; }
+        .btn-convert { background: #3A2A1A; color: #C9A84C; border: 1px solid #5A4A2A; }
+        .btn-log { background: #1A1A2A; color: #8E8E9A; border: 1px solid #3A3A4A; }
 
-        /* منطقة الترقيات */
-        .upgrade-item {
+        /* السجل (اللوق) */
+        .log-container {
+            max-height: 180px;
+            overflow-y: auto;
+            background: #0E0E16;
+            border-radius: 16px;
+            padding: 8px 12px;
+            border: 1px solid #222;
+        }
+        .log-item {
+            font-size: 13px;
+            padding: 6px 0;
+            border-bottom: 1px solid #1A1A22;
+            color: #aaa;
+            display: flex;
+            justify-content: space-between;
+        }
+        .log-item .time { color: #555; font-size: 11px; }
+
+        /* المتجر */
+        .shop-item {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: #12121A;
+            background: #11111B;
             padding: 12px 16px;
             border-radius: 16px;
             margin-bottom: 10px;
             border: 1px solid #2A2A35;
         }
-        .upgrade-item .info { font-size: 14px; }
-        .upgrade-item .info small { color: #8E8E9A; display: block; }
-        .upgrade-item .btn-buy {
-            background: #2A3A5A;
+        .shop-item .info small { color: #888; display: block; font-size: 12px; }
+        .shop-item .buy-btn {
+            background: #C9A84C;
             border: none;
-            color: #4A9CFF;
+            color: #0A0A0F;
             padding: 6px 20px;
             border-radius: 30px;
             font-weight: 700;
             cursor: pointer;
+        }
+        .shop-item .buy-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+
+        /* التداول */
+        .trade-row {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            background: #11111B;
+            padding: 10px 12px;
+            border-radius: 16px;
+            margin-bottom: 8px;
+        }
+        .trade-row select, .trade-row input {
+            background: #0A0A0F;
+            border: 1px solid #333;
+            color: #fff;
+            padding: 8px 12px;
+            border-radius: 12px;
+            flex: 1;
             font-size: 14px;
         }
-        .upgrade-item .btn-buy:disabled {
-            opacity: 0.3;
-            cursor: not-allowed;
-        }
-
-        /* زر الهدية */
-        .gift-section {
-            display: flex;
-            justify-content: center;
-            margin: 10px 0;
-        }
-        #giftBtn {
-            background: linear-gradient(145deg, #FFD700, #FFA500);
+        .trade-row input { width: 80px; flex: 1.5; }
+        .trade-row .trade-exec {
+            background: #4A9CFF;
             border: none;
-            color: #12121A;
-            padding: 12px 30px;
-            border-radius: 50px;
-            font-weight: 800;
-            font-size: 16px;
-            box-shadow: 0 0 30px #FFD70055;
-            transition: 0.3s;
-            cursor: pointer;
-            display: none; /* يظهر بالتوقيت */
-        }
-        #giftBtn:active { transform: scale(0.9); }
-
-        /* الإنجازات (Toasts) */
-        .toast-container {
-            position: fixed;
-            bottom: 30px;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 999;
-            width: 90%;
-            max-width: 380px;
-        }
-        .toast {
-            background: #1C1C26;
-            border: 2px solid #FFD700;
             color: #fff;
-            padding: 14px 20px;
+            padding: 8px 16px;
             border-radius: 30px;
-            margin-bottom: 8px;
-            text-align: center;
-            font-weight: 600;
-            box-shadow: 0 10px 40px #000000aa;
-            animation: slideUp 0.5s ease;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        /* الإعدادات */
+        .settings-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 14px 0;
+            border-bottom: 1px solid #1A1A22;
+        }
+
+        /* الفوتر (التبويبات السفلية) */
+        .bottom-nav {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: #11111B;
+            border-top: 1px solid #2A2A35;
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 5px 12px;
             backdrop-filter: blur(10px);
         }
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(40px); }
-            to { opacity: 1; transform: translateY(0); }
+        .bottom-nav .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: #555;
+            font-size: 10px;
+            cursor: pointer;
+            transition: 0.2s;
+            padding: 0 8px;
         }
+        .bottom-nav .nav-item i { font-size: 22px; margin-bottom: 2px; }
+        .bottom-nav .nav-item.active { color: #C9A84C; }
+        .bottom-nav .nav-item.active i { color: #C9A84C; text-shadow: 0 0 15px #C9A84C44; }
 
-        .footer-text {
+        /* السعر الحالي */
+        .price-ticker {
+            background: #0A0A10;
+            border-radius: 40px;
+            padding: 8px 18px;
             text-align: center;
-            font-size: 11px;
-            color: #4A4A55;
-            margin-top: 15px;
+            font-size: 13px;
+            border: 1px solid #2A2A35;
+            margin-bottom: 15px;
+            color: #8E8E9A;
         }
+        .price-ticker span { color: #C9A84C; font-weight: 700; }
+
+        /* تمرير */
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: #111; }
+        ::-webkit-scrollbar-thumb { background: #444; border-radius: 10px; }
     </style>
 </head>
 <body>
 
-<div class="app-container">
-    <canvas id="starfield"></canvas> <!-- خلفية النجوم -->
-
-    <div class="content">
-        <!-- الهيدر -->
-        <div class="header">
-            <h1><i class="fas fa-microchip" style="margin-left: 10px;"></i> منجمي</h1>
-            <i class="fas fa-fan"></i>
+<div class="app" id="app">
+    <!-- رأس الشركة -->
+    <div class="corp-header">
+        <div>
+            <h1>🏛️ Hye Corp <small>المنصة الرقمية الرسمية</small></h1>
         </div>
+        <div class="badge"><i class="fas fa-shield-alt"></i> v2.0</div>
+    </div>
 
-        <!-- بطاقة الإحصائيات -->
+    <!-- مؤشر الأسعار -->
+    <div class="price-ticker" id="priceTicker">
+        <i class="fas fa-chart-line"></i> سعر الصرف: 1 NC = 1.00 Cash (دولار)
+    </div>
+
+    <!-- ========== تبويب التعدين ========== -->
+    <div id="tab-mining" class="tab-content active">
         <div class="card">
-            <div class="card-title">
-                <span>⚡ سرعة التعدين</span>
-                <span id="hashDisplay">0.0 MH/s</span>
+            <div class="card-title"><span>⚡ سرعة التعدين</span> <span id="hashRateDisplay">0.0001 NC/ث</span></div>
+            <div style="font-size: 28px; font-weight: 700; color: #4A9CFF; text-align: center; padding: 5px 0;" id="pendingDisplay">0.00000000 NC</div>
+            <div style="text-align: center; font-size: 12px; color: #666;">المبلغ العالق (قيد التعدين)</div>
+        </div>
+
+        <!-- الأزرار الأربعة -->
+        <div class="mining-actions">
+            <button class="btn btn-start" id="miningToggleBtn"><i class="fas fa-play"></i> تعدين</button>
+            <button class="btn btn-collect" id="collectBtn"><i class="fas fa-wallet"></i> جمع</button>
+            <button class="btn btn-convert" id="convertBtn"><i class="fas fa-exchange-alt"></i> تحويل</button>
+            <button class="btn btn-log" id="logToggleBtn"><i class="fas fa-list-ul"></i> السجل</button>
+        </div>
+
+        <!-- سجل العمليات -->
+        <div id="logContainer" style="display: none; margin-top: 15px;">
+            <div class="card" style="padding: 10px;">
+                <div class="card-title"><span>📋 سجل التعدين</span> <span id="logCount">0</span></div>
+                <div class="log-container" id="logList">
+                    <div class="log-item" style="color:#555; text-align:center;">لا توجد عمليات بعد</div>
+                </div>
             </div>
-            <div class="stats-grid">
-                <div class="stat-item">
-                    <div class="label">🪙 العملة</div>
-                    <div class="value gold" id="coinDisplay">0.00000000</div>
-                </div>
-                <div class="stat-item">
-                    <div class="label">💰 الأرباح</div>
-                    <div class="value green" id="earnDisplay">$0.00</div>
-                </div>
-                <div class="stat-item">
-                    <div class="label">📈 المضاعف</div>
-                    <div class="value blue" id="multiDisplay">x1.0</div>
+        </div>
+
+        <!-- تحويل سريع (يظهر عند ضغط زر التحويل) -->
+        <div id="convertPanel" style="display: none; margin-top: 10px;">
+            <div class="card">
+                <div class="card-title">🔄 تحويل العملات</div>
+                <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                    <select id="convertFrom" style="flex:1; background:#0A0A0F; border:1px solid #333; color:#fff; padding:10px; border-radius:14px;">
+                        <option value="NC">NC</option>
+                        <option value="NCR">NCR</option>
+                        <option value="BitNC">BitNC</option>
+                        <option value="LiNC">LiNC</option>
+                        <option value="Cash">Cash</option>
+                    </select>
+                    <input type="number" id="convertAmount" placeholder="المبلغ" value="1" style="flex:1.5; background:#0A0A0F; border:1px solid #333; color:#fff; padding:10px; border-radius:14px;">
+                    <select id="convertTo" style="flex:1; background:#0A0A0F; border:1px solid #333; color:#fff; padding:10px; border-radius:14px;">
+                        <option value="NC">NC</option>
+                        <option value="NCR">NCR</option>
+                        <option value="BitNC">BitNC</option>
+                        <option value="LiNC">LiNC</option>
+                        <option value="Cash">Cash</option>
+                    </select>
+                    <button id="executeConvertBtn" style="flex:1; background:#C9A84C; border:none; color:#000; font-weight:700; border-radius:30px; cursor:pointer;">تنفيذ</button>
                 </div>
             </div>
         </div>
+    </div>
 
-        <!-- أزرار العملات -->
-        <div class="currency-tabs">
-            <button class="active" data-curr="BTC">₿ BTC</button>
-            <button data-curr="ETH">⟠ ETH</button>
-            <button data-curr="DOGE">Ð DOGE</button>
+    <!-- ========== تبويب المحفظة ========== -->
+    <div id="tab-wallet" class="tab-content">
+        <div class="card">
+            <div class="card-title"><span>💰 الأرصدة</span> <i class="fas fa-chevron-left"></i></div>
+            <div class="wallet-grid" id="walletGrid">
+                <div class="wallet-item"><div class="symbol">NC</div><div class="balance nc" id="balNC">0.00</div></div>
+                <div class="wallet-item"><div class="symbol">NCR</div><div class="balance ncr" id="balNCR">0.00</div></div>
+                <div class="wallet-item"><div class="symbol">BitNC</div><div class="balance bitnc" id="balBitNC">0.00</div></div>
+                <div class="wallet-item"><div class="symbol">LiNC</div><div class="balance linc" id="balLiNC">0.00</div></div>
+                <div class="wallet-item" style="grid-column: span 3;"><div class="symbol">💵 Cash (دولار)</div><div class="balance usd" id="balCash">0.00</div></div>
+            </div>
         </div>
-
-        <!-- أزرار التشغيل والإيقاف -->
-        <div class="btn-group">
-            <button class="btn btn-primary" id="startBtn"><i class="fas fa-play"></i> اشتغل</button>
-            <button class="btn btn-danger" id="stopBtn"><i class="fas fa-stop"></i> أوقف</button>
+        <div class="card" style="text-align:center; color:#666; font-size:13px;">
+            <i class="fas fa-lock"></i> جميع الأرصدة مشفرة ومركزية (للترفيه)
         </div>
+    </div>
 
-        <!-- زر الهدية -->
-        <div class="gift-section">
-            <button id="giftBtn"><i class="fas fa-gift"></i> هدية مجانية!</button>
+    <!-- ========== تبويب المتجر ========== -->
+    <div id="tab-shop" class="tab-content">
+        <div class="card">
+            <div class="card-title"><span>🛒 متجر الترقيات</span> <span>NC فقط</span></div>
+            <div id="shopList"></div>
         </div>
+    </div>
 
-        <!-- قائمة الترقيات -->
-        <div class="card" style="margin-top: 5px;">
-            <div class="card-title"><span>🛠️ تطوير الجهاز</span> <span id="upgradeCount">0</span></div>
-            <div id="upgradeList"></div>
+    <!-- ========== تبويب التداول ========== -->
+    <div id="tab-trade" class="tab-content">
+        <div class="card">
+            <div class="card-title"><span>📊 منصة التداول</span> <span>سعر السوق</span></div>
+            <div id="tradeRates" style="margin-bottom:12px; font-size:14px; background:#0E0E16; padding:12px; border-radius:16px;">
+                <div>1 NC = 1.00 Cash</div>
+                <div>1 NCR = 0.05 NC</div>
+                <div>1 BitNC = 0.50 NC</div>
+                <div>1 LiNC = 0.20 NC</div>
+            </div>
+            <div class="trade-row">
+                <select id="tradeSell"><option value="NC">NC</option><option value="NCR">NCR</option><option value="BitNC">BitNC</option><option value="LiNC">LiNC</option><option value="Cash">Cash</option></select>
+                <input type="number" id="tradeAmount" placeholder="الكمية" value="1">
+                <span style="color:#555;">➡️</span>
+                <select id="tradeBuy"><option value="Cash">Cash</option><option value="NC">NC</option><option value="NCR">NCR</option><option value="BitNC">BitNC</option><option value="LiNC">LiNC</option></select>
+                <button class="trade-exec" id="tradeExecBtn">بيع</button>
+            </div>
         </div>
+    </div>
 
-        <!-- الإنجازات (تظهر كـ Toast) -->
-        <div class="toast-container" id="toastContainer"></div>
-
-        <div class="footer-text">
-            <i class="fas fa-bolt"></i> للترفيه فقط - كل الأرقام وهمية
+    <!-- ========== تبويب الإعدادات ========== -->
+    <div id="tab-settings" class="tab-content">
+        <div class="card">
+            <div class="card-title"><span>⚙️ الإعدادات</span></div>
+            <div class="settings-item"><span>🔊 المؤثرات الصوتية</span> <label class="switch"><input type="checkbox" id="soundToggle" checked><span style="color:#4A9CFF;">✓</span></label></div>
+            <div class="settings-item"><span>📳 الاهتزاز</span> <label class="switch"><input type="checkbox" id="vibeToggle" checked><span style="color:#4A9CFF;">✓</span></label></div>
+            <div class="settings-item"><span>🏦 اسم الشركة</span> <span style="color:#C9A84C;">Hye Corp</span></div>
+            <div class="settings-item"><span>🔄 إعادة تعيين البيانات</span> <button id="resetBtn" style="background:#3A1A1A; border:none; color:#FF6B8A; padding:4px 18px; border-radius:30px; cursor:pointer;">إعادة تعيين</button></div>
         </div>
+    </div>
+
+    <!-- التبويبات السفلية -->
+    <div class="bottom-nav">
+        <div class="nav-item active" data-tab="mining"><i class="fas fa-hard-hat"></i><span>تعدين</span></div>
+        <div class="nav-item" data-tab="wallet"><i class="fas fa-wallet"></i><span>محفظة</span></div>
+        <div class="nav-item" data-tab="shop"><i class="fas fa-store"></i><span>متجر</span></div>
+        <div class="nav-item" data-tab="trade"><i class="fas fa-chart-pie"></i><span>تداول</span></div>
+        <div class="nav-item" data-tab="settings"><i class="fas fa-cog"></i><span>إعدادات</span></div>
     </div>
 </div>
 
 <script>
-    // ------------------- 1. نجوم الخلفية (Canvas) -------------------
-    const canvas = document.getElementById('starfield');
-    const ctx = canvas.getContext('2d');
-    function resizeCanvas() {
-        canvas.width = canvas.parentElement.offsetWidth;
-        canvas.height = canvas.parentElement.offsetHeight;
-    }
-    resizeCanvas();
-    window.addEventListener('resize', resizeCanvas);
-
-    const stars = [];
-    for (let i = 0; i < 80; i++) {
-        stars.push({
-            x: Math.random() * canvas.width,
-            y: Math.random() * canvas.height,
-            r: Math.random() * 1.8,
-            dx: (Math.random() - 0.5) * 0.3,
-            dy: (Math.random() - 0.5) * 0.3
-        });
-    }
-    function drawStars() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        stars.forEach(s => {
-            s.x += s.dx;
-            s.y += s.dy;
-            if (s.x < 0 || s.x > canvas.width) s.dx *= -1;
-            if (s.y < 0 || s.y > canvas.height) s.dy *= -1;
-            ctx.beginPath();
-            ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
-            ctx.fillStyle = '#4A9CFF';
-            ctx.shadowColor = '#4A9CFF';
-            ctx.shadowBlur = 8;
-            ctx.fill();
-        });
-        requestAnimationFrame(drawStars);
-    }
-    drawStars();
-
-    // ------------------- 2. المتغيرات الأساسية -------------------
-    let isMining = false;
-    let miningInterval = null;
-    let coins = 0;
-    let baseHash = 50; // أساس السرعة
-    let multiplier = 1.0;
-    let currentCurrency = 'BTC';
-    let totalUpgrades = 0;
-    let earnedAchievements = new Set();
-
-    // أسعار وهمية للعملات
-    const prices = {
-        BTC: 60000,
-        ETH: 3000,
-        DOGE: 0.15
+    // -------------------------------------------
+    // 1. البيانات الأساسية (محفوظة محلياً)
+    // -------------------------------------------
+    const STORAGE_KEY = 'hyecorp_data';
+    let data = {
+        wallet: { NC: 0, NCR: 0, BitNC: 0, LiNC: 0, Cash: 0 },
+        pendingNC: 0,
+        isMining: false,
+        log: [], // [{time, text}]
+        upgrades: { speed: 0, bonus: 0 },
+        settings: { sound: true, vibe: true }
     };
 
-    // قائمة الترقيات
-    const upgrades = [
-        { id: 'fan', name: '🌀 مروحة تبريد', cost: 0.001, level: 0, maxLevel: 5, addMulti: 0.3 },
-        { id: 'power', name: '⚡ رفع التيار', cost: 0.003, level: 0, maxLevel: 5, addMulti: 0.5 },
-        { id: 'cpu', name: '🖥️ معالج فائق', cost: 0.01, level: 0, maxLevel: 5, addMulti: 1.0 }
-    ];
+    function loadData() {
+        try {
+            const saved = localStorage.getItem(STORAGE_KEY);
+            if (saved) {
+                const parsed = JSON.parse(saved);
+                // دمج للحفاظ على هيكل البيانات
+                for (let key in parsed) {
+                    if (key === 'wallet') {
+                        for (let c in parsed.wallet) data.wallet[c] = parsed.wallet[c] || 0;
+                    } else if (key === 'upgrades') {
+                        for (let u in parsed.upgrades) data.upgrades[u] = parsed.upgrades[u] || 0;
+                    } else if (key === 'settings') {
+                        for (let s in parsed.settings) data.settings[s] = parsed.settings[s] !== undefined ? parsed.settings[s] : true;
+                    } else {
+                        data[key] = parsed[key];
+                    }
+                }
+            }
+        } catch(e) { console.warn('Reset data'); }
+        // تأكد من وجود السجل
+        if (!data.log) data.log = [];
+        if (!data.upgrades) data.upgrades = { speed: 0, bonus: 0 };
+    }
+    function saveData() {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+    }
 
-    // ------------------- 3. دوال الصوت (نغمات بسيطة) -------------------
+    // -------------------------------------------
+    // 2. أسعار الصرف (النظام الاقتصادي)
+    // -------------------------------------------
+    // القاعدة: 1 NC = 1 Cash (دولار)
+    // NCR = 0.05 NC, BitNC = 0.5 NC, LiNC = 0.2 NC
+    function getRate(from, to) {
+        const base = { NC: 1, Cash: 1, NCR: 0.05, BitNC: 0.5, LiNC: 0.2 };
+        if (from === to) return 1;
+        return base[to] / base[from];
+    }
+
+    // -------------------------------------------
+    // 3. دوال مساعدة (صوت، اهتزاز)
+    // -------------------------------------------
     const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    function playBeep(freq, duration, type = 'sine') {
+    function playBeep(freq=600, dur=0.08) {
+        if (!data.settings.sound) return;
         try {
             const osc = audioCtx.createOscillator();
             const gain = audioCtx.createGain();
-            osc.type = type;
+            osc.type = 'sine';
             osc.frequency.value = freq;
-            gain.gain.value = 0.08;
+            gain.gain.value = 0.06;
             osc.connect(gain);
             gain.connect(audioCtx.destination);
             osc.start();
-            osc.stop(audioCtx.currentTime + duration);
-        } catch (e) { /* أمان */ }
+            osc.stop(audioCtx.currentTime + dur);
+        } catch(e) {}
+    }
+    function doVibe() {
+        if (data.settings.vibe && navigator.vibrate) navigator.vibrate(20);
     }
 
-    // ------------------- 4. دوال الإنجازات (Toast) -------------------
-    function showToast(message) {
-        const container = document.getElementById('toastContainer');
-        const toast = document.createElement('div');
-        toast.className = 'toast';
-        toast.innerHTML = '🏆 ' + message;
-        container.appendChild(toast);
-        playBeep(880, 0.2, 'square');
-        setTimeout(() => { if (toast.parentNode) toast.remove(); }, 3000);
+    // -------------------------------------------
+    // 4. إضافة سجل (Log)
+    // -------------------------------------------
+    function addLog(text) {
+        const now = new Date();
+        const timeStr = now.toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+        data.log.unshift({ time: timeStr, text: text });
+        if (data.log.length > 100) data.log.pop();
+        saveData();
+        renderLog();
     }
 
-    function checkAchievements() {
-        const targets = [0.001, 0.01, 0.1];
-        const names = ['أول 0.001 BTC وهمي!', '0.01 BTC وهمي! (مبروك المعدن)', '0.1 BTC وهمي! (أسطورة)'];
-        targets.forEach((t, i) => {
-            if (coins >= t && !earnedAchievements.has(i)) {
-                earnedAchievements.add(i);
-                showToast(names[i]);
-                playBeep(1200, 0.3);
-            }
-        });
-        // إنجاز خاص للتحديثات
-        if (totalUpgrades >= 5 && !earnedAchievements.has('up5')) {
-            earnedAchievements.add('up5');
-            showToast('🔧 طورت جهازك 5 مرات!');
-        }
-    }
-
-    // ------------------- 5. تحديث واجهة المستخدم -------------------
-    function updateUI() {
-        const price = prices[currentCurrency] || 60000;
-        const earn = coins * price;
-        document.getElementById('coinDisplay').textContent = coins.toFixed(8);
-        document.getElementById('earnDisplay').textContent = (currentCurrency === 'DOGE' ? 'Ð' : '$') + earn.toFixed(2);
-        document.getElementById('multiDisplay').textContent = 'x' + multiplier.toFixed(1);
-        document.getElementById('hashDisplay').textContent = (baseHash * multiplier).toFixed(1) + ' MH/s';
-        document.getElementById('upgradeCount').textContent = totalUpgrades;
-        renderUpgrades();
-    }
-
-    // ------------------- 6. التعدين (الأساسي) -------------------
-    function miningLoop() {
-        if (!isMining) return;
-        // سرعة عشوائية حول القاعدة
-        let currentHash = (baseHash * multiplier) * (0.8 + Math.random() * 0.4);
-        let mined = (currentHash / 10000) * (Math.random() * 0.5 + 0.5);
-        coins += mined;
-        checkAchievements();
-        updateUI();
-        // تغيير لون الهاش بشكل وهمي
-    }
-
+    // -------------------------------------------
+    // 5. التعدين (السرعة 0.0001)
+    // -------------------------------------------
+    let miningInterval = null;
     function startMining() {
-        if (isMining) return;
-        if (audioCtx.state === 'suspended') audioCtx.resume();
-        isMining = true;
-        playBeep(600, 0.1);
-        // تأثيرات اهتزاز (لو على جوال)
-        if (navigator.vibrate) navigator.vibrate(50);
-        miningInterval = setInterval(miningLoop, 400);
-        document.getElementById('startBtn').style.opacity = '0.7';
+        if (data.isMining) return;
+        data.isMining = true;
+        document.getElementById('miningToggleBtn').innerHTML = '<i class="fas fa-stop"></i> إيقاف';
+        document.getElementById('miningToggleBtn').classList.add('active');
+        playBeep(800, 0.1);
+        doVibe();
+        // سرعة التعدين الأساسية 0.0001 لكل تحديث (مع مضاعفات المتجر)
+        miningInterval = setInterval(() => {
+            let speed = 0.0001 * (1 + (data.upgrades.speed || 0) * 0.2);
+            data.pendingNC += speed;
+            // تحديث الواجهة
+            document.getElementById('pendingDisplay').textContent = data.pendingNC.toFixed(8) + ' NC';
+            // تحديث سرعة العرض
+            document.getElementById('hashRateDisplay').textContent = (speed * 10).toFixed(4) + ' NC/ث'; // مضروب 10 للعرض
+            saveData();
+        }, 100);
     }
 
     function stopMining() {
-        if (!isMining) return;
-        isMining = false;
+        if (!data.isMining) return;
+        data.isMining = false;
         clearInterval(miningInterval);
         miningInterval = null;
-        playBeep(300, 0.2);
-        document.getElementById('startBtn').style.opacity = '1';
+        document.getElementById('miningToggleBtn').innerHTML = '<i class="fas fa-play"></i> تعدين';
+        document.getElementById('miningToggleBtn').classList.remove('active');
+        playBeep(400, 0.15);
+        doVibe();
+        saveData();
     }
 
-    // ------------------- 7. الترقيات -------------------
-    function renderUpgrades() {
-        const container = document.getElementById('upgradeList');
-        container.innerHTML = '';
-        upgrades.forEach((up, index) => {
-            const div = document.createElement('div');
-            div.className = 'upgrade-item';
-            const canBuy = coins >= up.cost && up.level < up.maxLevel;
-            div.innerHTML = `
-                <div class="info">
-                    ${up.name} (${up.level}/${up.maxLevel})
-                    <small>السعر: ${up.cost.toFixed(4)} BTC</small>
-                </div>
-                <button class="btn-buy" data-idx="${index}" ${!canBuy ? 'disabled' : ''}>
-                    ${up.level >= up.maxLevel ? 'مكتمل' : 'طور'}
-                </button>
-            `;
-            container.appendChild(div);
-        });
+    // زر التعدين (تشغيل/إيقاف)
+    document.getElementById('miningToggleBtn').addEventListener('click', function() {
+        if (data.isMining) stopMining();
+        else startMining();
+    });
 
-        document.querySelectorAll('.btn-buy').forEach(btn => {
+    // -------------------------------------------
+    // 6. جمع (نقل المعلق إلى المحفظة)
+    // -------------------------------------------
+    document.getElementById('collectBtn').addEventListener('click', function() {
+        if (data.pendingNC <= 0) {
+            addLog('⚠️ لا يوجد مبلغ عالق للتجميع');
+            playBeep(300, 0.1);
+            return;
+        }
+        const amount = data.pendingNC;
+        data.wallet.NC += amount;
+        data.pendingNC = 0;
+        document.getElementById('pendingDisplay').textContent = '0.00000000 NC';
+        playBeep(1000, 0.2);
+        doVibe();
+        addLog(`✅ تم جمع ${amount.toFixed(8)} NC إلى المحفظة`);
+        updateAllUI();
+        saveData();
+    });
+
+    // -------------------------------------------
+    // 7. تحويل (تبديل إظهار لوحة التحويل)
+    // -------------------------------------------
+    let convertPanelVisible = false;
+    document.getElementById('convertBtn').addEventListener('click', function() {
+        const panel = document.getElementById('convertPanel');
+        convertPanelVisible = !convertPanelVisible;
+        panel.style.display = convertPanelVisible ? 'block' : 'none';
+        if (convertPanelVisible) playBeep(500, 0.05);
+    });
+
+    // تنفيذ التحويل
+    document.getElementById('executeConvertBtn').addEventListener('click', function() {
+        const from = document.getElementById('convertFrom').value;
+        const to = document.getElementById('convertTo').value;
+        let amount = parseFloat(document.getElementById('convertAmount').value);
+        if (isNaN(amount) || amount <= 0) { alert('أدخل مبلغ صحيح'); return; }
+
+        const rate = getRate(from, to);
+        const needed = amount * rate;
+
+        if (data.wallet[from] < amount) {
+            addLog(`❌ رصيد غير كاف من ${from}`);
+            playBeep(200, 0.2);
+            return;
+        }
+
+        data.wallet[from] -= amount;
+        data.wallet[to] = (data.wallet[to] || 0) + needed;
+        addLog(`🔄 تحويل ${amount.toFixed(6)} ${from} → ${needed.toFixed(6)} ${to} (سعر ${rate.toFixed(4)})`);
+        playBeep(1100, 0.15);
+        doVibe();
+        updateAllUI();
+        saveData();
+        // إخفاء اللوحة
+        document.getElementById('convertPanel').style.display = 'none';
+        convertPanelVisible = false;
+    });
+
+    // -------------------------------------------
+    // 8. السجل (إظهار/إخفاء)
+    // -------------------------------------------
+    let logVisible = false;
+    document.getElementById('logToggleBtn').addEventListener('click', function() {
+        const container = document.getElementById('logContainer');
+        logVisible = !logVisible;
+        container.style.display = logVisible ? 'block' : 'none';
+        if (logVisible) renderLog();
+        playBeep(400, 0.05);
+    });
+
+    function renderLog() {
+        const list = document.getElementById('logList');
+        const count = document.getElementById('logCount');
+        count.textContent = data.log.length;
+        if (data.log.length === 0) {
+            list.innerHTML = '<div class="log-item" style="color:#555;text-align:center;">لا توجد عمليات</div>';
+            return;
+        }
+        list.innerHTML = data.log.slice(0, 30).map(l => 
+            `<div class="log-item"><span>${l.text}</span><span class="time">${l.time}</span></div>`
+        ).join('');
+    }
+
+    // -------------------------------------------
+    // 9. تحديث واجهة المحفظة وجميع الأقسام
+    // -------------------------------------------
+    function updateWalletUI() {
+        document.getElementById('balNC').textContent = data.wallet.NC.toFixed(6);
+        document.getElementById('balNCR').textContent = data.wallet.NCR.toFixed(6);
+        document.getElementById('balBitNC').textContent = data.wallet.BitNC.toFixed(6);
+        document.getElementById('balLiNC').textContent = data.wallet.LiNC.toFixed(6);
+        document.getElementById('balCash').textContent = data.wallet.Cash.toFixed(2);
+        document.getElementById('pendingDisplay').textContent = data.pendingNC.toFixed(8) + ' NC';
+    }
+
+    function renderShop() {
+        const list = document.getElementById('shopList');
+        const items = [
+            { id: 'speed', name: '⚙️ تحسين سرعة التعدين', cost: 0.5, desc: 'زيادة السرعة 20%', level: data.upgrades.speed || 0, max: 10 },
+            { id: 'bonus', name: '🎯 مضاعف الجمع', cost: 1.0, desc: 'مكافأة 10% عند الجمع', level: data.upgrades.bonus || 0, max: 5 }
+        ];
+        list.innerHTML = items.map(item => {
+            const canBuy = data.wallet.NC >= item.cost && item.level < item.max;
+            return `<div class="shop-item">
+                <div class="info"><strong>${item.name}</strong> <small>${item.desc} (${item.level}/${item.max})</small></div>
+                <button class="buy-btn" data-id="${item.id}" data-cost="${item.cost}" ${!canBuy ? 'disabled' : ''}>${item.level >= item.max ? 'مكتمل' : item.cost + ' NC'}</button>
+            </div>`;
+        }).join('');
+
+        document.querySelectorAll('.shop-item .buy-btn').forEach(btn => {
             btn.addEventListener('click', function() {
-                const idx = parseInt(this.dataset.idx);
-                buyUpgrade(idx);
+                const id = this.dataset.id;
+                const cost = parseFloat(this.dataset.cost);
+                if (data.wallet.NC < cost) { playBeep(200,0.1); return; }
+                data.wallet.NC -= cost;
+                if (id === 'speed') data.upgrades.speed = (data.upgrades.speed || 0) + 1;
+                if (id === 'bonus') data.upgrades.bonus = (data.upgrades.bonus || 0) + 1;
+                addLog(`🛒 شراء ترقية: ${id} مقابل ${cost} NC`);
+                playBeep(1300, 0.2);
+                doVibe();
+                updateAllUI();
+                saveData();
+                renderShop();
             });
         });
     }
 
-    function buyUpgrade(idx) {
-        const up = upgrades[idx];
-        if (coins < up.cost || up.level >= up.maxLevel) return;
-        coins -= up.cost;
-        up.level++;
-        totalUpgrades++;
-        // زيادة المضاعف
-        multiplier += up.addMulti;
-        up.cost = up.cost * 2.5; // السعر يتضاعف كل مرة
-        playBeep(1000, 0.15, 'square');
-        if (navigator.vibrate) navigator.vibrate(30);
-        updateUI();
-        checkAchievements(); // لعلنا نحرز إنجاز الترقيات
-        renderUpgrades();
-        showToast('🚀 تم تطوير ' + up.name + '!');
+    function updateAllUI() {
+        updateWalletUI();
+        renderShop();
+        renderLog();
+        // تحديث سعر الصرف في الشريط العلوي
+        document.getElementById('priceTicker').innerHTML = `<i class="fas fa-chart-line"></i> سعر الصرف: 1 NC = 1.00 Cash (دولار) | 1 BitNC = 0.50 NC`;
+        // تحديث حالة زر التعدين إذا كان شغال برا
+        if (data.isMining) {
+            document.getElementById('miningToggleBtn').innerHTML = '<i class="fas fa-stop"></i> إيقاف';
+            document.getElementById('miningToggleBtn').classList.add('active');
+        } else {
+            document.getElementById('miningToggleBtn').innerHTML = '<i class="fas fa-play"></i> تعدين';
+            document.getElementById('miningToggleBtn').classList.remove('active');
+        }
+        saveData();
     }
 
-    // ------------------- 8. الهدية المجانية -------------------
-    let giftTimer = null;
-    let giftVisible = false;
+    // -------------------------------------------
+    // 10. التداول (زر البيع/الشراء)
+    // -------------------------------------------
+    document.getElementById('tradeExecBtn').addEventListener('click', function() {
+        const sell = document.getElementById('tradeSell').value;
+        const buy = document.getElementById('tradeBuy').value;
+        let amount = parseFloat(document.getElementById('tradeAmount').value);
+        if (isNaN(amount) || amount <= 0) { alert('أدخل مبلغ صحيح'); return; }
+        if (sell === buy) { alert('لا يمكن تداول نفس العملة'); return; }
 
-    function showGift() {
-        if (giftVisible) return;
-        const btn = document.getElementById('giftBtn');
-        btn.style.display = 'block';
-        giftVisible = true;
-        playBeep(1400, 0.1);
-        // نختفي بعد 7 ثواني إذا ما ضغطها
-        setTimeout(() => {
-            if (giftVisible) {
-                btn.style.display = 'none';
-                giftVisible = false;
-            }
-        }, 7000);
-    }
+        const rate = getRate(sell, buy);
+        const receive = amount * rate;
 
-    document.getElementById('giftBtn').addEventListener('click', function() {
-        if (!giftVisible) return;
-        const bonus = 0.005 + Math.random() * 0.02;
-        coins += bonus;
-        playBeep(1800, 0.3, 'sine');
-        if (navigator.vibrate) navigator.vibrate([50, 50, 50]);
-        showToast('🎁 هدية! +' + bonus.toFixed(5) + ' BTC');
-        this.style.display = 'none';
-        giftVisible = false;
-        updateUI();
-        checkAchievements();
-        // نضبط المؤقت من جديد
-        clearTimeout(giftTimer);
-        scheduleGift();
+        if (data.wallet[sell] < amount) {
+            addLog(`❌ رصيد غير كاف من ${sell}`);
+            playBeep(200,0.15);
+            return;
+        }
+
+        data.wallet[sell] -= amount;
+        data.wallet[buy] = (data.wallet[buy] || 0) + receive;
+        addLog(`📊 تداول: بيع ${amount.toFixed(6)} ${sell} → شراء ${receive.toFixed(6)} ${buy}`);
+        playBeep(1400, 0.2);
+        doVibe();
+        updateAllUI();
+        saveData();
     });
 
-    function scheduleGift() {
-        clearTimeout(giftTimer);
-        const delay = 15000 + Math.random() * 10000; // 15-25 ثانية
-        giftTimer = setTimeout(showGift, delay);
-    }
-
-    // ------------------- 9. تبديل العملات -------------------
-    document.querySelectorAll('.currency-tabs button').forEach(btn => {
-        btn.addEventListener('click', function() {
-            document.querySelectorAll('.currency-tabs button').forEach(b => b.classList.remove('active'));
+    // -------------------------------------------
+    // 11. التنقل بين التبويبات
+    // -------------------------------------------
+    document.querySelectorAll('.nav-item').forEach(item => {
+        item.addEventListener('click', function() {
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
             this.classList.add('active');
-            currentCurrency = this.dataset.curr;
-            updateUI();
-            playBeep(500, 0.05);
+            const tabId = this.dataset.tab;
+            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+            document.getElementById('tab-' + tabId).classList.add('active');
+            playBeep(300, 0.03);
+            if (tabId === 'wallet') updateWalletUI();
+            if (tabId === 'shop') renderShop();
+            if (tabId === 'trade') renderLog();
         });
     });
 
-    // ------------------- 10. أزرار التشغيل والإيقاف -------------------
-    document.getElementById('startBtn').addEventListener('click', startMining);
-    document.getElementById('stopBtn').addEventListener('click', stopMining);
+    // -------------------------------------------
+    // 12. الإعدادات (صوت، اهتزاز، إعادة تعيين)
+    // -------------------------------------------
+    document.getElementById('soundToggle').addEventListener('change', function() {
+        data.settings.sound = this.checked;
+        saveData();
+    });
+    document.getElementById('vibeToggle').addEventListener('change', function() {
+        data.settings.vibe = this.checked;
+        saveData();
+    });
+    document.getElementById('resetBtn').addEventListener('click', function() {
+        if (confirm('هل أنت متأكد؟ سيتم حذف جميع الأرصدة والسجلات!')) {
+            localStorage.removeItem(STORAGE_KEY);
+            location.reload();
+        }
+    });
 
-    // ------------------- 11. بدء التشغيل التلقائي -------------------
+    // -------------------------------------------
+    // 13. التهيئة عند تحميل الصفحة
+    // -------------------------------------------
     window.onload = function() {
+        loadData();
+        // ضبط الإعدادات
+        document.getElementById('soundToggle').checked = data.settings.sound !== false;
+        document.getElementById('vibeToggle').checked = data.settings.vibe !== false;
+        // بدء التعدين تلقائياً
         startMining();
-        scheduleGift();
-        updateUI();
-        // إنجاز ترحيبي
-        setTimeout(() => { showToast('👋 مرحباً في منجمك الوهمي!'); }, 1500);
+        updateAllUI();
+        renderLog();
+        // إضافة سجل ترحيبي
+        addLog('🏛️ مرحباً في منصة Hye Corp للتعدين الرقمي');
+        // تنبيه: إذا كان هناك مبلغ عالق من قبل
+        if (data.pendingNC > 0) {
+            document.getElementById('pendingDisplay').textContent = data.pendingNC.toFixed(8) + ' NC';
+        }
     };
-</script>
 
+    // حفظ البيانات كل 5 ثوانٍ احتياطياً
+    setInterval(() => saveData(), 5000);
+</script>
 </body>
 </html>
