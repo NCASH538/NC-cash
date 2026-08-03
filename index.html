@@ -3,15 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>HyeX Exchange - مزرعة التعدين</title>
+    <title>HyeX Exchange - النقر الذكي</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        /* ===== كل التصميم السابق نفسه ===== */
+        /* ===== كل التصميم السابق نفسه (مع تعديلات طفيفة) ===== */
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; }
         html, body { height: 100%; width: 100%; overflow: hidden; background: #0A0A0F; }
         body { display: flex; justify-content: center; align-items: center; direction: rtl; padding: 0; margin: 0; }
         .app { max-width: 480px; width: 100%; height: 100dvh; max-height: 100dvh; background: #13131C; display: flex; flex-direction: column; overflow: hidden; position: relative; border: none; border-radius: 0; }
 
+        /* ===== الرأس ===== */
         .corp-header {
             flex-shrink: 0;
             background: linear-gradient(135deg, #0B1320, #1A1F2E);
@@ -27,6 +28,7 @@
         .corp-header .subtitle { font-size: 8px; color: #8E8E9A; letter-spacing: 0.3px; }
         .corp-header .badge { background: #1E2A3A; padding: 2px 8px; border-radius: 30px; font-size: 9px; border: 1px solid #C9A84C55; color: #C9A84C; white-space: nowrap; }
 
+        /* ===== شريط السعر ===== */
         .price-ticker {
             flex-shrink: 0;
             background: #0A0A10;
@@ -40,6 +42,7 @@
         }
         .price-ticker span { color: #C9A84C; font-weight: 700; }
 
+        /* ===== المحتوى ===== */
         .tab-content {
             flex: 1 1 auto;
             overflow-y: auto;
@@ -54,6 +57,7 @@
         .tab-content::-webkit-scrollbar-track { background: #1A1A22; }
         .tab-content::-webkit-scrollbar-thumb { background: #4A9CFF55; border-radius: 10px; }
 
+        /* ===== التبويبات السفلية ===== */
         .bottom-nav {
             flex-shrink: 0;
             background: #11111B;
@@ -78,6 +82,7 @@
         .bottom-nav .nav-item.active { color: #C9A84C; }
         .bottom-nav .nav-item.active i { color: #C9A84C; text-shadow: 0 0 15px #C9A84C44; }
 
+        /* ===== البطاقات ===== */
         .card {
             background: #1C1C28;
             border-radius: 18px;
@@ -95,6 +100,7 @@
             justify-content: space-between;
         }
 
+        /* ===== المحفظة ===== */
         .wallet-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -114,10 +120,8 @@
         .wallet-item .balance.ncr { color: #FF6B8A; }
         .wallet-item .balance.bitnc { color: #FFA500; }
         .wallet-item .balance.linc { color: #A29BFE; }
-        .wallet-item .balance.ncpower { color: #FFD700; }
-        .wallet-item .balance.nchash { color: #00CED1; }
-        .wallet-item .balance.ncblock { color: #9370DB; }
 
+        /* ===== التعدين ===== */
         .mining-actions {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -166,6 +170,7 @@
         }
         .log-item .time { color: #777; font-size: 9px; }
 
+        /* ===== المتجر ===== */
         .shop-item {
             display: flex;
             justify-content: space-between;
@@ -189,6 +194,7 @@
         }
         .shop-item .buy-btn:disabled { opacity: 0.3; cursor: not-allowed; }
 
+        /* ===== الإعدادات ===== */
         .settings-item {
             display: flex;
             justify-content: space-between;
@@ -239,74 +245,106 @@
         .switch input:checked+.slider { background: #4A9CFF; }
         .switch input:checked+.slider::after { left: 17px; }
 
-        /* ===== مزرعة التعدين ===== */
-        .farm-stats {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            gap: 6px;
-            margin-bottom: 8px;
+        /* ===== قسم النقر الذكي (Smart Tap) ===== */
+        .tap-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 10px 0;
         }
-        .farm-stat {
-            background: #0E0E16;
-            border-radius: 12px;
-            padding: 8px 4px;
-            text-align: center;
-            border: 1px solid #2A2A35;
-        }
-        .farm-stat .label { font-size: 8px; color: #8E8E9A; }
-        .farm-stat .value { font-weight: 700; font-size: 16px; color: #C9A84C; margin-top: 2px; }
-        .farm-stat .value.green { color: #7BED9F; }
-        .farm-stat .value.blue { color: #4A9CFF; }
-        .farm-stat .value.gold { color: #FFD700; }
-
-        .farm-devices {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 6px;
-            margin-bottom: 8px;
-        }
-        .farm-device {
-            background: #11111B;
-            border-radius: 14px;
-            padding: 10px 8px;
-            border: 1px solid #2A2A35;
-            text-align: center;
-            transition: 0.3s;
-        }
-        .farm-device:hover { border-color: #C9A84C44; }
-        .farm-device .device-icon { font-size: 28px; margin-bottom: 2px; }
-        .farm-device .device-name { font-size: 11px; font-weight: 700; color: #C0C0D0; }
-        .farm-device .device-info { font-size: 9px; color: #8E8E9A; }
-        .farm-device .device-count { font-size: 16px; font-weight: 700; color: #C9A84C; margin: 2px 0; }
-        .farm-device .device-buy {
-            background: #1A2A4A;
-            color: #4A9CFF;
-            border: none;
-            padding: 3px 12px;
-            border-radius: 30px;
-            font-size: 10px;
-            font-weight: 700;
+        .tap-coin {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%, #FFD700, #DAA520, #B8860B);
+            box-shadow: 0 0 60px #FFD70066, inset 0 -20px 30px rgba(0,0,0,0.4), inset 0 20px 30px rgba(255,255,255,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            font-weight: 900;
+            color: #8B6508;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.5);
             cursor: pointer;
-            transition: 0.2s;
-            margin-top: 4px;
+            user-select: none;
+            transition: transform 0.1s ease, box-shadow 0.1s ease;
+            position: relative;
+            border: 6px solid #B8860B;
+            margin: 8px auto;
         }
-        .farm-device .device-buy:hover { background: #2A3A5A; }
-        .farm-device .device-buy:disabled { opacity: 0.3; cursor: not-allowed; }
+        .tap-coin::before {
+            content: 'NC';
+            font-size: 28px;
+            font-weight: 900;
+            color: #8B6508;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.3);
+        }
+        .tap-coin::after {
+            content: '';
+            position: absolute;
+            top: 10%;
+            left: 20%;
+            width: 30%;
+            height: 20%;
+            background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, transparent 70%);
+            border-radius: 50%;
+            opacity: 0.6;
+        }
+        .tap-coin:active {
+            transform: scale(0.92);
+            box-shadow: 0 0 80px #FFD70088, inset 0 -20px 30px rgba(0,0,0,0.6), inset 0 20px 30px rgba(255,255,255,0.3);
+        }
+        .tap-coin .tap-ripple {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255,215,0,0.4);
+            animation: ripple 0.6s ease-out forwards;
+            pointer-events: none;
+        }
+        @keyframes ripple {
+            0% { width: 10px; height: 10px; opacity: 0.8; }
+            100% { width: 200px; height: 200px; opacity: 0; }
+        }
 
-        .farm-production {
+        .tap-stats {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin: 8px 0;
+            flex-wrap: wrap;
+        }
+        .tap-stats .stat {
+            text-align: center;
+            background: #0E0E16;
+            padding: 8px 16px;
+            border-radius: 12px;
+            border: 1px solid #2A2A35;
+        }
+        .tap-stats .stat .label { font-size: 9px; color: #8E8E9A; }
+        .tap-stats .stat .value { font-weight: 700; font-size: 16px; color: #C9A84C; }
+        .tap-stats .stat .value.blue { color: #4A9CFF; }
+
+        .tap-log {
+            max-height: 120px;
+            overflow-y: auto;
             background: #0E0E16;
             border-radius: 12px;
-            padding: 8px 12px;
-            border: 1px solid #2A2A35;
+            padding: 4px 8px;
+            border: 1px solid #222;
             margin-top: 6px;
+        }
+        .tap-log .log-item {
+            font-size: 10px;
+            padding: 3px 0;
+            border-bottom: 1px solid #1A1A22;
+            color: #C0C0D0;
             display: flex;
             justify-content: space-between;
-            align-items: center;
         }
-        .farm-production .prod-label { font-size: 10px; color: #8E8E9A; }
-        .farm-production .prod-value { font-weight: 700; font-size: 16px; color: #7BED9F; }
+        .tap-log .log-item .time { color: #777; font-size: 9px; }
 
-        /* ===== الملف الشخصي ===== */
+        /* ===== الملف الشخصي (نافذة منزلقة) ===== */
         .profile-slide {
             position: fixed;
             top: 0;
@@ -516,12 +554,10 @@
                     <div style="display:flex; gap:4px; flex-wrap:wrap;">
                         <select id="convertFrom" style="flex:1; background:#0A0A0F; border:1px solid #333; color:#E0E0E0; padding:4px 8px; border-radius:10px; font-size:11px;">
                             <option value="NC">NC</option><option value="NCR">NCR</option><option value="BitNC">BitNC</option><option value="LiNC">LiNC</option><option value="Cash">Cash</option>
-                            <option value="NC-Power">NC-Power</option><option value="NC-Hash">NC-Hash</option><option value="NC-Block">NC-Block</option>
                         </select>
                         <input type="number" id="convertAmount" placeholder="المبلغ" value="1" style="flex:1.5; background:#0A0A0F; border:1px solid #333; color:#E0E0E0; padding:4px 8px; border-radius:10px; font-size:11px;">
                         <select id="convertTo" style="flex:1; background:#0A0A0F; border:1px solid #333; color:#E0E0E0; padding:4px 8px; border-radius:10px; font-size:11px;">
                             <option value="NC">NC</option><option value="NCR">NCR</option><option value="BitNC">BitNC</option><option value="LiNC">LiNC</option><option value="Cash">Cash</option>
-                            <option value="NC-Power">NC-Power</option><option value="NC-Hash">NC-Hash</option><option value="NC-Block">NC-Block</option>
                         </select>
                         <button id="executeConvertBtn" style="flex:0.8; background:#C9A84C; border:none; color:#0A0A0F; font-weight:700; border-radius:30px; cursor:pointer; font-size:11px; padding:4px;">تنفيذ</button>
                     </div>
@@ -538,10 +574,7 @@
                     <div class="wallet-item"><div class="symbol">NCR</div><div class="balance ncr" id="balNCR">0.00</div></div>
                     <div class="wallet-item"><div class="symbol">BitNC</div><div class="balance bitnc" id="balBitNC">0.00</div></div>
                     <div class="wallet-item"><div class="symbol">LiNC</div><div class="balance linc" id="balLiNC">0.00</div></div>
-                    <div class="wallet-item"><div class="symbol">💵 Cash</div><div class="balance usd" id="balCash">0.00</div></div>
-                    <div class="wallet-item"><div class="symbol">⚡ NC-Power</div><div class="balance ncpower" id="balNCPower">0.00</div></div>
-                    <div class="wallet-item"><div class="symbol">🔗 NC-Hash</div><div class="balance nchash" id="balNCHash">0.00</div></div>
-                    <div class="wallet-item"><div class="symbol">🧱 NC-Block</div><div class="balance ncblock" id="balNCBlock">0.00</div></div>
+                    <div class="wallet-item" style="grid-column:span 3;"><div class="symbol">💵 Cash (دولار)</div><div class="balance usd" id="balCash">0.00</div></div>
                 </div>
             </div>
             <div class="card" style="text-align:center; color:#8E8E9A; font-size:10px;"><i class="fas fa-lock"></i> جميع الأرصدة مشفرة ومركزية (للترفيه)</div>
@@ -555,68 +588,38 @@
             </div>
         </div>
 
-        <!-- ===== تبويب مزرعة التعدين (الجديد) ===== -->
-        <div id="tab-farm" class="tab-content">
+        <!-- ===== تبويب النقر (Tap) - بدلاً من الألعاب ===== -->
+        <div id="tab-tap" class="tab-content">
             <div class="card">
                 <div class="card-title">
-                    <span>🌱 مزرعة التعدين</span>
-                    <span style="color:#7BED9F; font-size:10px;">⚡ نشطة</span>
+                    <span>🪙 النقر الذكي (Smart Tap)</span>
+                    <span style="color:#4A9CFF; font-size:10px;">كل نقرة = 0.2 NC</span>
                 </div>
 
-                <!-- إحصائيات المزرعة -->
-                <div class="farm-stats">
-                    <div class="farm-stat">
-                        <div class="label">⚡ الإنتاج/ساعة</div>
-                        <div class="value green" id="farmProduction">0.0000 NC</div>
+                <div class="tap-container">
+                    <!-- العملة -->
+                    <div class="tap-coin" id="tapCoin">
+                        <!-- تأثيرات الـ ripple ستضاف هنا عبر JS -->
                     </div>
-                    <div class="farm-stat">
-                        <div class="label">🖥️ الأجهزة</div>
-                        <div class="value blue" id="farmTotalDevices">0</div>
-                    </div>
-                    <div class="farm-stat">
-                        <div class="label">💰 أرباح اليوم</div>
-                        <div class="value gold" id="farmDailyProfit">0.0000 NC</div>
-                    </div>
-                </div>
 
-                <!-- قائمة الأجهزة -->
-                <div class="farm-devices" id="farmDevices"></div>
-
-                <!-- إنتاجية المزرعة -->
-                <div class="farm-production">
-                    <div>
-                        <div class="prod-label">⏳ الإنتاج التالي</div>
-                        <div style="font-size:13px; font-weight:700; color:#C9A84C;" id="farmNextProduction">--</div>
-                    </div>
-                    <div style="text-align:left;">
-                        <div class="prod-label">📦 المخزون</div>
-                        <div style="font-size:13px; font-weight:700; color:#4A9CFF;" id="farmInventory">0.0000 NC</div>
+                    <!-- إحصائيات -->
+                    <div class="tap-stats">
+                        <div class="stat">
+                            <div class="label">💰 أرباح النقر</div>
+                            <div class="value" id="tapEarnings">0.00 NC</div>
+                        </div>
+                        <div class="stat">
+                            <div class="label">👆 عدد النقرات</div>
+                            <div class="value blue" id="tapCount">0</div>
+                        </div>
                     </div>
                 </div>
 
-                <!-- زر جمع الإنتاج -->
-                <button class="btn btn-gold" id="farmCollectBtn" style="width:100%; margin-top:8px; padding:10px 0; border-radius:14px; font-weight:700; font-size:14px;">
-                    <i class="fas fa-hand-holding-usd"></i> جمع الإنتاج
-                </button>
-
-                <!-- سجل المزرعة -->
-                <div class="card-title" style="margin-top:8px;"><span>📋 سجل المزرعة</span> <span id="farmLogCount">0</span></div>
-                <div class="log-container" id="farmLogList">
-                    <div class="log-item" style="color:#777;text-align:center;">لا توجد عمليات</div>
+                <!-- سجل النقرات -->
+                <div class="card-title" style="margin-top:6px;"><span>📋 سجل النقرات</span> <span id="tapLogCount">0</span></div>
+                <div class="tap-log" id="tapLogList">
+                    <div class="log-item" style="color:#777;text-align:center;">لا توجد نقرات بعد</div>
                 </div>
-            </div>
-        </div>
-
-        <!-- ===== تبويب الألعاب ===== -->
-        <div id="tab-games" class="tab-content">
-            <div class="card">
-                <div class="card-title"><span>🎮 الألعاب</span> <span style="color:#4A9CFF; font-size:10px;" id="gameCount">0 لعبة</span></div>
-                <div class="games-grid" id="gamesGrid" style="display:grid; grid-template-columns:repeat(3,1fr); gap:8px;"></div>
-                <div class="game-controls" style="display:flex; gap:6px; flex-wrap:wrap; justify-content:center; margin-top:8px;">
-                    <button class="btn btn-gold" id="claimRewardBtn"><i class="fas fa-gift"></i> احصل على مكافأة اللعب</button>
-                </div>
-                <div class="card-title" style="margin-top:8px;"><span>📋 سجل الألعاب</span> <span id="gameLogCount">0</span></div>
-                <div class="log-container" id="gameLogList"><div class="log-item" style="color:#777;text-align:center;">لا توجد جلسات بعد</div></div>
             </div>
         </div>
 
@@ -645,8 +648,7 @@
             <div class="nav-item active" data-tab="mining"><i class="fas fa-hard-hat"></i><span>تعدين</span></div>
             <div class="nav-item" data-tab="wallet"><i class="fas fa-wallet"></i><span>محفظة</span></div>
             <div class="nav-item" data-tab="shop"><i class="fas fa-store"></i><span>متجر</span></div>
-            <div class="nav-item" data-tab="farm"><i class="fas fa-tractor"></i><span>مزرعة</span></div>
-            <div class="nav-item" data-tab="games"><i class="fas fa-gamepad"></i><span>ألعاب</span></div>
+            <div class="nav-item" data-tab="tap"><i class="fas fa-hand-pointer"></i><span>نقر</span></div>
             <div class="nav-item" data-tab="settings"><i class="fas fa-cog"></i><span>إعدادات</span></div>
         </div>
 
@@ -676,8 +678,8 @@
                 <div class="stat-grid">
                     <div class="stat-item"><div class="stat-label">💰 إجمالي الأرباح</div><div class="stat-value green" id="modalTotalProfit">0.00 Cash</div></div>
                     <div class="stat-item"><div class="stat-label">⛏️ إجمالي التعدين</div><div class="stat-value blue" id="modalTotalMined">0.00 NC</div></div>
-                    <div class="stat-item"><div class="stat-label">🌱 إنتاج المزرعة</div><div class="stat-value gold" id="modalFarmProduction">0.00 NC</div></div>
-                    <div class="stat-item"><div class="stat-label">🖥️ أجهزة المزرعة</div><div class="stat-value" id="modalFarmDevices">0</div></div>
+                    <div class="stat-item"><div class="stat-label">👆 إجمالي النقرات</div><div class="stat-value" id="modalTotalTaps">0</div></div>
+                    <div class="stat-item"><div class="stat-label">💰 أرباح النقر</div><div class="stat-value pink" id="modalTapProfit">0.00 NC</div></div>
                 </div>
 
                 <button class="save-btn" onclick="saveProfile()">💾 حفظ التغييرات</button>
@@ -692,37 +694,20 @@
         // ================================================================
         const STORAGE_KEY = 'hyex_data';
         let data = {
-            wallet: { NC: 0, NCR: 0, BitNC: 0, LiNC: 0, Cash: 1000, 'NC-Power': 0, 'NC-Hash': 0, 'NC-Block': 0 },
+            wallet: { NC: 0, NCR: 0, BitNC: 0, LiNC: 0, Cash: 1000 },
             pendingNC: 0,
             isMining: false,
             log: [],
             upgrades: { speed: 0, bonus: 0 },
             settings: { sound: true, vibe: true },
-            gameLog: [],
-            gameStats: { totalSessions: 0, totalProfit: 0, dailySessions: 0, dailyProfit: 0, lastClaimDate: null,
-                claimCount: 0 },
-            // بيانات المزرعة
-            farm: {
-                devices: {
-                    'NC-Power': { count: 0, production: 0.0001 },
-                    'NC-Hash': { count: 0, production: 0.0005 },
-                    'NC-Block': { count: 0, production: 0.002 }
-                },
-                inventory: 0,
-                totalProduced: 0,
-                lastCollect: null,
-                dailyProduction: 0,
+            // بيانات النقر
+            tapData: {
+                totalTaps: 0,
+                totalEarned: 0,
                 log: []
             },
             profile: { name: 'مستخدم جديد', level: 1, xp: 0, totalProfit: 0, totalMined: 0, image: null }
         };
-
-        // تعريف الأجهزة
-        const DEVICES = [
-            { id: 'NC-Power', name: '⚡ NC-Power', emoji: '⚡', baseCost: 0.5, production: 0.0001, desc: '+0.0001 NC/ساعة' },
-            { id: 'NC-Hash', name: '🔗 NC-Hash', emoji: '🔗', baseCost: 1.5, production: 0.0005, desc: '+0.0005 NC/ساعة' },
-            { id: 'NC-Block', name: '🧱 NC-Block', emoji: '🧱', baseCost: 3.0, production: 0.002, desc: '+0.002 NC/ساعة' }
-        ];
 
         let prices = { NC: 1.00, NCR: 0.05, BitNC: 0.50, LiNC: 0.20 };
 
@@ -742,37 +727,18 @@
                         else if (key === 'profile') {
                             for (let p in parsed.profile) data.profile[p] = parsed.profile[p] || (p === 'name' ?
                                 'مستخدم جديد' : (p === 'level' ? 1 : 0));
-                        } else if (key === 'gameStats') {
-                            for (let g in parsed.gameStats) data.gameStats[g] = parsed.gameStats[g] || 0;
-                        } else if (key === 'farm') {
-                            if (parsed.farm.devices) {
-                                for (let d in parsed.farm.devices) {
-                                    if (data.farm.devices[d]) {
-                                        data.farm.devices[d].count = parsed.farm.devices[d].count || 0;
-                                    }
-                                }
-                            }
-                            data.farm.inventory = parsed.farm.inventory || 0;
-                            data.farm.totalProduced = parsed.farm.totalProduced || 0;
-                            data.farm.lastCollect = parsed.farm.lastCollect || null;
-                            data.farm.dailyProduction = parsed.farm.dailyProduction || 0;
-                            if (parsed.farm.log) data.farm.log = parsed.farm.log;
+                        } else if (key === 'tapData') {
+                            for (let t in parsed.tapData) data.tapData[t] = parsed.tapData[t] || (t === 'log' ? [] : 0);
                         } else data[key] = parsed[key];
                     }
                 }
-            } catch (e) { console.warn('Load error', e); }
+            } catch (e) {}
             if (!data.log) data.log = [];
-            if (!data.gameLog) data.gameLog = [];
-            if (!data.farm.log) data.farm.log = [];
-            if (!data.gameStats) data.gameStats = { totalSessions: 0, totalProfit: 0, dailySessions: 0, dailyProfit: 0,
-                lastClaimDate: null, claimCount: 0 };
-            if (!data.farm.devices) {
-                data.farm.devices = {
-                    'NC-Power': { count: 0, production: 0.0001 },
-                    'NC-Hash': { count: 0, production: 0.0005 },
-                    'NC-Block': { count: 0, production: 0.002 }
-                };
-            }
+            if (!data.tapData) data.tapData = { totalTaps: 0, totalEarned: 0, log: [] };
+            if (!data.tapData.log) data.tapData.log = [];
+            if (!data.upgrades) data.upgrades = { speed: 0, bonus: 0 };
+            if (!data.profile) data.profile = { name: 'مستخدم جديد', level: 1, xp: 0, totalProfit: 0, totalMined: 0,
+                image: null };
         }
 
         function saveData() { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); }
@@ -820,7 +786,7 @@
         }
 
         // ================================================================
-        // 4. التعدين (نفسه)
+        // 4. التعدين
         // ================================================================
         let miningInterval = null;
 
@@ -916,9 +882,6 @@
             document.getElementById('balBitNC').textContent = data.wallet.BitNC.toFixed(6);
             document.getElementById('balLiNC').textContent = data.wallet.LiNC.toFixed(6);
             document.getElementById('balCash').textContent = data.wallet.Cash.toFixed(2);
-            document.getElementById('balNCPower').textContent = data.wallet['NC-Power'].toFixed(6);
-            document.getElementById('balNCHash').textContent = data.wallet['NC-Hash'].toFixed(6);
-            document.getElementById('balNCBlock').textContent = data.wallet['NC-Block'].toFixed(6);
             document.getElementById('pendingDisplay').textContent = data.pendingNC.toFixed(8) + ' NC';
             document.getElementById('headerPrice').textContent = prices.NC.toFixed(3);
         }
@@ -962,317 +925,93 @@
         // 6. أسعار الصرف
         // ================================================================
         function getRate(from, to) {
-            const base = { NC: 1, Cash: 1, NCR: 0.05, BitNC: 0.5, LiNC: 0.2, 'NC-Power': 0.3, 'NC-Hash': 0.8,
-                'NC-Block': 1.5 };
+            const base = { NC: 1, Cash: 1, NCR: 0.05, BitNC: 0.5, LiNC: 0.2 };
             if (from === to) return 1;
             return base[to] / base[from];
         }
 
         // ================================================================
-        // 7. مزرعة التعدين
+        // 7. نظام النقر (Tap)
         // ================================================================
 
-        // حساب الإنتاج الكلي في الساعة
-        function calculateTotalProduction() {
-            let total = 0;
-            for (let d in data.farm.devices) {
-                total += data.farm.devices[d].count * data.farm.devices[d].production;
-            }
-            return total;
-        }
+        const TAP_REWARD = 0.2; // كل نقرة 0.2 NC
 
-        // عرض الأجهزة
-        function renderFarmDevices() {
-            const container = document.getElementById('farmDevices');
-            container.innerHTML = '';
-            DEVICES.forEach(device => {
-                const count = data.farm.devices[device.id]?.count || 0;
-                const cost = Math.floor(device.baseCost * (1 + count * 0.15) * 100) / 100;
-                const canBuy = data.wallet.NC >= cost;
+        // ===== عناصر الواجهة =====
+        const tapCoin = document.getElementById('tapCoin');
+        const tapEarningsEl = document.getElementById('tapEarnings');
+        const tapCountEl = document.getElementById('tapCount');
+        const tapLogList = document.getElementById('tapLogList');
+        const tapLogCount = document.getElementById('tapLogCount');
 
-                const div = document.createElement('div');
-                div.className = 'farm-device';
-                div.innerHTML = `
-                    <div class="device-icon">${device.emoji}</div>
-                    <div class="device-name">${device.name}</div>
-                    <div class="device-info">${device.desc}</div>
-                    <div class="device-count">${count}</div>
-                    <button class="device-buy" data-id="${device.id}" data-cost="${cost}" ${!canBuy ? 'disabled' : ''}>
-                        شراء (${cost.toFixed(2)} NC)
-                    </button>
-                `;
-                container.appendChild(div);
-            });
+        // ===== دالة النقر =====
+        function handleTap(e) {
+            // إضافة تأثير الـ ripple
+            const rect = tapCoin.getBoundingClientRect();
+            const x = (e.clientX || e.touches?.[0]?.clientX || rect.left + rect.width/2) - rect.left;
+            const y = (e.clientY || e.touches?.[0]?.clientY || rect.top + rect.height/2) - rect.top;
+            const ripple = document.createElement('span');
+            ripple.className = 'tap-ripple';
+            ripple.style.left = (x - 5) + 'px';
+            ripple.style.top = (y - 5) + 'px';
+            tapCoin.appendChild(ripple);
+            setTimeout(() => ripple.remove(), 600);
 
-            // ربط أزرار الشراء
-            document.querySelectorAll('.farm-device .device-buy').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    const id = this.dataset.id;
-                    const cost = parseFloat(this.dataset.cost);
-                    if (data.wallet.NC < cost) { playBeep(200, 0.1); return; }
-                    data.wallet.NC -= cost;
-                    data.farm.devices[id].count++;
-                    addFarmLog(`🛠️ شراء جهاز ${id} مقابل ${cost.toFixed(2)} NC`);
-                    playBeep(1000, 0.2);
-                    doVibe();
-                    updateAllUI();
-                    updateFarmUI();
-                    saveData();
-                });
-            });
-        }
+            // إضافة المكافأة للمحفظة
+            data.wallet.NC += TAP_REWARD;
+            data.tapData.totalTaps++;
+            data.tapData.totalEarned += TAP_REWARD;
+            data.profile.totalProfit += TAP_REWARD * 0.5; // يساهم في الخبرة
 
-        // تحديث واجهة المزرعة
-        function updateFarmUI() {
-            const totalDevices = Object.values(data.farm.devices).reduce((s, d) => s + d.count, 0);
-            const production = calculateTotalProduction();
-
-            document.getElementById('farmTotalDevices').textContent = totalDevices;
-            document.getElementById('farmProduction').textContent = production.toFixed(4) + ' NC';
-            document.getElementById('farmInventory').textContent = data.farm.inventory.toFixed(4) + ' NC';
-            document.getElementById('farmDailyProfit').textContent = data.farm.dailyProduction.toFixed(4) + ' NC';
-
-            // حساب الإنتاج التالي
-            const nextProd = production / 3600; // في الثانية
-            document.getElementById('farmNextProduction').textContent = nextProd.toFixed(6) + ' NC/ث';
-
-            // إعادة عرض الأجهزة
-            renderFarmDevices();
-
-            // تحديث إحصائيات الملف الشخصي
-            document.getElementById('modalFarmProduction').textContent = data.farm.totalProduced.toFixed(4) + ' NC';
-            document.getElementById('modalFarmDevices').textContent = totalDevices;
-        }
-
-        // إضافة سجل المزرعة
-        function addFarmLog(text) {
+            // تسجيل في سجل النقرات
             const now = new Date();
             const timeStr = now.toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-            data.farm.log.unshift({ time: timeStr, text: text });
-            if (data.farm.log.length > 50) data.farm.log.pop();
-            saveData();
-            renderFarmLog();
-        }
-
-        function renderFarmLog() {
-            const list = document.getElementById('farmLogList');
-            const count = document.getElementById('farmLogCount');
-            count.textContent = data.farm.log.length;
-            if (data.farm.log.length === 0) {
-                list.innerHTML = '<div class="log-item" style="color:#777;text-align:center;">لا توجد عمليات</div>';
-                return;
-            }
-            list.innerHTML = data.farm.log.slice(0, 30).map(l =>
-                `<div class="log-item"><span>${l.text}</span><span class="time">${l.time}</span></div>`
-            ).join('');
-        }
-
-        // جمع الإنتاج
-        document.getElementById('farmCollectBtn').addEventListener('click', function() {
-            const production = calculateTotalProduction();
-            if (production === 0) {
-                alert('⚠️ لا يوجد أجهزة تعدين في المزرعة! اشترِ جهازاً أولاً.');
-                return;
-            }
-
-            // حساب المدة منذ آخر جمع (افتراضي 1 ساعة إذا لم يكن هناك)
-            const now = Date.now();
-            const lastCollect = data.farm.lastCollect || (now - 3600000); // ساعة افتراضية
-            const elapsedHours = Math.min((now - lastCollect) / 3600000, 24); // حد أقصى 24 ساعة
-            const earned = production * elapsedHours;
-
-            if (earned < 0.0001) {
-                alert('⏳ لا يوجد إنتاج كافٍ للجمع. انتظر ساعة على الأقل.');
-                return;
-            }
-
-            // إضافة للمحفظة والمخزون
-            data.wallet.NC += earned;
-            data.farm.inventory += earned;
-            data.farm.totalProduced += earned;
-            data.farm.dailyProduction += earned;
-            data.farm.lastCollect = now;
-            data.profile.totalProfit += earned * 0.5;
-
-            addFarmLog(`💰 جمعت ${earned.toFixed(4)} NC من المزرعة`);
-            playBeep(1200, 0.3);
-            doVibe();
-
-            updateAllUI();
-            updateFarmUI();
-            updateProfileUI();
-            saveData();
-        });
-
-        // تحديث المزرعة تلقائياً كل دقيقة (لحساب الإنتاج التالي)
-        setInterval(() => {
-            updateFarmUI();
-        }, 60000);
-
-        // ================================================================
-        // 8. الألعاب (نفسها)
-        // ================================================================
-
-        const GAMES_LIST = [
-            { id: 'snake', name: '🐍 ثعبان', url: 'https://sausi-7.github.io/games/games/snake/index.html' },
-            { id: 'pacman', name: '🟡 باك مان', url: 'https://sausi-7.github.io/games/games/pacman/index.html' },
-            { id: 'tetris', name: '🧩 تيترس', url: 'https://sausi-7.github.io/games/games/tetris/index.html' },
-            { id: '2048', name: '🔢 2048', url: 'https://sausi-7.github.io/games/games/2048/index.html' },
-            { id: 'flappy', name: '🐤 فلافي بيرد', url: 'https://sausi-7.github.io/games/games/flappy/index.html' },
-            { id: 'doodle', name: '🦘 دودل جمب', url: 'https://sausi-7.github.io/games/games/doodle-jump/index.html' }
-        ];
-
-        function renderGames() {
-            const grid = document.getElementById('gamesGrid');
-            grid.innerHTML = '';
-            GAMES_LIST.forEach(game => {
-                const card = document.createElement('a');
-                card.className = 'game-card';
-                card.href = game.url;
-                card.target = '_blank';
-                card.rel = 'noopener noreferrer';
-                card.style.cssText =
-                    'background:#11111B; border-radius:14px; padding:12px 6px; text-align:center; border:1px solid #2A2A35; cursor:pointer; transition:0.25s; text-decoration:none; color:inherit; display:flex; flex-direction:column; align-items:center; justify-content:center; min-height:80px;';
-                card.innerHTML = `
-                    <div style="font-size:32px;">${game.name.split(' ')[0]}</div>
-                    <div style="font-size:10px; color:#C0C0D0; font-weight:600;">${game.name}</div>
-                `;
-                card.addEventListener('mouseenter', function() {
-                    this.style.borderColor = '#C9A84C';
-                    this.style.transform = 'translateY(-3px)';
-                    this.style.boxShadow = '0 8px 25px #C9A84C22';
-                });
-                card.addEventListener('mouseleave', function() {
-                    this.style.borderColor = '#2A2A35';
-                    this.style.transform = 'translateY(0)';
-                    this.style.boxShadow = 'none';
-                });
-                card.addEventListener('click', function(e) {
-                    setTimeout(() => {
-                        recordGameSession(game.id);
-                    }, 500);
-                });
-                grid.appendChild(card);
+            data.tapData.log.unshift({
+                time: timeStr,
+                text: `👆 نقرة +${TAP_REWARD.toFixed(1)} NC`
             });
-            document.getElementById('gameCount').textContent = GAMES_LIST.length + ' لعبة';
-        }
+            if (data.tapData.log.length > 30) data.tapData.log.pop();
 
-        function recordGameSession(gameId) {
-            const game = GAMES_LIST.find(g => g.id === gameId);
-            if (!game) return;
-            data.gameStats.totalSessions++;
-            data.gameStats.dailySessions++;
-            const timeStr = new Date().toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-            data.gameLog.unshift({ time: timeStr, text: `🎮 تم تشغيل: ${game.name}` });
-            if (data.gameLog.length > 50) data.gameLog.pop();
-            document.getElementById('gameLogList').innerHTML = data.gameLog.slice(0, 30).map(l =>
-                `<div class="log-item"><span>${l.text}</span><span class="time">${l.time}</span></div>`
-            ).join('');
-            document.getElementById('gameLogCount').textContent = data.gameLog.length;
+            // تحديث الواجهة
+            updateTapUI();
+            updateWalletUI();
             updateProfileUI();
             saveData();
-            playBeep(600, 0.1);
+
+            // تأثيرات صوتية واهتزاز
+            playBeep(900, 0.06);
             doVibe();
+
+            // تحديث سجل النقرات
+            renderTapLog();
         }
 
-        // ===== نظام مكافآت الألعاب =====
-        const REWARD_AMOUNT = 0.001;
-        const CLAIM_COOLDOWN = 10;
-        const DAILY_LIMIT = 10;
-
-        function updateGameUI() {
-            document.getElementById('dailyGameProfit').textContent = data.gameStats.dailyProfit.toFixed(4) + ' NC';
-            document.getElementById('dailyGameSessions').textContent = data.gameStats.dailySessions;
-            updateRewardTimer();
-            updateClaimButton();
+        // ===== تحديث واجهة النقر =====
+        function updateTapUI() {
+            tapEarningsEl.textContent = data.tapData.totalEarned.toFixed(2) + ' NC';
+            tapCountEl.textContent = data.tapData.totalTaps;
         }
 
-        function updateRewardTimer() {
-            const btn = document.getElementById('claimRewardBtn');
-            const timerEl = document.getElementById('nextRewardTimer');
-            const today = new Date().toDateString();
-            if (data.gameStats.lastClaimDate !== today) {
-                data.gameStats.dailySessions = 0;
-                data.gameStats.dailyProfit = 0;
-                data.gameStats.claimCount = 0;
-                data.gameStats.lastClaimDate = today;
-                saveData();
-            }
-            if (data.gameStats.claimCount >= DAILY_LIMIT) {
-                timerEl.textContent = 'تم الوصول للحد اليومي';
-                btn.disabled = true;
+        // ===== عرض سجل النقرات =====
+        function renderTapLog() {
+            tapLogCount.textContent = data.tapData.log.length;
+            if (data.tapData.log.length === 0) {
+                tapLogList.innerHTML = '<div class="log-item" style="color:#777;text-align:center;">لا توجد نقرات بعد</div>';
                 return;
             }
-            const lastClaim = localStorage.getItem('last_claim_time');
-            if (lastClaim) {
-                const elapsed = (Date.now() - parseInt(lastClaim)) / 60000;
-                if (elapsed < CLAIM_COOLDOWN) {
-                    const remaining = Math.ceil(CLAIM_COOLDOWN - elapsed);
-                    timerEl.textContent = `${remaining} دقيقة`;
-                    btn.disabled = true;
-                    return;
-                }
-            }
-            timerEl.textContent = 'جاهز!';
-            btn.disabled = false;
-        }
-
-        function updateClaimButton() {
-            const btn = document.getElementById('claimRewardBtn');
-            if (data.gameStats.claimCount >= DAILY_LIMIT) {
-                btn.disabled = true;
-                btn.textContent = '✅ الحد اليومي مكتمل';
-            } else {
-                btn.disabled = false;
-                btn.innerHTML = '<i class="fas fa-gift"></i> احصل على مكافأة اللعب';
-            }
-        }
-
-        document.getElementById('claimRewardBtn').addEventListener('click', function() {
-            const today = new Date().toDateString();
-            if (data.gameStats.claimCount >= DAILY_LIMIT) {
-                alert('لقد حصلت على الحد الأقصى اليومي (10 مكافآت)');
-                return;
-            }
-            const lastClaim = localStorage.getItem('last_claim_time');
-            if (lastClaim) {
-                const elapsed = (Date.now() - parseInt(lastClaim)) / 60000;
-                if (elapsed < CLAIM_COOLDOWN) {
-                    const remaining = Math.ceil(CLAIM_COOLDOWN - elapsed);
-                    alert(`انتظر ${remaining} دقيقة قبل الحصول على المكافأة التالية`);
-                    return;
-                }
-            }
-            data.wallet.NC += REWARD_AMOUNT;
-            data.gameStats.dailyProfit += REWARD_AMOUNT;
-            data.gameStats.totalProfit += REWARD_AMOUNT;
-            data.gameStats.claimCount++;
-            data.gameStats.lastClaimDate = today;
-            data.profile.totalProfit += REWARD_AMOUNT * 0.5;
-            localStorage.setItem('last_claim_time', Date.now().toString());
-            const timeStr = new Date().toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-            data.gameLog.unshift({ time: timeStr, text: `💰 حصلت على مكافأة +${REWARD_AMOUNT.toFixed(3)} NC` });
-            if (data.gameLog.length > 50) data.gameLog.pop();
-            updateAllUI();
-            updateGameUI();
-            updateProfileUI();
-            saveData();
-            playBeep(1200, 0.25);
-            doVibe();
-            document.getElementById('gameLogList').innerHTML = data.gameLog.slice(0, 30).map(l =>
+            tapLogList.innerHTML = data.tapData.log.slice(0, 30).map(l =>
                 `<div class="log-item"><span>${l.text}</span><span class="time">${l.time}</span></div>`
             ).join('');
-            document.getElementById('gameLogCount').textContent = data.gameLog.length;
-            updateRewardTimer();
-            updateClaimButton();
+        }
+
+        // ===== ربط حدث النقر =====
+        tapCoin.addEventListener('click', handleTap);
+        tapCoin.addEventListener('touchstart', function(e) {
+            e.preventDefault(); // منع التمرير عند النقر على الموبايل
+            handleTap(e);
         });
 
-        setInterval(() => {
-            updateRewardTimer();
-        }, 10000);
-
         // ================================================================
-        // 9. الملف الشخصي
+        // 8. الملف الشخصي
         // ================================================================
 
         function toggleProfile() {
@@ -1292,8 +1031,7 @@
 
         function updateProfileUI() {
             let xp = data.profile.totalMined * 100 + data.profile.totalProfit * 0.5 +
-                data.gameStats.totalSessions * 1 + data.gameStats.totalProfit * 2 +
-                data.farm.totalProduced * 10;
+                data.tapData.totalTaps * 0.5 + data.tapData.totalEarned * 2;
             data.profile.xp = Math.floor(xp);
             let level = Math.floor(xp / 500) + 1;
             data.profile.level = Math.min(level, 100);
@@ -1305,9 +1043,8 @@
             document.getElementById('modalLevelBar').style.width = progress + '%';
             document.getElementById('modalTotalProfit').textContent = data.profile.totalProfit.toFixed(2) + ' Cash';
             document.getElementById('modalTotalMined').textContent = data.profile.totalMined.toFixed(6) + ' NC';
-            document.getElementById('modalFarmProduction').textContent = data.farm.totalProduced.toFixed(4) + ' NC';
-            const totalDevices = Object.values(data.farm.devices).reduce((s, d) => s + d.count, 0);
-            document.getElementById('modalFarmDevices').textContent = totalDevices;
+            document.getElementById('modalTotalTaps').textContent = data.tapData.totalTaps;
+            document.getElementById('modalTapProfit').textContent = data.tapData.totalEarned.toFixed(2) + ' NC';
 
             document.getElementById('settingsProfileName').textContent = data.profile.name || 'مستخدم جديد';
 
@@ -1354,7 +1091,7 @@
         }
 
         // ================================================================
-        // 10. التنقل بين التبويبات
+        // 9. التنقل بين التبويبات
         // ================================================================
         document.querySelectorAll('.nav-item').forEach(item => {
             item.addEventListener('click', function() {
@@ -1366,24 +1103,16 @@
                 playBeep(300, 0.03);
                 if (tabId === 'wallet') updateWalletUI();
                 if (tabId === 'shop') renderShop();
-                if (tabId === 'farm') {
-                    updateFarmUI();
-                    renderFarmLog();
-                }
-                if (tabId === 'games') {
-                    renderGames();
-                    updateGameUI();
-                    document.getElementById('gameLogList').innerHTML = data.gameLog.slice(0, 30).map(l =>
-                        `<div class="log-item"><span>${l.text}</span><span class="time">${l.time}</span></div>`
-                    ).join('');
-                    document.getElementById('gameLogCount').textContent = data.gameLog.length;
+                if (tabId === 'tap') {
+                    updateTapUI();
+                    renderTapLog();
                 }
                 if (tabId === 'settings') updateProfileUI();
             });
         });
 
         // ================================================================
-        // 11. الإعدادات
+        // 10. الإعدادات
         // ================================================================
         document.getElementById('soundToggle').addEventListener('change', function() { data.settings.sound = this.checked;
             saveData(); });
@@ -1397,7 +1126,7 @@
         });
 
         // ================================================================
-        // 12. التهيئة عند تحميل الصفحة
+        // 11. التهيئة عند تحميل الصفحة
         // ================================================================
         window.onload = function() {
             loadData();
@@ -1406,18 +1135,11 @@
             startMining();
             updateAllUI();
             renderLog();
-            renderGames();
-            updateGameUI();
-            updateFarmUI();
-            renderFarmLog();
+            updateTapUI();
+            renderTapLog();
             updateProfileUI();
 
-            document.getElementById('gameLogList').innerHTML = data.gameLog.slice(0, 30).map(l =>
-                `<div class="log-item"><span>${l.text}</span><span class="time">${l.time}</span></div>`
-            ).join('');
-            document.getElementById('gameLogCount').textContent = data.gameLog.length;
-
-            addLog('🏛️ مرحباً في HyeX Exchange - الإصدار 11.0 (مزرعة التعدين)');
+            addLog('🏛️ مرحباً في HyeX Exchange - الإصدار 11.0 (قسم النقر)');
             if (data.pendingNC > 0) document.getElementById('pendingDisplay').textContent = data.pendingNC.toFixed(8) +
                 ' NC';
         };
@@ -1425,4 +1147,4 @@
         setInterval(() => saveData(), 5000);
     </script>
 </body>
-    </html>
+                                                                                                                                            </html>
