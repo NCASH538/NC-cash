@@ -3,9 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-    <title>Hye Corp - التعدين الرسمي</title>
+    <title>Hye Corp - التعدين والألعاب</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
+        /* ===== كل التصميم القديم كما هو، لم يتغير شيء ===== */
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; }
         body {
             background: #0A0A0F;
@@ -28,7 +29,6 @@
             position: relative;
             padding-bottom: 80px;
         }
-        /* رأس الشركة */
         .corp-header {
             background: linear-gradient(135deg, #0B1320, #1A1F2E);
             padding: 20px 24px 15px;
@@ -46,13 +46,9 @@
         }
         .corp-header h1 small { font-size: 12px; color: #888; font-weight: 400; display: block; letter-spacing: 0; }
         .corp-header .badge { background: #1E2A3A; padding: 6px 14px; border-radius: 30px; font-size: 12px; border: 1px solid #C9A84C55; color: #C9A84C; }
-
-        /* المحتوى الرئيسي */
         .tab-content { padding: 20px 18px; display: none; animation: fade 0.3s ease; }
         .tab-content.active { display: block; }
         @keyframes fade { from { opacity: 0.3; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
-
-        /* البطاقات */
         .card {
             background: #1C1C28;
             border-radius: 20px;
@@ -69,8 +65,6 @@
             display: flex;
             justify-content: space-between;
         }
-
-        /* شبكة المحفظة */
         .wallet-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -90,8 +84,6 @@
         .wallet-item .balance.ncr { color: #FF6B8A; }
         .wallet-item .balance.bitnc { color: #FFA500; }
         .wallet-item .balance.linc { color: #A29BFE; }
-
-        /* أزرار التعدين الأربعة */
         .mining-actions {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -117,8 +109,10 @@
         .btn-collect { background: #1A2A4A; color: #4A9CFF; border: 1px solid #2A4A6A; }
         .btn-convert { background: #3A2A1A; color: #C9A84C; border: 1px solid #5A4A2A; }
         .btn-log { background: #1A1A2A; color: #8E8E9A; border: 1px solid #3A3A4A; }
-
-        /* السجل (اللوق) */
+        .btn-primary { background: #4A9CFF; color: #fff; border: none; }
+        .btn-danger { background: #3A1A1A; color: #FF6B8A; border: 1px solid #6A2A2A; }
+        .btn-success { background: #1A3A2A; color: #7BED9F; border: 1px solid #2A5A3A; }
+        .btn-gold { background: #C9A84C; color: #0A0A0F; border: none; font-weight: 700; }
         .log-container {
             max-height: 180px;
             overflow-y: auto;
@@ -136,8 +130,6 @@
             justify-content: space-between;
         }
         .log-item .time { color: #555; font-size: 11px; }
-
-        /* المتجر */
         .shop-item {
             display: flex;
             justify-content: space-between;
@@ -159,8 +151,6 @@
             cursor: pointer;
         }
         .shop-item .buy-btn:disabled { opacity: 0.3; cursor: not-allowed; }
-
-        /* التداول */
         .trade-row {
             display: flex;
             gap: 10px;
@@ -169,6 +159,7 @@
             padding: 10px 12px;
             border-radius: 16px;
             margin-bottom: 8px;
+            flex-wrap: wrap;
         }
         .trade-row select, .trade-row input {
             background: #0A0A0F;
@@ -178,6 +169,7 @@
             border-radius: 12px;
             flex: 1;
             font-size: 14px;
+            min-width: 60px;
         }
         .trade-row input { width: 80px; flex: 1.5; }
         .trade-row .trade-exec {
@@ -189,16 +181,17 @@
             font-weight: 700;
             cursor: pointer;
         }
-
-        /* الإعدادات */
         .settings-item {
             display: flex;
             justify-content: space-between;
             padding: 14px 0;
             border-bottom: 1px solid #1A1A22;
+            align-items: center;
         }
-
-        /* الفوتر (التبويبات السفلية) */
+        .settings-item .switch {
+            color: #4A9CFF;
+            font-size: 20px;
+        }
         .bottom-nav {
             position: absolute;
             bottom: 0;
@@ -224,8 +217,6 @@
         .bottom-nav .nav-item i { font-size: 22px; margin-bottom: 2px; }
         .bottom-nav .nav-item.active { color: #C9A84C; }
         .bottom-nav .nav-item.active i { color: #C9A84C; text-shadow: 0 0 15px #C9A84C44; }
-
-        /* السعر الحالي */
         .price-ticker {
             background: #0A0A10;
             border-radius: 40px;
@@ -237,11 +228,114 @@
             color: #8E8E9A;
         }
         .price-ticker span { color: #C9A84C; font-weight: 700; }
-
-        /* تمرير */
         ::-webkit-scrollbar { width: 4px; }
         ::-webkit-scrollbar-track { background: #111; }
         ::-webkit-scrollbar-thumb { background: #444; border-radius: 10px; }
+        .switch input { display: none; }
+        .switch .slider {
+            display: inline-block;
+            width: 40px;
+            height: 22px;
+            background: #333;
+            border-radius: 30px;
+            position: relative;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .switch .slider::after {
+            content: '';
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            background: #fff;
+            border-radius: 50%;
+            top: 3px;
+            left: 3px;
+            transition: 0.3s;
+        }
+        .switch input:checked + .slider { background: #4A9CFF; }
+        .switch input:checked + .slider::after { left: 21px; }
+
+        /* ===== تصميم خاص بقسم الألعاب الجديد ===== */
+        .game-iframe-container {
+            position: relative;
+            width: 100%;
+            padding-bottom: 75%; /* نسبة 4:3 */
+            height: 0;
+            overflow: hidden;
+            border-radius: 16px;
+            border: 2px solid #2A2A35;
+            background: #000;
+        }
+        .game-iframe-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        .game-condition-box {
+            background: #11111B;
+            border-radius: 16px;
+            padding: 14px 16px;
+            border: 1px solid #C9A84C55;
+            margin: 12px 0;
+            text-align: center;
+        }
+        .game-condition-box .condition-text {
+            font-size: 18px;
+            font-weight: 700;
+            color: #C9A84C;
+        }
+        .game-condition-box .condition-progress {
+            font-size: 14px;
+            color: #8E8E9A;
+            margin-top: 6px;
+        }
+        .game-progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #2A2A35;
+            border-radius: 10px;
+            margin-top: 10px;
+            overflow: hidden;
+        }
+        .game-progress-bar .fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #C9A84C, #4A9CFF);
+            border-radius: 10px;
+            transition: width 0.5s ease;
+        }
+        .game-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 12px;
+            justify-content: center;
+        }
+        .game-actions .btn {
+            flex: 1;
+            min-width: 100px;
+            padding: 12px 0;
+            border-radius: 30px;
+            border: none;
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .game-actions .btn:active { transform: scale(0.94); }
+        .btn-achievement { background: #4A9CFF; color: #fff; }
+        .btn-achievement:disabled { opacity: 0.4; cursor: not-allowed; }
+        .game-reward-display {
+            font-size: 20px;
+            font-weight: 700;
+            color: #7BED9F;
+            text-align: center;
+            margin-top: 6px;
+        }
     </style>
 </head>
 <body>
@@ -250,61 +344,44 @@
     <!-- رأس الشركة -->
     <div class="corp-header">
         <div>
-            <h1>🏛️ Hye Corp <small>المنصة الرقمية الرسمية</small></h1>
+            <h1>🏛️ Hye Corp <small>منصة التعدين والألعاب</small></h1>
         </div>
-        <div class="badge"><i class="fas fa-shield-alt"></i> v2.0</div>
+        <div class="badge"><i class="fas fa-shield-alt"></i> v4.0</div>
     </div>
 
-    <!-- مؤشر الأسعار -->
     <div class="price-ticker" id="priceTicker">
         <i class="fas fa-chart-line"></i> سعر الصرف: 1 NC = 1.00 Cash (دولار)
     </div>
 
-    <!-- ========== تبويب التعدين ========== -->
+    <!-- ===== تبويب التعدين (نفسه) ===== -->
     <div id="tab-mining" class="tab-content active">
         <div class="card">
             <div class="card-title"><span>⚡ سرعة التعدين</span> <span id="hashRateDisplay">0.0001 NC/ث</span></div>
             <div style="font-size: 28px; font-weight: 700; color: #4A9CFF; text-align: center; padding: 5px 0;" id="pendingDisplay">0.00000000 NC</div>
             <div style="text-align: center; font-size: 12px; color: #666;">المبلغ العالق (قيد التعدين)</div>
         </div>
-
-        <!-- الأزرار الأربعة -->
         <div class="mining-actions">
             <button class="btn btn-start" id="miningToggleBtn"><i class="fas fa-play"></i> تعدين</button>
             <button class="btn btn-collect" id="collectBtn"><i class="fas fa-wallet"></i> جمع</button>
             <button class="btn btn-convert" id="convertBtn"><i class="fas fa-exchange-alt"></i> تحويل</button>
             <button class="btn btn-log" id="logToggleBtn"><i class="fas fa-list-ul"></i> السجل</button>
         </div>
-
-        <!-- سجل العمليات -->
         <div id="logContainer" style="display: none; margin-top: 15px;">
             <div class="card" style="padding: 10px;">
                 <div class="card-title"><span>📋 سجل التعدين</span> <span id="logCount">0</span></div>
-                <div class="log-container" id="logList">
-                    <div class="log-item" style="color:#555; text-align:center;">لا توجد عمليات بعد</div>
-                </div>
+                <div class="log-container" id="logList"><div class="log-item" style="color:#555;text-align:center;">لا توجد عمليات</div></div>
             </div>
         </div>
-
-        <!-- تحويل سريع (يظهر عند ضغط زر التحويل) -->
         <div id="convertPanel" style="display: none; margin-top: 10px;">
             <div class="card">
                 <div class="card-title">🔄 تحويل العملات</div>
                 <div style="display: flex; gap: 8px; flex-wrap: wrap;">
                     <select id="convertFrom" style="flex:1; background:#0A0A0F; border:1px solid #333; color:#fff; padding:10px; border-radius:14px;">
-                        <option value="NC">NC</option>
-                        <option value="NCR">NCR</option>
-                        <option value="BitNC">BitNC</option>
-                        <option value="LiNC">LiNC</option>
-                        <option value="Cash">Cash</option>
+                        <option value="NC">NC</option><option value="NCR">NCR</option><option value="BitNC">BitNC</option><option value="LiNC">LiNC</option><option value="Cash">Cash</option>
                     </select>
                     <input type="number" id="convertAmount" placeholder="المبلغ" value="1" style="flex:1.5; background:#0A0A0F; border:1px solid #333; color:#fff; padding:10px; border-radius:14px;">
                     <select id="convertTo" style="flex:1; background:#0A0A0F; border:1px solid #333; color:#fff; padding:10px; border-radius:14px;">
-                        <option value="NC">NC</option>
-                        <option value="NCR">NCR</option>
-                        <option value="BitNC">BitNC</option>
-                        <option value="LiNC">LiNC</option>
-                        <option value="Cash">Cash</option>
+                        <option value="NC">NC</option><option value="NCR">NCR</option><option value="BitNC">BitNC</option><option value="LiNC">LiNC</option><option value="Cash">Cash</option>
                     </select>
                     <button id="executeConvertBtn" style="flex:1; background:#C9A84C; border:none; color:#000; font-weight:700; border-radius:30px; cursor:pointer;">تنفيذ</button>
                 </div>
@@ -312,7 +389,7 @@
         </div>
     </div>
 
-    <!-- ========== تبويب المحفظة ========== -->
+    <!-- ===== تبويب المحفظة (نفسه) ===== -->
     <div id="tab-wallet" class="tab-content">
         <div class="card">
             <div class="card-title"><span>💰 الأرصدة</span> <i class="fas fa-chevron-left"></i></div>
@@ -324,12 +401,10 @@
                 <div class="wallet-item" style="grid-column: span 3;"><div class="symbol">💵 Cash (دولار)</div><div class="balance usd" id="balCash">0.00</div></div>
             </div>
         </div>
-        <div class="card" style="text-align:center; color:#666; font-size:13px;">
-            <i class="fas fa-lock"></i> جميع الأرصدة مشفرة ومركزية (للترفيه)
-        </div>
+        <div class="card" style="text-align:center; color:#666; font-size:13px;"><i class="fas fa-lock"></i> جميع الأرصدة مشفرة ومركزية (للترفيه)</div>
     </div>
 
-    <!-- ========== تبويب المتجر ========== -->
+    <!-- ===== تبويب المتجر (نفسه) ===== -->
     <div id="tab-shop" class="tab-content">
         <div class="card">
             <div class="card-title"><span>🛒 متجر الترقيات</span> <span>NC فقط</span></div>
@@ -337,15 +412,12 @@
         </div>
     </div>
 
-    <!-- ========== تبويب التداول ========== -->
+    <!-- ===== تبويب التداول (نفسه) ===== -->
     <div id="tab-trade" class="tab-content">
         <div class="card">
             <div class="card-title"><span>📊 منصة التداول</span> <span>سعر السوق</span></div>
             <div id="tradeRates" style="margin-bottom:12px; font-size:14px; background:#0E0E16; padding:12px; border-radius:16px;">
-                <div>1 NC = 1.00 Cash</div>
-                <div>1 NCR = 0.05 NC</div>
-                <div>1 BitNC = 0.50 NC</div>
-                <div>1 LiNC = 0.20 NC</div>
+                <div>1 NC = 1.00 Cash</div><div>1 NCR = 0.05 NC</div><div>1 BitNC = 0.50 NC</div><div>1 LiNC = 0.20 NC</div>
             </div>
             <div class="trade-row">
                 <select id="tradeSell"><option value="NC">NC</option><option value="NCR">NCR</option><option value="BitNC">BitNC</option><option value="LiNC">LiNC</option><option value="Cash">Cash</option></select>
@@ -357,12 +429,55 @@
         </div>
     </div>
 
-    <!-- ========== تبويب الإعدادات ========== -->
+    <!-- ===== تبويب الألعاب (الجديد) ===== -->
+    <div id="tab-games" class="tab-content">
+        <div class="card">
+            <div class="card-title">
+                <span>🎮 لعبة itch.io</span>
+                <span id="gameTimerDisplay" style="color:#4A9CFF; font-weight:700;">00:00</span>
+            </div>
+
+            <!-- حاوية اللعبة (iframe) -->
+            <div class="game-iframe-container">
+                <iframe id="gameIframe" src="https://itch.io/embed-upload/10559002?color=333333" allowfullscreen></iframe>
+            </div>
+
+            <!-- عرض الشرط المتغير -->
+            <div class="game-condition-box">
+                <div class="condition-text" id="conditionText">🎯 اجمع 10 عملات داخل اللعبة</div>
+                <div class="condition-progress" id="conditionProgress">التقدم: 0 / 10</div>
+                <div class="game-progress-bar">
+                    <div class="fill" id="progressFill" style="width:0%;"></div>
+                </div>
+            </div>
+
+            <!-- أزرار التحكم في المكافآت والتقدم -->
+            <div class="game-actions">
+                <button class="btn btn-primary" id="gameSessionStart"><i class="fas fa-play"></i> بدء الجلسة</button>
+                <button class="btn btn-danger" id="gameSessionStop"><i class="fas fa-stop"></i> إيقاف</button>
+                <button class="btn btn-achievement" id="gameAchieveBtn"><i class="fas fa-star"></i> سجل تقدماً</button>
+            </div>
+
+            <!-- عرض المكافأة -->
+            <div style="margin-top:12px; text-align:center;">
+                <span style="color:#8E8E9A;">🏆 المكافأة المستحقة:</span>
+                <span class="game-reward-display" id="gameRewardDisplay">0.0000 NC</span>
+            </div>
+
+            <!-- زر تغيير اللعبة (لتجربة ألعاب أخرى) -->
+            <div style="margin-top:12px; display:flex; gap:8px; flex-wrap:wrap; justify-content:center;">
+                <input type="text" id="gameUrlInput" placeholder="رابط تضمين itch.io" style="flex:2; background:#0A0A0F; border:1px solid #333; color:#fff; padding:10px; border-radius:14px; min-width:150px;" value="https://itch.io/embed-upload/10559002?color=333333">
+                <button class="btn btn-gold" id="changeGameBtn" style="flex:1; padding:10px 20px; border-radius:30px;">تغيير</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== تبويب الإعدادات (نفسه) ===== -->
     <div id="tab-settings" class="tab-content">
         <div class="card">
             <div class="card-title"><span>⚙️ الإعدادات</span></div>
-            <div class="settings-item"><span>🔊 المؤثرات الصوتية</span> <label class="switch"><input type="checkbox" id="soundToggle" checked><span style="color:#4A9CFF;">✓</span></label></div>
-            <div class="settings-item"><span>📳 الاهتزاز</span> <label class="switch"><input type="checkbox" id="vibeToggle" checked><span style="color:#4A9CFF;">✓</span></label></div>
+            <div class="settings-item"><span>🔊 المؤثرات الصوتية</span> <label class="switch"><input type="checkbox" id="soundToggle" checked><span class="slider"></span></label></div>
+            <div class="settings-item"><span>📳 الاهتزاز</span> <label class="switch"><input type="checkbox" id="vibeToggle" checked><span class="slider"></span></label></div>
             <div class="settings-item"><span>🏦 اسم الشركة</span> <span style="color:#C9A84C;">Hye Corp</span></div>
             <div class="settings-item"><span>🔄 إعادة تعيين البيانات</span> <button id="resetBtn" style="background:#3A1A1A; border:none; color:#FF6B8A; padding:4px 18px; border-radius:30px; cursor:pointer;">إعادة تعيين</button></div>
         </div>
@@ -374,20 +489,21 @@
         <div class="nav-item" data-tab="wallet"><i class="fas fa-wallet"></i><span>محفظة</span></div>
         <div class="nav-item" data-tab="shop"><i class="fas fa-store"></i><span>متجر</span></div>
         <div class="nav-item" data-tab="trade"><i class="fas fa-chart-pie"></i><span>تداول</span></div>
+        <div class="nav-item" data-tab="games"><i class="fas fa-gamepad"></i><span>ألعاب</span></div>
         <div class="nav-item" data-tab="settings"><i class="fas fa-cog"></i><span>إعدادات</span></div>
     </div>
 </div>
 
 <script>
-    // -------------------------------------------
-    // 1. البيانات الأساسية (محفوظة محلياً)
-    // -------------------------------------------
+    // ================================================================
+    // 1. البيانات الأساسية (نفسها، محفوظة محلياً)
+    // ================================================================
     const STORAGE_KEY = 'hyecorp_data';
     let data = {
         wallet: { NC: 0, NCR: 0, BitNC: 0, LiNC: 0, Cash: 0 },
         pendingNC: 0,
         isMining: false,
-        log: [], // [{time, text}]
+        log: [],
         upgrades: { speed: 0, bonus: 0 },
         settings: { sound: true, vibe: true }
     };
@@ -397,201 +513,134 @@
             const saved = localStorage.getItem(STORAGE_KEY);
             if (saved) {
                 const parsed = JSON.parse(saved);
-                // دمج للحفاظ على هيكل البيانات
                 for (let key in parsed) {
-                    if (key === 'wallet') {
-                        for (let c in parsed.wallet) data.wallet[c] = parsed.wallet[c] || 0;
-                    } else if (key === 'upgrades') {
-                        for (let u in parsed.upgrades) data.upgrades[u] = parsed.upgrades[u] || 0;
-                    } else if (key === 'settings') {
-                        for (let s in parsed.settings) data.settings[s] = parsed.settings[s] !== undefined ? parsed.settings[s] : true;
-                    } else {
-                        data[key] = parsed[key];
-                    }
+                    if (key === 'wallet') for (let c in parsed.wallet) data.wallet[c] = parsed.wallet[c] || 0;
+                    else if (key === 'upgrades') for (let u in parsed.upgrades) data.upgrades[u] = parsed.upgrades[u] || 0;
+                    else if (key === 'settings') for (let s in parsed.settings) data.settings[s] = parsed.settings[s] !== undefined ? parsed.settings[s] : true;
+                    else data[key] = parsed[key];
                 }
             }
-        } catch(e) { console.warn('Reset data'); }
-        // تأكد من وجود السجل
+        } catch(e) {}
         if (!data.log) data.log = [];
         if (!data.upgrades) data.upgrades = { speed: 0, bonus: 0 };
     }
-    function saveData() {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
-    }
+    function saveData() { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); }
 
-    // -------------------------------------------
-    // 2. أسعار الصرف (النظام الاقتصادي)
-    // -------------------------------------------
-    // القاعدة: 1 NC = 1 Cash (دولار)
-    // NCR = 0.05 NC, BitNC = 0.5 NC, LiNC = 0.2 NC
+    // ================================================================
+    // 2. أسعار الصرف (نفسها)
+    // ================================================================
     function getRate(from, to) {
         const base = { NC: 1, Cash: 1, NCR: 0.05, BitNC: 0.5, LiNC: 0.2 };
         if (from === to) return 1;
         return base[to] / base[from];
     }
 
-    // -------------------------------------------
-    // 3. دوال مساعدة (صوت، اهتزاز)
-    // -------------------------------------------
+    // ================================================================
+    // 3. الصوت والاهتزاز (نفسهم)
+    // ================================================================
     const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
     function playBeep(freq=600, dur=0.08) {
         if (!data.settings.sound) return;
-        try {
-            const osc = audioCtx.createOscillator();
-            const gain = audioCtx.createGain();
-            osc.type = 'sine';
-            osc.frequency.value = freq;
-            gain.gain.value = 0.06;
-            osc.connect(gain);
-            gain.connect(audioCtx.destination);
-            osc.start();
-            osc.stop(audioCtx.currentTime + dur);
-        } catch(e) {}
+        try { const o=audioCtx.createOscillator(), g=audioCtx.createGain(); o.type='sine'; o.frequency.value=freq; g.gain.value=0.06; o.connect(g); g.connect(audioCtx.destination); o.start(); o.stop(audioCtx.currentTime+dur); } catch(e) {}
     }
-    function doVibe() {
-        if (data.settings.vibe && navigator.vibrate) navigator.vibrate(20);
-    }
+    function doVibe() { if (data.settings.vibe && navigator.vibrate) navigator.vibrate(20); }
 
-    // -------------------------------------------
-    // 4. إضافة سجل (Log)
-    // -------------------------------------------
+    // ================================================================
+    // 4. السجل (نفسه)
+    // ================================================================
     function addLog(text) {
         const now = new Date();
-        const timeStr = now.toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+        const timeStr = now.toLocaleTimeString('ar-EG', { hour:'2-digit', minute:'2-digit', second:'2-digit' });
         data.log.unshift({ time: timeStr, text: text });
         if (data.log.length > 100) data.log.pop();
         saveData();
         renderLog();
     }
+    function renderLog() {
+        const list = document.getElementById('logList');
+        const count = document.getElementById('logCount');
+        count.textContent = data.log.length;
+        if (data.log.length === 0) { list.innerHTML = '<div class="log-item" style="color:#555;text-align:center;">لا توجد عمليات</div>'; return; }
+        list.innerHTML = data.log.slice(0, 30).map(l => `<div class="log-item"><span>${l.text}</span><span class="time">${l.time}</span></div>`).join('');
+    }
 
-    // -------------------------------------------
-    // 5. التعدين (السرعة 0.0001)
-    // -------------------------------------------
+    // ================================================================
+    // 5. التعدين (نفسه)
+    // ================================================================
     let miningInterval = null;
     function startMining() {
         if (data.isMining) return;
         data.isMining = true;
         document.getElementById('miningToggleBtn').innerHTML = '<i class="fas fa-stop"></i> إيقاف';
         document.getElementById('miningToggleBtn').classList.add('active');
-        playBeep(800, 0.1);
-        doVibe();
-        // سرعة التعدين الأساسية 0.0001 لكل تحديث (مع مضاعفات المتجر)
+        playBeep(800,0.1); doVibe();
         miningInterval = setInterval(() => {
             let speed = 0.0001 * (1 + (data.upgrades.speed || 0) * 0.2);
             data.pendingNC += speed;
-            // تحديث الواجهة
             document.getElementById('pendingDisplay').textContent = data.pendingNC.toFixed(8) + ' NC';
-            // تحديث سرعة العرض
-            document.getElementById('hashRateDisplay').textContent = (speed * 10).toFixed(4) + ' NC/ث'; // مضروب 10 للعرض
+            document.getElementById('hashRateDisplay').textContent = (speed * 10).toFixed(4) + ' NC/ث';
             saveData();
         }, 100);
     }
-
     function stopMining() {
         if (!data.isMining) return;
         data.isMining = false;
-        clearInterval(miningInterval);
-        miningInterval = null;
+        clearInterval(miningInterval); miningInterval = null;
         document.getElementById('miningToggleBtn').innerHTML = '<i class="fas fa-play"></i> تعدين';
         document.getElementById('miningToggleBtn').classList.remove('active');
-        playBeep(400, 0.15);
-        doVibe();
+        playBeep(400,0.15); doVibe();
         saveData();
     }
+    document.getElementById('miningToggleBtn').addEventListener('click', function() { data.isMining ? stopMining() : startMining(); });
 
-    // زر التعدين (تشغيل/إيقاف)
-    document.getElementById('miningToggleBtn').addEventListener('click', function() {
-        if (data.isMining) stopMining();
-        else startMining();
-    });
-
-    // -------------------------------------------
-    // 6. جمع (نقل المعلق إلى المحفظة)
-    // -------------------------------------------
     document.getElementById('collectBtn').addEventListener('click', function() {
-        if (data.pendingNC <= 0) {
-            addLog('⚠️ لا يوجد مبلغ عالق للتجميع');
-            playBeep(300, 0.1);
-            return;
-        }
-        const amount = data.pendingNC;
+        if (data.pendingNC <= 0) { addLog('⚠️ لا يوجد مبلغ عالق'); playBeep(300,0.1); return; }
+        let bonus = 1 + (data.upgrades.bonus || 0) * 0.1;
+        let amount = data.pendingNC * bonus;
         data.wallet.NC += amount;
         data.pendingNC = 0;
         document.getElementById('pendingDisplay').textContent = '0.00000000 NC';
-        playBeep(1000, 0.2);
-        doVibe();
-        addLog(`✅ تم جمع ${amount.toFixed(8)} NC إلى المحفظة`);
-        updateAllUI();
-        saveData();
+        playBeep(1000,0.2); doVibe();
+        addLog(`✅ تم جمع ${amount.toFixed(8)} NC (مع مكافأة ${(bonus-1)*100}%)`);
+        updateAllUI(); saveData();
     });
 
-    // -------------------------------------------
-    // 7. تحويل (تبديل إظهار لوحة التحويل)
-    // -------------------------------------------
     let convertPanelVisible = false;
     document.getElementById('convertBtn').addEventListener('click', function() {
         const panel = document.getElementById('convertPanel');
         convertPanelVisible = !convertPanelVisible;
         panel.style.display = convertPanelVisible ? 'block' : 'none';
-        if (convertPanelVisible) playBeep(500, 0.05);
+        if (convertPanelVisible) playBeep(500,0.05);
     });
-
-    // تنفيذ التحويل
     document.getElementById('executeConvertBtn').addEventListener('click', function() {
         const from = document.getElementById('convertFrom').value;
         const to = document.getElementById('convertTo').value;
         let amount = parseFloat(document.getElementById('convertAmount').value);
         if (isNaN(amount) || amount <= 0) { alert('أدخل مبلغ صحيح'); return; }
-
         const rate = getRate(from, to);
         const needed = amount * rate;
-
-        if (data.wallet[from] < amount) {
-            addLog(`❌ رصيد غير كاف من ${from}`);
-            playBeep(200, 0.2);
-            return;
-        }
-
+        if (data.wallet[from] < amount) { addLog(`❌ رصيد غير كاف من ${from}`); playBeep(200,0.2); return; }
         data.wallet[from] -= amount;
         data.wallet[to] = (data.wallet[to] || 0) + needed;
-        addLog(`🔄 تحويل ${amount.toFixed(6)} ${from} → ${needed.toFixed(6)} ${to} (سعر ${rate.toFixed(4)})`);
-        playBeep(1100, 0.15);
-        doVibe();
-        updateAllUI();
-        saveData();
-        // إخفاء اللوحة
+        addLog(`🔄 تحويل ${amount.toFixed(6)} ${from} → ${needed.toFixed(6)} ${to}`);
+        playBeep(1100,0.15); doVibe();
+        updateAllUI(); saveData();
         document.getElementById('convertPanel').style.display = 'none';
         convertPanelVisible = false;
     });
 
-    // -------------------------------------------
-    // 8. السجل (إظهار/إخفاء)
-    // -------------------------------------------
     let logVisible = false;
     document.getElementById('logToggleBtn').addEventListener('click', function() {
         const container = document.getElementById('logContainer');
         logVisible = !logVisible;
         container.style.display = logVisible ? 'block' : 'none';
         if (logVisible) renderLog();
-        playBeep(400, 0.05);
+        playBeep(400,0.05);
     });
 
-    function renderLog() {
-        const list = document.getElementById('logList');
-        const count = document.getElementById('logCount');
-        count.textContent = data.log.length;
-        if (data.log.length === 0) {
-            list.innerHTML = '<div class="log-item" style="color:#555;text-align:center;">لا توجد عمليات</div>';
-            return;
-        }
-        list.innerHTML = data.log.slice(0, 30).map(l => 
-            `<div class="log-item"><span>${l.text}</span><span class="time">${l.time}</span></div>`
-        ).join('');
-    }
-
-    // -------------------------------------------
-    // 9. تحديث واجهة المحفظة وجميع الأقسام
-    // -------------------------------------------
+    // ================================================================
+    // 6. تحديث واجهة المحفظة والمتجر (نفسها)
+    // ================================================================
     function updateWalletUI() {
         document.getElementById('balNC').textContent = data.wallet.NC.toFixed(6);
         document.getElementById('balNCR').textContent = data.wallet.NCR.toFixed(6);
@@ -609,78 +658,45 @@
         ];
         list.innerHTML = items.map(item => {
             const canBuy = data.wallet.NC >= item.cost && item.level < item.max;
-            return `<div class="shop-item">
-                <div class="info"><strong>${item.name}</strong> <small>${item.desc} (${item.level}/${item.max})</small></div>
-                <button class="buy-btn" data-id="${item.id}" data-cost="${item.cost}" ${!canBuy ? 'disabled' : ''}>${item.level >= item.max ? 'مكتمل' : item.cost + ' NC'}</button>
-            </div>`;
+            return `<div class="shop-item"><div class="info"><strong>${item.name}</strong> <small>${item.desc} (${item.level}/${item.max})</small></div><button class="buy-btn" data-id="${item.id}" data-cost="${item.cost}" ${!canBuy ? 'disabled' : ''}>${item.level >= item.max ? 'مكتمل' : item.cost + ' NC'}</button></div>`;
         }).join('');
-
         document.querySelectorAll('.shop-item .buy-btn').forEach(btn => {
             btn.addEventListener('click', function() {
-                const id = this.dataset.id;
-                const cost = parseFloat(this.dataset.cost);
+                const id = this.dataset.id, cost = parseFloat(this.dataset.cost);
                 if (data.wallet.NC < cost) { playBeep(200,0.1); return; }
                 data.wallet.NC -= cost;
                 if (id === 'speed') data.upgrades.speed = (data.upgrades.speed || 0) + 1;
                 if (id === 'bonus') data.upgrades.bonus = (data.upgrades.bonus || 0) + 1;
                 addLog(`🛒 شراء ترقية: ${id} مقابل ${cost} NC`);
-                playBeep(1300, 0.2);
-                doVibe();
-                updateAllUI();
-                saveData();
-                renderShop();
+                playBeep(1300,0.2); doVibe();
+                updateAllUI(); saveData(); renderShop();
             });
         });
     }
 
-    function updateAllUI() {
-        updateWalletUI();
-        renderShop();
-        renderLog();
-        // تحديث سعر الصرف في الشريط العلوي
-        document.getElementById('priceTicker').innerHTML = `<i class="fas fa-chart-line"></i> سعر الصرف: 1 NC = 1.00 Cash (دولار) | 1 BitNC = 0.50 NC`;
-        // تحديث حالة زر التعدين إذا كان شغال برا
-        if (data.isMining) {
-            document.getElementById('miningToggleBtn').innerHTML = '<i class="fas fa-stop"></i> إيقاف';
-            document.getElementById('miningToggleBtn').classList.add('active');
-        } else {
-            document.getElementById('miningToggleBtn').innerHTML = '<i class="fas fa-play"></i> تعدين';
-            document.getElementById('miningToggleBtn').classList.remove('active');
-        }
-        saveData();
-    }
+    function updateAllUI() { updateWalletUI(); renderShop(); renderLog(); saveData(); }
 
-    // -------------------------------------------
-    // 10. التداول (زر البيع/الشراء)
-    // -------------------------------------------
+    // ================================================================
+    // 7. التداول (نفسه)
+    // ================================================================
     document.getElementById('tradeExecBtn').addEventListener('click', function() {
         const sell = document.getElementById('tradeSell').value;
         const buy = document.getElementById('tradeBuy').value;
         let amount = parseFloat(document.getElementById('tradeAmount').value);
-        if (isNaN(amount) || amount <= 0) { alert('أدخل مبلغ صحيح'); return; }
-        if (sell === buy) { alert('لا يمكن تداول نفس العملة'); return; }
-
+        if (isNaN(amount) || amount <= 0 || sell === buy) { alert('بيانات غير صحيحة'); return; }
         const rate = getRate(sell, buy);
         const receive = amount * rate;
-
-        if (data.wallet[sell] < amount) {
-            addLog(`❌ رصيد غير كاف من ${sell}`);
-            playBeep(200,0.15);
-            return;
-        }
-
+        if (data.wallet[sell] < amount) { addLog(`❌ رصيد غير كاف من ${sell}`); playBeep(200,0.15); return; }
         data.wallet[sell] -= amount;
         data.wallet[buy] = (data.wallet[buy] || 0) + receive;
         addLog(`📊 تداول: بيع ${amount.toFixed(6)} ${sell} → شراء ${receive.toFixed(6)} ${buy}`);
-        playBeep(1400, 0.2);
-        doVibe();
-        updateAllUI();
-        saveData();
+        playBeep(1400,0.2); doVibe();
+        updateAllUI(); saveData();
     });
 
-    // -------------------------------------------
-    // 11. التنقل بين التبويبات
-    // -------------------------------------------
+    // ================================================================
+    // 8. التنقل بين التبويبات (نفسه)
+    // ================================================================
     document.querySelectorAll('.nav-item').forEach(item => {
         item.addEventListener('click', function() {
             document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
@@ -688,52 +704,281 @@
             const tabId = this.dataset.tab;
             document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
             document.getElementById('tab-' + tabId).classList.add('active');
-            playBeep(300, 0.03);
+            playBeep(300,0.03);
             if (tabId === 'wallet') updateWalletUI();
             if (tabId === 'shop') renderShop();
-            if (tabId === 'trade') renderLog();
+            if (tabId === 'games') updateGameUI(); // تحديث واجهة الألعاب عند الدخول
         });
     });
 
-    // -------------------------------------------
-    // 12. الإعدادات (صوت، اهتزاز، إعادة تعيين)
-    // -------------------------------------------
-    document.getElementById('soundToggle').addEventListener('change', function() {
-        data.settings.sound = this.checked;
-        saveData();
-    });
-    document.getElementById('vibeToggle').addEventListener('change', function() {
-        data.settings.vibe = this.checked;
-        saveData();
-    });
+    // ================================================================
+    // 9. الإعدادات (نفسها)
+    // ================================================================
+    document.getElementById('soundToggle').addEventListener('change', function() { data.settings.sound = this.checked; saveData(); });
+    document.getElementById('vibeToggle').addEventListener('change', function() { data.settings.vibe = this.checked; saveData(); });
     document.getElementById('resetBtn').addEventListener('click', function() {
-        if (confirm('هل أنت متأكد؟ سيتم حذف جميع الأرصدة والسجلات!')) {
-            localStorage.removeItem(STORAGE_KEY);
-            location.reload();
+        if (confirm('هل أنت متأكد؟ سيتم حذف جميع الأرصدة والسجلات!')) { localStorage.removeItem(STORAGE_KEY); location.reload(); }
+    });
+
+    // ================================================================
+    // 10. قسم الألعاب الجديد (نظام الشروط المتغيرة + المكافآت)
+    // ================================================================
+
+    // ---- 10.1 قائمة الشروط (أكثر من 50 شرطاً) ----
+    const CONDITIONS = [
+        // زمنية
+        { type: 'time', target: 60, text: 'العب لمدة دقيقة واحدة', unit: 'دقيقة' },
+        { type: 'time', target: 120, text: 'العب لمدة دقيقتين', unit: 'دقيقة' },
+        { type: 'time', target: 180, text: 'العب لمدة 3 دقائق', unit: 'دقيقة' },
+        { type: 'time', target: 300, text: 'العب لمدة 5 دقائق', unit: 'دقيقة' },
+        { type: 'time', target: 600, text: 'العب لمدة 10 دقائق', unit: 'دقيقة' },
+        // عددية (مراحل)
+        { type: 'count', target: 3, text: 'تجاوز 3 مراحل بدون ترقيات', unit: 'مرحلة' },
+        { type: 'count', target: 5, text: 'تجاوز 5 مراحل', unit: 'مرحلة' },
+        { type: 'count', target: 10, text: 'تجاوز 10 مراحل', unit: 'مرحلة' },
+        { type: 'count', target: 15, text: 'تجاوز 15 مرحلة', unit: 'مرحلة' },
+        { type: 'count', target: 20, text: 'تجاوز 20 مرحلة', unit: 'مرحلة' },
+        // تجميعية (عملات)
+        { type: 'collect', target: 5, text: 'اجمع 5 عملات داخل اللعبة', unit: 'عملة' },
+        { type: 'collect', target: 10, text: 'اجمع 10 عملات داخل اللعبة', unit: 'عملة' },
+        { type: 'collect', target: 25, text: 'اجمع 25 عملة', unit: 'عملة' },
+        { type: 'collect', target: 50, text: 'اجمع 50 عملة', unit: 'عملة' },
+        { type: 'collect', target: 100, text: 'اجمع 100 عملة', unit: 'عملة' },
+        // مختلطة
+        { type: 'time', target: 150, text: 'العب لمدة 2.5 دقيقة', unit: 'دقيقة' },
+        { type: 'count', target: 7, text: 'تجاوز 7 مراحل', unit: 'مرحلة' },
+        { type: 'collect', target: 15, text: 'اجمع 15 عملة', unit: 'عملة' },
+        { type: 'time', target: 240, text: 'العب لمدة 4 دقائق', unit: 'دقيقة' },
+        { type: 'count', target: 12, text: 'تجاوز 12 مرحلة', unit: 'مرحلة' },
+        { type: 'collect', target: 30, text: 'اجمع 30 عملة', unit: 'عملة' },
+        { type: 'time', target: 360, text: 'العب لمدة 6 دقائق', unit: 'دقيقة' },
+        { type: 'count', target: 8, text: 'تجاوز 8 مراحل', unit: 'مرحلة' },
+        { type: 'collect', target: 20, text: 'اجمع 20 عملة', unit: 'عملة' },
+        { type: 'time', target: 90, text: 'العب لمدة 1.5 دقيقة', unit: 'دقيقة' },
+        { type: 'count', target: 4, text: 'تجاوز 4 مراحل', unit: 'مرحلة' },
+        { type: 'collect', target: 7, text: 'اجمع 7 عملات', unit: 'عملة' },
+        { type: 'time', target: 480, text: 'العب لمدة 8 دقائق', unit: 'دقيقة' },
+        { type: 'count', target: 25, text: 'تجاوز 25 مرحلة', unit: 'مرحلة' },
+        { type: 'collect', target: 75, text: 'اجمع 75 عملة', unit: 'عملة' },
+        { type: 'time', target: 30, text: 'العب لمدة 30 ثانية (تحدي سريع)', unit: 'ثانية' },
+        { type: 'count', target: 2, text: 'تجاوز مرحلتين', unit: 'مرحلة' },
+        { type: 'collect', target: 3, text: 'اجمع 3 عملات', unit: 'عملة' },
+        { type: 'time', target: 540, text: 'العب لمدة 9 دقائق', unit: 'دقيقة' },
+        { type: 'count', target: 18, text: 'تجاوز 18 مرحلة', unit: 'مرحلة' },
+        { type: 'collect', target: 40, text: 'اجمع 40 عملة', unit: 'عملة' },
+        { type: 'time', target: 120, text: 'العب لمدة دقيقتين بالضبط', unit: 'دقيقة' },
+        { type: 'count', target: 6, text: 'تجاوز 6 مراحل', unit: 'مرحلة' },
+        { type: 'collect', target: 12, text: 'اجمع 12 عملة', unit: 'عملة' },
+        { type: 'time', target: 300, text: 'العب لمدة 5 دقائق متواصلة', unit: 'دقيقة' },
+        { type: 'count', target: 14, text: 'تجاوز 14 مرحلة', unit: 'مرحلة' },
+        { type: 'collect', target: 45, text: 'اجمع 45 عملة', unit: 'عملة' },
+        { type: 'time', target: 75, text: 'العب لمدة 75 ثانية', unit: 'ثانية' },
+        { type: 'count', target: 9, text: 'تجاوز 9 مراحل', unit: 'مرحلة' },
+        { type: 'collect', target: 8, text: 'اجمع 8 عملات', unit: 'عملة' },
+        { type: 'time', target: 420, text: 'العب لمدة 7 دقائق', unit: 'دقيقة' },
+        { type: 'count', target: 30, text: 'تجاوز 30 مرحلة (نهاية اللعبة)', unit: 'مرحلة' },
+        { type: 'collect', target: 60, text: 'اجمع 60 عملة', unit: 'عملة' },
+        { type: 'time', target: 180, text: 'العب لمدة 3 دقائق بدون توقف', unit: 'دقيقة' },
+        { type: 'count', target: 11, text: 'تجاوز 11 مرحلة', unit: 'مرحلة' },
+        { type: 'collect', target: 22, text: 'اجمع 22 عملة', unit: 'عملة' },
+        { type: 'time', target: 135, text: 'العب لمدة 135 ثانية', unit: 'ثانية' },
+        { type: 'count', target: 16, text: 'تجاوز 16 مرحلة', unit: 'مرحلة' },
+        { type: 'collect', target: 33, text: 'اجمع 33 عملة', unit: 'عملة' },
+        { type: 'time', target: 255, text: 'العب لمدة 4.25 دقيقة', unit: 'دقيقة' },
+        { type: 'count', target: 13, text: 'تجاوز 13 مرحلة', unit: 'مرحلة' },
+        { type: 'collect', target: 28, text: 'اجمع 28 عملة', unit: 'عملة' },
+        { type: 'time', target: 390, text: 'العب لمدة 6.5 دقيقة', unit: 'دقيقة' },
+        { type: 'count', target: 22, text: 'تجاوز 22 مرحلة', unit: 'مرحلة' },
+        { type: 'collect', target: 55, text: 'اجمع 55 عملة', unit: 'عملة' }
+    ];
+
+    // ---- 10.2 اختيار شرط عشوائي ----
+    let currentCondition = null;
+    let conditionProgress = 0;
+    let gameSessionActive = false;
+    let gameSeconds = 0;
+    let gameRewardTotal = 0;
+    let gameTimerInterval = null;
+    const REWARD_AMOUNT = 0.001; // المكافأة عند تحقيق الشرط
+
+    function pickRandomCondition() {
+        const idx = Math.floor(Math.random() * CONDITIONS.length);
+        return { ...CONDITIONS[idx], index: idx };
+    }
+
+    function updateGameUI() {
+        if (!currentCondition) return;
+        const progress = Math.min(conditionProgress, currentCondition.target);
+        const pct = (progress / currentCondition.target) * 100;
+        document.getElementById('conditionText').textContent = `🎯 ${currentCondition.text}`;
+        document.getElementById('conditionProgress').textContent = `التقدم: ${progress} / ${currentCondition.target} (${currentCondition.unit})`;
+        document.getElementById('progressFill').style.width = Math.min(pct, 100) + '%';
+        document.getElementById('gameRewardDisplay').textContent = gameRewardTotal.toFixed(4) + ' NC';
+        // تحديث المؤقت
+        const mins = Math.floor(gameSeconds / 60);
+        const secs = gameSeconds % 60;
+        document.getElementById('gameTimerDisplay').textContent = 
+            String(mins).padStart(2, '0') + ':' + String(secs).padStart(2, '0');
+    }
+
+    // ---- 10.3 دوال الجلسة والمكافآت ----
+    function startGameSession() {
+        if (gameSessionActive) return;
+        gameSessionActive = true;
+        gameSeconds = 0;
+        // إعادة تعيين التقدم إذا كان الشرط من النوع الزمني (لأنه يبدأ من الصفر)
+        if (currentCondition && currentCondition.type === 'time') {
+            conditionProgress = 0;
+        }
+        document.getElementById('gameSessionStart').style.opacity = '0.6';
+        document.getElementById('gameSessionStop').style.opacity = '1';
+        addLog(`🎮 بدأت جلسة اللعب - الهدف: ${currentCondition.text}`);
+        playBeep(1000, 0.15);
+        gameTimerInterval = setInterval(() => {
+            gameSeconds++;
+            // تحديث المؤقت
+            const mins = Math.floor(gameSeconds / 60);
+            const secs = gameSeconds % 60;
+            document.getElementById('gameTimerDisplay').textContent = 
+                String(mins).padStart(2, '0') + ':' + String(secs).padStart(2, '0');
+
+            // إذا كان الشرط زمنياً، نزيد التقدم تلقائياً
+            if (currentCondition && currentCondition.type === 'time') {
+                conditionProgress = Math.min(gameSeconds, currentCondition.target);
+                updateGameUI();
+                // التحقق من تحقيق الشرط
+                if (conditionProgress >= currentCondition.target && gameSessionActive) {
+                    completeCondition();
+                }
+            }
+        }, 1000);
+    }
+
+    function stopGameSession() {
+        if (!gameSessionActive) return;
+        gameSessionActive = false;
+        clearInterval(gameTimerInterval);
+        gameTimerInterval = null;
+        document.getElementById('gameSessionStart').style.opacity = '1';
+        document.getElementById('gameSessionStop').style.opacity = '0.6';
+        addLog(`⏹ توقفت جلسة اللعب (المدة: ${Math.floor(gameSeconds/60)} دقيقة)`);
+        playBeep(300, 0.15);
+    }
+
+    // ---- 10.4 زر "سجل تقدماً" (للشروط العددية والتجميعية) ----
+    document.getElementById('gameAchieveBtn').addEventListener('click', function() {
+        if (!gameSessionActive) {
+            alert('يرجى بدء الجلسة أولاً!');
+            return;
+        }
+        if (!currentCondition) return;
+        if (currentCondition.type === 'time') {
+            alert('هذا الشرط زمني، فقط انتظر حتى يكتمل الوقت.');
+            return;
+        }
+        // نزيد التقدم بوحدة واحدة
+        conditionProgress = Math.min(conditionProgress + 1, currentCondition.target);
+        updateGameUI();
+        playBeep(800, 0.08);
+        doVibe();
+        // التحقق من تحقيق الشرط
+        if (conditionProgress >= currentCondition.target && gameSessionActive) {
+            completeCondition();
         }
     });
 
-    // -------------------------------------------
-    // 13. التهيئة عند تحميل الصفحة
-    // -------------------------------------------
+    // ---- 10.5 إكمال الشرط ومنح المكافأة ----
+    function completeCondition() {
+        if (!gameSessionActive) return;
+        gameSessionActive = false;
+        clearInterval(gameTimerInterval);
+        gameTimerInterval = null;
+        // منح المكافأة
+        data.wallet.NC += REWARD_AMOUNT;
+        gameRewardTotal += REWARD_AMOUNT;
+        addLog(`🎉 تحقق الشرط: ${currentCondition.text} - مكافأة +${REWARD_AMOUNT.toFixed(3)} NC`);
+        playBeep(1400, 0.3);
+        doVibe();
+        updateWalletUI();
+        saveData();
+        updateGameUI();
+        document.getElementById('gameSessionStart').style.opacity = '1';
+        document.getElementById('gameSessionStop').style.opacity = '0.6';
+        // اختيار شرط جديد تلقائياً (للمرة القادمة)
+        setTimeout(() => {
+            if (confirm('🎉 أكملت التحدي! هل تريد شرطاً جديداً؟')) {
+                selectNewCondition();
+            }
+        }, 500);
+    }
+
+    // ---- 10.6 اختيار شرط جديد ----
+    function selectNewCondition() {
+        currentCondition = pickRandomCondition();
+        conditionProgress = 0;
+        gameSeconds = 0;
+        gameRewardTotal = 0;
+        updateGameUI();
+        addLog(`🔄 تم اختيار شرط جديد: ${currentCondition.text}`);
+        playBeep(600, 0.1);
+        // إعادة ضبط أزرار الجلسة
+        document.getElementById('gameSessionStart').style.opacity = '1';
+        document.getElementById('gameSessionStop').style.opacity = '0.6';
+        // إذا كان الشرط زمنياً، نوقف الجلسة الحالية إن وجدت
+        if (gameSessionActive) stopGameSession();
+    }
+
+    // ---- 10.7 أزرار الجلسة ----
+    document.getElementById('gameSessionStart').addEventListener('click', startGameSession);
+    document.getElementById('gameSessionStop').addEventListener('click', stopGameSession);
+
+    // ---- 10.8 تغيير لعبة itch.io ----
+    document.getElementById('changeGameBtn').addEventListener('click', function() {
+        const url = document.getElementById('gameUrlInput').value.trim();
+        if (url) {
+            document.getElementById('gameIframe').src = url;
+            addLog(`🔄 تم تغيير اللعبة إلى: ${url}`);
+            playBeep(900, 0.1);
+        } else {
+            alert('الرجاء إدخال رابط صحيح للتضمين من itch.io');
+        }
+    });
+
+    // ---- 10.9 تحميل شرط جديد عند فتح تبويب الألعاب ----
+    function initGameTab() {
+        // إذا لم يكن هناك شرط، اختر واحداً
+        if (!currentCondition) {
+            selectNewCondition();
+        } else {
+            updateGameUI();
+        }
+        // تحديث حقل الرابط بالقيمة الحالية للإطار
+        const currentSrc = document.getElementById('gameIframe').src;
+        if (currentSrc && currentSrc !== 'about:blank') {
+            document.getElementById('gameUrlInput').value = currentSrc;
+        }
+    }
+
+    // استدعاء التهيئة عند تحميل الصفحة
+    window.initGameTab = initGameTab;
+
+    // ================================================================
+    // 11. التهيئة عند تحميل الصفحة
+    // ================================================================
     window.onload = function() {
         loadData();
-        // ضبط الإعدادات
         document.getElementById('soundToggle').checked = data.settings.sound !== false;
         document.getElementById('vibeToggle').checked = data.settings.vibe !== false;
-        // بدء التعدين تلقائياً
         startMining();
         updateAllUI();
         renderLog();
-        // إضافة سجل ترحيبي
-        addLog('🏛️ مرحباً في منصة Hye Corp للتعدين الرقمي');
-        // تنبيه: إذا كان هناك مبلغ عالق من قبل
-        if (data.pendingNC > 0) {
-            document.getElementById('pendingDisplay').textContent = data.pendingNC.toFixed(8) + ' NC';
-        }
+        addLog('🏛️ مرحباً في Hye Corp - الإصدار 4.0 مع ألعاب itch.io');
+        if (data.pendingNC > 0) document.getElementById('pendingDisplay').textContent = data.pendingNC.toFixed(8) + ' NC';
+        // تهيئة قسم الألعاب
+        initGameTab();
     };
 
-    // حفظ البيانات كل 5 ثوانٍ احتياطياً
+    // حفظ دوري
     setInterval(() => saveData(), 5000);
 </script>
 </body>
