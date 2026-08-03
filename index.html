@@ -5,11 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>HyeX Exchange - تداول احترافي</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <!-- مكتبة الرسم البياني -->
-    <script src="https://cdn.jsdelivr.net/npm/lightweight-charts@3.8.0/dist/lightweight-charts.standalone.js">
-    </script>
     <style>
-        /* ===== كل التصميم السابق نفسه، لم يتغير ===== */
+        /* ===== إعادة تعيين ===== */
         * {
             margin: 0;
             padding: 0;
@@ -76,7 +73,7 @@
             letter-spacing: 0.3px;
         }
 
-        /* ===== صورة الملف الشخصي ===== */
+        /* ===== صورة الملف الشخصي (دائرة احترافية) ===== */
         .profile-circle {
             position: absolute;
             top: 6px;
@@ -84,7 +81,7 @@
             width: 38px;
             height: 38px;
             border-radius: 50%;
-            background: #1A2A4A;
+            background: linear-gradient(135deg, #1A2A4A, #2A3A5A);
             border: 2px solid #C9A84C;
             cursor: pointer;
             overflow: hidden;
@@ -93,13 +90,14 @@
             justify-content: center;
             font-size: 18px;
             color: #C9A84C;
-            box-shadow: 0 0 15px #C9A84C33;
+            box-shadow: 0 0 20px #C9A84C44, inset 0 0 10px #C9A84C22;
             transition: 0.3s;
             z-index: 20;
         }
         .profile-circle:hover {
-            transform: scale(1.05);
+            transform: scale(1.08);
             border-color: #4A9CFF;
+            box-shadow: 0 0 30px #4A9CFF55, inset 0 0 15px #4A9CFF33;
         }
         .profile-circle img {
             width: 100%;
@@ -110,7 +108,7 @@
             position: absolute;
             bottom: -2px;
             right: -2px;
-            background: #4A9CFF;
+            background: linear-gradient(135deg, #4A9CFF, #6C63FF);
             color: #fff;
             font-size: 7px;
             font-weight: 700;
@@ -121,6 +119,7 @@
             align-items: center;
             justify-content: center;
             border: 2px solid #13131C;
+            box-shadow: 0 0 10px #4A9CFF77;
         }
 
         /* ===== شريط السعر ===== */
@@ -217,7 +216,7 @@
         }
         .card-title {
             font-size: 11px;
-            color: #8E8E9A;
+            color: #B0B0C0;
             letter-spacing: 1px;
             margin-bottom: 6px;
             display: flex;
@@ -339,12 +338,12 @@
             font-size: 10px;
             padding: 3px 0;
             border-bottom: 1px solid #1A1A22;
-            color: #aaa;
+            color: #C0C0D0;
             display: flex;
             justify-content: space-between;
         }
         .log-item .time {
-            color: #555;
+            color: #777;
             font-size: 9px;
         }
 
@@ -386,6 +385,7 @@
             padding: 8px 0;
             border-bottom: 1px solid #1A1A22;
             align-items: center;
+            color: #C0C0D0;
         }
         .switch input {
             display: none;
@@ -419,18 +419,47 @@
         }
 
         /* ===== قسم التداول ===== */
-        #chartContainer {
+        #chartCanvas {
             width: 100%;
-            height: 220px;
+            height: 200px;
             border-radius: 12px;
             background: #0A0A10;
             border: 1px solid #2A2A35;
-            overflow: hidden;
-            position: relative;
+            display: block;
         }
-        #chartContainer .tv-lightweight-charts {
-            width: 100% !important;
-            height: 100% !important;
+
+        .market-stats {
+            display: flex;
+            gap: 6px;
+            justify-content: space-around;
+            background: #0E0E16;
+            padding: 4px 8px;
+            border-radius: 10px;
+            margin-bottom: 4px;
+            border: 1px solid #2A2A35;
+        }
+        .market-stats div {
+            text-align: center;
+        }
+        .market-stats div .label {
+            font-size: 8px;
+            color: #8E8E9A;
+        }
+        .market-stats div .value {
+            font-weight: 700;
+            font-size: 13px;
+        }
+        .market-stats div .value.price {
+            color: #C9A84C;
+        }
+        .market-stats div .value.change.up {
+            color: #7BED9F;
+        }
+        .market-stats div .value.change.down {
+            color: #FF6B8A;
+        }
+        .market-stats div .value.volume {
+            color: #4A9CFF;
         }
 
         .trading-controls {
@@ -444,7 +473,7 @@
         .trading-controls input {
             background: #0A0A0F;
             border: 1px solid #333;
-            color: #fff;
+            color: #E0E0E0;
             padding: 4px 8px;
             border-radius: 10px;
             flex: 1;
@@ -492,7 +521,7 @@
             border-bottom: 1px solid #1A1A22;
             display: flex;
             justify-content: space-between;
-            color: #aaa;
+            color: #C0C0D0;
         }
         .trade-history .entry .win {
             color: #7BED9F;
@@ -500,169 +529,253 @@
         .trade-history .entry .lose {
             color: #FF6B8A;
         }
-
-        .market-stats {
-            display: flex;
-            gap: 6px;
-            justify-content: space-around;
-            background: #0E0E16;
-            padding: 4px 8px;
-            border-radius: 10px;
-            margin-bottom: 4px;
-            border: 1px solid #2A2A35;
-        }
-        .market-stats div {
-            text-align: center;
-        }
-        .market-stats div .label {
-            font-size: 8px;
-            color: #8E8E9A;
-        }
-        .market-stats div .value {
-            font-weight: 700;
-            font-size: 13px;
-        }
-        .market-stats div .value.price {
-            color: #C9A84C;
-        }
-        .market-stats div .value.change.up {
-            color: #7BED9F;
-        }
-        .market-stats div .value.change.down {
-            color: #FF6B8A;
-        }
-        .market-stats div .value.volume {
-            color: #4A9CFF;
+        .trade-history .entry .time {
+            color: #777;
+            font-size: 9px;
         }
 
-        /* ===== نافذة الملف الشخصي ===== */
-        .modal-overlay {
+        /* ===== الملف الشخصي (نافذة منزلقة احترافية) ===== */
+        .profile-slide {
             position: fixed;
             top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.85);
-            backdrop-filter: blur(8px);
-            z-index: 1000;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-        }
-        .modal-overlay.show {
-            display: flex;
-        }
-        .modal-box {
-            background: #1C1C28;
-            border-radius: 30px;
-            padding: 20px;
-            max-width: 340px;
+            right: -100%;
             width: 100%;
-            border: 1px solid #C9A84C55;
-            box-shadow: 0 0 60px #C9A84C33;
-            max-height: 90vh;
-            overflow-y: auto;
+            max-width: 380px;
+            height: 100%;
+            background: #14141E;
+            z-index: 1000;
+            transition: right 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+            box-shadow: -10px 0 60px rgba(0, 0, 0, 0.8);
+            border-left: 1px solid #2A2A35;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
         }
-        .modal-box .close-btn {
-            float: left;
+        .profile-slide.open {
+            right: 0;
+        }
+        .profile-slide .header {
+            padding: 16px 20px 12px;
+            background: linear-gradient(135deg, #0B1320, #1A1F2E);
+            border-bottom: 1px solid #2A2A35;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .profile-slide .header h2 {
+            color: #C9A84C;
+            font-size: 18px;
+            font-weight: 700;
+        }
+        .profile-slide .header .close-btn {
             background: none;
             border: none;
             color: #8E8E9A;
-            font-size: 22px;
+            font-size: 24px;
             cursor: pointer;
+            transition: 0.3s;
         }
-        .modal-box .profile-pic-large {
-            width: 70px;
-            height: 70px;
+        .profile-slide .header .close-btn:hover {
+            color: #FF6B8A;
+            transform: rotate(90deg);
+        }
+
+        .profile-slide .body {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+        }
+        .profile-slide .body::-webkit-scrollbar {
+            width: 3px;
+        }
+        .profile-slide .body::-webkit-scrollbar-track {
+            background: #1A1A22;
+        }
+        .profile-slide .body::-webkit-scrollbar-thumb {
+            background: #4A9CFF55;
+            border-radius: 10px;
+        }
+
+        .profile-slide .profile-pic-large {
+            width: 80px;
+            height: 80px;
             border-radius: 50%;
-            background: #1A2A4A;
+            background: linear-gradient(135deg, #1A2A4A, #2A3A5A);
             border: 3px solid #C9A84C;
-            margin: 0 auto 10px;
+            margin: 0 auto 14px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 32px;
+            font-size: 36px;
             color: #C9A84C;
             overflow: hidden;
             cursor: pointer;
             position: relative;
+            box-shadow: 0 0 30px #C9A84C44;
+            transition: 0.3s;
         }
-        .modal-box .profile-pic-large img {
+        .profile-slide .profile-pic-large:hover {
+            border-color: #4A9CFF;
+            box-shadow: 0 0 40px #4A9CFF55;
+            transform: scale(1.02);
+        }
+        .profile-slide .profile-pic-large img {
             width: 100%;
             height: 100%;
             object-fit: cover;
         }
-        .modal-box .profile-pic-large .upload-overlay {
+        .profile-slide .profile-pic-large .upload-overlay {
             position: absolute;
             bottom: 0;
             left: 0;
             right: 0;
             background: rgba(0, 0, 0, 0.7);
             color: #fff;
-            font-size: 8px;
-            padding: 2px;
+            font-size: 9px;
+            padding: 4px;
             text-align: center;
             opacity: 0;
             transition: 0.3s;
         }
-        .modal-box .profile-pic-large:hover .upload-overlay {
+        .profile-slide .profile-pic-large:hover .upload-overlay {
             opacity: 1;
         }
-        .modal-box input[type="text"] {
+
+        .profile-slide .input-field {
             width: 100%;
-            padding: 8px 12px;
+            padding: 10px 14px;
             background: #0A0A0F;
-            border: 1px solid #333;
-            border-radius: 12px;
-            color: #fff;
-            font-size: 13px;
-            margin-bottom: 8px;
-        }
-        .modal-box .level-info {
-            background: #0E0E16;
-            border-radius: 12px;
-            padding: 8px 12px;
             border: 1px solid #2A2A35;
-            margin-bottom: 8px;
+            border-radius: 14px;
+            color: #E0E0E0;
+            font-size: 14px;
+            margin-bottom: 12px;
+            transition: 0.3s;
         }
-        .modal-box .level-info .level-bar {
+        .profile-slide .input-field:focus {
+            border-color: #C9A84C;
+            outline: none;
+            box-shadow: 0 0 20px #C9A84C22;
+        }
+
+        .profile-slide .level-card {
+            background: linear-gradient(135deg, #0E0E16, #1A1A28);
+            border-radius: 16px;
+            padding: 14px 16px;
+            border: 1px solid #2A2A35;
+            margin-bottom: 12px;
+        }
+        .profile-slide .level-card .level-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+            color: #C0C0D0;
+        }
+        .profile-slide .level-card .level-row .highlight {
+            color: #C9A84C;
+            font-weight: 700;
+        }
+        .profile-slide .level-card .level-bar {
             width: 100%;
-            height: 4px;
+            height: 6px;
             background: #2A2A35;
             border-radius: 10px;
             overflow: hidden;
-            margin-top: 3px;
+            margin-top: 6px;
         }
-        .modal-box .level-info .level-bar .fill {
+        .profile-slide .level-card .level-bar .fill {
             height: 100%;
             background: linear-gradient(90deg, #C9A84C, #4A9CFF);
             border-radius: 10px;
             transition: width 0.5s ease;
         }
-        .modal-box .stat-row {
-            display: flex;
-            justify-content: space-between;
-            padding: 4px 0;
-            border-bottom: 1px solid #1A1A22;
-            font-size: 12px;
+
+        .profile-slide .stat-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin-bottom: 12px;
         }
-        .modal-box .stat-row .value {
-            color: #C9A84C;
+        .profile-slide .stat-item {
+            background: #0E0E16;
+            border-radius: 14px;
+            padding: 10px 12px;
+            border: 1px solid #2A2A35;
+            text-align: center;
+        }
+        .profile-slide .stat-item .stat-label {
+            font-size: 9px;
+            color: #8E8E9A;
+        }
+        .profile-slide .stat-item .stat-value {
+            font-size: 16px;
             font-weight: 700;
+            color: #C9A84C;
+            margin-top: 2px;
         }
-        .modal-box .save-btn {
+        .profile-slide .stat-item .stat-value.green {
+            color: #7BED9F;
+        }
+        .profile-slide .stat-item .stat-value.blue {
+            color: #4A9CFF;
+        }
+        .profile-slide .stat-item .stat-value.pink {
+            color: #FF6B8A;
+        }
+
+        .profile-slide .save-btn {
             width: 100%;
-            padding: 10px;
-            background: #C9A84C;
+            padding: 12px;
+            background: linear-gradient(135deg, #C9A84C, #B8923A);
             border: none;
             border-radius: 30px;
             font-weight: 700;
-            font-size: 14px;
+            font-size: 16px;
             color: #0A0A0F;
             cursor: pointer;
-            margin-top: 8px;
+            transition: 0.3s;
+            margin-top: 4px;
         }
+        .profile-slide .save-btn:hover {
+            transform: scale(1.02);
+            box-shadow: 0 0 30px #C9A84C55;
+        }
+
+        .profile-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 999;
+            display: none;
+            backdrop-filter: blur(4px);
+        }
+        .profile-overlay.show {
+            display: block;
+        }
+
+        /* ===== تعديلات على الألوان العامة ===== */
+        .text-muted {
+            color: #8E8E9A;
+        }
+        .text-gold {
+            color: #C9A84C;
+        }
+        .text-green {
+            color: #7BED9F;
+        }
+        .text-red {
+            color: #FF6B8A;
+        }
+        .text-white {
+            color: #E0E0E0;
+        }
+        .text-blue {
+            color: #4A9CFF;
+        }
+
         .badge {
             background: #1E2A3A;
             padding: 2px 8px;
@@ -680,7 +793,7 @@
 
         <!-- ===== الرأس ===== -->
         <div class="corp-header">
-            <div class="profile-circle" id="profileCircle" onclick="openProfileModal()">
+            <div class="profile-circle" id="profileCircle" onclick="toggleProfile()">
                 <i class="fas fa-user" id="profileIcon"></i>
                 <img id="profileImage" style="display:none;" alt="صورة">
                 <div class="level-badge" id="levelBadge">1</div>
@@ -689,7 +802,7 @@
                 <h1>🏛️ HyeX Exchange</h1>
                 <div class="subtitle">منصة محلية قيد التطوير (نسخة تجريبية)</div>
             </div>
-            <div class="badge"><i class="fas fa-shield-alt"></i> v7.1</div>
+            <div class="badge"><i class="fas fa-shield-alt"></i> v8.0</div>
         </div>
 
         <!-- ===== شريط السعر ===== -->
@@ -704,7 +817,7 @@
             <div class="card">
                 <div class="card-title"><span>⚡ سرعة التعدين</span> <span id="hashRateDisplay">0.0001 NC/ث</span></div>
                 <div style="font-size:22px; font-weight:700; color:#4A9CFF; text-align:center; padding:2px 0;" id="pendingDisplay">0.00000000 NC</div>
-                <div style="text-align:center; font-size:10px; color:#666;">المبلغ العالق (قيد التعدين)</div>
+                <div style="text-align:center; font-size:10px; color:#8E8E9A;">المبلغ العالق (قيد التعدين)</div>
             </div>
             <div class="mining-actions">
                 <button class="btn btn-start" id="miningToggleBtn"><i class="fas fa-play"></i> تعدين</button>
@@ -715,21 +828,21 @@
             <div id="logContainer" style="display:none; margin-top:8px;">
                 <div class="card" style="padding:8px;">
                     <div class="card-title"><span>📋 سجل التعدين</span> <span id="logCount">0</span></div>
-                    <div class="log-container" id="logList"><div class="log-item" style="color:#555;text-align:center;">لا توجد عمليات</div></div>
+                    <div class="log-container" id="logList"><div class="log-item" style="color:#777;text-align:center;">لا توجد عمليات</div></div>
                 </div>
             </div>
             <div id="convertPanel" style="display:none; margin-top:6px;">
                 <div class="card">
                     <div class="card-title">🔄 تحويل العملات</div>
                     <div style="display:flex; gap:4px; flex-wrap:wrap;">
-                        <select id="convertFrom" style="flex:1; background:#0A0A0F; border:1px solid #333; color:#fff; padding:4px 8px; border-radius:10px; font-size:11px;">
+                        <select id="convertFrom" style="flex:1; background:#0A0A0F; border:1px solid #333; color:#E0E0E0; padding:4px 8px; border-radius:10px; font-size:11px;">
                             <option value="NC">NC</option><option value="NCR">NCR</option><option value="BitNC">BitNC</option><option value="LiNC">LiNC</option><option value="Cash">Cash</option>
                         </select>
-                        <input type="number" id="convertAmount" placeholder="المبلغ" value="1" style="flex:1.5; background:#0A0A0F; border:1px solid #333; color:#fff; padding:4px 8px; border-radius:10px; font-size:11px;">
-                        <select id="convertTo" style="flex:1; background:#0A0A0F; border:1px solid #333; color:#fff; padding:4px 8px; border-radius:10px; font-size:11px;">
+                        <input type="number" id="convertAmount" placeholder="المبلغ" value="1" style="flex:1.5; background:#0A0A0F; border:1px solid #333; color:#E0E0E0; padding:4px 8px; border-radius:10px; font-size:11px;">
+                        <select id="convertTo" style="flex:1; background:#0A0A0F; border:1px solid #333; color:#E0E0E0; padding:4px 8px; border-radius:10px; font-size:11px;">
                             <option value="NC">NC</option><option value="NCR">NCR</option><option value="BitNC">BitNC</option><option value="LiNC">LiNC</option><option value="Cash">Cash</option>
                         </select>
-                        <button id="executeConvertBtn" style="flex:0.8; background:#C9A84C; border:none; color:#000; font-weight:700; border-radius:30px; cursor:pointer; font-size:11px; padding:4px;">تنفيذ</button>
+                        <button id="executeConvertBtn" style="flex:0.8; background:#C9A84C; border:none; color:#0A0A0F; font-weight:700; border-radius:30px; cursor:pointer; font-size:11px; padding:4px;">تنفيذ</button>
                     </div>
                 </div>
             </div>
@@ -738,7 +851,7 @@
         <!-- ===== تبويب المحفظة ===== -->
         <div id="tab-wallet" class="tab-content">
             <div class="card">
-                <div class="card-title"><span>💰 الأرصدة</span> <i class="fas fa-chevron-left"></i></div>
+                <div class="card-title"><span>💰 الأرصدة</span> <i class="fas fa-chevron-left text-gold"></i></div>
                 <div class="wallet-grid" id="walletGrid">
                     <div class="wallet-item"><div class="symbol">NC</div><div class="balance nc" id="balNC">0.00</div></div>
                     <div class="wallet-item"><div class="symbol">NCR</div><div class="balance ncr" id="balNCR">0.00</div></div>
@@ -747,18 +860,18 @@
                     <div class="wallet-item" style="grid-column:span 3;"><div class="symbol">💵 Cash (دولار)</div><div class="balance usd" id="balCash">0.00</div></div>
                 </div>
             </div>
-            <div class="card" style="text-align:center; color:#666; font-size:10px;"><i class="fas fa-lock"></i> جميع الأرصدة مشفرة ومركزية (للترفيه)</div>
+            <div class="card" style="text-align:center; color:#8E8E9A; font-size:10px;"><i class="fas fa-lock"></i> جميع الأرصدة مشفرة ومركزية (للترفيه)</div>
         </div>
 
         <!-- ===== تبويب المتجر ===== -->
         <div id="tab-shop" class="tab-content">
             <div class="card">
-                <div class="card-title"><span>🛒 متجر الترقيات</span> <span>NC فقط</span></div>
+                <div class="card-title"><span>🛒 متجر الترقيات</span> <span class="text-gold">NC فقط</span></div>
                 <div id="shopList"></div>
             </div>
         </div>
 
-        <!-- ===== تبويب التداول (المُصلح) ===== -->
+        <!-- ===== تبويب التداول (بـ Canvas بدل المكتبة) ===== -->
         <div id="tab-trade" class="tab-content">
             <div class="card">
                 <div class="card-title">
@@ -766,12 +879,8 @@
                     <span id="tradeBalance" style="color:#7BED9F;">0.00 Cash</span>
                 </div>
 
-                <!-- حاوية الرسم البياني -->
-                <div id="chartContainer">
-                    <div style="display:flex; align-items:center; justify-content:center; height:100%; color:#555; font-size:12px;">
-                        <i class="fas fa-spinner fa-spin" style="margin-left:8px;"></i> جاري تحميل الرسم البياني...
-                    </div>
-                </div>
+                <!-- رسم بياني بـ Canvas -->
+                <canvas id="chartCanvas"></canvas>
 
                 <!-- المؤشرات -->
                 <div class="market-stats">
@@ -796,7 +905,7 @@
                 <!-- سجل التداول -->
                 <div class="card-title" style="margin-top:4px;"><span>📋 سجل التداول</span> <span id="tradeLogCount">0</span></div>
                 <div class="trade-history" id="tradeLogList">
-                    <div class="entry" style="color:#555;text-align:center;">لا توجد صفقات بعد</div>
+                    <div class="entry" style="color:#777;text-align:center;">لا توجد صفقات بعد</div>
                 </div>
             </div>
         </div>
@@ -807,7 +916,7 @@
                 <div class="card-title"><span>⚙️ الإعدادات</span></div>
                 <div class="settings-item"><span>🔊 المؤثرات الصوتية</span> <label class="switch"><input type="checkbox" id="soundToggle" checked><span class="slider"></span></label></div>
                 <div class="settings-item"><span>📳 الاهتزاز</span> <label class="switch"><input type="checkbox" id="vibeToggle" checked><span class="slider"></span></label></div>
-                <div class="settings-item"><span>🏦 اسم المنصة</span> <span style="color:#C9A84C;">HyeX Exchange</span></div>
+                <div class="settings-item"><span>🏦 اسم المنصة</span> <span class="text-gold">HyeX Exchange</span></div>
                 <div class="settings-item"><span>🔄 إعادة تعيين البيانات</span> <button id="resetBtn" style="background:#3A1A1A; border:none; color:#FF6B8A; padding:4px 14px; border-radius:30px; cursor:pointer; font-size:11px;">إعادة تعيين</button></div>
             </div>
         </div>
@@ -821,29 +930,36 @@
             <div class="nav-item" data-tab="settings"><i class="fas fa-cog"></i><span>إعدادات</span></div>
         </div>
 
-        <!-- ===== نافذة الملف الشخصي ===== -->
-        <div class="modal-overlay" id="profileModal">
-            <div class="modal-box">
-                <button class="close-btn" onclick="closeProfileModal()"><i class="fas fa-times"></i></button>
-                <h2 style="color:#C9A84C; text-align:center; margin-bottom:10px; font-size:18px;">👤 ملفي الشخصي</h2>
+        <!-- ===== الملف الشخصي (نافذة منزلقة) ===== -->
+        <div class="profile-overlay" id="profileOverlay" onclick="toggleProfile()"></div>
+        <div class="profile-slide" id="profileSlide">
+            <div class="header">
+                <h2>👤 ملفي الشخصي</h2>
+                <button class="close-btn" onclick="toggleProfile()"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="body">
                 <div class="profile-pic-large" id="profilePicLarge" onclick="document.getElementById('profileUpload').click()">
                     <i class="fas fa-user" id="modalProfileIcon"></i>
                     <img id="modalProfileImage" style="display:none;" alt="صورة">
                     <div class="upload-overlay">تغيير الصورة</div>
                     <input type="file" id="profileUpload" accept="image/*" style="display:none;" onchange="uploadProfileImage(event)">
                 </div>
-                <input type="text" id="profileNameInput" placeholder="اسم المستخدم" value="مستخدم جديد">
-                <div class="level-info">
-                    <div style="display:flex; justify-content:space-between;">
-                        <span>المستوى <span id="modalLevelDisplay">1</span></span>
-                        <span>نقاط الخبرة: <span id="modalXPDisplay">0</span></span>
-                    </div>
+
+                <input type="text" id="profileNameInput" class="input-field" placeholder="اسم المستخدم" value="مستخدم جديد">
+
+                <div class="level-card">
+                    <div class="level-row"><span>المستوى</span><span class="highlight" id="modalLevelDisplay">1</span></div>
+                    <div class="level-row" style="font-size:11px; color:#8E8E9A;"><span>نقاط الخبرة</span><span id="modalXPDisplay">0</span></div>
                     <div class="level-bar"><div class="fill" id="modalLevelBar" style="width:0%;"></div></div>
                 </div>
-                <div class="stat-row"><span>💰 إجمالي الأرباح</span><span class="value" id="modalTotalProfit">0.00 Cash</span></div>
-                <div class="stat-row"><span>⛏️ إجمالي التعدين</span><span class="value" id="modalTotalMined">0.00 NC</span></div>
-                <div class="stat-row"><span>📊 عدد الصفقات</span><span class="value" id="modalTotalTrades">0</span></div>
-                <div class="stat-row"><span>🏆 نسبة الربح</span><span class="value" id="modalWinRate">0%</span></div>
+
+                <div class="stat-grid">
+                    <div class="stat-item"><div class="stat-label">💰 إجمالي الأرباح</div><div class="stat-value green" id="modalTotalProfit">0.00 Cash</div></div>
+                    <div class="stat-item"><div class="stat-label">⛏️ إجمالي التعدين</div><div class="stat-value blue" id="modalTotalMined">0.00 NC</div></div>
+                    <div class="stat-item"><div class="stat-label">📊 عدد الصفقات</div><div class="stat-value" id="modalTotalTrades">0</div></div>
+                    <div class="stat-item"><div class="stat-label">🏆 نسبة الربح</div><div class="stat-value pink" id="modalWinRate">0%</div></div>
+                </div>
+
                 <button class="save-btn" onclick="saveProfile()">💾 حفظ التغييرات</button>
             </div>
         </div>
@@ -869,10 +985,7 @@
 
         let prices = { NC: 1.00, NCR: 0.05, BitNC: 0.50, LiNC: 0.20 };
         let chartData = [];
-        let chart = null;
-        let candlestickSeries = null;
-        let volumeSeries = null;
-        let chartInitialized = false;
+        let canvasCtx = null;
 
         function loadData() {
             try {
@@ -940,7 +1053,7 @@
             const count = document.getElementById('logCount');
             count.textContent = data.log.length;
             if (data.log.length === 0) { list.innerHTML =
-                '<div class="log-item" style="color:#555;text-align:center;">لا توجد عمليات</div>'; return; }
+                '<div class="log-item" style="color:#777;text-align:center;">لا توجد عمليات</div>'; return; }
             list.innerHTML = data.log.slice(0, 30).map(l =>
                 `<div class="log-item"><span>${l.text}</span><span class="time">${l.time}</span></div>`).join('');
         }
@@ -1057,7 +1170,7 @@
             ];
             list.innerHTML = items.map(item => {
                 const canBuy = data.wallet.NC >= item.cost && item.level < item.max;
-                return `<div class="shop-item"><div class="info"><strong>${item.name}</strong> <small>${item.desc} (${item.level}/${item.max})</small></div><button class="buy-btn" data-id="${item.id}" data-cost="${item.cost}" ${!canBuy ? 'disabled' : ''}>${item.level >= item.max ? 'مكتمل' : item.cost + ' NC'}</button></div>`;
+                return `<div class="shop-item"><div class="info"><strong class="text-white">${item.name}</strong> <small>${item.desc} (${item.level}/${item.max})</small></div><button class="buy-btn" data-id="${item.id}" data-cost="${item.cost}" ${!canBuy ? 'disabled' : ''}>${item.level >= item.max ? 'مكتمل' : item.cost + ' NC'}</button></div>`;
             }).join('');
             document.querySelectorAll('.shop-item .buy-btn').forEach(btn => {
                 btn.addEventListener('click', function() {
@@ -1092,129 +1205,140 @@
         }
 
         // ================================================================
-        // 7. الرسم البياني (المُصلح)
+        // 7. الرسم البياني بـ Canvas (مضمون 100%)
         // ================================================================
 
-        function initChart() {
-            const container = document.getElementById('chartContainer');
-            if (!container) {
-                console.warn('chartContainer not found');
-                return;
-            }
+        let chartCanvas = null;
 
-            // مسح المحتوى السابق
-            container.innerHTML = '';
+        function initChartCanvas() {
+            const canvas = document.getElementById('chartCanvas');
+            if (!canvas) return;
+            canvasCtx = canvas.getContext('2d');
+            chartCanvas = canvas;
 
-            try {
-                chart = LightweightCharts.createChart(container, {
-                    width: container.clientWidth,
-                    height: 220,
-                    layout: {
-                        backgroundColor: '#0A0A10',
-                        textColor: '#8E8E9A',
-                    },
-                    grid: {
-                        vertLines: { color: '#1A1A22' },
-                        horzLines: { color: '#1A1A22' },
-                    },
-                    crosshair: {
-                        mode: LightweightCharts.CrosshairMode.Normal,
-                    },
-                    rightPriceScale: {
-                        borderColor: '#2A2A35',
-                    },
-                    timeScale: {
-                        borderColor: '#2A2A35',
-                        timeVisible: true,
-                        secondsVisible: false,
-                    },
-                    handleScroll: {
-                        vertTouchDrag: false,
-                    },
-                });
+            // ضبط الحجم
+            resizeChartCanvas();
 
-                candlestickSeries = chart.addCandlestickSeries({
-                    upColor: '#7BED9F',
-                    downColor: '#FF6B8A',
-                    borderVisible: false,
-                    wickUpColor: '#7BED9F',
-                    wickDownColor: '#FF6B8A',
-                });
+            // توليد بيانات أولية
+            generateChartData(30);
+            drawChart();
 
-                volumeSeries = chart.addHistogramSeries({
-                    color: '#4A9CFF33',
-                    priceFormat: {
-                        type: 'volume',
-                    },
-                    priceScaleId: 'volume',
-                });
-
-                chart.priceScale('volume').applyOptions({
-                    scaleMargins: {
-                        top: 0.8,
-                        bottom: 0,
-                    },
-                });
-
-                // توليد بيانات أولية
-                generateChartData(40);
-                candlestickSeries.setData(chartData);
-                updateVolumeData();
-                updateLivePrice();
-
-                chartInitialized = true;
-
-                // تحديث عند تغيير الحجم
-                const resizeObserver = new ResizeObserver(() => {
-                    if (chart) {
-                        chart.applyOptions({ width: container.clientWidth });
-                    }
-                });
-                resizeObserver.observe(container);
-
-                console.log('Chart initialized successfully');
-
-            } catch (error) {
-                console.error('Chart init error:', error);
-                container.innerHTML =
-                    `<div style="display:flex; align-items:center; justify-content:center; height:100%; color:#FF6B8A; font-size:12px;">⚠️ خطأ في تحميل الرسم البياني</div>`;
-            }
+            // تحديث عند تغيير الحجم
+            const ro = new ResizeObserver(() => { resizeChartCanvas();
+                drawChart(); });
+            ro.observe(canvas);
         }
 
-        function generateChartData(count = 40) {
+        function resizeChartCanvas() {
+            if (!chartCanvas) return;
+            const rect = chartCanvas.parentElement.getBoundingClientRect();
+            const w = rect.width - 4;
+            chartCanvas.width = w * devicePixelRatio;
+            chartCanvas.height = 200 * devicePixelRatio;
+            chartCanvas.style.width = w + 'px';
+            chartCanvas.style.height = '200px';
+            chartCanvas.getContext('2d').scale(devicePixelRatio, devicePixelRatio);
+        }
+
+        function generateChartData(count = 30) {
             chartData = [];
             let basePrice = prices.NC || 1.0;
-            let time = Math.floor(Date.now() / 1000) - count * 60;
-
             for (let i = 0; i < count; i++) {
                 let change = (Math.random() - 0.5) * 0.03;
                 let open = basePrice;
                 let close = Math.max(0.001, basePrice + change);
                 let high = Math.max(open, close) + Math.random() * 0.01;
                 let low = Math.min(open, close) - Math.random() * 0.01;
-
                 chartData.push({
-                    time: time + i * 60,
                     open: open,
                     high: high,
                     low: low,
                     close: close,
                     volume: Math.floor(100 + Math.random() * 900)
                 });
-
                 basePrice = close;
             }
             prices.NC = basePrice;
         }
 
-        function updateVolumeData() {
-            if (!volumeSeries) return;
-            const volumeData = chartData.map(d => ({
-                time: d.time,
-                value: d.volume,
-                color: d.close >= d.open ? '#7BED9F33' : '#FF6B8A33'
-            }));
-            volumeSeries.setData(volumeData);
+        function drawChart() {
+            if (!canvasCtx || chartData.length === 0) return;
+            const canvas = chartCanvas;
+            const ctx = canvasCtx;
+            const w = canvas.width / devicePixelRatio;
+            const h = canvas.height / devicePixelRatio;
+
+            ctx.clearRect(0, 0, w, h);
+
+            // حساب الحدود
+            let minPrice = Math.min(...chartData.map(d => d.low)) * 0.995;
+            let maxPrice = Math.max(...chartData.map(d => d.high)) * 1.005;
+            let range = maxPrice - minPrice || 0.01;
+
+            const padding = { top: 10, bottom: 20, left: 10, right: 10 };
+            const chartW = w - padding.left - padding.right;
+            const chartH = h - padding.top - padding.bottom;
+
+            // رسم الشبكة
+            ctx.strokeStyle = '#1A1A22';
+            ctx.lineWidth = 0.5;
+            for (let i = 0; i < 5; i++) {
+                let y = padding.top + (i / 4) * chartH;
+                ctx.beginPath();
+                ctx.moveTo(padding.left, y);
+                ctx.lineTo(w - padding.right, y);
+                ctx.stroke();
+            }
+
+            // رسم الشموع
+            const candleWidth = Math.min(6, (chartW / chartData.length) * 0.7);
+            const spacing = chartW / chartData.length;
+
+            chartData.forEach((d, i) => {
+                const x = padding.left + i * spacing;
+                const highY = padding.top + (1 - (d.high - minPrice) / range) * chartH;
+                const lowY = padding.top + (1 - (d.low - minPrice) / range) * chartH;
+                const openY = padding.top + (1 - (d.open - minPrice) / range) * chartH;
+                const closeY = padding.top + (1 - (d.close - minPrice) / range) * chartH;
+
+                const isUp = d.close >= d.open;
+                ctx.strokeStyle = isUp ? '#7BED9F' : '#FF6B8A';
+                ctx.lineWidth = 1;
+
+                // الفتيل (wick)
+                ctx.beginPath();
+                ctx.moveTo(x, highY);
+                ctx.lineTo(x, lowY);
+                ctx.stroke();
+
+                // جسم الشمعة
+                ctx.fillStyle = isUp ? '#7BED9F' : '#FF6B8A';
+                const bodyTop = Math.min(openY, closeY);
+                const bodyBottom = Math.max(openY, closeY);
+                const bodyH = Math.max(1, bodyBottom - bodyTop);
+                ctx.fillRect(x - candleWidth / 2, bodyTop, candleWidth, bodyH);
+            });
+
+            // رسم السعر الحالي
+            const last = chartData[chartData.length - 1];
+            const lastY = padding.top + (1 - (last.close - minPrice) / range) * chartH;
+            ctx.fillStyle = '#C9A84C';
+            ctx.font = '10px Segoe UI';
+            ctx.textAlign = 'right';
+            ctx.fillText(last.close.toFixed(3), w - padding.right, lastY - 4);
+
+            // خط السعر الحالي
+            ctx.strokeStyle = '#C9A84C44';
+            ctx.lineWidth = 1;
+            ctx.setLineDash([2, 2]);
+            ctx.beginPath();
+            ctx.moveTo(padding.left, lastY);
+            ctx.lineTo(w - padding.right, lastY);
+            ctx.stroke();
+            ctx.setLineDash([]);
+
+            // تحديث المؤشرات
+            updateLivePrice();
         }
 
         function updateLivePrice() {
@@ -1234,15 +1358,11 @@
         }
 
         function addNewCandle() {
-            if (chartData.length === 0 || !chartInitialized) return;
+            if (chartData.length === 0) return;
             const last = chartData[chartData.length - 1];
             const newPrice = Math.max(0.001, last.close + (Math.random() - 0.48) * 0.02);
-            const time = Math.floor(Date.now() / 1000);
-
-            if (chartData.length > 0 && chartData[chartData.length - 1].time === time) return;
 
             const newCandle = {
-                time: time,
                 open: last.close,
                 high: Math.max(last.close, newPrice) + Math.random() * 0.005,
                 low: Math.min(last.close, newPrice) - Math.random() * 0.005,
@@ -1251,15 +1371,10 @@
             };
 
             chartData.push(newCandle);
-            if (chartData.length > 100) chartData.shift();
+            if (chartData.length > 60) chartData.shift();
 
             prices.NC = newPrice;
-
-            if (candlestickSeries) {
-                candlestickSeries.setData(chartData);
-            }
-            updateVolumeData();
-            updateLivePrice();
+            drawChart();
 
             document.getElementById('headerPrice').textContent = prices.NC.toFixed(3);
             document.getElementById('headerBTC').textContent = (prices.NC * 0.00001).toFixed(6);
@@ -1330,17 +1445,32 @@
             const count = document.getElementById('tradeLogCount');
             count.textContent = data.tradeLog.length;
             if (data.tradeLog.length === 0) {
-                list.innerHTML = '<div class="entry" style="color:#555;text-align:center;">لا توجد صفقات بعد</div>';
+                list.innerHTML = '<div class="entry" style="color:#777;text-align:center;">لا توجد صفقات بعد</div>';
                 return;
             }
             list.innerHTML = data.tradeLog.slice(0, 30).map(l =>
-                `<div class="entry"><span>${l.text}</span><span class="${l.type}">${l.time}</span></div>`
+                `<div class="entry"><span>${l.text}</span><span class="time">${l.time}</span></div>`
             ).join('');
         }
 
         // ================================================================
-        // 9. الملف الشخصي
+        // 9. الملف الشخصي (نافذة منزلقة)
         // ================================================================
+
+        function toggleProfile() {
+            const slide = document.getElementById('profileSlide');
+            const overlay = document.getElementById('profileOverlay');
+            const isOpen = slide.classList.contains('open');
+            if (isOpen) {
+                slide.classList.remove('open');
+                overlay.classList.remove('show');
+            } else {
+                slide.classList.add('open');
+                overlay.classList.add('show');
+                document.getElementById('profileNameInput').value = data.profile.name || 'مستخدم جديد';
+                updateProfileUI();
+            }
+        }
 
         function updateProfileUI() {
             let xp = data.profile.totalMined * 100 + data.profile.totalProfit * 0.5 + data.profile.totalTrades * 2;
@@ -1375,16 +1505,6 @@
             }
         }
 
-        function openProfileModal() {
-            document.getElementById('profileModal').classList.add('show');
-            document.getElementById('profileNameInput').value = data.profile.name || 'مستخدم جديد';
-            updateProfileUI();
-        }
-
-        function closeProfileModal() {
-            document.getElementById('profileModal').classList.remove('show');
-        }
-
         function uploadProfileImage(event) {
             const file = event.target.files[0];
             if (!file) return;
@@ -1406,7 +1526,7 @@
                 updateProfileUI();
                 addLog(`✅ تم تحديث الملف الشخصي: ${name}`);
                 playBeep(1000, 0.15);
-                closeProfileModal();
+                toggleProfile();
             } else {
                 alert('الرجاء إدخال اسم صحيح');
             }
@@ -1428,14 +1548,10 @@
                 if (tabId === 'trade') {
                     updateWalletUI();
                     renderTradeLog();
-                    if (!chartInitialized) {
-                        setTimeout(initChart, 200);
-                    } else if (chart) {
-                        setTimeout(() => {
-                            const container = document.getElementById('chartContainer');
-                            if (container) chart.applyOptions({ width: container.clientWidth });
-                        }, 150);
-                    }
+                    setTimeout(() => {
+                        resizeChartCanvas();
+                        drawChart();
+                    }, 150);
                 }
             });
         });
@@ -1467,16 +1583,15 @@
             renderTradeLog();
             updateProfileUI();
 
-            // تهيئة الرسم البياني بعد تحميل الصفحة
+            // تهيئة الرسم البياني
             setTimeout(() => {
-                initChart();
-                // تحديث السعر كل 3 ثوانٍ
+                initChartCanvas();
                 setInterval(() => {
                     addNewCandle();
                 }, 3000);
-            }, 500);
+            }, 300);
 
-            addLog('🏛️ مرحباً في HyeX Exchange - الإصدار 7.1 (رسم بياني مُصلح)');
+            addLog('🏛️ مرحباً في HyeX Exchange - الإصدار 8.0 (رسم بياني بـ Canvas)');
             if (data.pendingNC > 0) document.getElementById('pendingDisplay').textContent = data.pendingNC.toFixed(8) +
                 ' NC';
         };
