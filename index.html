@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>HyeX Exchange - تداول احترافي</title>
+    <title>HyeX Exchange - الألعاب</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         /* ===== إعادة تعيين ===== */
@@ -283,6 +283,12 @@
             color: #7BED9F;
             border: 1px solid #2A5A3A;
         }
+        .btn-gold {
+            background: #C9A84C;
+            color: #0A0A0F;
+            border: none;
+            font-weight: 700;
+        }
 
         .log-container {
             max-height: 100px;
@@ -405,120 +411,166 @@
             left: 17px;
         }
 
-        /* ===== قسم التداول ===== */
-        #chartCanvas {
-            width: 100%;
-            height: 200px;
-            border-radius: 12px;
-            background: #0A0A10;
+        /* ===== قسم الألعاب الجديد ===== */
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+        .game-card {
+            background: #11111B;
+            border-radius: 14px;
+            padding: 10px 6px;
+            text-align: center;
             border: 1px solid #2A2A35;
-            display: block;
+            cursor: pointer;
+            transition: 0.25s;
+            position: relative;
+            overflow: hidden;
+            min-height: 80px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .game-card:hover {
+            border-color: #C9A84C;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px #C9A84C22;
+        }
+        .game-card .game-emoji {
+            font-size: 32px;
+            margin-bottom: 4px;
+            line-height: 1;
+        }
+        .game-card .game-name {
+            font-size: 10px;
+            color: #C0C0D0;
+            font-weight: 600;
+            line-height: 1.2;
+        }
+        .game-card .game-badge {
+            position: absolute;
+            top: 4px;
+            right: 4px;
+            background: #4A9CFF33;
+            color: #4A9CFF;
+            font-size: 7px;
+            padding: 1px 6px;
+            border-radius: 10px;
+            border: 1px solid #4A9CFF44;
+        }
+        .game-card.active {
+            border-color: #C9A84C;
+            background: #1A1A2A;
+            box-shadow: 0 0 30px #C9A84C33;
         }
 
-        .market-stats {
+        /* حاوية عرض اللعبة */
+        .game-iframe-container {
+            position: relative;
+            width: 100%;
+            padding-bottom: 75%;
+            height: 0;
+            overflow: hidden;
+            border-radius: 14px;
+            border: 2px solid #2A2A35;
+            background: #0A0A10;
+            display: none;
+        }
+        .game-iframe-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        .game-iframe-container .game-loading {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
             display: flex;
-            gap: 6px;
-            justify-content: space-around;
-            background: #0E0E16;
-            padding: 4px 8px;
-            border-radius: 10px;
-            margin-bottom: 4px;
-            border: 1px solid #2A2A35;
-        }
-        .market-stats div {
-            text-align: center;
-        }
-        .market-stats div .label {
-            font-size: 8px;
+            align-items: center;
+            justify-content: center;
             color: #8E8E9A;
+            font-size: 12px;
+            background: #0A0A10;
+            z-index: 1;
+            flex-direction: column;
+            gap: 8px;
         }
-        .market-stats div .value {
-            font-weight: 700;
-            font-size: 13px;
-        }
-        .market-stats div .value.price {
+        .game-iframe-container .game-loading i {
+            font-size: 28px;
             color: #C9A84C;
         }
-        .market-stats div .value.change.up {
-            color: #7BED9F;
-        }
-        .market-stats div .value.change.down {
-            color: #FF6B8A;
-        }
-        .market-stats div .value.volume {
-            color: #4A9CFF;
-        }
 
-        .trading-controls {
+        .game-controls {
             display: flex;
-            gap: 4px;
+            gap: 6px;
             flex-wrap: wrap;
-            margin: 4px 0 6px;
-            align-items: center;
+            justify-content: center;
+            margin-top: 8px;
         }
-        .trading-controls select,
-        .trading-controls input {
-            background: #0A0A0F;
-            border: 1px solid #333;
-            color: #E0E0E0;
-            padding: 4px 8px;
-            border-radius: 10px;
-            flex: 1;
-            font-size: 11px;
-            min-width: 40px;
-        }
-        .trading-controls input {
-            width: 60px;
-            flex: 1.5;
-        }
-        .trading-controls .btn {
-            padding: 4px 12px;
-            border: none;
+        .game-controls .btn {
+            padding: 6px 14px;
             border-radius: 30px;
+            border: none;
             font-weight: 700;
             font-size: 11px;
             cursor: pointer;
+            transition: 0.2s;
         }
-        .trading-controls .btn:active {
+        .game-controls .btn:active {
             transform: scale(0.94);
         }
-        .btn-buy {
-            background: #1A3A2A;
-            color: #7BED9F;
-            border: 1px solid #2A5A3A;
+
+        /* نظام المكافآت في الألعاب */
+        .game-rewards {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            background: #0E0E16;
+            padding: 6px 12px;
+            border-radius: 12px;
+            border: 1px solid #2A2A35;
+            margin-top: 6px;
+            flex-wrap: wrap;
         }
-        .btn-sell {
-            background: #3A1A1A;
+        .game-rewards .reward-item {
+            text-align: center;
+        }
+        .game-rewards .reward-item .label {
+            font-size: 8px;
+            color: #8E8E9A;
+        }
+        .game-rewards .reward-item .value {
+            font-weight: 700;
+            font-size: 14px;
+        }
+        .game-rewards .reward-item .value.gold {
+            color: #C9A84C;
+        }
+        .game-rewards .reward-item .value.green {
+            color: #7BED9F;
+        }
+        .game-rewards .reward-item .value.red {
             color: #FF6B8A;
-            border: 1px solid #5A2A2A;
+        }
+        .game-rewards .reward-item .value.blue {
+            color: #4A9CFF;
         }
 
-        .trade-history {
-            max-height: 80px;
-            overflow-y: auto;
-            background: #0E0E16;
-            border-radius: 12px;
-            padding: 4px 8px;
-            border: 1px solid #222;
-            margin-top: 4px;
-        }
-        .trade-history .entry {
-            font-size: 10px;
-            padding: 3px 0;
-            border-bottom: 1px solid #1A1A22;
-            display: flex;
-            justify-content: space-between;
-            color: #C0C0D0;
-        }
-        .trade-history .entry .win {
-            color: #7BED9F;
-        }
-        .trade-history .entry .lose {
-            color: #FF6B8A;
-        }
-        .trade-history .entry .time {
-            color: #777;
-            font-size: 9px;
+        .game-timer {
+            font-size: 20px;
+            font-weight: 700;
+            color: #C9A84C;
+            text-align: center;
+            padding: 4px 0;
+            font-variant-numeric: tabular-nums;
         }
 
         /* ===== الملف الشخصي (نافذة منزلقة) ===== */
@@ -743,7 +795,7 @@
             display: block;
         }
 
-        /* ===== تعديلات على الألوان العامة ===== */
+        /* ===== تعديلات الألوان ===== */
         .text-muted {
             color: #8E8E9A;
         }
@@ -777,13 +829,13 @@
 
     <div class="app" id="app">
 
-        <!-- ===== الرأس (بدون دائرة الملف الشخصي) ===== -->
+        <!-- ===== الرأس ===== -->
         <div class="corp-header">
             <div class="title-group">
                 <h1>🏛️ HyeX Exchange</h1>
                 <div class="subtitle">منصة محلية قيد التطوير (نسخة تجريبية)</div>
             </div>
-            <div class="badge"><i class="fas fa-shield-alt"></i> v8.1</div>
+            <div class="badge"><i class="fas fa-shield-alt"></i> v9.0</div>
         </div>
 
         <!-- ===== شريط السعر ===== -->
@@ -852,50 +904,62 @@
             </div>
         </div>
 
-        <!-- ===== تبويب التداول ===== -->
-        <div id="tab-trade" class="tab-content">
+        <!-- ===== تبويب الألعاب (الجديد) ===== -->
+        <div id="tab-games" class="tab-content">
             <div class="card">
                 <div class="card-title">
-                    <span>📊 تداول NC/USD</span>
-                    <span id="tradeBalance" style="color:#7BED9F;">0.00 Cash</span>
+                    <span>🎮 الألعاب</span>
+                    <span style="color:#4A9CFF; font-size:10px;" id="gameCount">0 لعبة</span>
                 </div>
 
-                <!-- رسم بياني بـ Canvas -->
-                <canvas id="chartCanvas"></canvas>
+                <!-- شبكة الألعاب -->
+                <div class="games-grid" id="gamesGrid"></div>
 
-                <!-- المؤشرات -->
-                <div class="market-stats">
-                    <div><div class="label">السعر</div><div class="value price" id="livePrice">1.000</div></div>
-                    <div><div class="label">التغير</div><div class="value change up" id="liveChange">+0.00%</div></div>
-                    <div><div class="label">الحجم</div><div class="value volume" id="liveVolume">0</div></div>
+                <!-- حاوية عرض اللعبة -->
+                <div class="game-iframe-container" id="gameFrameContainer">
+                    <div class="game-loading" id="gameLoading">
+                        <i class="fas fa-spinner fa-pulse"></i>
+                        <span>جاري تحميل اللعبة...</span>
+                    </div>
+                    <iframe id="gameFrame" src="" allowfullscreen></iframe>
                 </div>
 
-                <!-- أدوات التداول -->
-                <div class="trading-controls">
-                    <select id="tradeAsset">
-                        <option value="NC">NC</option>
-                        <option value="NCR">NCR</option>
-                        <option value="BitNC">BitNC</option>
-                        <option value="LiNC">LiNC</option>
-                    </select>
-                    <input type="number" id="tradeAmount" placeholder="الكمية" value="0.001" step="0.001" min="0.001">
-                    <button class="btn btn-buy" id="buyBtn"><i class="fas fa-arrow-up"></i> شراء</button>
-                    <button class="btn btn-sell" id="sellBtn"><i class="fas fa-arrow-down"></i> بيع</button>
+                <!-- نظام المكافآت -->
+                <div class="game-rewards" id="gameRewards" style="display:none;">
+                    <div class="reward-item">
+                        <div class="label">⏱️ وقت اللعب</div>
+                        <div class="value blue" id="gamePlayTime">00:00</div>
+                    </div>
+                    <div class="reward-item">
+                        <div class="label">🏆 المكافأة</div>
+                        <div class="value gold" id="gameRewardDisplay">0.0000 NC</div>
+                    </div>
+                    <div class="reward-item">
+                        <div class="label">📊 النتيجة</div>
+                        <div class="value green" id="gameResultDisplay">-</div>
+                    </div>
                 </div>
 
-                <!-- سجل التداول -->
-                <div class="card-title" style="margin-top:4px;"><span>📋 سجل التداول</span> <span id="tradeLogCount">0</span></div>
-                <div class="trade-history" id="tradeLogList">
-                    <div class="entry" style="color:#777;text-align:center;">لا توجد صفقات بعد</div>
+                <!-- أزرار التحكم -->
+                <div class="game-controls">
+                    <button class="btn btn-success" id="gameStartBtn"><i class="fas fa-play"></i> بدء الجلسة</button>
+                    <button class="btn btn-danger" id="gameStopBtn"><i class="fas fa-stop"></i> إنهاء الجلسة</button>
+                    <button class="btn btn-primary" id="gameFullscreenBtn"><i class="fas fa-expand"></i> ملء الشاشة</button>
+                    <button class="btn btn-log" id="gameCloseBtn"><i class="fas fa-times"></i> إغلاق</button>
+                </div>
+
+                <!-- سجل الألعاب -->
+                <div class="card-title" style="margin-top:8px;"><span>📋 سجل الألعاب</span> <span id="gameLogCount">0</span></div>
+                <div class="log-container" id="gameLogList">
+                    <div class="log-item" style="color:#777;text-align:center;">لا توجد جلسات بعد</div>
                 </div>
             </div>
         </div>
 
-        <!-- ===== تبويب الإعدادات (مع الملف الشخصي) ===== -->
+        <!-- ===== تبويب الإعدادات ===== -->
         <div id="tab-settings" class="tab-content">
             <div class="card">
                 <div class="card-title"><span>⚙️ الإعدادات</span></div>
-                <!-- زر الملف الشخصي -->
                 <div class="settings-item" style="border-bottom: 2px solid #2A2A35; padding-bottom: 12px; margin-bottom: 6px;">
                     <span style="color:#C0C0D0;">👤 الملف الشخصي</span>
                     <div class="profile-trigger" onclick="toggleProfile()">
@@ -917,11 +981,11 @@
             <div class="nav-item active" data-tab="mining"><i class="fas fa-hard-hat"></i><span>تعدين</span></div>
             <div class="nav-item" data-tab="wallet"><i class="fas fa-wallet"></i><span>محفظة</span></div>
             <div class="nav-item" data-tab="shop"><i class="fas fa-store"></i><span>متجر</span></div>
-            <div class="nav-item" data-tab="trade"><i class="fas fa-chart-pie"></i><span>تداول</span></div>
+            <div class="nav-item" data-tab="games"><i class="fas fa-gamepad"></i><span>ألعاب</span></div>
             <div class="nav-item" data-tab="settings"><i class="fas fa-cog"></i><span>إعدادات</span></div>
         </div>
 
-        <!-- ===== الملف الشخصي (نافذة منزلقة) ===== -->
+        <!-- ===== الملف الشخصي ===== -->
         <div class="profile-overlay" id="profileOverlay" onclick="toggleProfile()"></div>
         <div class="profile-slide" id="profileSlide">
             <div class="header">
@@ -947,8 +1011,8 @@
                 <div class="stat-grid">
                     <div class="stat-item"><div class="stat-label">💰 إجمالي الأرباح</div><div class="stat-value green" id="modalTotalProfit">0.00 Cash</div></div>
                     <div class="stat-item"><div class="stat-label">⛏️ إجمالي التعدين</div><div class="stat-value blue" id="modalTotalMined">0.00 NC</div></div>
-                    <div class="stat-item"><div class="stat-label">📊 عدد الصفقات</div><div class="stat-value" id="modalTotalTrades">0</div></div>
-                    <div class="stat-item"><div class="stat-label">🏆 نسبة الربح</div><div class="stat-value pink" id="modalWinRate">0%</div></div>
+                    <div class="stat-item"><div class="stat-label">🎮 جلسات الألعاب</div><div class="stat-value" id="modalTotalGames">0</div></div>
+                    <div class="stat-item"><div class="stat-label">🏆 أرباح الألعاب</div><div class="stat-value pink" id="modalGameProfit">0.00 NC</div></div>
                 </div>
 
                 <button class="save-btn" onclick="saveProfile()">💾 حفظ التغييرات</button>
@@ -969,14 +1033,14 @@
             log: [],
             upgrades: { speed: 0, bonus: 0 },
             settings: { sound: true, vibe: true },
-            tradeLog: [],
+            // سجل الألعاب
+            gameLog: [],
+            gameStats: { totalSessions: 0, totalProfit: 0, totalLoss: 0 },
             profile: { name: 'مستخدم جديد', level: 1, xp: 0, totalProfit: 0, totalMined: 0, totalTrades: 0, winRate: 0,
                 image: null }
         };
 
         let prices = { NC: 1.00, NCR: 0.05, BitNC: 0.50, LiNC: 0.20 };
-        let chartData = [];
-        let canvasCtx = null;
 
         function loadData() {
             try {
@@ -994,13 +1058,16 @@
                         else if (key === 'profile') {
                             for (let p in parsed.profile) data.profile[p] = parsed.profile[p] || (p === 'name' ?
                                 'مستخدم جديد' : (p === 'level' ? 1 : 0));
+                        } else if (key === 'gameStats') {
+                            for (let g in parsed.gameStats) data.gameStats[g] = parsed.gameStats[g] || 0;
                         } else data[key] = parsed[key];
                     }
                 }
             } catch (e) {}
             if (!data.log) data.log = [];
-            if (!data.tradeLog) data.tradeLog = [];
+            if (!data.gameLog) data.gameLog = [];
             if (!data.upgrades) data.upgrades = { speed: 0, bonus: 0 };
+            if (!data.gameStats) data.gameStats = { totalSessions: 0, totalProfit: 0, totalLoss: 0 };
             if (!data.profile) data.profile = { name: 'مستخدم جديد', level: 1, xp: 0, totalProfit: 0, totalMined: 0,
                 totalTrades: 0, winRate: 0, image: null };
         }
@@ -1147,7 +1214,6 @@
             document.getElementById('balLiNC').textContent = data.wallet.LiNC.toFixed(6);
             document.getElementById('balCash').textContent = data.wallet.Cash.toFixed(2);
             document.getElementById('pendingDisplay').textContent = data.pendingNC.toFixed(8) + ' NC';
-            document.getElementById('tradeBalance').textContent = data.wallet.Cash.toFixed(2) + ' Cash';
             document.getElementById('headerPrice').textContent = prices.NC.toFixed(3);
         }
 
@@ -1196,241 +1262,276 @@
         }
 
         // ================================================================
-        // 7. الرسم البياني بـ Canvas
+        // 7. قسم الألعاب
         // ================================================================
 
-        let chartCanvas = null;
+        // قائمة الألعاب من مستودع sausi-7/games (تعمل على الجوال والكمبيوتر)[reference:2][reference:3]
+        const GAMES_LIST = [
+            { id: 'snake', name: '🐍 ثعبان', emoji: '🐍', url: 'https://sausi-7.github.io/games/games/snake/index.html' },
+            { id: 'pacman', name: '🟡 باك مان', emoji: '🟡', url: 'https://sausi-7.github.io/games/games/pacman/index.html' },
+            { id: 'tetris', name: '🧩 تيترس', emoji: '🧩', url: 'https://sausi-7.github.io/games/games/tetris/index.html' },
+            { id: '2048', name: '🔢 2048', emoji: '🔢', url: 'https://sausi-7.github.io/games/games/2048/index.html' },
+            { id: 'flappy', name: '🐤 فلافي بيرد', emoji: '🐤', url: 'https://sausi-7.github.io/games/games/flappy/index.html' },
+            { id: 'doodle', name: '🦘 دودل جمب', emoji: '🦘', url: 'https://sausi-7.github.io/games/games/doodle-jump/index.html' },
+            { id: 'chess', name: '♟️ شطرنج', emoji: '♟️', url: 'https://sausi-7.github.io/games/games/chess/index.html' },
+            { id: 'sudoku', name: '🧮 سودوكو', emoji: '🧮', url: 'https://sausi-7.github.io/games/games/sudoku/index.html' },
+            { id: 'bubble', name: '🫧 مطلق فقاعات', emoji: '🫧', url: 'https://sausi-7.github.io/games/games/bubble-shooter/index.html' },
+            { id: 'space', name: '👾 غزاة الفضاء', emoji: '👾', url: 'https://sausi-7.github.io/games/games/space-invaders/index.html' },
+            { id: 'breakout', name: '🧱 كسر الطوب', emoji: '🧱', url: 'https://sausi-7.github.io/games/games/breakout/index.html' },
+            { id: 'memory', name: '🧠 ذاكرة', emoji: '🧠', url: 'https://sausi-7.github.io/games/games/memory/index.html' },
+            { id: 'runner', name: '🏃 عداء', emoji: '🏃', url: 'https://sausi-7.github.io/games/games/runner/index.html' },
+            { id: 'puzzle', name: '🧩 بازل', emoji: '🧩', url: 'https://sausi-7.github.io/games/games/puzzle/index.html' },
+            { id: 'zombie', name: '🧟 زومبي', emoji: '🧟', url: 'https://sausi-7.github.io/games/games/zombie/index.html' },
+            { id: 'car-race', name: '🏎️ سباق سيارات', emoji: '🏎️', url: 'https://sausi-7.github.io/games/games/car-race/index.html' },
+            { id: 'crossy', name: '🚗 كروسي رود', emoji: '🚗', url: 'https://sausi-7.github.io/games/games/crossy-road/index.html' },
+            { id: 'ludo', name: '🎲 لودو', emoji: '🎲', url: 'https://sausi-7.github.io/games/games/ludo/index.html' }
+        ];
 
-        function initChartCanvas() {
-            const canvas = document.getElementById('chartCanvas');
-            if (!canvas) return;
-            canvasCtx = canvas.getContext('2d');
-            chartCanvas = canvas;
-            resizeChartCanvas();
-            generateChartData(30);
-            drawChart();
-            const ro = new ResizeObserver(() => { resizeChartCanvas();
-                drawChart(); });
-            ro.observe(canvas);
-        }
+        // ===== متغيرات جلسة اللعب =====
+        let gameSession = {
+            active: false,
+            gameId: null,
+            startTime: 0,
+            totalSeconds: 0,
+            reward: 0,
+            timerInterval: null,
+            isWin: null
+        };
 
-        function resizeChartCanvas() {
-            if (!chartCanvas) return;
-            const rect = chartCanvas.parentElement.getBoundingClientRect();
-            const w = rect.width - 4;
-            chartCanvas.width = w * devicePixelRatio;
-            chartCanvas.height = 200 * devicePixelRatio;
-            chartCanvas.style.width = w + 'px';
-            chartCanvas.style.height = '200px';
-            chartCanvas.getContext('2d').scale(devicePixelRatio, devicePixelRatio);
-        }
-
-        function generateChartData(count = 30) {
-            chartData = [];
-            let basePrice = prices.NC || 1.0;
-            for (let i = 0; i < count; i++) {
-                let change = (Math.random() - 0.5) * 0.03;
-                let open = basePrice;
-                let close = Math.max(0.001, basePrice + change);
-                let high = Math.max(open, close) + Math.random() * 0.01;
-                let low = Math.min(open, close) - Math.random() * 0.01;
-                chartData.push({
-                    open: open,
-                    high: high,
-                    low: low,
-                    close: close,
-                    volume: Math.floor(100 + Math.random() * 900)
-                });
-                basePrice = close;
-            }
-            prices.NC = basePrice;
-        }
-
-        function drawChart() {
-            if (!canvasCtx || chartData.length === 0) return;
-            const canvas = chartCanvas;
-            const ctx = canvasCtx;
-            const w = canvas.width / devicePixelRatio;
-            const h = canvas.height / devicePixelRatio;
-
-            ctx.clearRect(0, 0, w, h);
-
-            let minPrice = Math.min(...chartData.map(d => d.low)) * 0.995;
-            let maxPrice = Math.max(...chartData.map(d => d.high)) * 1.005;
-            let range = maxPrice - minPrice || 0.01;
-
-            const padding = { top: 10, bottom: 20, left: 10, right: 10 };
-            const chartW = w - padding.left - padding.right;
-            const chartH = h - padding.top - padding.bottom;
-
-            ctx.strokeStyle = '#1A1A22';
-            ctx.lineWidth = 0.5;
-            for (let i = 0; i < 5; i++) {
-                let y = padding.top + (i / 4) * chartH;
-                ctx.beginPath();
-                ctx.moveTo(padding.left, y);
-                ctx.lineTo(w - padding.right, y);
-                ctx.stroke();
-            }
-
-            const candleWidth = Math.min(6, (chartW / chartData.length) * 0.7);
-            const spacing = chartW / chartData.length;
-
-            chartData.forEach((d, i) => {
-                const x = padding.left + i * spacing;
-                const highY = padding.top + (1 - (d.high - minPrice) / range) * chartH;
-                const lowY = padding.top + (1 - (d.low - minPrice) / range) * chartH;
-                const openY = padding.top + (1 - (d.open - minPrice) / range) * chartH;
-                const closeY = padding.top + (1 - (d.close - minPrice) / range) * chartH;
-
-                const isUp = d.close >= d.open;
-                ctx.strokeStyle = isUp ? '#7BED9F' : '#FF6B8A';
-                ctx.lineWidth = 1;
-                ctx.beginPath();
-                ctx.moveTo(x, highY);
-                ctx.lineTo(x, lowY);
-                ctx.stroke();
-
-                ctx.fillStyle = isUp ? '#7BED9F' : '#FF6B8A';
-                const bodyTop = Math.min(openY, closeY);
-                const bodyBottom = Math.max(openY, closeY);
-                const bodyH = Math.max(1, bodyBottom - bodyTop);
-                ctx.fillRect(x - candleWidth / 2, bodyTop, candleWidth, bodyH);
+        // ===== بناء شبكة الألعاب =====
+        function renderGames() {
+            const grid = document.getElementById('gamesGrid');
+            grid.innerHTML = '';
+            GAMES_LIST.forEach(game => {
+                const card = document.createElement('div');
+                card.className = 'game-card';
+                card.dataset.id = game.id;
+                card.innerHTML = `
+                    <div class="game-emoji">${game.emoji}</div>
+                    <div class="game-name">${game.name}</div>
+                    <div class="game-badge">تشغيل</div>
+                `;
+                card.addEventListener('click', () => loadGame(game.id));
+                grid.appendChild(card);
             });
-
-            const last = chartData[chartData.length - 1];
-            const lastY = padding.top + (1 - (last.close - minPrice) / range) * chartH;
-            ctx.fillStyle = '#C9A84C';
-            ctx.font = '10px Segoe UI';
-            ctx.textAlign = 'right';
-            ctx.fillText(last.close.toFixed(3), w - padding.right, lastY - 4);
-
-            ctx.strokeStyle = '#C9A84C44';
-            ctx.lineWidth = 1;
-            ctx.setLineDash([2, 2]);
-            ctx.beginPath();
-            ctx.moveTo(padding.left, lastY);
-            ctx.lineTo(w - padding.right, lastY);
-            ctx.stroke();
-            ctx.setLineDash([]);
-
-            updateLivePrice();
+            document.getElementById('gameCount').textContent = GAMES_LIST.length + ' لعبة';
         }
 
-        function updateLivePrice() {
-            if (chartData.length === 0) return;
-            const last = chartData[chartData.length - 1];
-            document.getElementById('livePrice').textContent = last.close.toFixed(3);
-            document.getElementById('headerPrice').textContent = prices.NC.toFixed(3);
+        // ===== تحميل لعبة =====
+        function loadGame(gameId) {
+            const game = GAMES_LIST.find(g => g.id === gameId);
+            if (!game) return;
 
-            if (chartData.length > 1) {
-                const prev = chartData[chartData.length - 2];
-                const change = ((last.close - prev.close) / prev.close) * 100;
-                const el = document.getElementById('liveChange');
-                el.textContent = (change >= 0 ? '+' : '') + change.toFixed(2) + '%';
-                el.className = 'value change ' + (change >= 0 ? 'up' : 'down');
+            // إنهاء الجلسة الحالية إن وجدت
+            if (gameSession.active) {
+                endGameSession(false);
             }
-            document.getElementById('liveVolume').textContent = last.volume || 0;
+
+            // تحديث البطاقات
+            document.querySelectorAll('.game-card').forEach(c => c.classList.remove('active'));
+            const activeCard = document.querySelector(`.game-card[data-id="${gameId}"]`);
+            if (activeCard) activeCard.classList.add('active');
+
+            // عرض اللعبة
+            const container = document.getElementById('gameFrameContainer');
+            const frame = document.getElementById('gameFrame');
+            const loading = document.getElementById('gameLoading');
+
+            container.style.display = 'block';
+            loading.style.display = 'flex';
+            frame.style.display = 'none';
+
+            // تحميل اللعبة في iframe
+            frame.src = game.url;
+
+            // إخفاء التحميل بعد ثانية
+            setTimeout(() => {
+                loading.style.display = 'none';
+                frame.style.display = 'block';
+            }, 1200);
+
+            // تحديث حالة اللعبة
+            gameSession.gameId = gameId;
+
+            // إظهار نظام المكافآت
+            document.getElementById('gameRewards').style.display = 'flex';
+            document.getElementById('gamePlayTime').textContent = '00:00';
+            document.getElementById('gameRewardDisplay').textContent = '0.0000 NC';
+            document.getElementById('gameResultDisplay').textContent = '-';
+
+            addGameLog(`🎮 تم تحميل اللعبة: ${game.name}`);
+            playBeep(600, 0.1);
         }
 
-        function addNewCandle() {
-            if (chartData.length === 0) return;
-            const last = chartData[chartData.length - 1];
-            const newPrice = Math.max(0.001, last.close + (Math.random() - 0.48) * 0.02);
-
-            const newCandle = {
-                open: last.close,
-                high: Math.max(last.close, newPrice) + Math.random() * 0.005,
-                low: Math.min(last.close, newPrice) - Math.random() * 0.005,
-                close: newPrice,
-                volume: Math.floor(100 + Math.random() * 900)
-            };
-
-            chartData.push(newCandle);
-            if (chartData.length > 60) chartData.shift();
-
-            prices.NC = newPrice;
-            drawChart();
-
-            document.getElementById('headerPrice').textContent = prices.NC.toFixed(3);
-            document.getElementById('headerBTC').textContent = (prices.NC * 0.00001).toFixed(6);
-            document.getElementById('headerETH').textContent = (prices.NC * 0.0002).toFixed(6);
-        }
-
-        // ================================================================
-        // 8. نظام التداول
-        // ================================================================
-
-        document.getElementById('buyBtn').addEventListener('click', function() {
-            const asset = document.getElementById('tradeAsset').value;
-            const amount = parseFloat(document.getElementById('tradeAmount').value);
-            if (isNaN(amount) || amount <= 0) { alert('أدخل كمية صحيحة'); return; }
-            const totalCost = amount * prices[asset];
-            if (data.wallet.Cash < totalCost) {
-                alert('❌ رصيد كاش غير كاف');
-                playBeep(200, 0.2);
+        // ===== بدء جلسة اللعب =====
+        function startGameSession() {
+            if (gameSession.active) return;
+            if (!gameSession.gameId) {
+                alert('الرجاء اختيار لعبة أولاً!');
                 return;
             }
-            data.wallet.Cash -= totalCost;
-            data.wallet[asset] = (data.wallet[asset] || 0) + amount;
-            data.profile.totalTrades++;
-            data.profile.totalProfit += totalCost * 0.1;
-            addTradeLog(`شراء ${amount.toFixed(4)} ${asset} بسعر ${prices[asset].toFixed(3)} (التكلفة: ${totalCost.toFixed(2)} Cash)`,
-                'win');
-            playBeep(1000, 0.2);
+
+            gameSession.active = true;
+            gameSession.startTime = Date.now();
+            gameSession.totalSeconds = 0;
+            gameSession.reward = 0;
+            gameSession.isWin = null;
+
+            document.getElementById('gameStartBtn').style.opacity = '0.6';
+            document.getElementById('gameStopBtn').style.opacity = '1';
+            document.getElementById('gameResultDisplay').textContent = '⏳ جاري اللعب...';
+            document.getElementById('gameResultDisplay').style.color = '#4A9CFF';
+
+            // عداد الوقت
+            gameSession.timerInterval = setInterval(() => {
+                gameSession.totalSeconds = Math.floor((Date.now() - gameSession.startTime) / 1000);
+                const mins = Math.floor(gameSession.totalSeconds / 60);
+                const secs = gameSession.totalSeconds % 60;
+                document.getElementById('gamePlayTime').textContent =
+                    String(mins).padStart(2, '0') + ':' + String(secs).padStart(2, '0');
+
+                // كل 30 ثانية مكافأة صغيرة
+                if (gameSession.totalSeconds > 0 && gameSession.totalSeconds % 30 === 0) {
+                    const bonus = 0.0005;
+                    gameSession.reward += bonus;
+                    document.getElementById('gameRewardDisplay').textContent = gameSession.reward.toFixed(4) + ' NC';
+                    playBeep(900, 0.05);
+                }
+            }, 1000);
+
+            addGameLog('▶️ بدأت جلسة اللعب');
+            playBeep(800, 0.15);
             doVibe();
+            saveData();
+        }
+
+        // ===== إنهاء جلسة اللعب =====
+        function endGameSession(isWin = true) {
+            if (!gameSession.active) return;
+
+            gameSession.active = false;
+            clearInterval(gameSession.timerInterval);
+            gameSession.timerInterval = null;
+
+            // تحديد النتيجة
+            const gameName = GAMES_LIST.find(g => g.id === gameSession.gameId)?.name || 'لعبة';
+            const playTime = gameSession.totalSeconds;
+            const reward = gameSession.reward;
+
+            // نظام الربح والخسارة:
+            // - إذا فاز (isWin = true): يربح المكافأة + مكافأة إضافية حسب الوقت
+            // - إذا خسر (isWin = false): يخسر جزءاً من المكافأة
+            let finalReward = 0;
+            let resultText = '';
+
+            if (isWin && playTime > 5) {
+                // ربح: المكافأة + مكافأة وقت (كل دقيقة 0.001 NC)
+                const timeBonus = Math.floor(playTime / 60) * 0.001;
+                finalReward = reward + timeBonus + 0.001;
+                data.wallet.NC += finalReward;
+                data.gameStats.totalProfit += finalReward;
+                data.profile.totalProfit += finalReward * 0.5;
+                resultText = '🏆 ربح!';
+                document.getElementById('gameResultDisplay').style.color = '#7BED9F';
+                playBeep(1200, 0.25);
+                doVibe();
+                addGameLog(`✅ فوز! ربح ${finalReward.toFixed(4)} NC من ${gameName} (${playTime} ثانية)`);
+            } else if (!isWin && playTime > 5) {
+                // خسارة: خسارة 0.002 NC
+                finalReward = -0.002;
+                data.wallet.NC = Math.max(0, data.wallet.NC + finalReward);
+                data.gameStats.totalLoss += Math.abs(finalReward);
+                resultText = '❌ خسارة!';
+                document.getElementById('gameResultDisplay').style.color = '#FF6B8A';
+                playBeep(300, 0.25);
+                addGameLog(`❌ خسارة! خسرت 0.002 NC من ${gameName} (${playTime} ثانية)`);
+            } else {
+                // مدة قصيرة: لا ربح ولا خسارة
+                resultText = '⏳ مدة قصيرة';
+                document.getElementById('gameResultDisplay').style.color = '#8E8E9A';
+                addGameLog(`⏳ جلسة قصيرة جداً من ${gameName} (${playTime} ثانية) - لا مكافأة`);
+            }
+
+            // تحديث الإحصائيات
+            data.gameStats.totalSessions++;
+
+            // تحديث الواجهة
+            document.getElementById('gameRewardDisplay').textContent = finalReward.toFixed(4) + ' NC';
+            document.getElementById('gameResultDisplay').textContent = resultText;
+            document.getElementById('gameStartBtn').style.opacity = '1';
+            document.getElementById('gameStopBtn').style.opacity = '0.6';
+
             updateAllUI();
             updateProfileUI();
             saveData();
-        });
+        }
 
-        document.getElementById('sellBtn').addEventListener('click', function() {
-            const asset = document.getElementById('tradeAsset').value;
-            const amount = parseFloat(document.getElementById('tradeAmount').value);
-            if (isNaN(amount) || amount <= 0) { alert('أدخل كمية صحيحة'); return; }
-            if ((data.wallet[asset] || 0) < amount) {
-                alert('❌ رصيد غير كاف من ' + asset);
-                playBeep(200, 0.2);
+        // ===== إنهاء الجلسة يدوياً (خسارة) =====
+        function stopGameSession() {
+            if (!gameSession.active) return;
+            endGameSession(false);
+        }
+
+        // ===== إغلاق اللعبة =====
+        function closeGame() {
+            if (gameSession.active) {
+                endGameSession(false);
+            }
+            document.getElementById('gameFrameContainer').style.display = 'none';
+            document.getElementById('gameFrame').src = '';
+            document.getElementById('gameRewards').style.display = 'none';
+            document.querySelectorAll('.game-card').forEach(c => c.classList.remove('active'));
+            gameSession.gameId = null;
+            addGameLog('⏹ تم إغلاق اللعبة');
+            playBeep(300, 0.1);
+        }
+
+        // ===== ملء الشاشة =====
+        function fullscreenGame() {
+            const frame = document.getElementById('gameFrame');
+            if (!frame.src) {
+                alert('الرجاء تشغيل لعبة أولاً!');
                 return;
             }
-            const totalRevenue = amount * prices[asset];
-            data.wallet[asset] -= amount;
-            data.wallet.Cash += totalRevenue;
-            data.profile.totalTrades++;
-            data.profile.totalProfit += totalRevenue * 0.05;
-            addTradeLog(`بيع ${amount.toFixed(4)} ${asset} بسعر ${prices[asset].toFixed(3)} (الإيراد: ${totalRevenue.toFixed(2)} Cash)`,
-                'win');
-            playBeep(1100, 0.2);
-            doVibe();
-            updateAllUI();
-            updateProfileUI();
-            saveData();
-        });
+            if (frame.requestFullscreen) {
+                frame.requestFullscreen();
+            } else if (frame.webkitRequestFullscreen) {
+                frame.webkitRequestFullscreen();
+            }
+            playBeep(500, 0.05);
+        }
 
-        function addTradeLog(text, type = 'win') {
+        // ===== سجل الألعاب =====
+        function addGameLog(text) {
             const now = new Date();
             const timeStr = now.toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-            data.tradeLog.unshift({ time: timeStr, text: text, type: type });
-            if (data.tradeLog.length > 50) data.tradeLog.pop();
+            data.gameLog.unshift({ time: timeStr, text: text });
+            if (data.gameLog.length > 50) data.gameLog.pop();
             saveData();
-            renderTradeLog();
+            renderGameLog();
         }
 
-        function renderTradeLog() {
-            const list = document.getElementById('tradeLogList');
-            const count = document.getElementById('tradeLogCount');
-            count.textContent = data.tradeLog.length;
-            if (data.tradeLog.length === 0) {
-                list.innerHTML = '<div class="entry" style="color:#777;text-align:center;">لا توجد صفقات بعد</div>';
+        function renderGameLog() {
+            const list = document.getElementById('gameLogList');
+            const count = document.getElementById('gameLogCount');
+            count.textContent = data.gameLog.length;
+            if (data.gameLog.length === 0) {
+                list.innerHTML = '<div class="log-item" style="color:#777;text-align:center;">لا توجد جلسات بعد</div>';
                 return;
             }
-            list.innerHTML = data.tradeLog.slice(0, 30).map(l =>
-                `<div class="entry"><span>${l.text}</span><span class="time">${l.time}</span></div>`
+            list.innerHTML = data.gameLog.slice(0, 30).map(l =>
+                `<div class="log-item"><span>${l.text}</span><span class="time">${l.time}</span></div>`
             ).join('');
         }
 
+        // ===== ربط الأزرار =====
+        document.getElementById('gameStartBtn').addEventListener('click', startGameSession);
+        document.getElementById('gameStopBtn').addEventListener('click', stopGameSession);
+        document.getElementById('gameCloseBtn').addEventListener('click', closeGame);
+        document.getElementById('gameFullscreenBtn').addEventListener('click', fullscreenGame);
+
         // ================================================================
-        // 9. الملف الشخصي (نافذة منزلقة)
+        // 8. الملف الشخصي
         // ================================================================
 
         function toggleProfile() {
@@ -1449,24 +1550,22 @@
         }
 
         function updateProfileUI() {
-            let xp = data.profile.totalMined * 100 + data.profile.totalProfit * 0.5 + data.profile.totalTrades * 2;
+            let xp = data.profile.totalMined * 100 + data.profile.totalProfit * 0.5 +
+                data.gameStats.totalSessions * 1 + data.gameStats.totalProfit * 2;
             data.profile.xp = Math.floor(xp);
             let level = Math.floor(xp / 500) + 1;
             data.profile.level = Math.min(level, 100);
             let currentXp = xp - (data.profile.level - 1) * 500;
             let progress = Math.min(100, (currentXp / 500) * 100);
 
-            document.getElementById('levelBadge').textContent = data.profile.level;
             document.getElementById('modalLevelDisplay').textContent = data.profile.level;
             document.getElementById('modalXPDisplay').textContent = data.profile.xp;
             document.getElementById('modalLevelBar').style.width = progress + '%';
             document.getElementById('modalTotalProfit').textContent = data.profile.totalProfit.toFixed(2) + ' Cash';
             document.getElementById('modalTotalMined').textContent = data.profile.totalMined.toFixed(6) + ' NC';
-            document.getElementById('modalTotalTrades').textContent = data.profile.totalTrades;
-            document.getElementById('modalWinRate').textContent = data.profile.totalTrades > 0 ?
-                (data.profile.totalProfit / (data.profile.totalTrades * 0.1)).toFixed(0) + '%' : '0%';
+            document.getElementById('modalTotalGames').textContent = data.gameStats.totalSessions;
+            document.getElementById('modalGameProfit').textContent = data.gameStats.totalProfit.toFixed(4) + ' NC';
 
-            // تحديث اسم المستخدم في الإعدادات
             document.getElementById('settingsProfileName').textContent = data.profile.name || 'مستخدم جديد';
 
             if (data.profile.image) {
@@ -1512,7 +1611,7 @@
         }
 
         // ================================================================
-        // 10. التنقل بين التبويبات
+        // 9. التنقل بين التبويبات
         // ================================================================
         document.querySelectorAll('.nav-item').forEach(item => {
             item.addEventListener('click', function() {
@@ -1524,20 +1623,16 @@
                 playBeep(300, 0.03);
                 if (tabId === 'wallet') updateWalletUI();
                 if (tabId === 'shop') renderShop();
-                if (tabId === 'trade') {
-                    updateWalletUI();
-                    renderTradeLog();
-                    setTimeout(() => {
-                        resizeChartCanvas();
-                        drawChart();
-                    }, 150);
+                if (tabId === 'games') {
+                    renderGames();
+                    renderGameLog();
                 }
                 if (tabId === 'settings') updateProfileUI();
             });
         });
 
         // ================================================================
-        // 11. الإعدادات
+        // 10. الإعدادات
         // ================================================================
         document.getElementById('soundToggle').addEventListener('change', function() { data.settings.sound = this.checked;
             saveData(); });
@@ -1551,7 +1646,7 @@
         });
 
         // ================================================================
-        // 12. التهيئة عند تحميل الصفحة
+        // 11. التهيئة عند تحميل الصفحة
         // ================================================================
         window.onload = function() {
             loadData();
@@ -1560,17 +1655,15 @@
             startMining();
             updateAllUI();
             renderLog();
-            renderTradeLog();
+            renderGames();
+            renderGameLog();
             updateProfileUI();
 
-            setTimeout(() => {
-                initChartCanvas();
-                setInterval(() => {
-                    addNewCandle();
-                }, 3000);
-            }, 300);
+            // إخفاء حاوية اللعبة في البداية
+            document.getElementById('gameFrameContainer').style.display = 'none';
+            document.getElementById('gameRewards').style.display = 'none';
 
-            addLog('🏛️ مرحباً في HyeX Exchange - الإصدار 8.1 (الملف الشخصي في الإعدادات)');
+            addLog('🏛️ مرحباً في HyeX Exchange - الإصدار 9.0 (قسم الألعاب)');
             if (data.pendingNC > 0) document.getElementById('pendingDisplay').textContent = data.pendingNC.toFixed(8) +
                 ' NC';
         };
