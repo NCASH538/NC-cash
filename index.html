@@ -6,7 +6,7 @@
     <title>Hye Corp - التعدين والألعاب</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        /* ===== كل التصميم القديم كما هو، لم يتغير شيء ===== */
+        /* ===== كل التصميم القديم نفسه (لم يتغير) ===== */
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; }
         body {
             background: #0A0A0F;
@@ -256,11 +256,31 @@
         .switch input:checked + .slider { background: #4A9CFF; }
         .switch input:checked + .slider::after { left: 21px; }
 
-        /* ===== تصميم خاص بقسم الألعاب الجديد ===== */
+        /* ===== تصميم قسم الألعاب الجديد (مكتبة ألعاب جاهزة) ===== */
+        .game-library {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+        .game-card {
+            background: #11111B;
+            border-radius: 16px;
+            padding: 12px 8px;
+            text-align: center;
+            border: 1px solid #2A2A35;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .game-card:hover { border-color: #C9A84C; transform: scale(1.03); }
+        .game-card i { font-size: 28px; color: #C9A84C; margin-bottom: 4px; }
+        .game-card .label { font-size: 11px; color: #8E8E9A; }
+        .game-card.active { border-color: #C9A84C; background: #1A1A2A; box-shadow: 0 0 20px #C9A84C33; }
+
         .game-iframe-container {
             position: relative;
             width: 100%;
-            padding-bottom: 75%; /* نسبة 4:3 */
+            padding-bottom: 75%;
             height: 0;
             overflow: hidden;
             border-radius: 16px;
@@ -275,67 +295,22 @@
             height: 100%;
             border: none;
         }
-        .game-condition-box {
-            background: #11111B;
-            border-radius: 16px;
-            padding: 14px 16px;
-            border: 1px solid #C9A84C55;
-            margin: 12px 0;
-            text-align: center;
-        }
-        .game-condition-box .condition-text {
-            font-size: 18px;
-            font-weight: 700;
-            color: #C9A84C;
-        }
-        .game-condition-box .condition-progress {
-            font-size: 14px;
-            color: #8E8E9A;
-            margin-top: 6px;
-        }
-        .game-progress-bar {
-            width: 100%;
-            height: 8px;
-            background: #2A2A35;
-            border-radius: 10px;
-            margin-top: 10px;
-            overflow: hidden;
-        }
-        .game-progress-bar .fill {
-            height: 100%;
-            width: 0%;
-            background: linear-gradient(90deg, #C9A84C, #4A9CFF);
-            border-radius: 10px;
-            transition: width 0.5s ease;
-        }
-        .game-actions {
+        .game-controls {
             display: flex;
             gap: 10px;
             flex-wrap: wrap;
-            margin-top: 12px;
             justify-content: center;
+            margin-top: 12px;
         }
-        .game-actions .btn {
-            flex: 1;
-            min-width: 100px;
-            padding: 12px 0;
+        .game-controls .btn {
+            padding: 10px 20px;
             border-radius: 30px;
             border: none;
             font-weight: 700;
-            font-size: 14px;
             cursor: pointer;
             transition: 0.2s;
         }
-        .game-actions .btn:active { transform: scale(0.94); }
-        .btn-achievement { background: #4A9CFF; color: #fff; }
-        .btn-achievement:disabled { opacity: 0.4; cursor: not-allowed; }
-        .game-reward-display {
-            font-size: 20px;
-            font-weight: 700;
-            color: #7BED9F;
-            text-align: center;
-            margin-top: 6px;
-        }
+        .game-controls .btn:active { transform: scale(0.94); }
     </style>
 </head>
 <body>
@@ -429,45 +404,26 @@
         </div>
     </div>
 
-    <!-- ===== تبويب الألعاب (الجديد) ===== -->
+    <!-- ===== تبويب الألعاب (الجديد - مكتبة ألعاب جاهزة) ===== -->
     <div id="tab-games" class="tab-content">
         <div class="card">
             <div class="card-title">
-                <span>🎮 لعبة itch.io</span>
-                <span id="gameTimerDisplay" style="color:#4A9CFF; font-weight:700;">00:00</span>
+                <span>🎮 مكتبة الألعاب</span>
+                <span style="color:#4A9CFF; font-size:12px;">142 لعبة جاهزة</span>
             </div>
 
-            <!-- حاوية اللعبة (iframe) -->
-            <div class="game-iframe-container">
-                <iframe id="gameIframe" src="https://itch.io/embed-upload/10559002?color=333333" allowfullscreen></iframe>
+            <!-- شبكة الألعاب (يتم تعبئتها بواسطة JavaScript) -->
+            <div class="game-library" id="gameLibrary"></div>
+
+            <!-- حاوية عرض اللعبة -->
+            <div class="game-iframe-container" id="gameFrameContainer">
+                <iframe id="gameFrame" src="" allowfullscreen></iframe>
             </div>
 
-            <!-- عرض الشرط المتغير -->
-            <div class="game-condition-box">
-                <div class="condition-text" id="conditionText">🎯 اجمع 10 عملات داخل اللعبة</div>
-                <div class="condition-progress" id="conditionProgress">التقدم: 0 / 10</div>
-                <div class="game-progress-bar">
-                    <div class="fill" id="progressFill" style="width:0%;"></div>
-                </div>
-            </div>
-
-            <!-- أزرار التحكم في المكافآت والتقدم -->
-            <div class="game-actions">
-                <button class="btn btn-primary" id="gameSessionStart"><i class="fas fa-play"></i> بدء الجلسة</button>
-                <button class="btn btn-danger" id="gameSessionStop"><i class="fas fa-stop"></i> إيقاف</button>
-                <button class="btn btn-achievement" id="gameAchieveBtn"><i class="fas fa-star"></i> سجل تقدماً</button>
-            </div>
-
-            <!-- عرض المكافأة -->
-            <div style="margin-top:12px; text-align:center;">
-                <span style="color:#8E8E9A;">🏆 المكافأة المستحقة:</span>
-                <span class="game-reward-display" id="gameRewardDisplay">0.0000 NC</span>
-            </div>
-
-            <!-- زر تغيير اللعبة (لتجربة ألعاب أخرى) -->
-            <div style="margin-top:12px; display:flex; gap:8px; flex-wrap:wrap; justify-content:center;">
-                <input type="text" id="gameUrlInput" placeholder="رابط تضمين itch.io" style="flex:2; background:#0A0A0F; border:1px solid #333; color:#fff; padding:10px; border-radius:14px; min-width:150px;" value="https://itch.io/embed-upload/10559002?color=333333">
-                <button class="btn btn-gold" id="changeGameBtn" style="flex:1; padding:10px 20px; border-radius:30px;">تغيير</button>
+            <!-- أزرار التحكم باللعبة -->
+            <div class="game-controls">
+                <button class="btn btn-primary" id="fullscreenBtn"><i class="fas fa-expand"></i> ملء الشاشة</button>
+                <button class="btn btn-danger" id="closeGameBtn"><i class="fas fa-times"></i> إغلاق اللعبة</button>
             </div>
         </div>
     </div>
@@ -707,7 +663,6 @@
             playBeep(300,0.03);
             if (tabId === 'wallet') updateWalletUI();
             if (tabId === 'shop') renderShop();
-            if (tabId === 'games') updateGameUI(); // تحديث واجهة الألعاب عند الدخول
         });
     });
 
@@ -721,246 +676,87 @@
     });
 
     // ================================================================
-    // 10. قسم الألعاب الجديد (نظام الشروط المتغيرة + المكافآت)
+    // 10. قسم الألعاب الجديد (مكتبة ألعاب جاهزة)
     // ================================================================
 
-    // ---- 10.1 قائمة الشروط (أكثر من 50 شرطاً) ----
-    const CONDITIONS = [
-        // زمنية
-        { type: 'time', target: 60, text: 'العب لمدة دقيقة واحدة', unit: 'دقيقة' },
-        { type: 'time', target: 120, text: 'العب لمدة دقيقتين', unit: 'دقيقة' },
-        { type: 'time', target: 180, text: 'العب لمدة 3 دقائق', unit: 'دقيقة' },
-        { type: 'time', target: 300, text: 'العب لمدة 5 دقائق', unit: 'دقيقة' },
-        { type: 'time', target: 600, text: 'العب لمدة 10 دقائق', unit: 'دقيقة' },
-        // عددية (مراحل)
-        { type: 'count', target: 3, text: 'تجاوز 3 مراحل بدون ترقيات', unit: 'مرحلة' },
-        { type: 'count', target: 5, text: 'تجاوز 5 مراحل', unit: 'مرحلة' },
-        { type: 'count', target: 10, text: 'تجاوز 10 مراحل', unit: 'مرحلة' },
-        { type: 'count', target: 15, text: 'تجاوز 15 مرحلة', unit: 'مرحلة' },
-        { type: 'count', target: 20, text: 'تجاوز 20 مرحلة', unit: 'مرحلة' },
-        // تجميعية (عملات)
-        { type: 'collect', target: 5, text: 'اجمع 5 عملات داخل اللعبة', unit: 'عملة' },
-        { type: 'collect', target: 10, text: 'اجمع 10 عملات داخل اللعبة', unit: 'عملة' },
-        { type: 'collect', target: 25, text: 'اجمع 25 عملة', unit: 'عملة' },
-        { type: 'collect', target: 50, text: 'اجمع 50 عملة', unit: 'عملة' },
-        { type: 'collect', target: 100, text: 'اجمع 100 عملة', unit: 'عملة' },
-        // مختلطة
-        { type: 'time', target: 150, text: 'العب لمدة 2.5 دقيقة', unit: 'دقيقة' },
-        { type: 'count', target: 7, text: 'تجاوز 7 مراحل', unit: 'مرحلة' },
-        { type: 'collect', target: 15, text: 'اجمع 15 عملة', unit: 'عملة' },
-        { type: 'time', target: 240, text: 'العب لمدة 4 دقائق', unit: 'دقيقة' },
-        { type: 'count', target: 12, text: 'تجاوز 12 مرحلة', unit: 'مرحلة' },
-        { type: 'collect', target: 30, text: 'اجمع 30 عملة', unit: 'عملة' },
-        { type: 'time', target: 360, text: 'العب لمدة 6 دقائق', unit: 'دقيقة' },
-        { type: 'count', target: 8, text: 'تجاوز 8 مراحل', unit: 'مرحلة' },
-        { type: 'collect', target: 20, text: 'اجمع 20 عملة', unit: 'عملة' },
-        { type: 'time', target: 90, text: 'العب لمدة 1.5 دقيقة', unit: 'دقيقة' },
-        { type: 'count', target: 4, text: 'تجاوز 4 مراحل', unit: 'مرحلة' },
-        { type: 'collect', target: 7, text: 'اجمع 7 عملات', unit: 'عملة' },
-        { type: 'time', target: 480, text: 'العب لمدة 8 دقائق', unit: 'دقيقة' },
-        { type: 'count', target: 25, text: 'تجاوز 25 مرحلة', unit: 'مرحلة' },
-        { type: 'collect', target: 75, text: 'اجمع 75 عملة', unit: 'عملة' },
-        { type: 'time', target: 30, text: 'العب لمدة 30 ثانية (تحدي سريع)', unit: 'ثانية' },
-        { type: 'count', target: 2, text: 'تجاوز مرحلتين', unit: 'مرحلة' },
-        { type: 'collect', target: 3, text: 'اجمع 3 عملات', unit: 'عملة' },
-        { type: 'time', target: 540, text: 'العب لمدة 9 دقائق', unit: 'دقيقة' },
-        { type: 'count', target: 18, text: 'تجاوز 18 مرحلة', unit: 'مرحلة' },
-        { type: 'collect', target: 40, text: 'اجمع 40 عملة', unit: 'عملة' },
-        { type: 'time', target: 120, text: 'العب لمدة دقيقتين بالضبط', unit: 'دقيقة' },
-        { type: 'count', target: 6, text: 'تجاوز 6 مراحل', unit: 'مرحلة' },
-        { type: 'collect', target: 12, text: 'اجمع 12 عملة', unit: 'عملة' },
-        { type: 'time', target: 300, text: 'العب لمدة 5 دقائق متواصلة', unit: 'دقيقة' },
-        { type: 'count', target: 14, text: 'تجاوز 14 مرحلة', unit: 'مرحلة' },
-        { type: 'collect', target: 45, text: 'اجمع 45 عملة', unit: 'عملة' },
-        { type: 'time', target: 75, text: 'العب لمدة 75 ثانية', unit: 'ثانية' },
-        { type: 'count', target: 9, text: 'تجاوز 9 مراحل', unit: 'مرحلة' },
-        { type: 'collect', target: 8, text: 'اجمع 8 عملات', unit: 'عملة' },
-        { type: 'time', target: 420, text: 'العب لمدة 7 دقائق', unit: 'دقيقة' },
-        { type: 'count', target: 30, text: 'تجاوز 30 مرحلة (نهاية اللعبة)', unit: 'مرحلة' },
-        { type: 'collect', target: 60, text: 'اجمع 60 عملة', unit: 'عملة' },
-        { type: 'time', target: 180, text: 'العب لمدة 3 دقائق بدون توقف', unit: 'دقيقة' },
-        { type: 'count', target: 11, text: 'تجاوز 11 مرحلة', unit: 'مرحلة' },
-        { type: 'collect', target: 22, text: 'اجمع 22 عملة', unit: 'عملة' },
-        { type: 'time', target: 135, text: 'العب لمدة 135 ثانية', unit: 'ثانية' },
-        { type: 'count', target: 16, text: 'تجاوز 16 مرحلة', unit: 'مرحلة' },
-        { type: 'collect', target: 33, text: 'اجمع 33 عملة', unit: 'عملة' },
-        { type: 'time', target: 255, text: 'العب لمدة 4.25 دقيقة', unit: 'دقيقة' },
-        { type: 'count', target: 13, text: 'تجاوز 13 مرحلة', unit: 'مرحلة' },
-        { type: 'collect', target: 28, text: 'اجمع 28 عملة', unit: 'عملة' },
-        { type: 'time', target: 390, text: 'العب لمدة 6.5 دقيقة', unit: 'دقيقة' },
-        { type: 'count', target: 22, text: 'تجاوز 22 مرحلة', unit: 'مرحلة' },
-        { type: 'collect', target: 55, text: 'اجمع 55 عملة', unit: 'عملة' }
+    // قائمة الألعاب من مستودع sausi-7/games
+    // تم اختيار 12 لعبة كعينة، يمكنك إضافة المزيد من registry.json
+    const GAMES_LIST = [
+        { id: 'snake', name: '🐍 Snake', url: 'https://sausi-7.github.io/games/games/snake/index.html' },
+        { id: 'pacman', name: '🟡 Pac-Man', url: 'https://sausi-7.github.io/games/games/pacman/index.html' },
+        { id: 'tetris', name: '🧩 Tetris', url: 'https://sausi-7.github.io/games/games/tetris/index.html' },
+        { id: '2048', name: '🔢 2048', url: 'https://sausi-7.github.io/games/games/2048/index.html' },
+        { id: 'flappy', name: '🐤 Flappy Bird', url: 'https://sausi-7.github.io/games/games/flappy/index.html' },
+        { id: 'crossy-road', name: '🚗 Crossy Road', url: 'https://sausi-7.github.io/games/games/crossy-road/index.html' },
+        { id: 'doodle-jump', name: '🦘 Doodle Jump', url: 'https://sausi-7.github.io/games/games/doodle-jump/index.html' },
+        { id: 'chess', name: '♟️ Chess', url: 'https://sausi-7.github.io/games/games/chess/index.html' },
+        { id: 'sudoku', name: '🧮 Sudoku', url: 'https://sausi-7.github.io/games/games/sudoku/index.html' },
+        { id: 'car-race', name: '🏎️ Car Race', url: 'https://sausi-7.github.io/games/games/car-race/index.html' },
+        { id: 'bubble-pop', name: '🫧 Bubble Pop', url: 'https://sausi-7.github.io/games/games/bubble-pop/index.html' },
+        { id: 'memory', name: '🧠 Memory', url: 'https://sausi-7.github.io/games/games/memory/index.html' }
     ];
 
-    // ---- 10.2 اختيار شرط عشوائي ----
-    let currentCondition = null;
-    let conditionProgress = 0;
-    let gameSessionActive = false;
-    let gameSeconds = 0;
-    let gameRewardTotal = 0;
-    let gameTimerInterval = null;
-    const REWARD_AMOUNT = 0.001; // المكافأة عند تحقيق الشرط
+    const gameLibraryEl = document.getElementById('gameLibrary');
+    const gameFrame = document.getElementById('gameFrame');
+    const gameFrameContainer = document.getElementById('gameFrameContainer');
+    let currentGameId = null;
 
-    function pickRandomCondition() {
-        const idx = Math.floor(Math.random() * CONDITIONS.length);
-        return { ...CONDITIONS[idx], index: idx };
+    // بناء شبكة الألعاب
+    function renderGameLibrary() {
+        gameLibraryEl.innerHTML = '';
+        GAMES_LIST.forEach(game => {
+            const card = document.createElement('div');
+            card.className = 'game-card';
+            card.dataset.id = game.id;
+            card.innerHTML = `
+                <div style="font-size:32px; margin-bottom:4px;">${game.name.split(' ')[0]}</div>
+                <div class="label">${game.name}</div>
+            `;
+            card.addEventListener('click', () => loadGame(game.id));
+            gameLibraryEl.appendChild(card);
+        });
     }
 
-    function updateGameUI() {
-        if (!currentCondition) return;
-        const progress = Math.min(conditionProgress, currentCondition.target);
-        const pct = (progress / currentCondition.target) * 100;
-        document.getElementById('conditionText').textContent = `🎯 ${currentCondition.text}`;
-        document.getElementById('conditionProgress').textContent = `التقدم: ${progress} / ${currentCondition.target} (${currentCondition.unit})`;
-        document.getElementById('progressFill').style.width = Math.min(pct, 100) + '%';
-        document.getElementById('gameRewardDisplay').textContent = gameRewardTotal.toFixed(4) + ' NC';
-        // تحديث المؤقت
-        const mins = Math.floor(gameSeconds / 60);
-        const secs = gameSeconds % 60;
-        document.getElementById('gameTimerDisplay').textContent = 
-            String(mins).padStart(2, '0') + ':' + String(secs).padStart(2, '0');
-    }
+    // تحميل لعبة
+    function loadGame(gameId) {
+        const game = GAMES_LIST.find(g => g.id === gameId);
+        if (!game) return;
 
-    // ---- 10.3 دوال الجلسة والمكافآت ----
-    function startGameSession() {
-        if (gameSessionActive) return;
-        gameSessionActive = true;
-        gameSeconds = 0;
-        // إعادة تعيين التقدم إذا كان الشرط من النوع الزمني (لأنه يبدأ من الصفر)
-        if (currentCondition && currentCondition.type === 'time') {
-            conditionProgress = 0;
-        }
-        document.getElementById('gameSessionStart').style.opacity = '0.6';
-        document.getElementById('gameSessionStop').style.opacity = '1';
-        addLog(`🎮 بدأت جلسة اللعب - الهدف: ${currentCondition.text}`);
-        playBeep(1000, 0.15);
-        gameTimerInterval = setInterval(() => {
-            gameSeconds++;
-            // تحديث المؤقت
-            const mins = Math.floor(gameSeconds / 60);
-            const secs = gameSeconds % 60;
-            document.getElementById('gameTimerDisplay').textContent = 
-                String(mins).padStart(2, '0') + ':' + String(secs).padStart(2, '0');
+        // تحديث الواجهة
+        document.querySelectorAll('.game-card').forEach(c => c.classList.remove('active'));
+        const activeCard = document.querySelector(`.game-card[data-id="${gameId}"]`);
+        if (activeCard) activeCard.classList.add('active');
 
-            // إذا كان الشرط زمنياً، نزيد التقدم تلقائياً
-            if (currentCondition && currentCondition.type === 'time') {
-                conditionProgress = Math.min(gameSeconds, currentCondition.target);
-                updateGameUI();
-                // التحقق من تحقيق الشرط
-                if (conditionProgress >= currentCondition.target && gameSessionActive) {
-                    completeCondition();
-                }
-            }
-        }, 1000);
-    }
-
-    function stopGameSession() {
-        if (!gameSessionActive) return;
-        gameSessionActive = false;
-        clearInterval(gameTimerInterval);
-        gameTimerInterval = null;
-        document.getElementById('gameSessionStart').style.opacity = '1';
-        document.getElementById('gameSessionStop').style.opacity = '0.6';
-        addLog(`⏹ توقفت جلسة اللعب (المدة: ${Math.floor(gameSeconds/60)} دقيقة)`);
-        playBeep(300, 0.15);
-    }
-
-    // ---- 10.4 زر "سجل تقدماً" (للشروط العددية والتجميعية) ----
-    document.getElementById('gameAchieveBtn').addEventListener('click', function() {
-        if (!gameSessionActive) {
-            alert('يرجى بدء الجلسة أولاً!');
-            return;
-        }
-        if (!currentCondition) return;
-        if (currentCondition.type === 'time') {
-            alert('هذا الشرط زمني، فقط انتظر حتى يكتمل الوقت.');
-            return;
-        }
-        // نزيد التقدم بوحدة واحدة
-        conditionProgress = Math.min(conditionProgress + 1, currentCondition.target);
-        updateGameUI();
-        playBeep(800, 0.08);
-        doVibe();
-        // التحقق من تحقيق الشرط
-        if (conditionProgress >= currentCondition.target && gameSessionActive) {
-            completeCondition();
-        }
-    });
-
-    // ---- 10.5 إكمال الشرط ومنح المكافأة ----
-    function completeCondition() {
-        if (!gameSessionActive) return;
-        gameSessionActive = false;
-        clearInterval(gameTimerInterval);
-        gameTimerInterval = null;
-        // منح المكافأة
-        data.wallet.NC += REWARD_AMOUNT;
-        gameRewardTotal += REWARD_AMOUNT;
-        addLog(`🎉 تحقق الشرط: ${currentCondition.text} - مكافأة +${REWARD_AMOUNT.toFixed(3)} NC`);
-        playBeep(1400, 0.3);
-        doVibe();
-        updateWalletUI();
-        saveData();
-        updateGameUI();
-        document.getElementById('gameSessionStart').style.opacity = '1';
-        document.getElementById('gameSessionStop').style.opacity = '0.6';
-        // اختيار شرط جديد تلقائياً (للمرة القادمة)
-        setTimeout(() => {
-            if (confirm('🎉 أكملت التحدي! هل تريد شرطاً جديداً؟')) {
-                selectNewCondition();
-            }
-        }, 500);
-    }
-
-    // ---- 10.6 اختيار شرط جديد ----
-    function selectNewCondition() {
-        currentCondition = pickRandomCondition();
-        conditionProgress = 0;
-        gameSeconds = 0;
-        gameRewardTotal = 0;
-        updateGameUI();
-        addLog(`🔄 تم اختيار شرط جديد: ${currentCondition.text}`);
+        // تحميل اللعبة في الإطار
+        gameFrame.src = game.url;
+        currentGameId = gameId;
+        gameFrameContainer.style.display = 'block';
+        addLog(`🎮 تم تشغيل اللعبة: ${game.name}`);
         playBeep(600, 0.1);
-        // إعادة ضبط أزرار الجلسة
-        document.getElementById('gameSessionStart').style.opacity = '1';
-        document.getElementById('gameSessionStop').style.opacity = '0.6';
-        // إذا كان الشرط زمنياً، نوقف الجلسة الحالية إن وجدت
-        if (gameSessionActive) stopGameSession();
     }
 
-    // ---- 10.7 أزرار الجلسة ----
-    document.getElementById('gameSessionStart').addEventListener('click', startGameSession);
-    document.getElementById('gameSessionStop').addEventListener('click', stopGameSession);
-
-    // ---- 10.8 تغيير لعبة itch.io ----
-    document.getElementById('changeGameBtn').addEventListener('click', function() {
-        const url = document.getElementById('gameUrlInput').value.trim();
-        if (url) {
-            document.getElementById('gameIframe').src = url;
-            addLog(`🔄 تم تغيير اللعبة إلى: ${url}`);
-            playBeep(900, 0.1);
-        } else {
-            alert('الرجاء إدخال رابط صحيح للتضمين من itch.io');
-        }
+    // إغلاق اللعبة
+    document.getElementById('closeGameBtn').addEventListener('click', function() {
+        gameFrame.src = '';
+        gameFrameContainer.style.display = 'none';
+        document.querySelectorAll('.game-card').forEach(c => c.classList.remove('active'));
+        currentGameId = null;
+        addLog('⏹ تم إغلاق اللعبة');
+        playBeep(300, 0.1);
     });
 
-    // ---- 10.9 تحميل شرط جديد عند فتح تبويب الألعاب ----
-    function initGameTab() {
-        // إذا لم يكن هناك شرط، اختر واحداً
-        if (!currentCondition) {
-            selectNewCondition();
-        } else {
-            updateGameUI();
+    // ملء الشاشة
+    document.getElementById('fullscreenBtn').addEventListener('click', function() {
+        const iframe = document.getElementById('gameFrame');
+        if (iframe.requestFullscreen) {
+            iframe.requestFullscreen();
+        } else if (iframe.webkitRequestFullscreen) {
+            iframe.webkitRequestFullscreen();
+        } else if (iframe.msRequestFullscreen) {
+            iframe.msRequestFullscreen();
         }
-        // تحديث حقل الرابط بالقيمة الحالية للإطار
-        const currentSrc = document.getElementById('gameIframe').src;
-        if (currentSrc && currentSrc !== 'about:blank') {
-            document.getElementById('gameUrlInput').value = currentSrc;
-        }
-    }
-
-    // استدعاء التهيئة عند تحميل الصفحة
-    window.initGameTab = initGameTab;
+        playBeep(500, 0.05);
+    });
 
     // ================================================================
     // 11. التهيئة عند تحميل الصفحة
@@ -972,10 +768,11 @@
         startMining();
         updateAllUI();
         renderLog();
-        addLog('🏛️ مرحباً في Hye Corp - الإصدار 4.0 مع ألعاب itch.io');
+        renderGameLibrary();
+        addLog('🏛️ مرحباً في Hye Corp - الإصدار 4.0 مع مكتبة ألعاب جاهزة');
         if (data.pendingNC > 0) document.getElementById('pendingDisplay').textContent = data.pendingNC.toFixed(8) + ' NC';
-        // تهيئة قسم الألعاب
-        initGameTab();
+        // إخفاء إطار اللعبة في البداية
+        gameFrameContainer.style.display = 'none';
     };
 
     // حفظ دوري
