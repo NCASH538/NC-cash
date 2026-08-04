@@ -667,8 +667,8 @@
                     <div class="battery-fill" id="batteryFill" style="width:100%;"></div>
                 </div>
                 <div class="battery-details">
-                    <span id="batteryAhDisplay">⚡ 5000.0 Ah</span>
-                    <span id="batteryRateDisplay" class="battery-rate charge">الشحن: 3.47 Ah/د</span>
+                    <span id="batteryAhDisplay">⚡ 10000.0 Ah</span>
+                    <span id="batteryRateDisplay" class="battery-rate charge">الشحن: 6.94 Ah/د</span>
                 </div>
             </div>
 
@@ -811,7 +811,7 @@
 
 <script>
     // ================================================================
-    // 1. DATA - سعة البطارية 5000 Ah
+    // 1. DATA - سعة البطارية 10000 Ah
     // ================================================================
     const STORAGE_KEY = 'hyex_data';
     let data = {
@@ -856,8 +856,8 @@
             cooldownRemaining: 0
         },
         battery: {
-            ah: 5000,
-            maxAh: 5000,
+            ah: 10000,
+            maxAh: 10000,
             percent: 100,
             consumptionRate: 0
         }
@@ -921,7 +921,7 @@
                     } else if (key === 'heat') {
                         for (let h in parsed.heat) data.heat[h] = parsed.heat[h] !== undefined ? parsed.heat[h] : (h === 'activeFans' ? 1 : 0);
                     } else if (key === 'battery') {
-                        for (let b in parsed.battery) data.battery[b] = parsed.battery[b] !== undefined ? parsed.battery[b] : (b === 'maxAh' ? 5000 : 0);
+                        for (let b in parsed.battery) data.battery[b] = parsed.battery[b] !== undefined ? parsed.battery[b] : (b === 'maxAh' ? 10000 : 0);
                     } else data[key] = parsed[key];
                 }
             }
@@ -934,9 +934,9 @@
         if (!data.profile) data.profile = { name: 'مستخدم جديد', level: 1, xp: 0, totalProfit: 0, totalMined: 0, image: null };
         if (!data.miningActive) data.miningActive = { nc: true, ncplus: false, miniCash: false, litnc: false };
         if (!data.heat) data.heat = { level: 0, activeFans: 1, timeToOverheat: 1800, elapsed: 0, isOverheated: false, cooldownRemaining: 0 };
-        if (!data.battery) data.battery = { ah: 5000, maxAh: 5000, percent: 100, consumptionRate: 0 };
-        if (data.battery.ah === 0 && !saved) data.battery.ah = 5000;
-        if (data.battery.maxAh === 0) data.battery.maxAh = 5000;
+        if (!data.battery) data.battery = { ah: 10000, maxAh: 10000, percent: 100, consumptionRate: 0 };
+        if (data.battery.ah === 0 && !saved) data.battery.ah = 10000;
+        if (data.battery.maxAh === 0) data.battery.maxAh = 10000;
         data.battery.percent = (data.battery.ah / data.battery.maxAh) * 100;
         if (data.wallet.Cash === 0 && !saved) data.wallet.Cash = 100;
         if (!data.settings) data.settings = { sound: true, vibe: true, theme: 'dark', lang: 'ar' };
@@ -1014,10 +1014,10 @@
     }
 
     // ================================================================
-    // 7. BATTERY SYSTEM (سعة 5000 Ah, استهلاك 10.5 لكل مروحة)
+    // 7. BATTERY SYSTEM (سعة 10000 Ah, استهلاك 10.5 لكل مروحة)
     // ================================================================
     const AH_PER_FAN_PER_SECOND = 10.5;
-    const CHARGE_RATE_PER_SECOND = 5000 / 86400; // 0.05787 Ah/ثانية (شحن كامل خلال 24 ساعة)
+    const CHARGE_RATE_PER_SECOND = 10000 / 86400; // 0.11574 Ah/ثانية (شحن كامل خلال 24 ساعة)
 
     function updateBattery() {
         const activeCount = CURRENCIES.filter(c => data.miningActive[c]).length;
