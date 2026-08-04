@@ -173,118 +173,104 @@
         .wallet-item .balance.ncplus { color: #A29BFE; }
         .wallet-item .balance.minicash { color: #FFA500; }
         .wallet-item .balance.litnc { color: #FF6B8A; }
-        .wallet-item .balance.bitnc { color: #FFD700; }
         .wallet-item .balance.cash { color: var(--green); }
 
-        /* ===== MINING DASHBOARD ===== */
-        .mining-dashboard {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 6px;
-            margin-top: 4px;
+        /* ===== MINING (New Design) ===== */
+        .mining-currency-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-top: 6px;
         }
-        .mining-device {
+        .mining-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
             background: var(--bg-input);
             border-radius: 12px;
-            padding: 8px 6px;
+            padding: 6px 12px;
             border: 1px solid var(--border-color);
-            text-align: center;
             transition: all 0.3s;
-            position: relative;
-            overflow: hidden;
         }
-        .mining-device .device-icon {
-            font-size: 24px;
-            margin-bottom: 2px;
-            display: block;
-        }
-        .mining-device .device-name {
-            font-size: 10px;
-            color: var(--text-secondary);
-            font-weight: 600;
-        }
-        .mining-device .device-amount {
-            font-size: 16px;
+        .mining-row .currency-name {
             font-weight: 700;
+            color: var(--text-secondary);
+            font-size: 13px;
+            min-width: 70px;
+        }
+        .mining-row .pending-amount {
+            font-size: 14px;
+            font-weight: 600;
             color: var(--gold);
             font-variant-numeric: tabular-nums;
-            transition: all 0.1s;
-            padding: 2px 0;
+            flex: 1;
+            text-align: center;
         }
-        .mining-device .device-status {
-            font-size: 8px;
+        .mining-row .fan-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: 2px solid var(--border-color);
+            background: var(--bg-card);
             color: var(--text-muted);
+            font-size: 18px;
+            cursor: pointer;
+            transition: 0.3s;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 4px;
+            position: relative;
         }
-        .mining-device .device-status .dot {
-            width: 6px;
-            height: 6px;
-            border-radius: 50%;
-            display: inline-block;
-            background: var(--green);
-            animation: pulse-dot 1.5s infinite;
+        .mining-row .fan-btn:hover {
+            border-color: var(--gold);
+            color: var(--gold);
         }
-        .mining-device .device-status .dot.inactive {
-            background: var(--text-muted);
-            animation: none;
+        .mining-row .fan-btn.active {
+            border-color: var(--green);
+            color: var(--green);
+            animation: spin-fan 1s linear infinite;
         }
-        .mining-device .device-status .dot.mining {
-            background: var(--gold);
-            animation: pulse-dot-gold 1s infinite;
-        }
-        @keyframes pulse-dot {
-            0% { opacity: 0.4; transform: scale(0.8); }
-            50% { opacity: 1; transform: scale(1.2); }
-            100% { opacity: 0.4; transform: scale(0.8); }
-        }
-        @keyframes pulse-dot-gold {
-            0% { opacity: 0.4; transform: scale(0.8); box-shadow: 0 0 0 0 var(--gold-dim); }
-            50% { opacity: 1; transform: scale(1.3); box-shadow: 0 0 15px var(--gold); }
-            100% { opacity: 0.4; transform: scale(0.8); box-shadow: 0 0 0 0 var(--gold-dim); }
-        }
-        .mining-device .device-glow {
+        .mining-row .fan-btn.active::after {
+            content: '';
             position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle at center, var(--gold-dim) 0%, transparent 70%);
-            opacity: 0;
-            transition: opacity 0.5s;
-            pointer-events: none;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 2px dashed var(--green);
+            animation: spin-fan 2s linear infinite;
+            opacity: 0.3;
         }
-        .mining-device.active .device-glow {
-            opacity: 0.15;
-            animation: glow-pulse 2s infinite;
-        }
-        @keyframes glow-pulse {
-            0% { opacity: 0.05; transform: scale(1); }
-            50% { opacity: 0.2; transform: scale(1.1); }
-            100% { opacity: 0.05; transform: scale(1); }
+        @keyframes spin-fan {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
 
-        .pending-summary {
+        .mining-row .fan-btn .fa-fan {
+            transition: transform 0.3s;
+        }
+        .mining-row .fan-btn.active .fa-fan {
+            transform: rotate(360deg);
+        }
+
+        .mining-total-pending {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             background: var(--bg-input);
             border-radius: 12px;
             padding: 8px 12px;
             border: 1px solid var(--border-color);
             margin-top: 8px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 13px;
+            font-size: 14px;
         }
-        .pending-summary .label { color: var(--text-muted); }
-        .pending-summary .value { color: var(--blue); font-weight: 700; font-size: 16px; }
+        .mining-total-pending .label { color: var(--text-muted); }
+        .mining-total-pending .value { color: var(--green); font-weight: 700; }
 
         .mining-actions {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 6px;
-            margin-top: 6px;
+            margin-top: 8px;
         }
         .mining-actions .btn {
             padding: 8px 0;
@@ -303,8 +289,6 @@
             border: 1px solid var(--border-color);
         }
         .mining-actions .btn:active { transform: scale(0.94); }
-        .btn-start.active { background: #3A1A1A; color: var(--red); border-color: #6A2A2A; }
-        .btn-start { background: #1A3A2A; color: var(--green); border-color: #2A5A3A; }
         .btn-collect { background: #1A2A4A; color: var(--blue); border-color: #2A4A6A; }
         .btn-convert { background: #3A2A1A; color: var(--gold); border-color: #5A4A2A; }
         .btn-log { background: #1A1A2A; color: var(--text-muted); border-color: #3A3A4A; }
@@ -379,7 +363,6 @@
             transition: 0.15s;
             width: 100%;
         }
-        .shop-item-card .btn:active { transform: scale(0.94); }
         .btn-buy-shop { background: #1A3A2A; color: var(--green); border: 1px solid #2A5A3A; }
         .btn-buy-shop:disabled { opacity: 0.4; cursor: not-allowed; }
 
@@ -547,7 +530,7 @@
             <h1>🏛️ HyeX Exchange</h1>
             <div class="subtitle" data-i18n="subtitle">المنصة الرقمية الرسمية | نسخة تجريبية</div>
         </div>
-        <div class="badge"><i class="fas fa-shield-alt"></i> v18.0</div>
+        <div class="badge"><i class="fas fa-shield-alt"></i> v19.0</div>
     </div>
 
     <!-- ===== PRICE TICKER (يُظهر سرعات التعدين) ===== -->
@@ -556,26 +539,24 @@
         <div class="ticker-item"><span class="label">NC+:</span> <span class="value" id="tickerNCplus">0.0000</span> <span class="unit">/ث</span></div>
         <div class="ticker-item"><span class="label">mini-cash:</span> <span class="value" id="tickerMiniCash">0.0000</span> <span class="unit">/ث</span></div>
         <div class="ticker-item"><span class="label">LitNC:</span> <span class="value" id="tickerLitNC">0.0000</span> <span class="unit">/ث</span></div>
-        <div class="ticker-item"><span class="label">BitNC:</span> <span class="value" id="tickerBitNC">0.0000</span> <span class="unit">/ث</span></div>
     </div>
 
     <!-- ===== TAB: MINING ===== -->
     <div id="tab-mining" class="tab-content active">
         <div class="card">
-            <div class="card-title"><span data-i18n="mining_dashboard">⚡ لوحة التعدين</span> <span id="hashRateDisplay">0.0000 NC/ث</span></div>
-            <div class="mining-dashboard" id="miningDashboard">
-                <!-- سيتم توليدها بواسطة JS -->
+            <div class="card-title"><span data-i18n="mining_dashboard">⚡ لوحة التعدين</span></div>
+            <div class="mining-currency-list" id="miningList">
+                <!-- يتم توليدها بواسطة JS -->
             </div>
-            <div class="pending-summary">
-                <span class="label" data-i18n="total_pending">💰 الإجمالي العالق:</span>
-                <span class="value" id="pendingDisplay">0.00000000 NC</span>
+            <div class="mining-total-pending">
+                <span class="label" data-i18n="total_pending_cash">💰 الإجمالي العالق (Cash):</span>
+                <span class="value" id="pendingDisplayCash">0.00</span>
             </div>
-        </div>
-        <div class="mining-actions">
-            <button class="btn btn-start" id="miningToggleBtn" data-i18n="start_mining"><i class="fas fa-play"></i> تعدين</button>
-            <button class="btn btn-collect" id="collectBtn" data-i18n="collect"><i class="fas fa-wallet"></i> جمع</button>
-            <button class="btn btn-convert" id="convertBtn" data-i18n="convert"><i class="fas fa-exchange-alt"></i> تحويل</button>
-            <button class="btn btn-log" id="logToggleBtn" data-i18n="log"><i class="fas fa-list-ul"></i> السجل</button>
+            <div class="mining-actions">
+                <button class="btn btn-collect" id="collectBtn" data-i18n="collect"><i class="fas fa-wallet"></i> جمع</button>
+                <button class="btn btn-convert" id="convertBtn" data-i18n="convert"><i class="fas fa-exchange-alt"></i> تحويل</button>
+                <button class="btn btn-log" id="logToggleBtn" data-i18n="log"><i class="fas fa-list-ul"></i> السجل</button>
+            </div>
         </div>
         <div id="logContainer" style="display:none; margin-top:8px;">
             <div class="card" style="padding:8px;">
@@ -588,11 +569,11 @@
                 <div class="card-title" data-i18n="convert_currency">🔄 تحويل العملات</div>
                 <div style="display:flex; gap:4px; flex-wrap:wrap;">
                     <select id="convertFrom" style="flex:1; background:var(--bg-input); border:1px solid var(--border-color); color:var(--text-primary); padding:4px 8px; border-radius:10px; font-size:11px;">
-                        <option value="NC">NC</option><option value="NCplus">NC+</option><option value="miniCash">mini-cash</option><option value="LitNC">LitNC</option><option value="BitNC">BitNC</option><option value="Cash">Cash</option>
+                        <option value="NC">NC</option><option value="NCplus">NC+</option><option value="miniCash">mini-cash</option><option value="LitNC">LitNC</option><option value="Cash">Cash</option>
                     </select>
                     <input type="number" id="convertAmount" placeholder="المبلغ" value="1" style="flex:1.5; background:var(--bg-input); border:1px solid var(--border-color); color:var(--text-primary); padding:4px 8px; border-radius:10px; font-size:11px;">
                     <select id="convertTo" style="flex:1; background:var(--bg-input); border:1px solid var(--border-color); color:var(--text-primary); padding:4px 8px; border-radius:10px; font-size:11px;">
-                        <option value="NC">NC</option><option value="NCplus">NC+</option><option value="miniCash">mini-cash</option><option value="LitNC">LitNC</option><option value="BitNC">BitNC</option><option value="Cash">Cash</option>
+                        <option value="NC">NC</option><option value="NCplus">NC+</option><option value="miniCash">mini-cash</option><option value="LitNC">LitNC</option><option value="Cash">Cash</option>
                     </select>
                     <button id="executeConvertBtn" style="flex:0.8; background:var(--gold); border:none; color:#0A0E18; font-weight:700; border-radius:30px; cursor:pointer; font-size:11px; padding:4px;" data-i18n="execute">تنفيذ</button>
                 </div>
@@ -609,7 +590,6 @@
                 <div class="wallet-item"><div class="symbol">NC+</div><div class="balance ncplus" id="balNCplus">0.00</div></div>
                 <div class="wallet-item"><div class="symbol">mini-cash</div><div class="balance minicash" id="balMiniCash">0.00</div></div>
                 <div class="wallet-item"><div class="symbol">LitNC</div><div class="balance litnc" id="balLitNC">0.00</div></div>
-                <div class="wallet-item"><div class="symbol">BitNC</div><div class="balance bitnc" id="balBitNC">0.00</div></div>
                 <div class="wallet-item"><div class="symbol">Cash</div><div class="balance cash" id="balCash">0.00</div></div>
             </div>
         </div>
@@ -710,20 +690,19 @@
 
 <script>
     // ================================================================
-    // 1. DATA
+    // 1. DATA (بدون BitNC)
     // ================================================================
     const STORAGE_KEY = 'hyex_data';
     let data = {
-        wallet: { NC: 0, NCplus: 0, miniCash: 0, LitNC: 0, BitNC: 0, Cash: 100 },
-        pending: { nc: 0, ncplus: 0, miniCash: 0, litnc: 0, bitnc: 0 },
-        isMining: false,
+        wallet: { NC: 0, NCplus: 0, miniCash: 0, LitNC: 0, Cash: 100 },
+        pending: { nc: 0, ncplus: 0, miniCash: 0, litnc: 0 },
+        isMining: false, // for global flag, but we use per-currency now
         log: [],
         upgrades: {
             speed: 0,
             ncplusSpeed: 0,
             miniCashSpeed: 0,
             litncSpeed: 0,
-            bitncSpeed: 0,
             power: 0,
             efficiency: 0
         },
@@ -732,35 +711,33 @@
             nc: { count: 1, level: 0 },
             ncplus: { count: 0, level: 0 },
             miniCash: { count: 0, level: 0 },
-            litnc: { count: 0, level: 0 },
-            bitnc: { count: 0, level: 0 }
+            litnc: { count: 0, level: 0 }
         },
         boosters: {
             nc: { active: false, remaining: 0, multiplier: 1 },
             ncplus: { active: false, remaining: 0, multiplier: 1 },
             miniCash: { active: false, remaining: 0, multiplier: 1 },
-            litnc: { active: false, remaining: 0, multiplier: 1 },
-            bitnc: { active: false, remaining: 0, multiplier: 1 }
+            litnc: { active: false, remaining: 0, multiplier: 1 }
         },
         maintenance: {
             nc: { health: 100 },
             ncplus: { health: 100 },
             miniCash: { health: 100 },
-            litnc: { health: 100 },
-            bitnc: { health: 100 }
+            litnc: { health: 100 }
         },
-        profile: { name: 'مستخدم جديد', level: 1, xp: 0, totalProfit: 0, totalMined: 0, image: null }
+        profile: { name: 'مستخدم جديد', level: 1, xp: 0, totalProfit: 0, totalMined: 0, image: null },
+        // حالة التعدين لكل عملة
+        miningActive: { nc: true, ncplus: false, miniCash: false, litnc: false } // تشغيل NC تلقائياً
     };
 
     // ================================================================
-    // 2. SHOP DATABASE
+    // 2. SHOP DATABASE (تم إزالة BitNC)
     // ================================================================
     const SHOP_DB = {
         miners: [
             { id: 'miner_ncplus', name: 'جهاز NC+', icon: '⛏️', desc: 'يعدن NC+', price: 0.5, currency: 'NC', type: 'miner', target: 'ncplus' },
             { id: 'miner_miniCash', name: 'جهاز mini-cash', icon: '⛏️', desc: 'يعدن mini-cash', price: 0.4, currency: 'NC', type: 'miner', target: 'miniCash' },
             { id: 'miner_litnc', name: 'جهاز LitNC', icon: '⛏️', desc: 'يعدن LitNC', price: 0.7, currency: 'NC', type: 'miner', target: 'litnc' },
-            { id: 'miner_bitnc', name: 'جهاز BitNC', icon: '⛏️', desc: 'يعدن BitNC', price: 1.0, currency: 'NC', type: 'miner', target: 'bitnc' },
         ],
         boosters: [
             { id: 'booster_nc_2x', name: 'مضاعف NC ×2', icon: '⚡', desc: 'مدة 5 دقائق', price: 0.3, currency: 'NC', type: 'booster', target: 'nc', duration: 300, multiplier: 2 },
@@ -776,11 +753,10 @@
             { id: 'repair_ncplus', name: 'صيانة NC+', icon: '🛠️', desc: 'إصلاح كامل', price: 0.08, currency: 'NC', type: 'repair', target: 'ncplus' },
             { id: 'repair_miniCash', name: 'صيانة mini-cash', icon: '🛠️', desc: 'إصلاح كامل', price: 0.06, currency: 'NC', type: 'repair', target: 'miniCash' },
             { id: 'repair_litnc', name: 'صيانة LitNC', icon: '🛠️', desc: 'إصلاح كامل', price: 0.09, currency: 'NC', type: 'repair', target: 'litnc' },
-            { id: 'repair_bitnc', name: 'صيانة BitNC', icon: '🛠️', desc: 'إصلاح كامل', price: 0.1, currency: 'NC', type: 'repair', target: 'bitnc' },
         ],
         specials: [
             { id: 'special_startup', name: 'حزمة البداية', icon: '🎁', desc: 'جهاز NC+ + مضاعف 2x 10د', price: 0.6, currency: 'NC', type: 'special', items: [{ type: 'miner', target: 'ncplus' }, { type: 'booster', target: 'ncplus', duration: 600, multiplier: 2 }] },
-            { id: 'special_mega', name: 'الحزمة العملاقة', icon: '🚀', desc: 'جميع الأجهزة + مضاعف 3x 5د', price: 2.5, currency: 'NC', type: 'special', items: [{ type: 'miner', target: 'ncplus' }, { type: 'miner', target: 'miniCash' }, { type: 'miner', target: 'litnc' }, { type: 'miner', target: 'bitnc' }, { type: 'booster', target: 'all', duration: 300, multiplier: 3 }] },
+            { id: 'special_mega', name: 'الحزمة العملاقة', icon: '🚀', desc: 'جميع الأجهزة + مضاعف 3x 5د', price: 2.5, currency: 'NC', type: 'special', items: [{ type: 'miner', target: 'ncplus' }, { type: 'miner', target: 'miniCash' }, { type: 'miner', target: 'litnc' }, { type: 'booster', target: 'all', duration: 300, multiplier: 3 }] },
         ]
     };
 
@@ -807,16 +783,19 @@
                         for (let b in parsed.boosters) data.boosters[b] = parsed.boosters[b] || { active: false, remaining: 0, multiplier: 1 };
                     } else if (key === 'maintenance') {
                         for (let m in parsed.maintenance) data.maintenance[m] = parsed.maintenance[m] || { health: 100 };
+                    } else if (key === 'miningActive') {
+                        for (let a in parsed.miningActive) data.miningActive[a] = parsed.miningActive[a] !== undefined ? parsed.miningActive[a] : false;
                     } else data[key] = parsed[key];
                 }
             }
         } catch (e) {}
         if (!data.log) data.log = [];
-        if (!data.upgrades) data.upgrades = { speed: 0, ncplusSpeed: 0, miniCashSpeed: 0, litncSpeed: 0, bitncSpeed: 0, power: 0, efficiency: 0 };
-        if (!data.devices) data.devices = { nc: { count: 1, level: 0 }, ncplus: { count: 0, level: 0 }, miniCash: { count: 0, level: 0 }, litnc: { count: 0, level: 0 }, bitnc: { count: 0, level: 0 } };
-        if (!data.boosters) data.boosters = { nc: { active: false, remaining: 0, multiplier: 1 }, ncplus: { active: false, remaining: 0, multiplier: 1 }, miniCash: { active: false, remaining: 0, multiplier: 1 }, litnc: { active: false, remaining: 0, multiplier: 1 }, bitnc: { active: false, remaining: 0, multiplier: 1 } };
-        if (!data.maintenance) data.maintenance = { nc: { health: 100 }, ncplus: { health: 100 }, miniCash: { health: 100 }, litnc: { health: 100 }, bitnc: { health: 100 } };
+        if (!data.upgrades) data.upgrades = { speed: 0, ncplusSpeed: 0, miniCashSpeed: 0, litncSpeed: 0, power: 0, efficiency: 0 };
+        if (!data.devices) data.devices = { nc: { count: 1, level: 0 }, ncplus: { count: 0, level: 0 }, miniCash: { count: 0, level: 0 }, litnc: { count: 0, level: 0 } };
+        if (!data.boosters) data.boosters = { nc: { active: false, remaining: 0, multiplier: 1 }, ncplus: { active: false, remaining: 0, multiplier: 1 }, miniCash: { active: false, remaining: 0, multiplier: 1 }, litnc: { active: false, remaining: 0, multiplier: 1 } };
+        if (!data.maintenance) data.maintenance = { nc: { health: 100 }, ncplus: { health: 100 }, miniCash: { health: 100 }, litnc: { health: 100 } };
         if (!data.profile) data.profile = { name: 'مستخدم جديد', level: 1, xp: 0, totalProfit: 0, totalMined: 0, image: null };
+        if (!data.miningActive) data.miningActive = { nc: true, ncplus: false, miniCash: false, litnc: false };
         if (data.wallet.Cash === 0 && !saved) data.wallet.Cash = 100;
         if (!data.settings) data.settings = { sound: true, vibe: true, theme: 'dark', lang: 'ar' };
         if (!data.settings.theme) data.settings.theme = 'dark';
@@ -854,12 +833,11 @@
     }
 
     // ================================================================
-    // 6. MINING DASHBOARD
+    // 6. MINING (New Design)
     // ================================================================
-    const CURRENCIES = ['nc', 'ncplus', 'miniCash', 'litnc', 'bitnc'];
-    const CURRENCY_NAMES = { nc: 'NC', ncplus: 'NC+', miniCash: 'mini-cash', litnc: 'LitNC', bitnc: 'BitNC' };
-    const CURRENCY_ICONS = { nc: '🪙', ncplus: '💎', miniCash: '🪙', litnc: '⚡', bitnc: '🔶' };
-    const BASE_SPEEDS = { nc: 0.0001, ncplus: 0.00008, miniCash: 0.00006, litnc: 0.00004, bitnc: 0.00003 };
+    const CURRENCIES = ['nc', 'ncplus', 'miniCash', 'litnc'];
+    const CURRENCY_NAMES = { nc: 'NC', ncplus: 'NC+', miniCash: 'mini-cash', litnc: 'LitNC' };
+    const BASE_SPEEDS = { nc: 0.0001, ncplus: 0.00008, miniCash: 0.00006, litnc: 0.00004 }; // أبطأ تدريجياً
 
     function getMiningSpeed(currency) {
         const deviceCount = data.devices[currency]?.count || 0;
@@ -881,113 +859,129 @@
         return Math.max(0.000001, speed);
     }
 
-    function renderMiningDashboard() {
-        const dashboard = document.getElementById('miningDashboard');
-        dashboard.innerHTML = '';
-        CURRENCIES.forEach(curr => {
-            const pendingAmount = data.pending[curr] || 0;
-            const isActive = data.isMining;
-            const div = document.createElement('div');
-            div.className = `mining-device ${isActive ? 'active' : ''}`;
-            div.dataset.currency = curr;
-            div.innerHTML = `
-                <span class="device-icon">${CURRENCY_ICONS[curr]}</span>
-                <div class="device-name">${CURRENCY_NAMES[curr]}</div>
-                <div class="device-amount" id="pending_${curr}">${pendingAmount.toFixed(8)}</div>
-                <div class="device-status">
-                    <span class="dot ${isActive ? 'mining' : 'inactive'}"></span>
-                    ${isActive ? 'قيد التعدين' : 'متوقف'}
-                </div>
-                <div class="device-glow"></div>
-            `;
-            dashboard.appendChild(div);
-        });
-        updatePendingDisplay();
+    // === Mining Intervals per currency ===
+    let miningIntervals = {};
+
+    function startMiningForCurrency(currency) {
+        if (miningIntervals[currency]) return; // already running
+        data.miningActive[currency] = true;
+        // تحديث الزر
+        const btn = document.querySelector(`.fan-btn[data-currency="${currency}"]`);
+        if (btn) btn.classList.add('active');
+        // تحديث حالة المروحة
+        const fanIcon = btn?.querySelector('.fa-fan');
+        if (fanIcon) fanIcon.style.animation = 'spin-fan 1s linear infinite';
+        // بدء التعدين
+        miningIntervals[currency] = setInterval(() => {
+            const speed = getMiningSpeed(currency);
+            data.pending[currency] += speed;
+            data.profile.totalMined += speed;
+            // تحديث عرض المبلغ العالق لهذه العملة
+            const pendingEl = document.querySelector(`.pending-amount[data-currency="${currency}"]`);
+            if (pendingEl) pendingEl.textContent = data.pending[currency].toFixed(8);
+            // تحديث الإجمالي بالـ Cash
+            updateTotalPendingCash();
+            // تحديث سرعات العرض العلوي
+            updateSpeedsUI();
+            saveData();
+        }, 100);
     }
 
-    function updatePendingDisplay() {
-        let totalPending = 0;
+    function stopMiningForCurrency(currency) {
+        if (miningIntervals[currency]) {
+            clearInterval(miningIntervals[currency]);
+            delete miningIntervals[currency];
+        }
+        data.miningActive[currency] = false;
+        const btn = document.querySelector(`.fan-btn[data-currency="${currency}"]`);
+        if (btn) btn.classList.remove('active');
+        const fanIcon = btn?.querySelector('.fa-fan');
+        if (fanIcon) fanIcon.style.animation = 'none';
+        saveData();
+    }
+
+    function toggleMining(currency) {
+        if (data.miningActive[currency]) {
+            stopMiningForCurrency(currency);
+            addLog(translate('stopped_mining', CURRENCY_NAMES[currency]));
+        } else {
+            startMiningForCurrency(currency);
+            addLog(translate('started_mining', CURRENCY_NAMES[currency]));
+            playBeep(800,0.1);
+            doVibe();
+        }
+        // تحديث حالة الزر
+        updateMiningUI();
+    }
+
+    function updateTotalPendingCash() {
+        let totalCash = 0;
+        // تحويل كل عملة عالقة إلى Cash بسعر الصرف
+        const rates = getRates();
         CURRENCIES.forEach(curr => {
-            totalPending += data.pending[curr] || 0;
-            const el = document.getElementById(`pending_${curr}`);
-            if (el) el.textContent = (data.pending[curr] || 0).toFixed(8);
+            const amount = data.pending[curr] || 0;
+            const rate = rates[curr] || 1;
+            totalCash += amount * rate;
         });
-        document.getElementById('pendingDisplay').textContent = totalPending.toFixed(8) + ' NC';
+        document.getElementById('pendingDisplayCash').textContent = totalCash.toFixed(2);
+    }
+
+    function getRates() {
+        // أسعار الصرف مقابل Cash (1 Cash = 1 Cash)
+        return { nc: 1, ncplus: 0.8, miniCash: 0.6, litnc: 0.4 };
     }
 
     function updateSpeedsUI() {
         CURRENCIES.forEach(curr => {
             const speed = getMiningSpeed(curr);
-            const tickerId = 'ticker' + (curr === 'nc' ? 'NC' : curr === 'ncplus' ? 'NCplus' : curr === 'miniCash' ? 'MiniCash' : curr === 'litnc' ? 'LitNC' : 'BitNC');
+            const tickerId = 'ticker' + (curr === 'nc' ? 'NC' : curr === 'ncplus' ? 'NCplus' : curr === 'miniCash' ? 'MiniCash' : 'LitNC');
             document.getElementById(tickerId).textContent = speed.toFixed(6);
         });
-        document.getElementById('hashRateDisplay').textContent = getMiningSpeed('nc').toFixed(6) + ' NC/ث';
+    }
+
+    // === Render Mining List ===
+    function renderMiningList() {
+        const container = document.getElementById('miningList');
+        container.innerHTML = '';
+        CURRENCIES.forEach(curr => {
+            const isActive = data.miningActive[curr] || false;
+            const pendingAmount = data.pending[curr] || 0;
+            const row = document.createElement('div');
+            row.className = 'mining-row';
+            row.innerHTML = `
+                <span class="currency-name">${CURRENCY_NAMES[curr]}</span>
+                <span class="pending-amount" data-currency="${curr}">${pendingAmount.toFixed(8)}</span>
+                <button class="fan-btn ${isActive ? 'active' : ''}" data-currency="${curr}" onclick="toggleMining('${curr}')">
+                    <i class="fas fa-fan"></i>
+                </button>
+            `;
+            container.appendChild(row);
+        });
+        updateTotalPendingCash();
+        // تحديث حالة الأزرار
+        CURRENCIES.forEach(curr => {
+            const btn = document.querySelector(`.fan-btn[data-currency="${curr}"]`);
+            if (btn && data.miningActive[curr]) {
+                btn.classList.add('active');
+                const fanIcon = btn.querySelector('.fa-fan');
+                if (fanIcon) fanIcon.style.animation = 'spin-fan 1s linear infinite';
+            } else if (btn) {
+                btn.classList.remove('active');
+                const fanIcon = btn.querySelector('.fa-fan');
+                if (fanIcon) fanIcon.style.animation = 'none';
+            }
+        });
     }
 
     // ================================================================
-    // 7. MINING START/STOP
+    // 7. COLLECT
     // ================================================================
-    let miningInterval = null;
-
-    function startMining() {
-        if (data.isMining) return;
-        data.isMining = true;
-        document.getElementById('miningToggleBtn').innerHTML = '<i class="fas fa-stop"></i> ' + translate('stop_mining');
-        document.getElementById('miningToggleBtn').classList.add('active');
-        playBeep(800,0.1); doVibe();
-        // تحديث واجهة الأجهزة
-        document.querySelectorAll('.mining-device').forEach(el => {
-            el.classList.add('active');
-            const dot = el.querySelector('.dot');
-            if (dot) { dot.className = 'dot mining'; }
-            const statusText = el.querySelector('.device-status');
-            if (statusText) {
-                const textNode = statusText.childNodes[1];
-                if (textNode) textNode.textContent = 'قيد التعدين';
-            }
-        });
-        miningInterval = setInterval(() => {
-            CURRENCIES.forEach(curr => {
-                const speed = getMiningSpeed(curr);
-                data.pending[curr] += speed;
-                data.profile.totalMined += speed;
-            });
-            updatePendingDisplay();
-            updateSpeedsUI();
-            updateShopUI();
-            updateProfileUI();
-            saveData();
-        }, 100);
-    }
-
-    function stopMining() {
-        if (!data.isMining) return;
-        data.isMining = false;
-        clearInterval(miningInterval); miningInterval = null;
-        document.getElementById('miningToggleBtn').innerHTML = '<i class="fas fa-play"></i> ' + translate('start_mining');
-        document.getElementById('miningToggleBtn').classList.remove('active');
-        playBeep(400,0.15); doVibe();
-        // تحديث واجهة الأجهزة
-        document.querySelectorAll('.mining-device').forEach(el => {
-            el.classList.remove('active');
-            const dot = el.querySelector('.dot');
-            if (dot) { dot.className = 'dot inactive'; }
-            const statusText = el.querySelector('.device-status');
-            if (statusText) {
-                const textNode = statusText.childNodes[1];
-                if (textNode) textNode.textContent = 'متوقف';
-            }
-        });
-        saveData();
-    }
-
-    document.getElementById('miningToggleBtn').addEventListener('click', function() { data.isMining ? stopMining() : startMining(); });
-
     document.getElementById('collectBtn').addEventListener('click', function() {
         let collected = false;
         CURRENCIES.forEach(curr => {
             if (data.pending[curr] > 0) {
-                data.wallet[curr === 'nc' ? 'NC' : curr === 'ncplus' ? 'NCplus' : curr === 'miniCash' ? 'miniCash' : curr === 'litnc' ? 'LitNC' : 'BitNC'] += data.pending[curr];
+                const key = curr === 'nc' ? 'NC' : curr === 'ncplus' ? 'NCplus' : curr === 'miniCash' ? 'miniCash' : 'LitNC';
+                data.wallet[key] += data.pending[curr];
                 data.pending[curr] = 0;
                 collected = true;
             }
@@ -995,9 +989,14 @@
         if (!collected) { addLog(translate('no_pending')); playBeep(300,0.1); return; }
         playBeep(1000,0.2); doVibe();
         addLog(translate('collected_all'));
-        updateAllUI(); saveData();
+        updateAllUI();
+        renderMiningList();
+        saveData();
     });
 
+    // ================================================================
+    // 8. CONVERT
+    // ================================================================
     let convertPanelVisible = false;
     document.getElementById('convertBtn').addEventListener('click', function() {
         const panel = document.getElementById('convertPanel');
@@ -1032,18 +1031,17 @@
     });
 
     // ================================================================
-    // 8. UI UPDATES
+    // 9. UI UPDATES
     // ================================================================
     function updateWalletUI() {
         document.getElementById('balNC').textContent = data.wallet.NC.toFixed(6);
         document.getElementById('balNCplus').textContent = data.wallet.NCplus.toFixed(6);
         document.getElementById('balMiniCash').textContent = data.wallet.miniCash.toFixed(6);
         document.getElementById('balLitNC').textContent = data.wallet.LitNC.toFixed(6);
-        document.getElementById('balBitNC').textContent = data.wallet.BitNC.toFixed(6);
         document.getElementById('balCash').textContent = data.wallet.Cash.toFixed(2);
         document.getElementById('shopBalance').textContent = data.wallet.NC.toFixed(2) + ' NC';
         updateSpeedsUI();
-        updatePendingDisplay();
+        updateTotalPendingCash();
     }
 
     function updateAllUI() {
@@ -1055,13 +1053,13 @@
     }
 
     function getRate(from, to) {
-        const base = { NC: 1, NCplus: 0.8, miniCash: 0.6, LitNC: 0.4, BitNC: 0.2, Cash: 1 };
+        const base = { NC: 1, NCplus: 0.8, miniCash: 0.6, LitNC: 0.4, Cash: 1 };
         if (from === to) return 1;
         return base[to] / base[from];
     }
 
     // ================================================================
-    // 9. SHOP
+    // 10. SHOP (تم إزالة BitNC)
     // ================================================================
     function renderShopAll() {
         renderShopCategory('miners');
@@ -1231,7 +1229,7 @@
     }
 
     // ================================================================
-    // 10. PROFILE
+    // 11. PROFILE
     // ================================================================
     function toggleProfile() {
         const slide = document.getElementById('profileSlide');
@@ -1302,7 +1300,7 @@
     }
 
     // ================================================================
-    // 11. THEME & LANGUAGE
+    // 12. THEME & LANGUAGE
     // ================================================================
     function setTheme(theme) {
         document.documentElement.setAttribute('data-theme', theme);
@@ -1331,13 +1329,13 @@
     document.getElementById('themeLightBtn').addEventListener('click', function() { setTheme('light'); });
 
     // ================================================================
-    // 12. LANGUAGE
+    // 13. LANGUAGE
     // ================================================================
     const translations = {
         ar: {
             subtitle: 'المنصة الرقمية الرسمية | نسخة تجريبية',
             mining_dashboard: '⚡ لوحة التعدين',
-            total_pending: '💰 الإجمالي العالق:',
+            total_pending_cash: '💰 الإجمالي العالق (Cash):',
             start_mining: 'تعدين',
             stop_mining: 'إيقاف',
             collect: 'جمع',
@@ -1391,12 +1389,14 @@
             repaired_device: '🛠️ تم إصلاح جهاز {0}',
             bought_special: '🎁 تم شراء الحزمة الخاصة: {0}',
             profile_updated: '✅ تم تحديث الملف الشخصي: {0}',
-            enter_name: 'الرجاء إدخال اسم صحيح'
+            enter_name: 'الرجاء إدخال اسم صحيح',
+            started_mining: '▶️ بدأ تعدين {0}',
+            stopped_mining: '⏹ توقف تعدين {0}'
         },
         en: {
             subtitle: 'Official Digital Platform | Beta Version',
             mining_dashboard: '⚡ Mining Dashboard',
-            total_pending: '💰 Total Pending:',
+            total_pending_cash: '💰 Total Pending (Cash):',
             start_mining: 'Start Mining',
             stop_mining: 'Stop',
             collect: 'Collect',
@@ -1450,7 +1450,9 @@
             repaired_device: '🛠️ Repaired {0} device',
             bought_special: '🎁 Bought special pack: {0}',
             profile_updated: '✅ Profile updated: {0}',
-            enter_name: 'Please enter a valid name'
+            enter_name: 'Please enter a valid name',
+            started_mining: '▶️ Started mining {0}',
+            stopped_mining: '⏹ Stopped mining {0}'
         }
     };
 
@@ -1472,25 +1474,7 @@
             el.textContent = translate(key);
         });
         document.getElementById('settingsProfileName').textContent = data.profile.name || 'مستخدم جديد';
-        const miningBtn = document.getElementById('miningToggleBtn');
-        if (data.isMining) {
-            miningBtn.innerHTML = '<i class="fas fa-stop"></i> ' + translate('stop_mining');
-        } else {
-            miningBtn.innerHTML = '<i class="fas fa-play"></i> ' + translate('start_mining');
-        }
         renderLog();
-        // تحديث النصوص الديناميكية في لوحة التعدين
-        document.querySelectorAll('.mining-device .device-status').forEach(el => {
-            const isActive = data.isMining;
-            const dot = el.querySelector('.dot');
-            if (dot) {
-                dot.className = `dot ${isActive ? 'mining' : 'inactive'}`;
-            }
-            const textNode = el.childNodes[1];
-            if (textNode) {
-                textNode.textContent = isActive ? 'قيد التعدين' : 'متوقف';
-            }
-        });
     }
 
     document.getElementById('langSelect').addEventListener('change', function() {
@@ -1500,7 +1484,7 @@
     });
 
     // ================================================================
-    // 13. NAVIGATION
+    // 14. NAVIGATION
     // ================================================================
     document.querySelectorAll('.nav-item').forEach(item => {
         item.addEventListener('click', function() {
@@ -1513,12 +1497,12 @@
             if (tabId === 'wallet') updateWalletUI();
             if (tabId === 'shop') updateShopUI();
             if (tabId === 'settings') { updateProfileUI(); applyLanguage(); }
-            if (tabId === 'mining') { renderMiningDashboard(); updatePendingDisplay(); }
+            if (tabId === 'mining') { renderMiningList(); updateTotalPendingCash(); }
         });
     });
 
     // ================================================================
-    // 14. SETTINGS EVENTS
+    // 15. SETTINGS EVENTS
     // ================================================================
     document.getElementById('soundToggle').addEventListener('change', function() { data.settings.sound = this.checked; saveData(); });
     document.getElementById('vibeToggle').addEventListener('change', function() { data.settings.vibe = this.checked; saveData(); });
@@ -1530,7 +1514,7 @@
     });
 
     // ================================================================
-    // 15. INIT
+    // 16. INIT
     // ================================================================
     window.onload = function() {
         loadData();
@@ -1539,18 +1523,21 @@
         document.getElementById('langSelect').value = data.settings.lang || 'ar';
         setTheme(data.settings.theme || 'dark');
         applyLanguage();
-        renderMiningDashboard();
-        startMining(); // بدء التعدين تلقائياً
+        renderMiningList();
+        // بدء تشغيل NC تلقائياً
+        if (data.miningActive.nc) {
+            startMiningForCurrency('nc');
+        }
         updateAllUI();
         renderLog();
         updateProfileUI();
         updateShopUI();
 
         addLog('🏛️ ' + translate('subtitle'));
-        if (data.pending.nc > 0) document.getElementById('pendingDisplay').textContent = data.pending.nc.toFixed(8) + ' NC';
+        updateTotalPendingCash();
     };
 
     setInterval(() => saveData(), 5000);
 </script>
 </body>
-</html>
+    </html>
