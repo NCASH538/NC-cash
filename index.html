@@ -72,7 +72,7 @@
         .corp-header .subtitle { font-size: 9px; color: var(--text-muted); letter-spacing: 0.5px; font-weight: 300; }
         .corp-header .badge { background: #1E2A3A; padding: 4px 12px; border-radius: 30px; font-size: 9px; border: 1px solid var(--gold-dim); color: var(--gold); white-space: nowrap; letter-spacing: 0.5px; }
 
-        /* ===== PRICE TICKER (يُظهر سرعات التعدين) ===== */
+        /* ===== PRICE TICKER ===== */
         .price-ticker {
             flex-shrink: 0;
             background: var(--bg-input);
@@ -212,6 +212,47 @@
         .indicator-box .bar-track .bar-fill.cooling { background: var(--blue); animation: pulse-cool 1s infinite; }
         @keyframes pulse-cool { 0% { opacity: 0.5; } 50% { opacity: 1; } 100% { opacity: 0.5; } }
 
+        /* ===== COOLDOWN BAR (NEW) ===== */
+        .cooldown-container {
+            background: var(--bg-input);
+            border-radius: 12px;
+            padding: 8px 12px;
+            border: 1px solid var(--border-color);
+            margin: 6px 0 8px;
+            display: none;
+        }
+        .cooldown-container.active { display: block; }
+        .cooldown-container .cooldown-header {
+            display: flex;
+            justify-content: space-between;
+            font-size: 11px;
+            color: var(--text-secondary);
+            margin-bottom: 4px;
+        }
+        .cooldown-container .cooldown-track {
+            width: 100%;
+            height: 8px;
+            background: var(--border-color);
+            border-radius: 8px;
+            overflow: hidden;
+            position: relative;
+        }
+        .cooldown-container .cooldown-track .cooldown-fill {
+            height: 100%;
+            background: var(--blue);
+            border-radius: 8px;
+            transition: width 1s linear;
+            width: 100%;
+            box-shadow: 0 0 10px var(--blue);
+        }
+        .cooldown-container .cooldown-time {
+            text-align: center;
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--blue);
+            margin-top: 4px;
+        }
+
         .heat-status-text {
             font-size: 10px;
             font-weight: 600;
@@ -253,32 +294,20 @@
         .mining-total-pending .label { color: var(--text-muted); }
         .mining-total-pending .value { color: var(--green); font-weight: 700; }
 
-        /* ===== LOG ===== */
-        .log-container {
-            max-height: 80px;
-            overflow-y: auto;
-            background: var(--bg-input);
-            border-radius: 12px;
-            padding: 4px 8px;
-            border: 1px solid var(--border-color);
-            margin-top: 6px;
-        }
-        .log-item { font-size: 10px; padding: 3px 0; border-bottom: 1px solid var(--border-color); color: var(--text-secondary); display: flex; justify-content: space-between; }
-        .log-item .time { color: var(--text-muted); font-size: 9px; }
-
-        /* ===== ACTION BAR ===== */
+        /* ===== ACTION BAR (Hidden by default, shown only in mining tab) ===== */
         .action-bar {
             flex-shrink: 0;
             background: var(--bg-card);
             border-top: 2px solid var(--gold-dim);
             border-bottom: 2px solid var(--gold-dim);
             padding: 6px 12px;
-            display: flex;
+            display: none;
             justify-content: space-around;
             align-items: center;
             z-index: 5;
             transition: background 0.3s, border-color 0.3s;
         }
+        .action-bar.visible { display: flex; }
         .action-bar .btn {
             padding: 6px 0;
             border: none;
@@ -301,6 +330,19 @@
         .action-bar .btn-collect { background: #1A2A4A; color: var(--blue); border-color: #2A4A6A; }
         .action-bar .btn-convert { background: #3A2A1A; color: var(--gold); border-color: #5A4A2A; }
         .action-bar .btn-log { background: #1A1A2A; color: var(--text-muted); border-color: #3A3A4A; }
+
+        /* ===== LOG ===== */
+        .log-container {
+            max-height: 80px;
+            overflow-y: auto;
+            background: var(--bg-input);
+            border-radius: 12px;
+            padding: 4px 8px;
+            border: 1px solid var(--border-color);
+            margin-top: 6px;
+        }
+        .log-item { font-size: 10px; padding: 3px 0; border-bottom: 1px solid var(--border-color); color: var(--text-secondary); display: flex; justify-content: space-between; }
+        .log-item .time { color: var(--text-muted); font-size: 9px; }
 
         /* ===== WALLET ===== */
         .wallet-grid {
@@ -580,7 +622,7 @@
         <div class="badge"><i class="fas fa-shield-alt"></i> v21.0</div>
     </div>
 
-    <!-- ===== PRICE TICKER ===== -->
+    <!-- PRICE TICKER -->
     <div class="price-ticker" id="priceTicker">
         <div class="ticker-item"><span class="label">NC:</span> <span class="value" id="tickerNC">0.0000</span> <span class="unit">/ث</span></div>
         <div class="ticker-item"><span class="label">NC+:</span> <span class="value" id="tickerNCplus">0.0000</span> <span class="unit">/ث</span></div>
@@ -588,7 +630,7 @@
         <div class="ticker-item"><span class="label">LitNC:</span> <span class="value" id="tickerLitNC">0.0000</span> <span class="unit">/ث</span></div>
     </div>
 
-    <!-- ===== TAB: MINING ===== -->
+    <!-- TAB: MINING -->
     <div id="tab-mining" class="tab-content active">
         <div class="card">
             <div class="card-title"><span data-i18n="mining_dashboard">⚡ لوحة التعدين</span></div>
@@ -619,6 +661,18 @@
                 </div>
             </div>
 
+            <!-- COOLDOWN BAR (يظهر فقط أثناء التبريد) -->
+            <div class="cooldown-container" id="cooldownContainer">
+                <div class="cooldown-header">
+                    <span data-i18n="cooldown_label">❄️ تبريد</span>
+                    <span id="cooldownPercent">100%</span>
+                </div>
+                <div class="cooldown-track">
+                    <div class="cooldown-fill" id="cooldownFill" style="width:100%;"></div>
+                </div>
+                <div class="cooldown-time" id="cooldownTime">10:00</div>
+            </div>
+
             <!-- مؤشرات الأرباح -->
             <div class="profit-indicators">
                 <div class="profit-box"><span class="label" data-i18n="profit_hour">⏱️ الساعة</span><span class="value" id="profitHour">0.00</span></div>
@@ -631,6 +685,13 @@
             <div class="mining-total-pending">
                 <span class="label" data-i18n="total_pending_cash">💰 الإجمالي العالق (Cash):</span>
                 <span class="value" id="pendingDisplayCash">0.00</span>
+            </div>
+
+            <!-- ACTION BAR (داخل قسم التعدين) -->
+            <div class="action-bar visible" id="actionBar">
+                <button class="btn btn-collect" id="collectBtn" data-i18n="collect"><i class="fas fa-wallet"></i> جمع</button>
+                <button class="btn btn-convert" id="convertBtn" data-i18n="convert"><i class="fas fa-exchange-alt"></i> تحويل</button>
+                <button class="btn btn-log" id="logToggleBtn" data-i18n="log"><i class="fas fa-list-ul"></i> السجل</button>
             </div>
         </div>
 
@@ -660,7 +721,7 @@
         </div>
     </div>
 
-    <!-- ===== TAB: WALLET ===== -->
+    <!-- TAB: WALLET -->
     <div id="tab-wallet" class="tab-content">
         <div class="card">
             <div class="card-title"><span data-i18n="balances">💰 الأرصدة</span> <i class="fas fa-chevron-left text-gold"></i></div>
@@ -675,7 +736,7 @@
         <div class="card" style="text-align:center; color:var(--text-muted); font-size:10px;"><i class="fas fa-lock"></i> <span data-i18n="all_balances_encrypted">جميع الأرصدة مشفرة ومركزية (للترفيه)</span></div>
     </div>
 
-    <!-- ===== TAB: SHOP ===== -->
+    <!-- TAB: SHOP -->
     <div id="tab-shop" class="tab-content">
         <div class="card">
             <div class="card-title"><span data-i18n="shop_title">🛒 المتجر الرسمي</span> <span style="color:var(--blue); font-size:10px;" id="shopCount">0 عنصر</span></div>
@@ -699,7 +760,7 @@
         </div>
     </div>
 
-    <!-- ===== TAB: SETTINGS ===== -->
+    <!-- TAB: SETTINGS -->
     <div id="tab-settings" class="tab-content">
         <div class="card">
             <div class="card-title"><span data-i18n="settings">⚙️ الإعدادات</span></div>
@@ -731,14 +792,7 @@
         </div>
     </div>
 
-    <!-- ===== ACTION BAR ===== -->
-    <div class="action-bar" id="actionBar">
-        <button class="btn btn-collect" id="collectBtn" data-i18n="collect"><i class="fas fa-wallet"></i> جمع</button>
-        <button class="btn btn-convert" id="convertBtn" data-i18n="convert"><i class="fas fa-exchange-alt"></i> تحويل</button>
-        <button class="btn btn-log" id="logToggleBtn" data-i18n="log"><i class="fas fa-list-ul"></i> السجل</button>
-    </div>
-
-    <!-- ===== BOTTOM NAV ===== -->
+    <!-- BOTTOM NAV -->
     <div class="bottom-nav">
         <div class="nav-item active" data-tab="mining"><i class="fas fa-hard-hat"></i><span data-i18n="nav_mining">تعدين</span></div>
         <div class="nav-item" data-tab="wallet"><i class="fas fa-wallet"></i><span data-i18n="nav_wallet">محفظة</span></div>
@@ -968,7 +1022,7 @@
 
     function updateAllIndicators() {
         // Speed
-        const speedVal = getTotalSpeedInCash() * 1000000; // Scaling for display
+        const speedVal = getTotalSpeedInCash() * 1000000;
         document.getElementById('speedIndicator').textContent = speedVal.toFixed(2);
         const speedPercent = Math.min(100, (speedVal / 20) * 100);
         document.getElementById('speedBar').style.width = speedPercent + '%';
@@ -980,28 +1034,33 @@
         const heatBar = document.getElementById('heatBar');
         const heatStatus = document.getElementById('heatStatus');
         if (data.heat.isOverheated) {
-            heatBar.className = 'bar-fill cooling';
-            heatBar.style.width = '100%';
-            heatStatus.className = 'heat-status-text cooling';
-            heatStatus.textContent = translate('heat_cooling') + ' (' + Math.ceil(data.heat.cooldownRemaining / 60) + ' د)';
-        } else if (heatVal > 80) {
             heatBar.className = 'bar-fill danger';
-            heatBar.style.width = heatVal + '%';
+            heatBar.style.width = '100%';
             heatStatus.className = 'heat-status-text danger';
-            heatStatus.textContent = translate('heat_danger');
-        } else if (heatVal > 50) {
-            heatBar.className = 'bar-fill warning';
-            heatBar.style.width = heatVal + '%';
-            heatStatus.className = 'heat-status-text warning';
-            heatStatus.textContent = translate('heat_warning');
+            heatStatus.textContent = translate('heat_danger') + ' 🔥';
+            // عرض شريط التبريد
+            showCooldown();
         } else {
-            heatBar.className = 'bar-fill';
-            heatBar.style.width = heatVal + '%';
-            heatStatus.className = 'heat-status-text normal';
-            heatStatus.textContent = translate('heat_normal');
+            hideCooldown();
+            if (heatVal > 80) {
+                heatBar.className = 'bar-fill danger';
+                heatBar.style.width = heatVal + '%';
+                heatStatus.className = 'heat-status-text danger';
+                heatStatus.textContent = translate('heat_danger');
+            } else if (heatVal > 50) {
+                heatBar.className = 'bar-fill warning';
+                heatBar.style.width = heatVal + '%';
+                heatStatus.className = 'heat-status-text warning';
+                heatStatus.textContent = translate('heat_warning');
+            } else {
+                heatBar.className = 'bar-fill';
+                heatBar.style.width = heatVal + '%';
+                heatStatus.className = 'heat-status-text normal';
+                heatStatus.textContent = translate('heat_normal');
+            }
         }
 
-        // Power Consumption
+        // Power
         const activeCount = CURRENCIES.filter(c => data.miningActive[c]).length;
         const powerUsage = activeCount * 10 + data.upgrades.power * 2;
         document.getElementById('powerIndicator').textContent = powerUsage + ' W';
@@ -1033,7 +1092,28 @@
     }
 
     // ================================================================
-    // 7. HEAT SYSTEM (Gradual Cooling)
+    // 7. COOLDOWN BAR
+    // ================================================================
+    function showCooldown() {
+        const container = document.getElementById('cooldownContainer');
+        container.classList.add('active');
+        const remaining = data.heat.cooldownRemaining;
+        const totalCooldown = 600; // 10 دقائق
+        const percent = Math.round((remaining / totalCooldown) * 100);
+        document.getElementById('cooldownPercent').textContent = percent + '%';
+        document.getElementById('cooldownFill').style.width = percent + '%';
+        const mins = Math.floor(remaining / 60);
+        const secs = Math.floor(remaining % 60);
+        document.getElementById('cooldownTime').textContent = 
+            String(mins).padStart(2, '0') + ':' + String(secs).padStart(2, '0');
+    }
+
+    function hideCooldown() {
+        document.getElementById('cooldownContainer').classList.remove('active');
+    }
+
+    // ================================================================
+    // 8. HEAT SYSTEM (Gradual Cooling)
     // ================================================================
     function updateHeatSystem() {
         const activeCount = CURRENCIES.filter(c => data.miningActive[c]).length;
@@ -1050,13 +1130,15 @@
                 CURRENCIES.forEach(c => {
                     if (data.miningActive[c]) startMiningForCurrency(c);
                 });
+                hideCooldown();
+            } else {
+                showCooldown();
             }
             updateAllIndicators();
             return;
         }
 
         if (activeCount === 0) {
-            // Cooling down gradually (0.5% per second)
             data.heat.level = Math.max(0, data.heat.level - 0.5);
             data.heat.elapsed = Math.max(0, data.heat.elapsed - 1);
             updateAllIndicators();
@@ -1077,6 +1159,7 @@
             addLog(translate('overheat_shutdown'));
             playBeep(200, 0.5);
             doVibe();
+            showCooldown();
         }
         updateAllIndicators();
     }
@@ -1087,7 +1170,7 @@
     }
 
     // ================================================================
-    // 8. MINING START/STOP
+    // 9. MINING START/STOP
     // ================================================================
     let miningIntervals = {};
 
@@ -1153,7 +1236,7 @@
     }
 
     // ================================================================
-    // 9. RENDER MINING LIST
+    // 10. RENDER MINING LIST
     // ================================================================
     function renderMiningList() {
         const container = document.getElementById('miningList');
@@ -1194,7 +1277,7 @@
     }
 
     // ================================================================
-    // 10. WALLET & UI UPDATES
+    // 11. WALLET & UI UPDATES
     // ================================================================
     function updateWalletUI() {
         document.getElementById('balNC').textContent = data.wallet.NC.toFixed(6);
@@ -1216,7 +1299,7 @@
     }
 
     // ================================================================
-    // 11. COLLECT & CONVERT
+    // 12. COLLECT & CONVERT
     // ================================================================
     document.getElementById('collectBtn').addEventListener('click', function() {
         let collected = false;
@@ -1270,7 +1353,7 @@
     });
 
     // ================================================================
-    // 12. SHOP
+    // 13. SHOP
     // ================================================================
     function renderShopAll() {
         renderShopCategory('miners');
@@ -1440,7 +1523,7 @@
     }
 
     // ================================================================
-    // 13. PROFILE
+    // 14. PROFILE
     // ================================================================
     function toggleProfile() {
         const slide = document.getElementById('profileSlide');
@@ -1511,7 +1594,7 @@
     }
 
     // ================================================================
-    // 14. THEME & LANGUAGE
+    // 15. THEME & LANGUAGE
     // ================================================================
     function setTheme(theme) {
         document.documentElement.setAttribute('data-theme', theme);
@@ -1540,7 +1623,7 @@
     document.getElementById('themeLightBtn').addEventListener('click', function() { setTheme('light'); });
 
     // ================================================================
-    // 15. LANGUAGE
+    // 16. LANGUAGE
     // ================================================================
     const translations = {
         ar: {
@@ -1552,6 +1635,7 @@
             heat_warning: '🟡 مرتفعة',
             heat_danger: '🔴 حرجة',
             heat_cooling: '🔵 تبريد',
+            cooldown_label: '❄️ تبريد',
             power_consumption: '⚡ استهلاك الطاقة',
             mining_efficiency: '📈 كفاءة التعدين',
             profit_hour: '⏱️ الساعة',
@@ -1626,6 +1710,7 @@
             heat_warning: '🟡 High',
             heat_danger: '🔴 Critical',
             heat_cooling: '🔵 Cooling',
+            cooldown_label: '❄️ Cooldown',
             power_consumption: '⚡ Power Consumption',
             mining_efficiency: '📈 Mining Efficiency',
             profit_hour: '⏱️ Hour',
@@ -1722,7 +1807,7 @@
     });
 
     // ================================================================
-    // 16. NAVIGATION
+    // 17. NAVIGATION
     // ================================================================
     document.querySelectorAll('.nav-item').forEach(item => {
         item.addEventListener('click', function() {
@@ -1740,7 +1825,7 @@
     });
 
     // ================================================================
-    // 17. SETTINGS EVENTS
+    // 18. SETTINGS EVENTS
     // ================================================================
     document.getElementById('soundToggle').addEventListener('change', function() { data.settings.sound = this.checked; saveData(); });
     document.getElementById('vibeToggle').addEventListener('change', function() { data.settings.vibe = this.checked; saveData(); });
@@ -1752,7 +1837,7 @@
     });
 
     // ================================================================
-    // 18. INIT
+    // 19. INIT
     // ================================================================
     window.onload = function() {
         loadData();
@@ -1783,4 +1868,4 @@
     setInterval(() => saveData(), 5000);
 </script>
 </body>
-</html>
+    </html>
