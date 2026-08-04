@@ -656,15 +656,6 @@
         .bottom-nav .nav-item i { font-size: 18px; margin-bottom: 1px; }
         .bottom-nav .nav-item.active { color: var(--gold); }
         .bottom-nav .nav-item.active i { color: var(--gold); text-shadow: 0 0 12px var(--gold-dim); }
-
-        /* Heat background effect */
-        .heat-bg {
-            transition: background 0.5s ease;
-        }
-        .heat-bg.normal { background: var(--bg-secondary); }
-        .heat-bg.warning { background: #2A2A1A; }
-        .heat-bg.danger { background: #2A1A1A; }
-        .heat-bg.cooling { background: #1A2A3A; }
     </style>
 </head>
 <body>
@@ -878,7 +869,7 @@
 
 <script>
     // ================================================================
-    // 1. DATA
+    // 1. DATA - سعة البطارية 10,000 Ah
     // ================================================================
     const STORAGE_KEY = 'hyex_data';
     let data = {
@@ -928,7 +919,6 @@
             percent: 100,
             consumptionRate: 0
         },
-        // الإنجازات
         achievements: {
             firstMine: false,
             hundredNC: false,
@@ -944,7 +934,7 @@
     };
 
     // ================================================================
-    // 2. SHOP DATABASE (مع إضافة الشاحن السريع)
+    // 2. SHOP DATABASE (مع الشاحن السريع)
     // ================================================================
     const SHOP_DB = {
         miners: [
@@ -1126,7 +1116,7 @@
     }
 
     // ================================================================
-    // 7. BATTERY SYSTEM (شحن سريع)
+    // 7. BATTERY SYSTEM (سعة 10,000 Ah)
     // ================================================================
     const AH_PER_FAN_PER_SECOND = 2;
     const BASE_CHARGE_RATE = 1;
@@ -1423,7 +1413,6 @@
             btn.classList.add('active');
             btn.innerHTML = '<i class="fas fa-robot"></i> ' + translate('auto_mine_on');
             addLog(translate('auto_mine_activated'));
-            // تشغيل المراوح التي يمكن تشغيلها
             autoMineLoop();
         } else {
             btn.classList.remove('active');
@@ -1436,7 +1425,6 @@
     let autoMineTimer = null;
     function autoMineLoop() {
         if (!data.autoMine) return;
-        // تشغيل المراوح إذا كانت البطارية كافية والحرارة منخفضة
         const activeCount = CURRENCIES.filter(c => data.miningActive[c]).length;
         if (data.battery.ah > 1000 && data.heat.level < 70 && !data.heat.isOverheated) {
             CURRENCIES.forEach(curr => {
@@ -1445,14 +1433,12 @@
                 }
             });
         } else if (data.heat.level > 80 || data.battery.ah < 500) {
-            // إيقاف بعض المراوح لتخفيف الضغط
             let toStop = CURRENCIES.filter(c => data.miningActive[c]);
             if (toStop.length > 1) {
                 stopMiningForCurrency(toStop[0], true);
                 stopMiningForCurrency(toStop[1], true);
             }
         }
-        // إعادة جدولة
         clearTimeout(autoMineTimer);
         autoMineTimer = setTimeout(autoMineLoop, 3000);
     }
@@ -1514,7 +1500,7 @@
     // 12. CHART
     // ================================================================
     let chartData = [];
-    const MAX_CHART_POINTS = 60; // 60 نقطة = دقيقة واحدة (تحديث كل ثانية)
+    const MAX_CHART_POINTS = 60;
 
     function updateChart() {
         const canvas = document.getElementById('miningChart');
@@ -1530,14 +1516,12 @@
         const w = canvas.width / dpr;
         const h = canvas.height / dpr;
 
-        // إضافة نقطة جديدة
         const now = Date.now();
-        const speed = getTotalCashPerSecond() * 1000; // للتكبير
+        const speed = getTotalCashPerSecond() * 1000;
         const heat = data.heat.level;
         chartData.push({ time: now, speed, heat });
         if (chartData.length > MAX_CHART_POINTS) chartData.shift();
 
-        // رسم الخلفية
         ctx.fillStyle = 'var(--bg-input)';
         ctx.fillRect(0, 0, w, h);
 
@@ -1552,12 +1536,11 @@
         const maxSpeed = Math.max(10, ...chartData.map(d => d.speed));
         const maxHeat = 100;
 
-        // رسم الخطوط
         const pad = { top: 8, bottom: 8, left: 8, right: 8 };
         const chartW = w - pad.left - pad.right;
         const chartH = h - pad.top - pad.bottom;
 
-        // خط السرعة (أخضر)
+        // خط السرعة
         ctx.beginPath();
         ctx.strokeStyle = '#7BED9F';
         ctx.lineWidth = 1.5;
@@ -1569,7 +1552,7 @@
         });
         ctx.stroke();
 
-        // خط الحرارة (برتقالي/أحمر)
+        // خط الحرارة
         ctx.beginPath();
         ctx.strokeStyle = '#FF6B8A';
         ctx.lineWidth = 1.5;
@@ -1581,7 +1564,6 @@
         });
         ctx.stroke();
 
-        // عناوين المحاور
         ctx.fillStyle = 'var(--text-muted)';
         ctx.font = '8px Segoe UI';
         ctx.textAlign = 'left';
@@ -1600,7 +1582,7 @@
         { id: 'thousandNC', name: 'المعدن الأسطوري', icon: '🏆', desc: 'تعدين 1000 NC', condition: () => data.totalMinedNC >= 1000 },
         { id: 'fourFans', name: 'مدير الطاقة', icon: '🌀', desc: 'تشغيل 4 مراوح معاً', condition: () => CURRENCIES.filter(c => data.miningActive[c]).length >= 4 },
         { id: 'coolManager', name: 'مدير الحرارة', icon: '❄️', desc: 'الحفاظ على حرارة <30% لمدة 5 دقائق', condition: () => data.heat.level < 30 && data.heat.elapsed > 300 },
-        { id: 'quickCharge', name: 'شاحن محترف', icon: '⚡', desc: 'استخدام الشاحن السريع 3 مرات', condition: () => data.quickChargeActive && data.quickChargeRemaining > 0 } // سيتم تحديثه يدوياً
+        { id: 'quickCharge', name: 'شاحن محترف', icon: '⚡', desc: 'استخدام الشاحن السريع 3 مرات', condition: () => data.quickChargeActive && data.quickChargeRemaining > 0 }
     ];
 
     let quickChargeUses = 0;
@@ -1640,7 +1622,7 @@
     }
 
     // ================================================================
-    // 14. SHOP (مع الشاحن السريع)
+    // 14. SHOP
     // ================================================================
     function renderShopAll() {
         renderShopCategory('miners');
@@ -1685,7 +1667,6 @@
                 canBuy = data.wallet[currency] >= price;
                 owned = false;
             } else if (item.type === 'quick_charge') {
-                // الشاحن السريع
                 canBuy = data.wallet[currency] >= price && !data.quickChargeActive;
                 owned = data.quickChargeActive;
             }
@@ -1790,14 +1771,12 @@
             });
             addLog(translate('bought_special', item.name));
         } else if (item.type === 'quick_charge') {
-            // تفعيل الشاحن السريع
             data.quickChargeActive = true;
             data.quickChargeRemaining = item.duration || 300;
             quickChargeUses++;
             addLog(translate('quick_charge_activated'));
             playBeep(1200, 0.3);
             doVibe();
-            // تحديث الإنجاز
             if (quickChargeUses >= 3) {
                 if (!data.achievements.quickCharge) {
                     data.achievements.quickCharge = true;
@@ -2171,7 +2150,6 @@
         updateBatteryUI();
         updateHeatUI();
         updateProfitIndicators();
-        // تحديث زر التلقائي
         const autoBtn = document.getElementById('autoMineBtn');
         if (data.autoMine) {
             autoBtn.classList.add('active');
@@ -2269,7 +2247,6 @@
             updateTotalPendingCash();
         }, 5000);
 
-        // بدء التعدين التلقائي إذا كان مفعلاً
         if (data.autoMine) {
             autoMineLoop();
         }
