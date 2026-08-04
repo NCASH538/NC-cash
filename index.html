@@ -1,52 +1,93 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>HyeX Exchange - المنصة الرسمية</title>
+    <title>HyeX Exchange</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
+        /* ===== CSS Variables ===== */
+        :root {
+            --bg-primary: #0A0E1A;
+            --bg-secondary: #141A2B;
+            --bg-card: #161A28;
+            --bg-input: #0A0E18;
+            --border-color: #2A2A3A;
+            --text-primary: #E0E0E0;
+            --text-secondary: #A0A0B0;
+            --text-muted: #8A8A9A;
+            --gold: #C9A84C;
+            --gold-dim: #C9A84C66;
+            --blue: #4A9CFF;
+            --green: #7BED9F;
+            --red: #FF6B8A;
+            --shadow: 0 4px 20px rgba(0,0,0,0.4);
+            --header-bg: linear-gradient(135deg, #0A0E1A, #141A2B);
+            --nav-bg: #0A0E18;
+        }
+
+        [data-theme="light"] {
+            --bg-primary: #F0F2F5;
+            --bg-secondary: #E4E7EC;
+            --bg-card: #FFFFFF;
+            --bg-input: #F0F2F5;
+            --border-color: #D0D4DC;
+            --text-primary: #1A1A2A;
+            --text-secondary: #3A3A4A;
+            --text-muted: #5A5A6A;
+            --gold: #B8923A;
+            --gold-dim: #B8923A66;
+            --blue: #2A7AFF;
+            --green: #1A8A4A;
+            --red: #CC3355;
+            --shadow: 0 4px 20px rgba(0,0,0,0.1);
+            --header-bg: linear-gradient(135deg, #E4E7EC, #D0D4DC);
+            --nav-bg: #E4E7EC;
+        }
+
         /* ===== RESET & BASE ===== */
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; }
-        html, body { height: 100%; width: 100%; overflow: hidden; background: #0A0A0F; }
-        body { display: flex; justify-content: center; align-items: center; direction: rtl; padding: 0; margin: 0; }
-        .app { max-width: 480px; width: 100%; height: 100dvh; max-height: 100dvh; background: #0F0F1A; display: flex; flex-direction: column; overflow: hidden; position: relative; border: none; border-radius: 0; box-shadow: none; }
+        html, body { height: 100%; width: 100%; overflow: hidden; background: var(--bg-primary); transition: background 0.3s, color 0.3s; }
+        body { display: flex; justify-content: center; align-items: center; padding: 0; margin: 0; color: var(--text-primary); }
+        .app { max-width: 480px; width: 100%; height: 100dvh; max-height: 100dvh; background: var(--bg-secondary); display: flex; flex-direction: column; overflow: hidden; position: relative; border: none; border-radius: 0; box-shadow: none; transition: background 0.3s; }
 
-        /* ===== HEADER (رسمي) ===== */
+        /* ===== HEADER ===== */
         .corp-header {
             flex-shrink: 0;
-            background: linear-gradient(135deg, #0A0E1A, #141A2B);
+            background: var(--header-bg);
             padding: 12px 16px 10px;
-            border-bottom: 2px solid #C9A84C;
+            border-bottom: 2px solid var(--gold);
             display: flex;
             justify-content: space-between;
             align-items: center;
             z-index: 10;
+            transition: background 0.3s;
         }
         .corp-header .title-group { display: flex; flex-direction: column; }
-        .corp-header h1 { font-size: 20px; font-weight: 800; letter-spacing: 0.5px; color: #C9A84C; text-shadow: 0 0 15px #C9A84C44; line-height: 1.1; }
-        .corp-header .subtitle { font-size: 9px; color: #8A8A9A; letter-spacing: 0.5px; font-weight: 300; }
-        .corp-header .badge { background: #1E2A3A; padding: 4px 12px; border-radius: 30px; font-size: 9px; border: 1px solid #C9A84C66; color: #C9A84C; white-space: nowrap; letter-spacing: 0.5px; }
+        .corp-header h1 { font-size: 20px; font-weight: 800; letter-spacing: 0.5px; color: var(--gold); text-shadow: 0 0 15px var(--gold-dim); line-height: 1.1; }
+        .corp-header .subtitle { font-size: 9px; color: var(--text-muted); letter-spacing: 0.5px; font-weight: 300; }
+        .corp-header .badge { background: #1E2A3A; padding: 4px 12px; border-radius: 30px; font-size: 9px; border: 1px solid var(--gold-dim); color: var(--gold); white-space: nowrap; letter-spacing: 0.5px; }
 
-        /* ===== PRICE TICKER (يُظهر سرعات التعدين) ===== */
+        /* ===== PRICE TICKER ===== */
         .price-ticker {
             flex-shrink: 0;
-            background: #0A0E18;
+            background: var(--bg-input);
             padding: 4px 14px;
             text-align: center;
             font-size: 9px;
-            border-bottom: 1px solid #1A1A2A;
-            color: #8A8A9A;
+            border-bottom: 1px solid var(--border-color);
+            color: var(--text-muted);
             display: flex;
             justify-content: space-around;
-            border-top: 1px solid #1A1A2A;
             flex-wrap: wrap;
             gap: 2px;
+            border-top: 1px solid var(--border-color);
+            transition: background 0.3s, border-color 0.3s;
         }
         .price-ticker .ticker-item { display: flex; align-items: center; gap: 2px; }
-        .price-ticker .ticker-item .label { color: #8A8A9A; }
-        .price-ticker .ticker-item .value { color: #C9A84C; font-weight: 700; }
-        .price-ticker .ticker-item .unit { color: #5A5A6A; font-size: 7px; }
+        .price-ticker .ticker-item .label { color: var(--text-muted); }
+        .price-ticker .ticker-item .value { color: var(--gold); font-weight: 700; }
+        .price-ticker .ticker-item .unit { color: var(--text-muted); font-size: 7px; }
 
         /* ===== TAB CONTENT ===== */
         .tab-content {
@@ -60,25 +101,26 @@
         .tab-content.active { display: block; }
         @keyframes fade { from { opacity: 0.3; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
         .tab-content::-webkit-scrollbar { width: 4px; }
-        .tab-content::-webkit-scrollbar-track { background: #1A1A2A; }
-        .tab-content::-webkit-scrollbar-thumb { background: #4A9CFF55; border-radius: 10px; }
+        .tab-content::-webkit-scrollbar-track { background: var(--bg-input); }
+        .tab-content::-webkit-scrollbar-thumb { background: var(--blue); border-radius: 10px; }
 
         /* ===== BOTTOM NAV ===== */
         .bottom-nav {
             flex-shrink: 0;
-            background: #0A0E18;
-            border-top: 2px solid #C9A84C66;
+            background: var(--nav-bg);
+            border-top: 2px solid var(--gold-dim);
             display: flex;
             justify-content: space-around;
             padding: 6px 5px 8px;
             backdrop-filter: blur(10px);
             z-index: 10;
+            transition: background 0.3s, border-color 0.3s;
         }
         .bottom-nav .nav-item {
             display: flex;
             flex-direction: column;
             align-items: center;
-            color: #5A5A6A;
+            color: var(--text-muted);
             font-size: 8px;
             cursor: pointer;
             transition: 0.2s;
@@ -86,21 +128,22 @@
             font-weight: 500;
         }
         .bottom-nav .nav-item i { font-size: 18px; margin-bottom: 1px; }
-        .bottom-nav .nav-item.active { color: #C9A84C; }
-        .bottom-nav .nav-item.active i { color: #C9A84C; text-shadow: 0 0 12px #C9A84C44; }
+        .bottom-nav .nav-item.active { color: var(--gold); }
+        .bottom-nav .nav-item.active i { color: var(--gold); text-shadow: 0 0 12px var(--gold-dim); }
 
         /* ===== CARDS ===== */
         .card {
-            background: #161A28;
+            background: var(--bg-card);
             border-radius: 16px;
             padding: 12px;
             margin-bottom: 10px;
-            border: 1px solid #2A2A3A;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow);
+            transition: background 0.3s, border-color 0.3s, box-shadow 0.3s;
         }
         .card-title {
             font-size: 12px;
-            color: #A0A0B0;
+            color: var(--text-secondary);
             letter-spacing: 0.5px;
             margin-bottom: 6px;
             display: flex;
@@ -115,21 +158,21 @@
             gap: 6px;
         }
         .wallet-item {
-            background: #0E1220;
+            background: var(--bg-input);
             border-radius: 12px;
             padding: 8px 4px;
             text-align: center;
-            border: 1px solid #2A2A3A;
+            border: 1px solid var(--border-color);
+            transition: background 0.3s, border-color 0.3s;
         }
-        .wallet-item .symbol { font-weight: 700; font-size: 12px; color: #C9A84C; }
+        .wallet-item .symbol { font-weight: 700; font-size: 12px; color: var(--gold); }
         .wallet-item .balance { font-weight: 700; font-size: 14px; margin-top: 2px; }
-        .wallet-item .balance.usd { color: #7BED9F; }
-        .wallet-item .balance.nc { color: #4A9CFF; }
+        .wallet-item .balance.nc { color: var(--blue); }
         .wallet-item .balance.ncplus { color: #A29BFE; }
         .wallet-item .balance.minicash { color: #FFA500; }
         .wallet-item .balance.litnc { color: #FF6B8A; }
         .wallet-item .balance.bitnc { color: #FFD700; }
-        .wallet-item .balance.cash { color: #7BED9F; }
+        .wallet-item .balance.cash { color: var(--green); }
 
         /* ===== MINING ===== */
         .mining-speeds {
@@ -139,15 +182,16 @@
             margin-top: 4px;
         }
         .mining-speeds .speed-item {
-            background: #0E1220;
+            background: var(--bg-input);
             border-radius: 10px;
             padding: 4px 6px;
             text-align: center;
-            border: 1px solid #2A2A3A;
+            border: 1px solid var(--border-color);
             font-size: 10px;
+            transition: background 0.3s, border-color 0.3s;
         }
-        .mining-speeds .speed-item .label { color: #8A8A9A; font-size: 8px; }
-        .mining-speeds .speed-item .value { color: #C9A84C; font-weight: 700; font-size: 11px; }
+        .mining-speeds .speed-item .label { color: var(--text-muted); font-size: 8px; }
+        .mining-speeds .speed-item .value { color: var(--gold); font-weight: 700; font-size: 11px; }
         .mining-actions {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -167,26 +211,26 @@
             justify-content: center;
             gap: 4px;
             background: #1A2240;
-            color: #C0C0D0;
-            border: 1px solid #2A3A5A;
+            color: var(--text-secondary);
+            border: 1px solid var(--border-color);
         }
         .mining-actions .btn:active { transform: scale(0.94); }
-        .btn-start.active { background: #3A1A1A; color: #FF6B8A; border-color: #6A2A2A; }
-        .btn-start { background: #1A3A2A; color: #7BED9F; border-color: #2A5A3A; }
-        .btn-collect { background: #1A2A4A; color: #4A9CFF; border-color: #2A4A6A; }
-        .btn-convert { background: #3A2A1A; color: #C9A84C; border-color: #5A4A2A; }
-        .btn-log { background: #1A1A2A; color: #8A8A9A; border-color: #3A3A4A; }
+        .btn-start.active { background: #3A1A1A; color: var(--red); border-color: #6A2A2A; }
+        .btn-start { background: #1A3A2A; color: var(--green); border-color: #2A5A3A; }
+        .btn-collect { background: #1A2A4A; color: var(--blue); border-color: #2A4A6A; }
+        .btn-convert { background: #3A2A1A; color: var(--gold); border-color: #5A4A2A; }
+        .btn-log { background: #1A1A2A; color: var(--text-muted); border-color: #3A3A4A; }
 
         .log-container {
             max-height: 100px;
             overflow-y: auto;
-            background: #0E1220;
+            background: var(--bg-input);
             border-radius: 12px;
             padding: 4px 8px;
-            border: 1px solid #2A2A3A;
+            border: 1px solid var(--border-color);
         }
-        .log-item { font-size: 10px; padding: 3px 0; border-bottom: 1px solid #1A1A2A; color: #A0A0B0; display: flex; justify-content: space-between; }
-        .log-item .time { color: #6A6A7A; font-size: 9px; }
+        .log-item { font-size: 10px; padding: 3px 0; border-bottom: 1px solid var(--border-color); color: var(--text-secondary); display: flex; justify-content: space-between; }
+        .log-item .time { color: var(--text-muted); font-size: 9px; }
 
         /* ===== SHOP ===== */
         .shop-category-tabs {
@@ -199,16 +243,16 @@
             flex: 1;
             padding: 6px 4px;
             border-radius: 12px;
-            border: 1px solid #2A2A3A;
+            border: 1px solid var(--border-color);
             background: transparent;
-            color: #8A8A9A;
+            color: var(--text-muted);
             font-size: 10px;
             cursor: pointer;
             transition: 0.2s;
             text-align: center;
             font-weight: 600;
         }
-        .shop-category-tabs .tab-btn.active { background: #C9A84C22; border-color: #C9A84C; color: #C9A84C; }
+        .shop-category-tabs .tab-btn.active { background: var(--gold-dim); border-color: var(--gold); color: var(--gold); }
         .shop-category-content { display: none; }
         .shop-category-content.active { display: block; }
 
@@ -220,22 +264,22 @@
             overflow-y: auto;
         }
         .shop-item-card {
-            background: #0E1220;
+            background: var(--bg-input);
             border-radius: 14px;
             padding: 10px 8px;
-            border: 1px solid #2A2A3A;
+            border: 1px solid var(--border-color);
             display: flex;
             flex-direction: column;
             align-items: center;
             text-align: center;
             transition: 0.2s;
         }
-        .shop-item-card:hover { border-color: #C9A84C66; }
+        .shop-item-card:hover { border-color: var(--gold); }
         .shop-item-card .item-icon { font-size: 28px; margin-bottom: 2px; }
-        .shop-item-card .item-name { font-size: 11px; font-weight: 700; color: #E0E0E0; }
-        .shop-item-card .item-desc { font-size: 8px; color: #8A8A9A; margin: 2px 0; }
-        .shop-item-card .item-price { font-size: 11px; color: #C9A84C; font-weight: 700; }
-        .shop-item-card .item-owned { font-size: 8px; color: #7BED9F; }
+        .shop-item-card .item-name { font-size: 11px; font-weight: 700; color: var(--text-primary); }
+        .shop-item-card .item-desc { font-size: 8px; color: var(--text-muted); margin: 2px 0; }
+        .shop-item-card .item-price { font-size: 11px; color: var(--gold); font-weight: 700; }
+        .shop-item-card .item-owned { font-size: 8px; color: var(--green); }
         .shop-item-card .btn {
             margin-top: 4px;
             padding: 4px 12px;
@@ -248,7 +292,7 @@
             width: 100%;
         }
         .shop-item-card .btn:active { transform: scale(0.94); }
-        .btn-buy-shop { background: #1A3A2A; color: #7BED9F; border: 1px solid #2A5A3A; }
+        .btn-buy-shop { background: #1A3A2A; color: var(--green); border: 1px solid #2A5A3A; }
         .btn-buy-shop:disabled { opacity: 0.4; cursor: not-allowed; }
 
         .shop-stats {
@@ -258,94 +302,24 @@
             flex-wrap: wrap;
         }
         .shop-stats .stat {
-            background: #0E1220;
+            background: var(--bg-input);
             border-radius: 10px;
             padding: 4px 8px;
-            border: 1px solid #2A2A3A;
+            border: 1px solid var(--border-color);
             text-align: center;
             flex: 1;
         }
-        .shop-stats .stat .label { font-size: 7px; color: #8A8A9A; }
-        .shop-stats .stat .value { font-size: 12px; font-weight: 700; color: #C9A84C; }
+        .shop-stats .stat .label { font-size: 7px; color: var(--text-muted); }
+        .shop-stats .stat .value { font-size: 12px; font-weight: 700; color: var(--gold); }
 
-        /* ===== PROFILE SLIDE ===== */
-        .profile-slide {
-            position: fixed;
-            top: 0;
-            right: -100%;
-            width: 100%;
-            max-width: 380px;
-            height: 100%;
-            background: #0F0F1A;
-            z-index: 1000;
-            transition: right 0.4s cubic-bezier(0.22, 1, 0.36, 1);
-            box-shadow: -10px 0 60px rgba(0,0,0,0.8);
-            border-left: 1px solid #2A2A3A;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-        }
-        .profile-slide.open { right: 0; }
-        .profile-slide .header { padding: 16px 20px 12px; background: linear-gradient(135deg, #0A0E1A, #141A2B); border-bottom: 2px solid #C9A84C66; display: flex; justify-content: space-between; align-items: center; }
-        .profile-slide .header h2 { color: #C9A84C; font-size: 18px; font-weight: 700; }
-        .profile-slide .header .close-btn { background: none; border: none; color: #8A8A9A; font-size: 24px; cursor: pointer; }
-        .profile-slide .header .close-btn:hover { color: #FF6B8A; transform: rotate(90deg); }
-        .profile-slide .body { flex: 1; overflow-y: auto; padding: 20px; }
-        .profile-slide .body::-webkit-scrollbar { width: 3px; }
-        .profile-slide .body::-webkit-scrollbar-track { background: #1A1A2A; }
-        .profile-slide .body::-webkit-scrollbar-thumb { background: #4A9CFF55; border-radius: 10px; }
-
-        .profile-slide .profile-pic-large {
-            width: 80px; height: 80px; border-radius: 50%;
-            background: linear-gradient(135deg, #1A2A4A, #2A3A5A);
-            border: 3px solid #C9A84C;
-            margin: 0 auto 14px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 36px;
-            color: #C9A84C;
-            overflow: hidden;
-            cursor: pointer;
-            position: relative;
-            box-shadow: 0 0 30px #C9A84C44;
-            transition: 0.3s;
-        }
-        .profile-slide .profile-pic-large:hover { border-color: #4A9CFF; box-shadow: 0 0 40px #4A9CFF55; transform: scale(1.02); }
-        .profile-slide .profile-pic-large img { width: 100%; height: 100%; object-fit: cover; }
-        .profile-slide .profile-pic-large .upload-overlay { position: absolute; bottom: 0; left: 0; right: 0; background: rgba(0,0,0,0.7); color: #fff; font-size: 9px; padding: 4px; text-align: center; opacity: 0; transition: 0.3s; }
-        .profile-slide .profile-pic-large:hover .upload-overlay { opacity: 1; }
-
-        .profile-slide .input-field { width: 100%; padding: 10px 14px; background: #0A0E18; border: 1px solid #2A2A3A; border-radius: 14px; color: #E0E0E0; font-size: 14px; margin-bottom: 12px; transition: 0.3s; }
-        .profile-slide .input-field:focus { border-color: #C9A84C; outline: none; box-shadow: 0 0 20px #C9A84C22; }
-
-        .profile-slide .level-card { background: linear-gradient(135deg, #0E1220, #1A1A2A); border-radius: 16px; padding: 14px 16px; border: 1px solid #2A2A3A; margin-bottom: 12px; }
-        .profile-slide .level-card .level-row { display: flex; justify-content: space-between; font-size: 13px; color: #A0A0B0; }
-        .profile-slide .level-card .level-row .highlight { color: #C9A84C; font-weight: 700; }
-        .profile-slide .level-card .level-bar { width: 100%; height: 6px; background: #2A2A3A; border-radius: 10px; overflow: hidden; margin-top: 6px; }
-        .profile-slide .level-card .level-bar .fill { height: 100%; background: linear-gradient(90deg, #C9A84C, #4A9CFF); border-radius: 10px; transition: width 0.5s ease; }
-
-        .profile-slide .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px; }
-        .profile-slide .stat-item { background: #0E1220; border-radius: 14px; padding: 10px 12px; border: 1px solid #2A2A3A; text-align: center; }
-        .profile-slide .stat-item .stat-label { font-size: 9px; color: #8A8A9A; }
-        .profile-slide .stat-item .stat-value { font-size: 16px; font-weight: 700; color: #C9A84C; margin-top: 2px; }
-        .profile-slide .stat-item .stat-value.green { color: #7BED9F; }
-        .profile-slide .stat-item .stat-value.blue { color: #4A9CFF; }
-        .profile-slide .stat-item .stat-value.pink { color: #FF6B8A; }
-
-        .profile-slide .save-btn { width: 100%; padding: 12px; background: linear-gradient(135deg, #C9A84C, #B8923A); border: none; border-radius: 30px; font-weight: 700; font-size: 16px; color: #0A0E18; cursor: pointer; transition: 0.3s; margin-top: 4px; }
-        .profile-slide .save-btn:hover { transform: scale(1.02); box-shadow: 0 0 30px #C9A84C55; }
-
-        .profile-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.6); z-index: 999; display: none; backdrop-filter: blur(4px); }
-        .profile-overlay.show { display: block; }
-
+        /* ===== SETTINGS ===== */
         .settings-item {
             display: flex;
             justify-content: space-between;
             padding: 8px 0;
-            border-bottom: 1px solid #1A1A2A;
+            border-bottom: 1px solid var(--border-color);
             align-items: center;
-            color: #A0A0B0;
+            color: var(--text-secondary);
         }
         .settings-item .profile-trigger {
             display: flex;
@@ -355,20 +329,20 @@
             background: #1A2A4A;
             padding: 4px 14px 4px 10px;
             border-radius: 30px;
-            border: 1px solid #C9A84C55;
+            border: 1px solid var(--gold-dim);
             transition: 0.3s;
-            color: #C9A84C;
+            color: var(--gold);
             font-weight: 700;
             font-size: 12px;
         }
-        .settings-item .profile-trigger img { width: 24px; height: 24px; border-radius: 50%; object-fit: cover; border: 1px solid #C9A84C; }
+        .settings-item .profile-trigger img { width: 24px; height: 24px; border-radius: 50%; object-fit: cover; border: 1px solid var(--gold); }
         .settings-item .profile-trigger i { font-size: 18px; }
         .switch input { display: none; }
         .switch .slider {
             display: inline-block;
             width: 30px;
             height: 16px;
-            background: #2A2A3A;
+            background: var(--border-color);
             border-radius: 30px;
             position: relative;
             cursor: pointer;
@@ -385,27 +359,105 @@
             left: 3px;
             transition: 0.3s;
         }
-        .switch input:checked+.slider { background: #4A9CFF; }
+        .switch input:checked+.slider { background: var(--blue); }
         .switch input:checked+.slider::after { left: 17px; }
 
-        .text-muted { color: #8A8A9A; }
-        .text-gold { color: #C9A84C; }
-        .text-green { color: #7BED9F; }
-        .text-red { color: #FF6B8A; }
-        .text-white { color: #E0E0E0; }
-        .text-blue { color: #4A9CFF; }
-        .badge { background: #1E2A3A; padding: 2px 8px; border-radius: 30px; font-size: 9px; border: 1px solid #C9A84C55; color: #C9A84C; white-space: nowrap; }
+        .lang-select {
+            background: var(--bg-input);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            padding: 4px 8px;
+            border-radius: 8px;
+            font-size: 12px;
+            cursor: pointer;
+        }
+
+        /* ===== PROFILE SLIDE ===== */
+        .profile-slide {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 100%;
+            max-width: 380px;
+            height: 100%;
+            background: var(--bg-secondary);
+            z-index: 1000;
+            transition: right 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+            box-shadow: -10px 0 60px rgba(0,0,0,0.8);
+            border-left: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        .profile-slide.open { right: 0; }
+        .profile-slide .header { padding: 16px 20px 12px; background: var(--header-bg); border-bottom: 2px solid var(--gold-dim); display: flex; justify-content: space-between; align-items: center; }
+        .profile-slide .header h2 { color: var(--gold); font-size: 18px; font-weight: 700; }
+        .profile-slide .header .close-btn { background: none; border: none; color: var(--text-muted); font-size: 24px; cursor: pointer; }
+        .profile-slide .header .close-btn:hover { color: var(--red); transform: rotate(90deg); }
+        .profile-slide .body { flex: 1; overflow-y: auto; padding: 20px; }
+
+        .profile-slide .profile-pic-large {
+            width: 80px; height: 80px; border-radius: 50%;
+            background: linear-gradient(135deg, #1A2A4A, #2A3A5A);
+            border: 3px solid var(--gold);
+            margin: 0 auto 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 36px;
+            color: var(--gold);
+            overflow: hidden;
+            cursor: pointer;
+            position: relative;
+            box-shadow: 0 0 30px var(--gold-dim);
+            transition: 0.3s;
+        }
+        .profile-slide .profile-pic-large:hover { border-color: var(--blue); box-shadow: 0 0 40px var(--blue); transform: scale(1.02); }
+        .profile-slide .profile-pic-large img { width: 100%; height: 100%; object-fit: cover; }
+        .profile-slide .profile-pic-large .upload-overlay { position: absolute; bottom: 0; left: 0; right: 0; background: rgba(0,0,0,0.7); color: #fff; font-size: 9px; padding: 4px; text-align: center; opacity: 0; transition: 0.3s; }
+        .profile-slide .profile-pic-large:hover .upload-overlay { opacity: 1; }
+
+        .profile-slide .input-field { width: 100%; padding: 10px 14px; background: var(--bg-input); border: 1px solid var(--border-color); border-radius: 14px; color: var(--text-primary); font-size: 14px; margin-bottom: 12px; transition: 0.3s; }
+        .profile-slide .input-field:focus { border-color: var(--gold); outline: none; box-shadow: 0 0 20px var(--gold-dim); }
+
+        .profile-slide .level-card { background: var(--bg-input); border-radius: 16px; padding: 14px 16px; border: 1px solid var(--border-color); margin-bottom: 12px; }
+        .profile-slide .level-card .level-row { display: flex; justify-content: space-between; font-size: 13px; color: var(--text-secondary); }
+        .profile-slide .level-card .level-row .highlight { color: var(--gold); font-weight: 700; }
+        .profile-slide .level-card .level-bar { width: 100%; height: 6px; background: var(--border-color); border-radius: 10px; overflow: hidden; margin-top: 6px; }
+        .profile-slide .level-card .level-bar .fill { height: 100%; background: linear-gradient(90deg, var(--gold), var(--blue)); border-radius: 10px; transition: width 0.5s ease; }
+
+        .profile-slide .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px; }
+        .profile-slide .stat-item { background: var(--bg-input); border-radius: 14px; padding: 10px 12px; border: 1px solid var(--border-color); text-align: center; }
+        .profile-slide .stat-item .stat-label { font-size: 9px; color: var(--text-muted); }
+        .profile-slide .stat-item .stat-value { font-size: 16px; font-weight: 700; color: var(--gold); margin-top: 2px; }
+        .profile-slide .stat-item .stat-value.green { color: var(--green); }
+        .profile-slide .stat-item .stat-value.blue { color: var(--blue); }
+        .profile-slide .stat-item .stat-value.pink { color: var(--red); }
+
+        .profile-slide .save-btn { width: 100%; padding: 12px; background: linear-gradient(135deg, var(--gold), #B8923A); border: none; border-radius: 30px; font-weight: 700; font-size: 16px; color: #0A0E18; cursor: pointer; transition: 0.3s; margin-top: 4px; }
+        .profile-slide .save-btn:hover { transform: scale(1.02); box-shadow: 0 0 30px var(--gold-dim); }
+
+        .profile-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.6); z-index: 999; display: none; backdrop-filter: blur(4px); }
+        .profile-overlay.show { display: block; }
+
+        .text-muted { color: var(--text-muted); }
+        .text-gold { color: var(--gold); }
+        .text-green { color: var(--green); }
+        .text-red { color: var(--red); }
+        .text-white { color: var(--text-primary); }
+        .text-blue { color: var(--blue); }
+        .badge { background: #1E2A3A; padding: 2px 8px; border-radius: 30px; font-size: 9px; border: 1px solid var(--gold-dim); color: var(--gold); white-space: nowrap; }
     </style>
 </head>
 <body>
 
-<div class="app" id="app">
+<div class="app" id="app" data-theme="dark">
 
     <!-- HEADER -->
     <div class="corp-header">
         <div class="title-group">
             <h1>🏛️ HyeX Exchange</h1>
-            <div class="subtitle">المنصة الرقمية الرسمية | نسخة تجريبية</div>
+            <div class="subtitle" data-i18n="subtitle">المنصة الرقمية الرسمية | نسخة تجريبية</div>
         </div>
         <div class="badge"><i class="fas fa-shield-alt"></i> v18.0</div>
     </div>
@@ -422,7 +474,7 @@
     <!-- ===== TAB: MINING ===== -->
     <div id="tab-mining" class="tab-content active">
         <div class="card">
-            <div class="card-title"><span>⚡ سرعات التعدين</span> <span id="hashRateDisplay">0.0000 NC/ث</span></div>
+            <div class="card-title"><span data-i18n="mining_speeds">⚡ سرعات التعدين</span> <span id="hashRateDisplay">0.0000 NC/ث</span></div>
             <div class="mining-speeds" id="miningSpeeds">
                 <div class="speed-item"><div class="label">NC</div><div class="value" id="speedNC">0.0000</div></div>
                 <div class="speed-item"><div class="label">NC+</div><div class="value" id="speedNCplus">0.0000</div></div>
@@ -430,33 +482,33 @@
                 <div class="speed-item"><div class="label">LitNC</div><div class="value" id="speedLitNC">0.0000</div></div>
                 <div class="speed-item"><div class="label">BitNC</div><div class="value" id="speedBitNC">0.0000</div></div>
             </div>
-            <div style="font-size:22px; font-weight:700; color:#4A9CFF; text-align:center; padding:4px 0;" id="pendingDisplay">0.00000000 NC</div>
-            <div style="text-align:center; font-size:10px; color:#8A8A9A;">المبلغ العالق (قيد التعدين)</div>
+            <div style="font-size:22px; font-weight:700; color:var(--blue); text-align:center; padding:4px 0;" id="pendingDisplay">0.00000000 NC</div>
+            <div style="text-align:center; font-size:10px; color:var(--text-muted);" data-i18n="pending_label">المبلغ العالق (قيد التعدين)</div>
         </div>
         <div class="mining-actions">
-            <button class="btn btn-start" id="miningToggleBtn"><i class="fas fa-play"></i> تعدين</button>
-            <button class="btn btn-collect" id="collectBtn"><i class="fas fa-wallet"></i> جمع</button>
-            <button class="btn btn-convert" id="convertBtn"><i class="fas fa-exchange-alt"></i> تحويل</button>
-            <button class="btn btn-log" id="logToggleBtn"><i class="fas fa-list-ul"></i> السجل</button>
+            <button class="btn btn-start" id="miningToggleBtn" data-i18n="start_mining"><i class="fas fa-play"></i> تعدين</button>
+            <button class="btn btn-collect" id="collectBtn" data-i18n="collect"><i class="fas fa-wallet"></i> جمع</button>
+            <button class="btn btn-convert" id="convertBtn" data-i18n="convert"><i class="fas fa-exchange-alt"></i> تحويل</button>
+            <button class="btn btn-log" id="logToggleBtn" data-i18n="log"><i class="fas fa-list-ul"></i> السجل</button>
         </div>
         <div id="logContainer" style="display:none; margin-top:8px;">
             <div class="card" style="padding:8px;">
-                <div class="card-title"><span>📋 سجل التعدين</span> <span id="logCount">0</span></div>
-                <div class="log-container" id="logList"><div class="log-item" style="color:#6A6A7A;text-align:center;">لا توجد عمليات</div></div>
+                <div class="card-title"><span data-i18n="mining_log">📋 سجل التعدين</span> <span id="logCount">0</span></div>
+                <div class="log-container" id="logList"><div class="log-item" style="color:var(--text-muted);text-align:center;" data-i18n="no_logs">لا توجد عمليات</div></div>
             </div>
         </div>
         <div id="convertPanel" style="display:none; margin-top:6px;">
             <div class="card">
-                <div class="card-title">🔄 تحويل العملات</div>
+                <div class="card-title" data-i18n="convert_currency">🔄 تحويل العملات</div>
                 <div style="display:flex; gap:4px; flex-wrap:wrap;">
-                    <select id="convertFrom" style="flex:1; background:#0A0E18; border:1px solid #2A2A3A; color:#E0E0E0; padding:4px 8px; border-radius:10px; font-size:11px;">
+                    <select id="convertFrom" style="flex:1; background:var(--bg-input); border:1px solid var(--border-color); color:var(--text-primary); padding:4px 8px; border-radius:10px; font-size:11px;">
                         <option value="NC">NC</option><option value="NCplus">NC+</option><option value="miniCash">mini-cash</option><option value="LitNC">LitNC</option><option value="BitNC">BitNC</option><option value="Cash">Cash</option>
                     </select>
-                    <input type="number" id="convertAmount" placeholder="المبلغ" value="1" style="flex:1.5; background:#0A0E18; border:1px solid #2A2A3A; color:#E0E0E0; padding:4px 8px; border-radius:10px; font-size:11px;">
-                    <select id="convertTo" style="flex:1; background:#0A0E18; border:1px solid #2A2A3A; color:#E0E0E0; padding:4px 8px; border-radius:10px; font-size:11px;">
+                    <input type="number" id="convertAmount" placeholder="المبلغ" value="1" style="flex:1.5; background:var(--bg-input); border:1px solid var(--border-color); color:var(--text-primary); padding:4px 8px; border-radius:10px; font-size:11px;">
+                    <select id="convertTo" style="flex:1; background:var(--bg-input); border:1px solid var(--border-color); color:var(--text-primary); padding:4px 8px; border-radius:10px; font-size:11px;">
                         <option value="NC">NC</option><option value="NCplus">NC+</option><option value="miniCash">mini-cash</option><option value="LitNC">LitNC</option><option value="BitNC">BitNC</option><option value="Cash">Cash</option>
                     </select>
-                    <button id="executeConvertBtn" style="flex:0.8; background:#C9A84C; border:none; color:#0A0E18; font-weight:700; border-radius:30px; cursor:pointer; font-size:11px; padding:4px;">تنفيذ</button>
+                    <button id="executeConvertBtn" style="flex:0.8; background:var(--gold); border:none; color:#0A0E18; font-weight:700; border-radius:30px; cursor:pointer; font-size:11px; padding:4px;" data-i18n="execute">تنفيذ</button>
                 </div>
             </div>
         </div>
@@ -465,7 +517,7 @@
     <!-- ===== TAB: WALLET ===== -->
     <div id="tab-wallet" class="tab-content">
         <div class="card">
-            <div class="card-title"><span>💰 الأرصدة</span> <i class="fas fa-chevron-left text-gold"></i></div>
+            <div class="card-title"><span data-i18n="balances">💰 الأرصدة</span> <i class="fas fa-chevron-left text-gold"></i></div>
             <div class="wallet-grid" id="walletGrid">
                 <div class="wallet-item"><div class="symbol">NC</div><div class="balance nc" id="balNC">0.00</div></div>
                 <div class="wallet-item"><div class="symbol">NC+</div><div class="balance ncplus" id="balNCplus">0.00</div></div>
@@ -475,24 +527,24 @@
                 <div class="wallet-item"><div class="symbol">Cash</div><div class="balance cash" id="balCash">0.00</div></div>
             </div>
         </div>
-        <div class="card" style="text-align:center; color:#8A8A9A; font-size:10px;"><i class="fas fa-lock"></i> جميع الأرصدة مشفرة ومركزية (للترفيه)</div>
+        <div class="card" style="text-align:center; color:var(--text-muted); font-size:10px;"><i class="fas fa-lock"></i> <span data-i18n="all_balances_encrypted">جميع الأرصدة مشفرة ومركزية (للترفيه)</span></div>
     </div>
 
     <!-- ===== TAB: SHOP ===== -->
     <div id="tab-shop" class="tab-content">
         <div class="card">
-            <div class="card-title"><span>🛒 المتجر الرسمي</span> <span style="color:#4A9CFF; font-size:10px;" id="shopCount">0 عنصر</span></div>
+            <div class="card-title"><span data-i18n="shop_title">🛒 المتجر الرسمي</span> <span style="color:var(--blue); font-size:10px;" id="shopCount">0 عنصر</span></div>
             <div class="shop-stats">
-                <div class="stat"><div class="label">💰 الرصيد</div><div class="value" id="shopBalance">0.00 NC</div></div>
-                <div class="stat"><div class="label">📦 الأجهزة</div><div class="value" id="shopDevices">0</div></div>
-                <div class="stat"><div class="label">⚡ الطاقة</div><div class="value" id="shopPower">0</div></div>
+                <div class="stat"><div class="label" data-i18n="balance">💰 الرصيد</div><div class="value" id="shopBalance">0.00 NC</div></div>
+                <div class="stat"><div class="label" data-i18n="devices">📦 الأجهزة</div><div class="value" id="shopDevices">0</div></div>
+                <div class="stat"><div class="label" data-i18n="power">⚡ الطاقة</div><div class="value" id="shopPower">0</div></div>
             </div>
             <div class="shop-category-tabs">
-                <button class="tab-btn active" data-cat="miners">⛏️ أجهزة</button>
-                <button class="tab-btn" data-cat="boosters">⚡ تسريعات</button>
-                <button class="tab-btn" data-cat="upgrades">🔧 ترقيات</button>
-                <button class="tab-btn" data-cat="maintenance">🛠️ صيانة</button>
-                <button class="tab-btn" data-cat="specials">🎁 عروض</button>
+                <button class="tab-btn active" data-cat="miners" data-i18n="devices_tab">⛏️ أجهزة</button>
+                <button class="tab-btn" data-cat="boosters" data-i18n="boosters_tab">⚡ تسريعات</button>
+                <button class="tab-btn" data-cat="upgrades" data-i18n="upgrades_tab">🔧 ترقيات</button>
+                <button class="tab-btn" data-cat="maintenance" data-i18n="maintenance_tab">🛠️ صيانة</button>
+                <button class="tab-btn" data-cat="specials" data-i18n="specials_tab">🎁 عروض</button>
             </div>
             <div class="shop-category-content active" id="shop-miners"><div class="shop-grid" id="minersGrid"></div></div>
             <div class="shop-category-content" id="shop-boosters"><div class="shop-grid" id="boostersGrid"></div></div>
@@ -505,54 +557,66 @@
     <!-- ===== TAB: SETTINGS ===== -->
     <div id="tab-settings" class="tab-content">
         <div class="card">
-            <div class="card-title"><span>⚙️ الإعدادات</span></div>
-            <div class="settings-item" style="border-bottom: 2px solid #2A2A3A; padding-bottom: 12px; margin-bottom: 6px;">
-                <span>👤 الملف الشخصي</span>
+            <div class="card-title"><span data-i18n="settings">⚙️ الإعدادات</span></div>
+            <div class="settings-item" style="border-bottom: 2px solid var(--border-color); padding-bottom: 12px; margin-bottom: 6px;">
+                <span data-i18n="profile">👤 الملف الشخصي</span>
                 <div class="profile-trigger" onclick="toggleProfile()">
                     <i class="fas fa-user" id="settingsProfileIcon"></i>
-                    <img id="settingsProfileImage" style="display:none; width:24px; height:24px; border-radius:50%; border:1px solid #C9A84C;" alt="">
+                    <img id="settingsProfileImage" style="display:none; width:24px; height:24px; border-radius:50%; border:1px solid var(--gold);" alt="">
                     <span id="settingsProfileName">مستخدم</span>
                     <i class="fas fa-chevron-left" style="font-size:10px;"></i>
                 </div>
             </div>
-            <div class="settings-item"><span>🔊 المؤثرات الصوتية</span> <label class="switch"><input type="checkbox" id="soundToggle" checked><span class="slider"></span></label></div>
-            <div class="settings-item"><span>📳 الاهتزاز</span> <label class="switch"><input type="checkbox" id="vibeToggle" checked><span class="slider"></span></label></div>
-            <div class="settings-item"><span>🏦 المنصة</span> <span class="text-gold">HyeX Exchange</span></div>
-            <div class="settings-item"><span>🔄 إعادة تعيين</span> <button id="resetBtn" style="background:#3A1A1A; border:none; color:#FF6B8A; padding:4px 14px; border-radius:30px; cursor:pointer; font-size:11px;">إعادة تعيين</button></div>
+            <div class="settings-item"><span data-i18n="theme">🌓 المظهر</span>
+                <div style="display:flex; gap:8px;">
+                    <button id="themeDarkBtn" class="btn" style="padding:4px 12px; border-radius:30px; border:1px solid var(--border-color); background:var(--bg-input); color:var(--text-primary); cursor:pointer; font-size:11px;">داكن</button>
+                    <button id="themeLightBtn" class="btn" style="padding:4px 12px; border-radius:30px; border:1px solid var(--border-color); background:var(--bg-input); color:var(--text-primary); cursor:pointer; font-size:11px;">فاتح</button>
+                </div>
+            </div>
+            <div class="settings-item"><span data-i18n="language">🌐 اللغة</span>
+                <select id="langSelect" class="lang-select">
+                    <option value="ar">العربية</option>
+                    <option value="en">English</option>
+                </select>
+            </div>
+            <div class="settings-item"><span data-i18n="sound">🔊 المؤثرات الصوتية</span> <label class="switch"><input type="checkbox" id="soundToggle" checked><span class="slider"></span></label></div>
+            <div class="settings-item"><span data-i18n="vibration">📳 الاهتزاز</span> <label class="switch"><input type="checkbox" id="vibeToggle" checked><span class="slider"></span></label></div>
+            <div class="settings-item"><span data-i18n="platform">🏦 المنصة</span> <span class="text-gold">HyeX Exchange</span></div>
+            <div class="settings-item"><span data-i18n="reset">🔄 إعادة تعيين</span> <button id="resetBtn" style="background:#3A1A1A; border:none; color:var(--red); padding:4px 14px; border-radius:30px; cursor:pointer; font-size:11px;" data-i18n="reset_btn">إعادة تعيين</button></div>
         </div>
     </div>
 
     <!-- ===== BOTTOM NAV ===== -->
     <div class="bottom-nav">
-        <div class="nav-item active" data-tab="mining"><i class="fas fa-hard-hat"></i><span>تعدين</span></div>
-        <div class="nav-item" data-tab="wallet"><i class="fas fa-wallet"></i><span>محفظة</span></div>
-        <div class="nav-item" data-tab="shop"><i class="fas fa-store"></i><span>متجر</span></div>
-        <div class="nav-item" data-tab="settings"><i class="fas fa-cog"></i><span>إعدادات</span></div>
+        <div class="nav-item active" data-tab="mining"><i class="fas fa-hard-hat"></i><span data-i18n="nav_mining">تعدين</span></div>
+        <div class="nav-item" data-tab="wallet"><i class="fas fa-wallet"></i><span data-i18n="nav_wallet">محفظة</span></div>
+        <div class="nav-item" data-tab="shop"><i class="fas fa-store"></i><span data-i18n="nav_shop">متجر</span></div>
+        <div class="nav-item" data-tab="settings"><i class="fas fa-cog"></i><span data-i18n="nav_settings">إعدادات</span></div>
     </div>
 
     <!-- PROFILE SLIDE -->
     <div class="profile-overlay" id="profileOverlay" onclick="toggleProfile()"></div>
     <div class="profile-slide" id="profileSlide">
-        <div class="header"><h2>👤 ملفي الشخصي</h2><button class="close-btn" onclick="toggleProfile()"><i class="fas fa-times"></i></button></div>
+        <div class="header"><h2 data-i18n="profile_title">👤 ملفي الشخصي</h2><button class="close-btn" onclick="toggleProfile()"><i class="fas fa-times"></i></button></div>
         <div class="body">
             <div class="profile-pic-large" id="profilePicLarge" onclick="document.getElementById('profileUpload').click()">
                 <i class="fas fa-user" id="modalProfileIcon"></i>
                 <img id="modalProfileImage" style="display:none;" alt="صورة">
-                <div class="upload-overlay">تغيير الصورة</div>
+                <div class="upload-overlay" data-i18n="change_photo">تغيير الصورة</div>
                 <input type="file" id="profileUpload" accept="image/*" style="display:none;" onchange="uploadProfileImage(event)">
             </div>
             <input type="text" id="profileNameInput" class="input-field" placeholder="اسم المستخدم" value="مستخدم جديد">
             <div class="level-card">
-                <div class="level-row"><span>المستوى</span><span class="highlight" id="modalLevelDisplay">1</span></div>
-                <div class="level-row" style="font-size:11px; color:#8A8A9A;"><span>نقاط الخبرة</span><span id="modalXPDisplay">0</span></div>
+                <div class="level-row"><span data-i18n="level">المستوى</span><span class="highlight" id="modalLevelDisplay">1</span></div>
+                <div class="level-row" style="font-size:11px; color:var(--text-muted);"><span data-i18n="xp">نقاط الخبرة</span><span id="modalXPDisplay">0</span></div>
                 <div class="level-bar"><div class="fill" id="modalLevelBar" style="width:0%;"></div></div>
             </div>
             <div class="stat-grid">
-                <div class="stat-item"><div class="stat-label">💰 إجمالي الأرباح</div><div class="stat-value green" id="modalTotalProfit">0.00 Cash</div></div>
-                <div class="stat-item"><div class="stat-label">⛏️ إجمالي التعدين</div><div class="stat-value blue" id="modalTotalMined">0.00 NC</div></div>
-                <div class="stat-item"><div class="stat-label">📦 الأجهزة</div><div class="stat-value" id="modalTotalDevices">0</div></div>
+                <div class="stat-item"><div class="stat-label" data-i18n="total_profit">💰 إجمالي الأرباح</div><div class="stat-value green" id="modalTotalProfit">0.00 Cash</div></div>
+                <div class="stat-item"><div class="stat-label" data-i18n="total_mined">⛏️ إجمالي التعدين</div><div class="stat-value blue" id="modalTotalMined">0.00 NC</div></div>
+                <div class="stat-item"><div class="stat-label" data-i18n="devices_owned">📦 الأجهزة</div><div class="stat-value" id="modalTotalDevices">0</div></div>
             </div>
-            <button class="save-btn" onclick="saveProfile()">💾 حفظ التغييرات</button>
+            <button class="save-btn" onclick="saveProfile()" data-i18n="save">💾 حفظ التغييرات</button>
         </div>
     </div>
 
@@ -560,12 +624,12 @@
 
 <script>
     // ================================================================
-    // 1. DATA (العملات الجديدة + رصيد مبدئي 100 Cash)
+    // 1. DATA
     // ================================================================
     const STORAGE_KEY = 'hyex_data';
     let data = {
-        wallet: { NC: 0, NCplus: 0, miniCash: 0, LitNC: 0, BitNC: 0, Cash: 100 }, // رصيد مبدئي 100 Cash
-        pending: { NC: 0, NCplus: 0, miniCash: 0, LitNC: 0, BitNC: 0 },
+        wallet: { NC: 0, NCplus: 0, miniCash: 0, LitNC: 0, BitNC: 0, Cash: 100 },
+        pending: { nc: 0, ncplus: 0, miniCash: 0, litnc: 0, bitnc: 0 },
         isMining: false,
         log: [],
         upgrades: {
@@ -577,7 +641,7 @@
             power: 0,
             efficiency: 0
         },
-        settings: { sound: true, vibe: true },
+        settings: { sound: true, vibe: true, theme: 'dark', lang: 'ar' },
         devices: {
             nc: { count: 1, level: 0 },
             ncplus: { count: 0, level: 0 },
@@ -603,7 +667,7 @@
     };
 
     // ================================================================
-    // 2. SHOP DATABASE (تم تعديل العملات)
+    // 2. SHOP DATABASE
     // ================================================================
     const SHOP_DB = {
         miners: [
@@ -646,7 +710,9 @@
                     if (key === 'wallet') for (let c in parsed.wallet) data.wallet[c] = parsed.wallet[c] || 0;
                     else if (key === 'pending') for (let p in parsed.pending) data.pending[p] = parsed.pending[p] || 0;
                     else if (key === 'upgrades') for (let u in parsed.upgrades) data.upgrades[u] = parsed.upgrades[u] || 0;
-                    else if (key === 'settings') for (let s in parsed.settings) data.settings[s] = parsed.settings[s] !== undefined ? parsed.settings[s] : true;
+                    else if (key === 'settings') {
+                        for (let s in parsed.settings) data.settings[s] = parsed.settings[s] !== undefined ? parsed.settings[s] : true;
+                    }
                     else if (key === 'profile') {
                         for (let p in parsed.profile) data.profile[p] = parsed.profile[p] || (p === 'name' ? 'مستخدم جديد' : (p === 'level' ? 1 : 0));
                     } else if (key === 'devices') {
@@ -665,8 +731,11 @@
         if (!data.boosters) data.boosters = { nc: { active: false, remaining: 0, multiplier: 1 }, ncplus: { active: false, remaining: 0, multiplier: 1 }, miniCash: { active: false, remaining: 0, multiplier: 1 }, litnc: { active: false, remaining: 0, multiplier: 1 }, bitnc: { active: false, remaining: 0, multiplier: 1 } };
         if (!data.maintenance) data.maintenance = { nc: { health: 100 }, ncplus: { health: 100 }, miniCash: { health: 100 }, litnc: { health: 100 }, bitnc: { health: 100 } };
         if (!data.profile) data.profile = { name: 'مستخدم جديد', level: 1, xp: 0, totalProfit: 0, totalMined: 0, image: null };
-        // التأكد من أن رصيد Cash المبدئي 100 إن لم يكن محفوظاً
         if (data.wallet.Cash === 0 && !saved) data.wallet.Cash = 100;
+        // تحميل الإعدادات المحفوظة
+        if (!data.settings) data.settings = { sound: true, vibe: true, theme: 'dark', lang: 'ar' };
+        if (!data.settings.theme) data.settings.theme = 'dark';
+        if (!data.settings.lang) data.settings.lang = 'ar';
     }
     function saveData() { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); }
 
@@ -695,7 +764,7 @@
         const list = document.getElementById('logList');
         const count = document.getElementById('logCount');
         count.textContent = data.log.length;
-        if (data.log.length === 0) { list.innerHTML = '<div class="log-item" style="color:#6A6A7A;text-align:center;">لا توجد عمليات</div>'; return; }
+        if (data.log.length === 0) { list.innerHTML = '<div class="log-item" style="color:var(--text-muted);text-align:center;">' + translate('no_logs') + '</div>'; return; }
         list.innerHTML = data.log.slice(0,30).map(l => `<div class="log-item"><span>${l.text}</span><span class="time">${l.time}</span></div>`).join('');
     }
 
@@ -703,7 +772,6 @@
     // 6. MINING (6 عملات)
     // ================================================================
     let miningInterval = null;
-
     const CURRENCIES = ['nc', 'ncplus', 'miniCash', 'litnc', 'bitnc'];
     const CURRENCY_LABELS = { nc: 'NC', ncplus: 'NC+', miniCash: 'mini-cash', litnc: 'LitNC', bitnc: 'BitNC' };
     const BASE_SPEEDS = { nc: 0.0001, ncplus: 0.00008, miniCash: 0.00006, litnc: 0.00004, bitnc: 0.00003 };
@@ -731,7 +799,7 @@
     function startMining() {
         if (data.isMining) return;
         data.isMining = true;
-        document.getElementById('miningToggleBtn').innerHTML = '<i class="fas fa-stop"></i> إيقاف';
+        document.getElementById('miningToggleBtn').innerHTML = '<i class="fas fa-stop"></i> ' + translate('stop_mining');
         document.getElementById('miningToggleBtn').classList.add('active');
         playBeep(800,0.1); doVibe();
         miningInterval = setInterval(() => {
@@ -740,9 +808,7 @@
                 data.pending[curr] += speed;
                 data.profile.totalMined += speed;
             });
-            // تحديث واجهة السرعات
             updateSpeedsUI();
-            // تحديث المبلغ العالق (نعرض NC)
             document.getElementById('pendingDisplay').textContent = data.pending.nc.toFixed(8) + ' NC';
             updateShopUI();
             updateProfileUI();
@@ -754,7 +820,7 @@
         if (!data.isMining) return;
         data.isMining = false;
         clearInterval(miningInterval); miningInterval = null;
-        document.getElementById('miningToggleBtn').innerHTML = '<i class="fas fa-play"></i> تعدين';
+        document.getElementById('miningToggleBtn').innerHTML = '<i class="fas fa-play"></i> ' + translate('start_mining');
         document.getElementById('miningToggleBtn').classList.remove('active');
         playBeep(400,0.15); doVibe();
         saveData();
@@ -766,7 +832,6 @@
             const speed = getMiningSpeed(curr);
             const id = 'speed' + (curr === 'nc' ? 'NC' : curr === 'ncplus' ? 'NCplus' : curr === 'miniCash' ? 'MiniCash' : curr === 'litnc' ? 'LitNC' : 'BitNC');
             document.getElementById(id).textContent = speed.toFixed(6);
-            // شريط السرعة العلوي
             const tickerId = 'ticker' + (curr === 'nc' ? 'NC' : curr === 'ncplus' ? 'NCplus' : curr === 'miniCash' ? 'MiniCash' : curr === 'litnc' ? 'LitNC' : 'BitNC');
             document.getElementById(tickerId).textContent = speed.toFixed(6);
         });
@@ -782,9 +847,9 @@
                 collected = true;
             }
         });
-        if (!collected) { addLog('⚠️ لا توجد عملات عالقة'); playBeep(300,0.1); return; }
+        if (!collected) { addLog(translate('no_pending')); playBeep(300,0.1); return; }
         playBeep(1000,0.2); doVibe();
-        addLog('✅ تم جمع جميع العملات العالقة');
+        addLog(translate('collected_all'));
         updateAllUI(); saveData();
     });
 
@@ -799,13 +864,13 @@
         const from = document.getElementById('convertFrom').value;
         const to = document.getElementById('convertTo').value;
         let amount = parseFloat(document.getElementById('convertAmount').value);
-        if (isNaN(amount) || amount <= 0) { alert('أدخل مبلغ صحيح'); return; }
+        if (isNaN(amount) || amount <= 0) { alert(translate('enter_valid_amount')); return; }
         const rate = getRate(from, to);
         const needed = amount * rate;
-        if (data.wallet[from] < amount) { addLog(`❌ رصيد غير كاف من ${from}`); playBeep(200,0.2); return; }
+        if (data.wallet[from] < amount) { addLog(translate('insufficient_balance', from)); playBeep(200,0.2); return; }
         data.wallet[from] -= amount;
         data.wallet[to] = (data.wallet[to] || 0) + needed;
-        addLog(`🔄 تحويل ${amount.toFixed(6)} ${from} → ${needed.toFixed(6)} ${to}`);
+        addLog(translate('converted', from, to, amount, needed));
         playBeep(1100,0.15); doVibe();
         updateAllUI(); saveData();
         document.getElementById('convertPanel').style.display = 'none';
@@ -851,7 +916,7 @@
     }
 
     // ================================================================
-    // 8. SHOP (معدل للعملات الجديدة)
+    // 8. SHOP
     // ================================================================
     function renderShopAll() {
         renderShopCategory('miners');
@@ -928,16 +993,16 @@
             price = item.price * (1 + currentLevel * 0.2);
         }
         if (data.wallet[currency] < price) {
-            alert(`❌ رصيد غير كاف. تحتاج ${price.toFixed(2)} ${currency}`);
+            alert(translate('insufficient_balance_shop', price, currency));
             playBeep(200,0.2); return;
         }
         data.wallet[currency] -= price;
         if (item.type === 'miner') {
             data.devices[item.target].count = (data.devices[item.target].count || 0) + 1;
-            addLog(`⛏️ تم شراء جهاز تعدين ${item.target}`);
+            addLog(translate('bought_miner', item.target));
         } else if (item.type === 'upgrade') {
             data.upgrades[item.target] = (data.upgrades[item.target] || 0) + 1;
-            addLog(`🔧 تم شراء ترقية ${item.name}`);
+            addLog(translate('bought_upgrade', item.name));
         } else if (item.type === 'booster') {
             const target = item.target === 'all' ? 'nc' : item.target;
             if (item.target === 'all') {
@@ -973,10 +1038,10 @@
                     saveData(); updateShopUI();
                 }, item.duration * 1000);
             }
-            addLog(`⚡ تم تفعيل مضاعف ${item.name}`);
+            addLog(translate('activated_booster', item.name));
         } else if (item.type === 'repair') {
             data.maintenance[item.target].health = 100;
-            addLog(`🛠️ تم إصلاح جهاز ${item.target}`);
+            addLog(translate('repaired_device', item.target));
         } else if (item.type === 'special') {
             item.items.forEach(sub => {
                 if (sub.type === 'miner') data.devices[sub.target].count = (data.devices[sub.target].count || 0) + 1;
@@ -995,7 +1060,7 @@
                     }
                 }
             });
-            addLog(`🎁 تم شراء الحزمة الخاصة: ${item.name}`);
+            addLog(translate('bought_special', item.name));
         }
         playBeep(1000,0.2); doVibe();
         updateAllUI(); saveData();
@@ -1085,14 +1150,203 @@
         if (name) {
             data.profile.name = name;
             saveData(); updateProfileUI();
-            addLog(`✅ تم تحديث الملف الشخصي: ${name}`);
+            addLog(translate('profile_updated', name));
             playBeep(1000,0.15);
             toggleProfile();
-        } else alert('الرجاء إدخال اسم صحيح');
+        } else alert(translate('enter_name'));
     }
 
     // ================================================================
-    // 10. NAVIGATION
+    // 10. THEME & LANGUAGE
+    // ================================================================
+    function setTheme(theme) {
+        document.documentElement.setAttribute('data-theme', theme);
+        data.settings.theme = theme;
+        saveData();
+        updateThemeButtons(theme);
+    }
+
+    function updateThemeButtons(theme) {
+        const darkBtn = document.getElementById('themeDarkBtn');
+        const lightBtn = document.getElementById('themeLightBtn');
+        if (theme === 'dark') {
+            darkBtn.style.borderColor = 'var(--gold)';
+            darkBtn.style.color = 'var(--gold)';
+            lightBtn.style.borderColor = 'var(--border-color)';
+            lightBtn.style.color = 'var(--text-primary)';
+        } else {
+            lightBtn.style.borderColor = 'var(--gold)';
+            lightBtn.style.color = 'var(--gold)';
+            darkBtn.style.borderColor = 'var(--border-color)';
+            darkBtn.style.color = 'var(--text-primary)';
+        }
+    }
+
+    document.getElementById('themeDarkBtn').addEventListener('click', function() { setTheme('dark'); });
+    document.getElementById('themeLightBtn').addEventListener('click', function() { setTheme('light'); });
+
+    // ================================================================
+    // 11. LANGUAGE
+    // ================================================================
+    const translations = {
+        ar: {
+            subtitle: 'المنصة الرقمية الرسمية | نسخة تجريبية',
+            mining_speeds: '⚡ سرعات التعدين',
+            pending_label: 'المبلغ العالق (قيد التعدين)',
+            start_mining: 'تعدين',
+            stop_mining: 'إيقاف',
+            collect: 'جمع',
+            convert: 'تحويل',
+            log: 'السجل',
+            mining_log: '📋 سجل التعدين',
+            no_logs: 'لا توجد عمليات',
+            convert_currency: '🔄 تحويل العملات',
+            execute: 'تنفيذ',
+            balances: '💰 الأرصدة',
+            all_balances_encrypted: 'جميع الأرصدة مشفرة ومركزية (للترفيه)',
+            shop_title: '🛒 المتجر الرسمي',
+            balance: '💰 الرصيد',
+            devices: '📦 الأجهزة',
+            power: '⚡ الطاقة',
+            devices_tab: '⛏️ أجهزة',
+            boosters_tab: '⚡ تسريعات',
+            upgrades_tab: '🔧 ترقيات',
+            maintenance_tab: '🛠️ صيانة',
+            specials_tab: '🎁 عروض',
+            settings: '⚙️ الإعدادات',
+            profile: '👤 الملف الشخصي',
+            theme: '🌓 المظهر',
+            language: '🌐 اللغة',
+            sound: '🔊 المؤثرات الصوتية',
+            vibration: '📳 الاهتزاز',
+            platform: '🏦 المنصة',
+            reset: '🔄 إعادة تعيين',
+            reset_btn: 'إعادة تعيين',
+            nav_mining: 'تعدين',
+            nav_wallet: 'محفظة',
+            nav_shop: 'متجر',
+            nav_settings: 'إعدادات',
+            profile_title: '👤 ملفي الشخصي',
+            change_photo: 'تغيير الصورة',
+            level: 'المستوى',
+            xp: 'نقاط الخبرة',
+            total_profit: '💰 إجمالي الأرباح',
+            total_mined: '⛏️ إجمالي التعدين',
+            devices_owned: '📦 الأجهزة',
+            save: '💾 حفظ التغييرات',
+            no_pending: '⚠️ لا توجد عملات عالقة',
+            collected_all: '✅ تم جمع جميع العملات العالقة',
+            enter_valid_amount: 'أدخل مبلغ صحيح',
+            insufficient_balance: '❌ رصيد غير كاف من {0}',
+            converted: '🔄 تحويل {0} {1} → {2} {3}',
+            insufficient_balance_shop: '❌ رصيد غير كاف. تحتاج {0} {1}',
+            bought_miner: '⛏️ تم شراء جهاز تعدين {0}',
+            bought_upgrade: '🔧 تم شراء ترقية {0}',
+            activated_booster: '⚡ تم تفعيل مضاعف {0}',
+            repaired_device: '🛠️ تم إصلاح جهاز {0}',
+            bought_special: '🎁 تم شراء الحزمة الخاصة: {0}',
+            profile_updated: '✅ تم تحديث الملف الشخصي: {0}',
+            enter_name: 'الرجاء إدخال اسم صحيح'
+        },
+        en: {
+            subtitle: 'Official Digital Platform | Beta Version',
+            mining_speeds: '⚡ Mining Speeds',
+            pending_label: 'Pending amount (mining in progress)',
+            start_mining: 'Start Mining',
+            stop_mining: 'Stop',
+            collect: 'Collect',
+            convert: 'Convert',
+            log: 'Log',
+            mining_log: '📋 Mining Log',
+            no_logs: 'No operations',
+            convert_currency: '🔄 Convert Currency',
+            execute: 'Execute',
+            balances: '💰 Balances',
+            all_balances_encrypted: 'All balances are encrypted and centralized (for entertainment)',
+            shop_title: '🛒 Official Store',
+            balance: '💰 Balance',
+            devices: '📦 Devices',
+            power: '⚡ Power',
+            devices_tab: '⛏️ Devices',
+            boosters_tab: '⚡ Boosters',
+            upgrades_tab: '🔧 Upgrades',
+            maintenance_tab: '🛠️ Maintenance',
+            specials_tab: '🎁 Specials',
+            settings: '⚙️ Settings',
+            profile: '👤 Profile',
+            theme: '🌓 Theme',
+            language: '🌐 Language',
+            sound: '🔊 Sound Effects',
+            vibration: '📳 Vibration',
+            platform: '🏦 Platform',
+            reset: '🔄 Reset',
+            reset_btn: 'Reset',
+            nav_mining: 'Mining',
+            nav_wallet: 'Wallet',
+            nav_shop: 'Store',
+            nav_settings: 'Settings',
+            profile_title: '👤 My Profile',
+            change_photo: 'Change Photo',
+            level: 'Level',
+            xp: 'XP Points',
+            total_profit: '💰 Total Profit',
+            total_mined: '⛏️ Total Mined',
+            devices_owned: '📦 Devices Owned',
+            save: '💾 Save Changes',
+            no_pending: '⚠️ No pending coins',
+            collected_all: '✅ Collected all pending coins',
+            enter_valid_amount: 'Enter a valid amount',
+            insufficient_balance: '❌ Insufficient balance of {0}',
+            converted: '🔄 Converted {0} {1} → {2} {3}',
+            insufficient_balance_shop: '❌ Insufficient balance. Need {0} {1}',
+            bought_miner: '⛏️ Bought {0} miner',
+            bought_upgrade: '🔧 Bought upgrade {0}',
+            activated_booster: '⚡ Activated booster {0}',
+            repaired_device: '🛠️ Repaired {0} device',
+            bought_special: '🎁 Bought special pack: {0}',
+            profile_updated: '✅ Profile updated: {0}',
+            enter_name: 'Please enter a valid name'
+        }
+    };
+
+    function translate(key, ...args) {
+        const lang = data.settings.lang || 'ar';
+        let text = translations[lang]?.[key] || translations['ar'][key] || key;
+        args.forEach((arg, i) => {
+            text = text.replace(`{${i}}`, arg);
+        });
+        return text;
+    }
+
+    function applyLanguage() {
+        const lang = data.settings.lang || 'ar';
+        document.documentElement.lang = lang;
+        document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+        document.querySelectorAll('[data-i18n]').forEach(el => {
+            const key = el.dataset.i18n;
+            el.textContent = translate(key);
+        });
+        // تحديث النصوص الديناميكية
+        document.getElementById('settingsProfileName').textContent = data.profile.name || 'مستخدم جديد';
+        // تحديث أزرار التعدين
+        const miningBtn = document.getElementById('miningToggleBtn');
+        if (data.isMining) {
+            miningBtn.innerHTML = '<i class="fas fa-stop"></i> ' + translate('stop_mining');
+        } else {
+            miningBtn.innerHTML = '<i class="fas fa-play"></i> ' + translate('start_mining');
+        }
+        // تحديث السجل
+        renderLog();
+    }
+
+    document.getElementById('langSelect').addEventListener('change', function() {
+        data.settings.lang = this.value;
+        saveData();
+        applyLanguage();
+    });
+
+    // ================================================================
+    // 12. NAVIGATION
     // ================================================================
     document.querySelectorAll('.nav-item').forEach(item => {
         item.addEventListener('click', function() {
@@ -1104,36 +1358,40 @@
             playBeep(300,0.03);
             if (tabId === 'wallet') updateWalletUI();
             if (tabId === 'shop') updateShopUI();
-            if (tabId === 'settings') updateProfileUI();
+            if (tabId === 'settings') { updateProfileUI(); applyLanguage(); }
         });
     });
 
     // ================================================================
-    // 11. SETTINGS
+    // 13. SETTINGS EVENTS
     // ================================================================
     document.getElementById('soundToggle').addEventListener('change', function() { data.settings.sound = this.checked; saveData(); });
     document.getElementById('vibeToggle').addEventListener('change', function() { data.settings.vibe = this.checked; saveData(); });
     document.getElementById('resetBtn').addEventListener('click', function() {
-        if (confirm('هل أنت متأكد؟ سيتم حذف جميع الأرصدة والسجلات!')) {
+        if (confirm(translate('reset_confirm') || 'هل أنت متأكد؟ سيتم حذف جميع الأرصدة والسجلات!')) {
             localStorage.removeItem(STORAGE_KEY);
             location.reload();
         }
     });
 
     // ================================================================
-    // 12. INIT
+    // 14. INIT
     // ================================================================
     window.onload = function() {
         loadData();
+        // تطبيق الإعدادات
         document.getElementById('soundToggle').checked = data.settings.sound !== false;
         document.getElementById('vibeToggle').checked = data.settings.vibe !== false;
+        document.getElementById('langSelect').value = data.settings.lang || 'ar';
+        setTheme(data.settings.theme || 'dark');
+        applyLanguage();
         startMining();
         updateAllUI();
         renderLog();
         updateProfileUI();
         updateShopUI();
 
-        addLog('🏛️ مرحباً في HyeX Exchange - الإصدار 18.0 (6 عملات)');
+        addLog('🏛️ ' + translate('subtitle'));
         if (data.pending.nc > 0) document.getElementById('pendingDisplay').textContent = data.pending.nc.toFixed(8) + ' NC';
     };
 
