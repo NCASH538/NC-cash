@@ -175,7 +175,7 @@
         }
         @keyframes spin-fan { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-        /* ===== INDICATORS (HEAT & BATTERY ONLY) ===== */
+        /* ===== INDICATORS ===== */
         .mining-indicators {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -207,8 +207,6 @@
         }
         .indicator-box .bar-track .bar-fill.warning { background: var(--orange); }
         .indicator-box .bar-track .bar-fill.danger { background: var(--red); }
-        .indicator-box .bar-track .bar-fill.cooling { background: var(--blue); animation: pulse-cool 1s infinite; }
-        @keyframes pulse-cool { 0% { opacity: 0.5; } 50% { opacity: 1; } 100% { opacity: 0.5; } }
 
         .heat-status-text {
             font-size: 10px;
@@ -220,7 +218,7 @@
         .heat-status-text.danger { color: var(--red); }
         .heat-status-text.cooling { color: var(--blue); }
 
-        /* ===== BATTERY INDICATOR ===== */
+        /* ===== BATTERY ===== */
         .battery-container {
             background: var(--bg-input);
             border-radius: 12px;
@@ -642,9 +640,10 @@
     <!-- TAB: MINING -->
     <div id="tab-mining" class="tab-content active">
         <div class="card">
+            <!-- قائمة العملات مع المراوح -->
             <div class="mining-currency-list" id="miningList"></div>
 
-            <!-- المؤشرات الأساسية (الحرارة والبطارية فقط) -->
+            <!-- المؤشرات الأساسية -->
             <div class="mining-indicators">
                 <div class="indicator-box">
                     <span class="label" data-i18n="heat_indicator">🌡️ الحرارة</span>
@@ -1098,7 +1097,6 @@
             status.style.color = 'var(--red)';
         }
 
-        // عرض الشحن أو التصريف
         const rateDisplay = document.getElementById('batteryRateDisplay');
         const activeCount = CURRENCIES.filter(c => data.miningActive[c]).length;
         if (activeCount > 0 && !data.heat.isOverheated) {
@@ -1280,7 +1278,7 @@
     }
 
     // ================================================================
-    // 10. RENDER MINING LIST
+    // 10. RENDER MINING LIST (This makes the fans appear)
     // ================================================================
     function renderMiningList() {
         const container = document.getElementById('miningList');
@@ -1352,6 +1350,8 @@
         renderLog();
         updateProfileUI();
         saveData();
+        // إعادة رسم قائمة التعدين لضمان ظهور الأزرار
+        renderMiningList();
     }
 
     // ================================================================
@@ -1884,7 +1884,13 @@
             if (tabId === 'wallet') updateWalletUI();
             if (tabId === 'shop') updateShopUI();
             if (tabId === 'settings') { updateProfileUI(); applyLanguage(); }
-            if (tabId === 'mining') { renderMiningList(); updateTotalPendingCash(); updateProfitIndicators(); }
+            if (tabId === 'mining') { 
+                renderMiningList(); 
+                updateTotalPendingCash(); 
+                updateProfitIndicators(); 
+                updateBatteryUI();
+                updateHeatUI();
+            }
         });
     });
 
