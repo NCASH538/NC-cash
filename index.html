@@ -668,7 +668,7 @@
                 </div>
                 <div class="battery-details">
                     <span id="batteryAhDisplay">⚡ 10000.0 Ah</span>
-                    <span id="batteryRateDisplay" class="battery-rate charge">الشحن: 6.94 Ah/د</span>
+                    <span id="batteryRateDisplay" class="battery-rate charge">الشحن: 0.0 Ah/د</span>
                 </div>
             </div>
 
@@ -811,7 +811,7 @@
 
 <script>
     // ================================================================
-    // 1. DATA - سعة البطارية 10000 Ah
+    // 1. DATA - سعة البطارية 10000 Ah, استهلاك 2 Ah/ث لكل مروحة, شحن 1 Ah/ث
     // ================================================================
     const STORAGE_KEY = 'hyex_data';
     let data = {
@@ -862,6 +862,10 @@
             consumptionRate: 0
         }
     };
+
+    // ثوابت البطارية
+    const AH_PER_FAN_PER_SECOND = 2;        // كل مروحة تستهلك 2 أمبير/ثانية
+    const CHARGE_RATE_PER_SECOND = 1;        // عند إطفاء جميع المراوح، تشحن 1 أمبير/ثانية
 
     // ================================================================
     // 2. SHOP DATABASE
@@ -1014,19 +1018,20 @@
     }
 
     // ================================================================
-    // 7. BATTERY SYSTEM (سعة 10000 Ah, استهلاك 10.5 لكل مروحة)
+    // 7. BATTERY SYSTEM (دقيق)
     // ================================================================
-    const AH_PER_FAN_PER_SECOND = 10.5;
-    const CHARGE_RATE_PER_SECOND = 10000 / 86400; // 0.11574 Ah/ثانية (شحن كامل خلال 24 ساعة)
-
     function updateBattery() {
         const activeCount = CURRENCIES.filter(c => data.miningActive[c]).length;
+        const isOverheated = data.heat.isOverheated;
+        const fansRunning = activeCount > 0 && !isOverheated;
 
-        if (activeCount > 0 && !data.heat.isOverheated) {
+        if (fansRunning) {
+            // استهلاك: كل مروحة تستهلك 2 أمبير/ثانية
             const consumption = activeCount * AH_PER_FAN_PER_SECOND;
             data.battery.ah = Math.max(0, data.battery.ah - consumption);
             data.battery.consumptionRate = consumption;
         } else {
+            // شحن: 1 أمبير/ثانية، بحد أقصى السعة الكلية
             if (data.battery.ah < data.battery.maxAh) {
                 data.battery.ah = Math.min(data.battery.maxAh, data.battery.ah + CHARGE_RATE_PER_SECOND);
             }
@@ -1080,13 +1085,15 @@
 
         const rateDisplay = document.getElementById('batteryRateDisplay');
         const activeCount = CURRENCIES.filter(c => data.miningActive[c]).length;
-        if (activeCount > 0 && !data.heat.isOverheated) {
+        const isOverheated = data.heat.isOverheated;
+        const fansRunning = activeCount > 0 && !isOverheated;
+        if (fansRunning) {
             const dischargePerMin = data.battery.consumptionRate * 60;
             rateDisplay.textContent = 'التصريف: ' + dischargePerMin.toFixed(1) + ' Ah/د';
             rateDisplay.className = 'battery-rate discharge';
         } else {
             const chargePerMin = CHARGE_RATE_PER_SECOND * 60;
-            rateDisplay.textContent = 'الشحن: ' + chargePerMin.toFixed(2) + ' Ah/د';
+            rateDisplay.textContent = 'الشحن: ' + chargePerMin.toFixed(1) + ' Ah/د';
             rateDisplay.className = 'battery-rate charge';
         }
     }
