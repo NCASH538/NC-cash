@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>HyeX Exchange - التعدين الذكي</title>
+    <title>HyeX Exchange - التعدين المتطور</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         /* ===== CSS Variables ===== */
@@ -26,6 +26,7 @@
             --header-bg: linear-gradient(135deg, #0A0E1A, #141A2B);
             --nav-bg: #0A0E18;
             --heat-color: #7BED9F;
+            --card-radius: 16px;
         }
 
         [data-theme="light"] {
@@ -108,13 +109,12 @@
         .tab-content::-webkit-scrollbar-track { background: var(--bg-input); }
         .tab-content::-webkit-scrollbar-thumb { background: var(--blue); border-radius: 10px; }
 
-        /* ===== MINING AREA ===== */
-        .mining-currency-list {
+        /* ===== MINING AREA (Re-designed) ===== */
+        .mining-grid {
             display: flex;
             flex-direction: column;
             gap: 8px;
-            margin-top: 6px;
-            margin-bottom: 6px;
+            margin-bottom: 10px;
         }
         .mining-row {
             display: flex;
@@ -271,6 +271,12 @@
         }
         .battery-container .battery-details .battery-rate.discharge { color: var(--orange); }
         .battery-container .battery-details .battery-rate.charge { color: var(--green); }
+        .battery-container .battery-time {
+            font-size: 10px;
+            color: var(--text-muted);
+            text-align: center;
+        }
+        .battery-container .battery-time span { font-weight: 700; color: var(--gold); }
 
         /* ===== PROFIT INDICATORS ===== */
         .profit-indicators {
@@ -638,7 +644,7 @@
             <h1>🏛️ HyeX Exchange</h1>
             <div class="subtitle" data-i18n="subtitle">المنصة الرقمية الرسمية | نسخة تجريبية</div>
         </div>
-        <div class="badge"><i class="fas fa-shield-alt"></i> v24.0</div>
+        <div class="badge"><i class="fas fa-shield-alt"></i> v25.0</div>
     </div>
 
     <!-- PRICE TICKER -->
@@ -653,7 +659,7 @@
     <div id="tab-mining" class="tab-content active">
         <div class="card heat-bg normal" id="heatBgCard">
             <!-- قائمة العملات مع المراوح -->
-            <div class="mining-currency-list" id="miningList"></div>
+            <div class="mining-grid" id="miningList"></div>
 
             <!-- المؤشرات الأساسية -->
             <div class="mining-indicators">
@@ -683,6 +689,7 @@
                     <span id="batteryAhDisplay">⚡ 10000.0 Ah</span>
                     <span id="batteryRateDisplay" class="battery-rate charge">الشحن: 0.0 Ah/د</span>
                 </div>
+                <div class="battery-time" id="batteryTimeDisplay">⏱️ الوقت المتبقي: <span>--</span></div>
             </div>
 
             <!-- مؤشرات الأرباح -->
@@ -864,7 +871,6 @@
         heat: {
             level: 0,
             activeFans: 1,
-            timeToOverheat: 3600,
             elapsed: 0,
             isOverheated: false,
             cooldownRemaining: 0
@@ -882,7 +888,7 @@
     };
 
     // ================================================================
-    // 2. SHOP DATABASE (مع إضافة الشاحن السريع)
+    // 2. SHOP DATABASE
     // ================================================================
     const SHOP_DB = {
         miners: [
@@ -956,7 +962,7 @@
         if (!data.maintenance) data.maintenance = { nc: { health: 100 }, ncplus: { health: 100 }, miniCash: { health: 100 }, litnc: { health: 100 } };
         if (!data.profile) data.profile = { name: 'مستخدم جديد', level: 1, xp: 0, totalProfit: 0, totalMined: 0, image: null };
         if (!data.miningActive) data.miningActive = { nc: true, ncplus: false, miniCash: false, litnc: false };
-        if (!data.heat) data.heat = { level: 0, activeFans: 1, timeToOverheat: 3600, elapsed: 0, isOverheated: false, cooldownRemaining: 0 };
+        if (!data.heat) data.heat = { level: 0, activeFans: 1, elapsed: 0, isOverheated: false, cooldownRemaining: 0 };
         if (!data.battery) data.battery = { ah: 10000, maxAh: 10000, percent: 100, consumptionRate: 0 };
         if (data.battery.ah === 0 && !saved) data.battery.ah = 10000;
         if (data.battery.maxAh === 0) data.battery.maxAh = 10000;
@@ -1034,8 +1040,8 @@
         const multiplier = (booster?.active ? booster.multiplier : 1);
         const health = data.maintenance[currency]?.health || 100;
         const healthPenalty = 1 - (100 - health) / 200;
-        // تأثير الحرارة على الكفاءة
-        const heatEfficiency = 1 - (data.heat.level / 150); // عند 100% حرارة، الكفاءة 33%
+        // تأثير الحرارة على الكفاءة (تأثير تدريجي)
+        const heatEfficiency = 1 - (data.heat.level / 150); // 0% حرارة => 1, 100% حرارة => 0.33
         let speed = BASE_SPEEDS[currency] || 0;
         speed *= (1 + deviceCount * 0.1);
         speed *= (1 + level * 0.05);
@@ -1116,6 +1122,7 @@
         }
 
         updateBatteryUI();
+        updateBatteryTime();
     }
 
     function updateBatteryUI() {
@@ -1163,6 +1170,38 @@
         }
     }
 
+    function updateBatteryTime() {
+        const activeCount = CURRENCIES.filter(c => data.miningActive[c]).length;
+        const isOverheated = data.heat.isOverheated;
+        const fansRunning = activeCount > 0 && !isOverheated;
+        const timeDisplay = document.getElementById('batteryTimeDisplay');
+        const span = timeDisplay.querySelector('span');
+
+        if (fansRunning) {
+            // وقت التفريغ المتبقي
+            const remainingTime = data.battery.ah / (activeCount * AH_PER_FAN_PER_SECOND);
+            const mins = Math.floor(remainingTime / 60);
+            const secs = Math.floor(remainingTime % 60);
+            if (remainingTime > 0) {
+                span.textContent = String(mins).padStart(2,'0') + ':' + String(secs).padStart(2,'0') + ' (تفريغ)';
+            } else {
+                span.textContent = 'البطارية فارغة';
+            }
+        } else {
+            // وقت الشحن المتبقي للوصول إلى 100%
+            const needed = data.battery.maxAh - data.battery.ah;
+            if (needed > 0) {
+                const chargeRate = getChargeRate();
+                const remainingTime = needed / chargeRate;
+                const mins = Math.floor(remainingTime / 60);
+                const secs = Math.floor(remainingTime % 60);
+                span.textContent = String(mins).padStart(2,'0') + ':' + String(secs).padStart(2,'0') + ' (شحن)';
+            } else {
+                span.textContent = 'مشحونة بالكامل';
+            }
+        }
+    }
+
     // ================================================================
     // 8. HEAT SYSTEM (الوقت 60 دقيقة للمروحة الواحدة)
     // ================================================================
@@ -1187,6 +1226,7 @@
         }
 
         if (activeCount === 0) {
+            // تبريد تدريجي
             data.heat.level = Math.max(0, data.heat.level - 0.5);
             data.heat.elapsed = Math.max(0, data.heat.elapsed - 1);
             updateHeatUI();
@@ -1212,7 +1252,6 @@
     }
 
     function getTimeToOverheat(count) {
-        // مروحة واحدة: 60 دقيقة = 3600 ثانية، مروحتان: 40 دقيقة، ثلاث: 20 دقيقة، أربع: 10 دقائق
         const times = { 1: 3600, 2: 2400, 3: 1200, 4: 600 };
         return times[count] || 3600;
     }
@@ -1282,7 +1321,6 @@
         data.miningActive[currency] = true;
         const btn = document.querySelector(`.fan-btn[data-currency="${currency}"]`);
         if (btn) btn.classList.add('active');
-        // صوت المروحة
         if (data.settings.sound) playFanSound();
 
         miningIntervals[currency] = setInterval(() => {
@@ -1639,6 +1677,7 @@
         updateProfileUI();
         saveData();
         renderMiningList();
+        updateBatteryTime();
     }
 
     // ================================================================
@@ -1993,6 +2032,7 @@
                 updateProfitIndicators(); 
                 updateBatteryUI();
                 updateHeatUI();
+                updateBatteryTime();
             }
         });
     });
@@ -2030,6 +2070,7 @@
         updateBatteryUI();
         updateHeatUI();
         updateProfitIndicators();
+        updateBatteryTime();
 
         addLog('🏛️ ' + translate('subtitle'));
         updateTotalPendingCash();
@@ -2045,6 +2086,7 @@
         setInterval(() => {
             updateProfitIndicators();
             updateTotalPendingCash();
+            updateBatteryTime();
         }, 5000);
 
         if (data.autoMine) {
@@ -2055,4 +2097,4 @@
     setInterval(() => saveData(), 5000);
 </script>
 </body>
-                                                                                        </html>
+                    </html>
