@@ -21,6 +21,7 @@
             --blue: #4A9CFF;
             --green: #7BED9F;
             --red: #FF6B8A;
+            --orange: #FFA500;
             --shadow: 0 4px 20px rgba(0,0,0,0.4);
             --header-bg: linear-gradient(135deg, #0A0E1A, #141A2B);
             --nav-bg: #0A0E18;
@@ -41,6 +42,7 @@
             --blue: #2A7AFF;
             --green: #1A8A4A;
             --red: #CC3355;
+            --orange: #CC7700;
             --shadow: 0 4px 20px rgba(0,0,0,0.1);
             --header-bg: linear-gradient(135deg, #E4E7EC, #D0D4DC);
             --nav-bg: #E4E7EC;
@@ -106,52 +108,182 @@
         .tab-content::-webkit-scrollbar-track { background: var(--bg-input); }
         .tab-content::-webkit-scrollbar-thumb { background: var(--blue); border-radius: 10px; }
 
-        /* ===== BOTTOM NAV ===== */
-        .bottom-nav {
-            flex-shrink: 0;
-            background: var(--nav-bg);
-            border-top: 2px solid var(--gold-dim);
-            display: flex;
-            justify-content: space-around;
-            padding: 6px 5px 8px;
-            backdrop-filter: blur(10px);
-            z-index: 10;
-            transition: background 0.3s, border-color 0.3s;
-        }
-        .bottom-nav .nav-item {
+        /* ===== MINING AREA (New Design) ===== */
+        .mining-currency-list {
             display: flex;
             flex-direction: column;
-            align-items: center;
-            color: var(--text-muted);
-            font-size: 8px;
-            cursor: pointer;
-            transition: 0.2s;
-            padding: 0 4px;
-            font-weight: 500;
-        }
-        .bottom-nav .nav-item i { font-size: 18px; margin-bottom: 1px; }
-        .bottom-nav .nav-item.active { color: var(--gold); }
-        .bottom-nav .nav-item.active i { color: var(--gold); text-shadow: 0 0 12px var(--gold-dim); }
-
-        /* ===== CARDS ===== */
-        .card {
-            background: var(--bg-card);
-            border-radius: 16px;
-            padding: 12px;
-            margin-bottom: 10px;
-            border: 1px solid var(--border-color);
-            box-shadow: var(--shadow);
-            transition: background 0.3s, border-color 0.3s, box-shadow 0.3s;
-        }
-        .card-title {
-            font-size: 12px;
-            color: var(--text-secondary);
-            letter-spacing: 0.5px;
+            gap: 8px;
+            margin-top: 6px;
             margin-bottom: 6px;
+        }
+        .mining-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: var(--bg-input);
+            border-radius: 12px;
+            padding: 6px 12px;
+            border: 1px solid var(--border-color);
+            transition: all 0.3s;
+        }
+        .mining-row .currency-name {
+            font-weight: 700;
+            color: var(--text-secondary);
+            font-size: 13px;
+            min-width: 60px;
+        }
+        .mining-row .pending-amount {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--gold);
+            font-variant-numeric: tabular-nums;
+            flex: 1;
+            text-align: center;
+        }
+        .mining-row .fan-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: 2px solid var(--border-color);
+            background: var(--bg-card);
+            color: var(--text-muted);
+            font-size: 18px;
+            cursor: pointer;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            flex-shrink: 0;
+        }
+        .mining-row .fan-btn:hover { border-color: var(--gold); color: var(--gold); }
+        .mining-row .fan-btn.active { border-color: var(--green); color: var(--green); animation: spin-fan 1s linear infinite; }
+        .mining-row .fan-btn.active::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 2px dashed var(--green);
+            animation: spin-fan 2s linear infinite;
+            opacity: 0.3;
+        }
+        .mining-row .fan-btn .fa-fan { transition: transform 0.3s; }
+        .mining-row .fan-btn.active .fa-fan { transform: rotate(360deg); }
+        .mining-row .fan-btn.overheat {
+            border-color: var(--red);
+            color: var(--red);
+            animation: none;
+        }
+        @keyframes spin-fan { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        /* ===== HEAT & SPEED INDICATORS ===== */
+        .mining-indicators {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6px;
+            margin: 6px 0 10px;
+        }
+        .indicator-box {
+            background: var(--bg-input);
+            border-radius: 12px;
+            padding: 6px 10px;
+            border: 1px solid var(--border-color);
+            text-align: center;
+        }
+        .indicator-box .label { font-size: 8px; color: var(--text-muted); display: block; }
+        .indicator-box .value { font-size: 16px; font-weight: 700; color: var(--gold); font-variant-numeric: tabular-nums; }
+        .indicator-box .bar-track {
+            width: 100%;
+            height: 4px;
+            background: var(--border-color);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 4px;
+        }
+        .indicator-box .bar-track .bar-fill {
+            height: 100%;
+            border-radius: 4px;
+            transition: width 0.5s ease;
+            background: var(--green);
+        }
+        .indicator-box .bar-track .bar-fill.warning { background: var(--orange); }
+        .indicator-box .bar-track .bar-fill.danger { background: var(--red); }
+        .indicator-box .bar-track .bar-fill.cooling { background: var(--blue); animation: pulse-cool 1s infinite; }
+        @keyframes pulse-cool { 0% { opacity: 0.5; } 50% { opacity: 1; } 100% { opacity: 0.5; } }
+
+        .heat-status-text {
+            font-size: 10px;
+            font-weight: 600;
+            margin-top: 2px;
+        }
+        .heat-status-text.normal { color: var(--green); }
+        .heat-status-text.warning { color: var(--orange); }
+        .heat-status-text.danger { color: var(--red); }
+        .heat-status-text.cooling { color: var(--blue); }
+
+        .mining-total-pending {
             display: flex;
             justify-content: space-between;
-            font-weight: 600;
+            align-items: center;
+            background: var(--bg-input);
+            border-radius: 12px;
+            padding: 6px 12px;
+            border: 1px solid var(--border-color);
+            margin-top: 4px;
+            font-size: 13px;
         }
+        .mining-total-pending .label { color: var(--text-muted); }
+        .mining-total-pending .value { color: var(--green); font-weight: 700; }
+
+        /* ===== LOG ===== */
+        .log-container {
+            max-height: 80px;
+            overflow-y: auto;
+            background: var(--bg-input);
+            border-radius: 12px;
+            padding: 4px 8px;
+            border: 1px solid var(--border-color);
+            margin-top: 6px;
+        }
+        .log-item { font-size: 10px; padding: 3px 0; border-bottom: 1px solid var(--border-color); color: var(--text-secondary); display: flex; justify-content: space-between; }
+        .log-item .time { color: var(--text-muted); font-size: 9px; }
+
+        /* ===== BOTTOM ACTION BAR ===== */
+        .action-bar {
+            flex-shrink: 0;
+            background: var(--bg-card);
+            border-top: 2px solid var(--gold-dim);
+            border-bottom: 2px solid var(--gold-dim);
+            padding: 6px 12px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            z-index: 5;
+            transition: background 0.3s, border-color 0.3s;
+        }
+        .action-bar .btn {
+            padding: 6px 0;
+            border: none;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 11px;
+            cursor: pointer;
+            transition: 0.15s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            flex: 1;
+            margin: 0 3px;
+            background: var(--bg-input);
+            color: var(--text-secondary);
+            border: 1px solid var(--border-color);
+        }
+        .action-bar .btn:active { transform: scale(0.94); }
+        .action-bar .btn-collect { background: #1A2A4A; color: var(--blue); border-color: #2A4A6A; }
+        .action-bar .btn-convert { background: #3A2A1A; color: var(--gold); border-color: #5A4A2A; }
+        .action-bar .btn-log { background: #1A1A2A; color: var(--text-muted); border-color: #3A3A4A; }
 
         /* ===== WALLET ===== */
         .wallet-grid {
@@ -174,135 +306,6 @@
         .wallet-item .balance.minicash { color: #FFA500; }
         .wallet-item .balance.litnc { color: #FF6B8A; }
         .wallet-item .balance.cash { color: var(--green); }
-
-        /* ===== MINING (New Design) ===== */
-        .mining-currency-list {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            margin-top: 6px;
-        }
-        .mining-row {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            background: var(--bg-input);
-            border-radius: 12px;
-            padding: 6px 12px;
-            border: 1px solid var(--border-color);
-            transition: all 0.3s;
-        }
-        .mining-row .currency-name {
-            font-weight: 700;
-            color: var(--text-secondary);
-            font-size: 13px;
-            min-width: 70px;
-        }
-        .mining-row .pending-amount {
-            font-size: 14px;
-            font-weight: 600;
-            color: var(--gold);
-            font-variant-numeric: tabular-nums;
-            flex: 1;
-            text-align: center;
-        }
-        .mining-row .fan-btn {
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            border: 2px solid var(--border-color);
-            background: var(--bg-card);
-            color: var(--text-muted);
-            font-size: 18px;
-            cursor: pointer;
-            transition: 0.3s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-        }
-        .mining-row .fan-btn:hover {
-            border-color: var(--gold);
-            color: var(--gold);
-        }
-        .mining-row .fan-btn.active {
-            border-color: var(--green);
-            color: var(--green);
-            animation: spin-fan 1s linear infinite;
-        }
-        .mining-row .fan-btn.active::after {
-            content: '';
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            border: 2px dashed var(--green);
-            animation: spin-fan 2s linear infinite;
-            opacity: 0.3;
-        }
-        @keyframes spin-fan {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        .mining-row .fan-btn .fa-fan {
-            transition: transform 0.3s;
-        }
-        .mining-row .fan-btn.active .fa-fan {
-            transform: rotate(360deg);
-        }
-
-        .mining-total-pending {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: var(--bg-input);
-            border-radius: 12px;
-            padding: 8px 12px;
-            border: 1px solid var(--border-color);
-            margin-top: 8px;
-            font-size: 14px;
-        }
-        .mining-total-pending .label { color: var(--text-muted); }
-        .mining-total-pending .value { color: var(--green); font-weight: 700; }
-
-        .mining-actions {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 6px;
-            margin-top: 8px;
-        }
-        .mining-actions .btn {
-            padding: 8px 0;
-            border: none;
-            border-radius: 12px;
-            font-weight: 700;
-            font-size: 12px;
-            cursor: pointer;
-            transition: 0.15s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 4px;
-            background: #1A2240;
-            color: var(--text-secondary);
-            border: 1px solid var(--border-color);
-        }
-        .mining-actions .btn:active { transform: scale(0.94); }
-        .btn-collect { background: #1A2A4A; color: var(--blue); border-color: #2A4A6A; }
-        .btn-convert { background: #3A2A1A; color: var(--gold); border-color: #5A4A2A; }
-        .btn-log { background: #1A1A2A; color: var(--text-muted); border-color: #3A3A4A; }
-
-        .log-container {
-            max-height: 100px;
-            overflow-y: auto;
-            background: var(--bg-input);
-            border-radius: 12px;
-            padding: 4px 8px;
-            border: 1px solid var(--border-color);
-        }
-        .log-item { font-size: 10px; padding: 3px 0; border-bottom: 1px solid var(--border-color); color: var(--text-secondary); display: flex; justify-content: space-between; }
-        .log-item .time { color: var(--text-muted); font-size: 9px; }
 
         /* ===== SHOP ===== */
         .shop-category-tabs {
@@ -518,6 +521,33 @@
         .text-white { color: var(--text-primary); }
         .text-blue { color: var(--blue); }
         .badge { background: #1E2A3A; padding: 2px 8px; border-radius: 30px; font-size: 9px; border: 1px solid var(--gold-dim); color: var(--gold); white-space: nowrap; }
+
+        /* ===== BOTTOM NAV ===== */
+        .bottom-nav {
+            flex-shrink: 0;
+            background: var(--nav-bg);
+            border-top: 2px solid var(--gold-dim);
+            display: flex;
+            justify-content: space-around;
+            padding: 6px 5px 8px;
+            backdrop-filter: blur(10px);
+            z-index: 10;
+            transition: background 0.3s, border-color 0.3s;
+        }
+        .bottom-nav .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: var(--text-muted);
+            font-size: 8px;
+            cursor: pointer;
+            transition: 0.2s;
+            padding: 0 4px;
+            font-weight: 500;
+        }
+        .bottom-nav .nav-item i { font-size: 18px; margin-bottom: 1px; }
+        .bottom-nav .nav-item.active { color: var(--gold); }
+        .bottom-nav .nav-item.active i { color: var(--gold); text-shadow: 0 0 12px var(--gold-dim); }
     </style>
 </head>
 <body>
@@ -530,7 +560,7 @@
             <h1>🏛️ HyeX Exchange</h1>
             <div class="subtitle" data-i18n="subtitle">المنصة الرقمية الرسمية | نسخة تجريبية</div>
         </div>
-        <div class="badge"><i class="fas fa-shield-alt"></i> v19.0</div>
+        <div class="badge"><i class="fas fa-shield-alt"></i> v20.0</div>
     </div>
 
     <!-- ===== PRICE TICKER (يُظهر سرعات التعدين) ===== -->
@@ -548,22 +578,38 @@
             <div class="mining-currency-list" id="miningList">
                 <!-- يتم توليدها بواسطة JS -->
             </div>
+
+            <!-- المؤشرات -->
+            <div class="mining-indicators">
+                <div class="indicator-box">
+                    <span class="label" data-i18n="speed_indicator">🚀 السرعة الإجمالية</span>
+                    <span class="value" id="speedIndicator">0.00</span>
+                    <div class="bar-track"><div class="bar-fill" id="speedBar" style="width:0%;"></div></div>
+                </div>
+                <div class="indicator-box">
+                    <span class="label" data-i18n="heat_indicator">🌡️ الحرارة</span>
+                    <span class="value" id="heatValue">0%</span>
+                    <div class="bar-track"><div class="bar-fill" id="heatBar" style="width:0%;"></div></div>
+                    <div class="heat-status-text normal" id="heatStatus" data-i18n="heat_normal">🟢 عادية</div>
+                </div>
+            </div>
+
+            <!-- الإجمالي -->
             <div class="mining-total-pending">
                 <span class="label" data-i18n="total_pending_cash">💰 الإجمالي العالق (Cash):</span>
                 <span class="value" id="pendingDisplayCash">0.00</span>
             </div>
-            <div class="mining-actions">
-                <button class="btn btn-collect" id="collectBtn" data-i18n="collect"><i class="fas fa-wallet"></i> جمع</button>
-                <button class="btn btn-convert" id="convertBtn" data-i18n="convert"><i class="fas fa-exchange-alt"></i> تحويل</button>
-                <button class="btn btn-log" id="logToggleBtn" data-i18n="log"><i class="fas fa-list-ul"></i> السجل</button>
-            </div>
         </div>
-        <div id="logContainer" style="display:none; margin-top:8px;">
+
+        <!-- سجل التعدين (منبثق) -->
+        <div id="logContainer" style="display:none; margin-top:6px;">
             <div class="card" style="padding:8px;">
                 <div class="card-title"><span data-i18n="mining_log">📋 سجل التعدين</span> <span id="logCount">0</span></div>
                 <div class="log-container" id="logList"><div class="log-item" style="color:var(--text-muted);text-align:center;" data-i18n="no_logs">لا توجد عمليات</div></div>
             </div>
         </div>
+
+        <!-- لوحة التحويل (منبثقة) -->
         <div id="convertPanel" style="display:none; margin-top:6px;">
             <div class="card">
                 <div class="card-title" data-i18n="convert_currency">🔄 تحويل العملات</div>
@@ -652,6 +698,13 @@
         </div>
     </div>
 
+    <!-- ===== ACTION BAR (أسفل التبويبات) ===== -->
+    <div class="action-bar" id="actionBar">
+        <button class="btn btn-collect" id="collectBtn" data-i18n="collect"><i class="fas fa-wallet"></i> جمع</button>
+        <button class="btn btn-convert" id="convertBtn" data-i18n="convert"><i class="fas fa-exchange-alt"></i> تحويل</button>
+        <button class="btn btn-log" id="logToggleBtn" data-i18n="log"><i class="fas fa-list-ul"></i> السجل</button>
+    </div>
+
     <!-- ===== BOTTOM NAV ===== -->
     <div class="bottom-nav">
         <div class="nav-item active" data-tab="mining"><i class="fas fa-hard-hat"></i><span data-i18n="nav_mining">تعدين</span></div>
@@ -690,13 +743,12 @@
 
 <script>
     // ================================================================
-    // 1. DATA (بدون BitNC)
+    // 1. DATA
     // ================================================================
     const STORAGE_KEY = 'hyex_data';
     let data = {
         wallet: { NC: 0, NCplus: 0, miniCash: 0, LitNC: 0, Cash: 100 },
         pending: { nc: 0, ncplus: 0, miniCash: 0, litnc: 0 },
-        isMining: false, // for global flag, but we use per-currency now
         log: [],
         upgrades: {
             speed: 0,
@@ -726,12 +778,20 @@
             litnc: { health: 100 }
         },
         profile: { name: 'مستخدم جديد', level: 1, xp: 0, totalProfit: 0, totalMined: 0, image: null },
-        // حالة التعدين لكل عملة
-        miningActive: { nc: true, ncplus: false, miniCash: false, litnc: false } // تشغيل NC تلقائياً
+        miningActive: { nc: true, ncplus: false, miniCash: false, litnc: false },
+        // نظام الحرارة
+        heat: {
+            level: 0, // 0-100%
+            activeFans: 1, // عدد المراوح العاملة
+            timeToOverheat: 1800, // ثواني (30 دقيقة)
+            elapsed: 0, // ثواني
+            isOverheated: false,
+            cooldownRemaining: 0 // ثواني
+        }
     };
 
     // ================================================================
-    // 2. SHOP DATABASE (تم إزالة BitNC)
+    // 2. SHOP DATABASE
     // ================================================================
     const SHOP_DB = {
         miners: [
@@ -785,6 +845,8 @@
                         for (let m in parsed.maintenance) data.maintenance[m] = parsed.maintenance[m] || { health: 100 };
                     } else if (key === 'miningActive') {
                         for (let a in parsed.miningActive) data.miningActive[a] = parsed.miningActive[a] !== undefined ? parsed.miningActive[a] : false;
+                    } else if (key === 'heat') {
+                        for (let h in parsed.heat) data.heat[h] = parsed.heat[h] !== undefined ? parsed.heat[h] : (h === 'activeFans' ? 1 : 0);
                     } else data[key] = parsed[key];
                 }
             }
@@ -796,6 +858,7 @@
         if (!data.maintenance) data.maintenance = { nc: { health: 100 }, ncplus: { health: 100 }, miniCash: { health: 100 }, litnc: { health: 100 } };
         if (!data.profile) data.profile = { name: 'مستخدم جديد', level: 1, xp: 0, totalProfit: 0, totalMined: 0, image: null };
         if (!data.miningActive) data.miningActive = { nc: true, ncplus: false, miniCash: false, litnc: false };
+        if (!data.heat) data.heat = { level: 0, activeFans: 1, timeToOverheat: 1800, elapsed: 0, isOverheated: false, cooldownRemaining: 0 };
         if (data.wallet.Cash === 0 && !saved) data.wallet.Cash = 100;
         if (!data.settings) data.settings = { sound: true, vibe: true, theme: 'dark', lang: 'ar' };
         if (!data.settings.theme) data.settings.theme = 'dark';
@@ -833,11 +896,12 @@
     }
 
     // ================================================================
-    // 6. MINING (New Design)
+    // 6. MINING SYSTEM
     // ================================================================
     const CURRENCIES = ['nc', 'ncplus', 'miniCash', 'litnc'];
     const CURRENCY_NAMES = { nc: 'NC', ncplus: 'NC+', miniCash: 'mini-cash', litnc: 'LitNC' };
-    const BASE_SPEEDS = { nc: 0.0001, ncplus: 0.00008, miniCash: 0.00006, litnc: 0.00004 }; // أبطأ تدريجياً
+    // سرعات التعدين الأساسية (تتضاعف مع كل عملة)
+    const BASE_SPEEDS = { nc: 0.0000001, ncplus: 0.000001, miniCash: 0.00001, litnc: 0.0001 };
 
     function getMiningSpeed(currency) {
         const deviceCount = data.devices[currency]?.count || 0;
@@ -856,38 +920,154 @@
         speed *= multiplier;
         speed *= healthPenalty;
         speed *= (1 + (data.upgrades.power || 0) * 0.02);
-        return Math.max(0.000001, speed);
+        return Math.max(0.00000001, speed);
     }
 
-    // === Mining Intervals per currency ===
+    // حساب السرعة الإجمالية المعروضة (قيمة رمزية)
+    function getTotalSpeedValue() {
+        let total = 0;
+        CURRENCIES.forEach(curr => {
+            if (data.miningActive[curr]) {
+                total += getMiningSpeed(curr) * 1000000; // للتكبير
+            }
+        });
+        return total;
+    }
+
+    // حساب وقت الوصول للحرارة القصوى بناءً على عدد المراوح العاملة
+    function getTimeToOverheat() {
+        const activeCount = CURRENCIES.filter(c => data.miningActive[c]).length;
+        if (activeCount === 0) return Infinity;
+        // 1 مروحة = 1800 ثانية (30 دقيقة)، 2 = 1200، 3 = 600، 4 = 60
+        const times = { 1: 1800, 2: 1200, 3: 600, 4: 60 };
+        return times[activeCount] || 1800;
+    }
+
+    function updateHeatSystem() {
+        const activeCount = CURRENCIES.filter(c => data.miningActive[c]).length;
+        data.heat.activeFans = activeCount || 0;
+
+        if (data.heat.isOverheated) {
+            // فترة التبريد
+            data.heat.cooldownRemaining = Math.max(0, data.heat.cooldownRemaining - 1);
+            if (data.heat.cooldownRemaining <= 0) {
+                data.heat.isOverheated = false;
+                data.heat.level = 0;
+                data.heat.elapsed = 0;
+                addLog(translate('cooling_complete'));
+                playBeep(600, 0.2);
+                // إعادة تشغيل المراوح التي كانت تعمل
+                CURRENCIES.forEach(c => {
+                    if (data.miningActive[c]) {
+                        startMiningForCurrency(c);
+                    }
+                });
+            }
+            updateIndicators();
+            return;
+        }
+
+        if (activeCount === 0) {
+            // لا مراوح تعمل، تبرد تدريجياً
+            data.heat.level = Math.max(0, data.heat.level - 0.1);
+            data.heat.elapsed = Math.max(0, data.heat.elapsed - 1);
+            updateIndicators();
+            return;
+        }
+
+        const timeToOverheat = getTimeToOverheat();
+        data.heat.elapsed += 1;
+        data.heat.level = Math.min(100, (data.heat.elapsed / timeToOverheat) * 100);
+
+        if (data.heat.level >= 100) {
+            // ارتفاع الحرارة القصوى - تعطل جميع المراوح
+            data.heat.isOverheated = true;
+            data.heat.cooldownRemaining = 600; // 10 دقائق تبريد
+            data.heat.level = 100;
+            // إيقاف جميع المراوح
+            CURRENCIES.forEach(c => {
+                if (data.miningActive[c]) {
+                    stopMiningForCurrency(c, true);
+                }
+            });
+            addLog(translate('overheat_shutdown'));
+            playBeep(200, 0.5);
+            doVibe();
+        }
+
+        updateIndicators();
+    }
+
+    function updateIndicators() {
+        // مؤشر السرعة
+        const speedVal = getTotalSpeedValue();
+        document.getElementById('speedIndicator').textContent = speedVal.toFixed(2);
+        const speedPercent = Math.min(100, (speedVal / 20) * 100);
+        document.getElementById('speedBar').style.width = speedPercent + '%';
+        document.getElementById('speedBar').className = 'bar-fill';
+
+        // مؤشر الحرارة
+        const heatVal = Math.round(data.heat.level);
+        document.getElementById('heatValue').textContent = heatVal + '%';
+        const heatBar = document.getElementById('heatBar');
+        const heatStatus = document.getElementById('heatStatus');
+
+        if (data.heat.isOverheated) {
+            heatBar.className = 'bar-fill cooling';
+            heatBar.style.width = '100%';
+            heatStatus.className = 'heat-status-text cooling';
+            heatStatus.textContent = translate('heat_cooling') + ' (' + Math.ceil(data.heat.cooldownRemaining / 60) + ' د)';
+        } else if (heatVal > 80) {
+            heatBar.className = 'bar-fill danger';
+            heatBar.style.width = heatVal + '%';
+            heatStatus.className = 'heat-status-text danger';
+            heatStatus.textContent = translate('heat_danger');
+        } else if (heatVal > 50) {
+            heatBar.className = 'bar-fill warning';
+            heatBar.style.width = heatVal + '%';
+            heatStatus.className = 'heat-status-text warning';
+            heatStatus.textContent = translate('heat_warning');
+        } else {
+            heatBar.className = 'bar-fill';
+            heatBar.style.width = heatVal + '%';
+            heatStatus.className = 'heat-status-text normal';
+            heatStatus.textContent = translate('heat_normal');
+        }
+    }
+
+    // ================================================================
+    // 7. MINING START/STOP
+    // ================================================================
     let miningIntervals = {};
 
     function startMiningForCurrency(currency) {
-        if (miningIntervals[currency]) return; // already running
+        if (miningIntervals[currency]) return;
+        if (data.heat.isOverheated) {
+            addLog(translate('cannot_mine_overheat'));
+            return;
+        }
         data.miningActive[currency] = true;
-        // تحديث الزر
         const btn = document.querySelector(`.fan-btn[data-currency="${currency}"]`);
         if (btn) btn.classList.add('active');
-        // تحديث حالة المروحة
-        const fanIcon = btn?.querySelector('.fa-fan');
-        if (fanIcon) fanIcon.style.animation = 'spin-fan 1s linear infinite';
-        // بدء التعدين
         miningIntervals[currency] = setInterval(() => {
+            if (data.heat.isOverheated) {
+                stopMiningForCurrency(currency, true);
+                return;
+            }
             const speed = getMiningSpeed(currency);
             data.pending[currency] += speed;
             data.profile.totalMined += speed;
-            // تحديث عرض المبلغ العالق لهذه العملة
             const pendingEl = document.querySelector(`.pending-amount[data-currency="${currency}"]`);
             if (pendingEl) pendingEl.textContent = data.pending[currency].toFixed(8);
-            // تحديث الإجمالي بالـ Cash
             updateTotalPendingCash();
-            // تحديث سرعات العرض العلوي
             updateSpeedsUI();
             saveData();
         }, 100);
+        updateTotalPendingCash();
+        updateIndicators();
     }
 
-    function stopMiningForCurrency(currency) {
+    function stopMiningForCurrency(currency, silent = false) {
         if (miningIntervals[currency]) {
             clearInterval(miningIntervals[currency]);
             delete miningIntervals[currency];
@@ -895,12 +1075,19 @@
         data.miningActive[currency] = false;
         const btn = document.querySelector(`.fan-btn[data-currency="${currency}"]`);
         if (btn) btn.classList.remove('active');
-        const fanIcon = btn?.querySelector('.fa-fan');
-        if (fanIcon) fanIcon.style.animation = 'none';
+        if (!silent) {
+            updateTotalPendingCash();
+            updateIndicators();
+        }
         saveData();
     }
 
     function toggleMining(currency) {
+        if (data.heat.isOverheated) {
+            addLog(translate('cannot_mine_overheat'));
+            playBeep(300,0.15);
+            return;
+        }
         if (data.miningActive[currency]) {
             stopMiningForCurrency(currency);
             addLog(translate('stopped_mining', CURRENCY_NAMES[currency]));
@@ -910,36 +1097,13 @@
             playBeep(800,0.1);
             doVibe();
         }
-        // تحديث حالة الزر
-        updateMiningUI();
+        updateTotalPendingCash();
+        updateIndicators();
     }
 
-    function updateTotalPendingCash() {
-        let totalCash = 0;
-        // تحويل كل عملة عالقة إلى Cash بسعر الصرف
-        const rates = getRates();
-        CURRENCIES.forEach(curr => {
-            const amount = data.pending[curr] || 0;
-            const rate = rates[curr] || 1;
-            totalCash += amount * rate;
-        });
-        document.getElementById('pendingDisplayCash').textContent = totalCash.toFixed(2);
-    }
-
-    function getRates() {
-        // أسعار الصرف مقابل Cash (1 Cash = 1 Cash)
-        return { nc: 1, ncplus: 0.8, miniCash: 0.6, litnc: 0.4 };
-    }
-
-    function updateSpeedsUI() {
-        CURRENCIES.forEach(curr => {
-            const speed = getMiningSpeed(curr);
-            const tickerId = 'ticker' + (curr === 'nc' ? 'NC' : curr === 'ncplus' ? 'NCplus' : curr === 'miniCash' ? 'MiniCash' : 'LitNC');
-            document.getElementById(tickerId).textContent = speed.toFixed(6);
-        });
-    }
-
-    // === Render Mining List ===
+    // ================================================================
+    // 8. RENDER MINING LIST
+    // ================================================================
     function renderMiningList() {
         const container = document.getElementById('miningList');
         container.innerHTML = '';
@@ -958,23 +1122,52 @@
             container.appendChild(row);
         });
         updateTotalPendingCash();
-        // تحديث حالة الأزرار
-        CURRENCIES.forEach(curr => {
-            const btn = document.querySelector(`.fan-btn[data-currency="${curr}"]`);
-            if (btn && data.miningActive[curr]) {
-                btn.classList.add('active');
-                const fanIcon = btn.querySelector('.fa-fan');
-                if (fanIcon) fanIcon.style.animation = 'spin-fan 1s linear infinite';
-            } else if (btn) {
-                btn.classList.remove('active');
-                const fanIcon = btn.querySelector('.fa-fan');
-                if (fanIcon) fanIcon.style.animation = 'none';
-            }
-        });
+        updateIndicators();
     }
 
     // ================================================================
-    // 7. COLLECT
+    // 9. UPDATE FUNCTIONS
+    // ================================================================
+    function updateTotalPendingCash() {
+        let totalCash = 0;
+        const rates = { nc: 1, ncplus: 0.8, miniCash: 0.6, litnc: 0.4 };
+        CURRENCIES.forEach(curr => {
+            const amount = data.pending[curr] || 0;
+            const rate = rates[curr] || 1;
+            totalCash += amount * rate;
+        });
+        document.getElementById('pendingDisplayCash').textContent = totalCash.toFixed(2);
+    }
+
+    function updateSpeedsUI() {
+        CURRENCIES.forEach(curr => {
+            const speed = getMiningSpeed(curr);
+            const tickerId = 'ticker' + (curr === 'nc' ? 'NC' : curr === 'ncplus' ? 'NCplus' : curr === 'miniCash' ? 'MiniCash' : 'LitNC');
+            document.getElementById(tickerId).textContent = speed.toFixed(6);
+        });
+    }
+
+    function updateWalletUI() {
+        document.getElementById('balNC').textContent = data.wallet.NC.toFixed(6);
+        document.getElementById('balNCplus').textContent = data.wallet.NCplus.toFixed(6);
+        document.getElementById('balMiniCash').textContent = data.wallet.miniCash.toFixed(6);
+        document.getElementById('balLitNC').textContent = data.wallet.LitNC.toFixed(6);
+        document.getElementById('balCash').textContent = data.wallet.Cash.toFixed(2);
+        document.getElementById('shopBalance').textContent = data.wallet.NC.toFixed(2) + ' NC';
+        updateSpeedsUI();
+        updateTotalPendingCash();
+    }
+
+    function updateAllUI() {
+        updateWalletUI();
+        renderShopAll();
+        renderLog();
+        updateProfileUI();
+        saveData();
+    }
+
+    // ================================================================
+    // 10. COLLECT & CONVERT
     // ================================================================
     document.getElementById('collectBtn').addEventListener('click', function() {
         let collected = false;
@@ -994,9 +1187,6 @@
         saveData();
     });
 
-    // ================================================================
-    // 8. CONVERT
-    // ================================================================
     let convertPanelVisible = false;
     document.getElementById('convertBtn').addEventListener('click', function() {
         const panel = document.getElementById('convertPanel');
@@ -1031,35 +1221,7 @@
     });
 
     // ================================================================
-    // 9. UI UPDATES
-    // ================================================================
-    function updateWalletUI() {
-        document.getElementById('balNC').textContent = data.wallet.NC.toFixed(6);
-        document.getElementById('balNCplus').textContent = data.wallet.NCplus.toFixed(6);
-        document.getElementById('balMiniCash').textContent = data.wallet.miniCash.toFixed(6);
-        document.getElementById('balLitNC').textContent = data.wallet.LitNC.toFixed(6);
-        document.getElementById('balCash').textContent = data.wallet.Cash.toFixed(2);
-        document.getElementById('shopBalance').textContent = data.wallet.NC.toFixed(2) + ' NC';
-        updateSpeedsUI();
-        updateTotalPendingCash();
-    }
-
-    function updateAllUI() {
-        updateWalletUI();
-        renderShopAll();
-        renderLog();
-        updateProfileUI();
-        saveData();
-    }
-
-    function getRate(from, to) {
-        const base = { NC: 1, NCplus: 0.8, miniCash: 0.6, LitNC: 0.4, Cash: 1 };
-        if (from === to) return 1;
-        return base[to] / base[from];
-    }
-
-    // ================================================================
-    // 10. SHOP (تم إزالة BitNC)
+    // 11. SHOP
     // ================================================================
     function renderShopAll() {
         renderShopCategory('miners');
@@ -1229,7 +1391,7 @@
     }
 
     // ================================================================
-    // 11. PROFILE
+    // 12. PROFILE
     // ================================================================
     function toggleProfile() {
         const slide = document.getElementById('profileSlide');
@@ -1300,7 +1462,7 @@
     }
 
     // ================================================================
-    // 12. THEME & LANGUAGE
+    // 13. THEME & LANGUAGE
     // ================================================================
     function setTheme(theme) {
         document.documentElement.setAttribute('data-theme', theme);
@@ -1329,15 +1491,19 @@
     document.getElementById('themeLightBtn').addEventListener('click', function() { setTheme('light'); });
 
     // ================================================================
-    // 13. LANGUAGE
+    // 14. LANGUAGE
     // ================================================================
     const translations = {
         ar: {
             subtitle: 'المنصة الرقمية الرسمية | نسخة تجريبية',
             mining_dashboard: '⚡ لوحة التعدين',
+            speed_indicator: '🚀 السرعة الإجمالية',
+            heat_indicator: '🌡️ الحرارة',
+            heat_normal: '🟢 عادية',
+            heat_warning: '🟡 مرتفعة',
+            heat_danger: '🔴 حرجة',
+            heat_cooling: '🔵 تبريد',
             total_pending_cash: '💰 الإجمالي العالق (Cash):',
-            start_mining: 'تعدين',
-            stop_mining: 'إيقاف',
             collect: 'جمع',
             convert: 'تحويل',
             log: 'السجل',
@@ -1391,14 +1557,21 @@
             profile_updated: '✅ تم تحديث الملف الشخصي: {0}',
             enter_name: 'الرجاء إدخال اسم صحيح',
             started_mining: '▶️ بدأ تعدين {0}',
-            stopped_mining: '⏹ توقف تعدين {0}'
+            stopped_mining: '⏹ توقف تعدين {0}',
+            overheat_shutdown: '🔥 ارتفاع الحرارة! تم إيقاف جميع المراوح للتبريد.',
+            cooling_complete: '✅ تم التبريد. يمكن إعادة تشغيل المراوح.',
+            cannot_mine_overheat: '⚠️ لا يمكن التعدين، الجهاز في حالة تبريد.'
         },
         en: {
             subtitle: 'Official Digital Platform | Beta Version',
             mining_dashboard: '⚡ Mining Dashboard',
+            speed_indicator: '🚀 Total Speed',
+            heat_indicator: '🌡️ Heat',
+            heat_normal: '🟢 Normal',
+            heat_warning: '🟡 High',
+            heat_danger: '🔴 Critical',
+            heat_cooling: '🔵 Cooling',
             total_pending_cash: '💰 Total Pending (Cash):',
-            start_mining: 'Start Mining',
-            stop_mining: 'Stop',
             collect: 'Collect',
             convert: 'Convert',
             log: 'Log',
@@ -1452,7 +1625,10 @@
             profile_updated: '✅ Profile updated: {0}',
             enter_name: 'Please enter a valid name',
             started_mining: '▶️ Started mining {0}',
-            stopped_mining: '⏹ Stopped mining {0}'
+            stopped_mining: '⏹ Stopped mining {0}',
+            overheat_shutdown: '🔥 Overheat! All fans stopped for cooling.',
+            cooling_complete: '✅ Cooling complete. Fans can be restarted.',
+            cannot_mine_overheat: '⚠️ Cannot mine, device is cooling down.'
         }
     };
 
@@ -1475,6 +1651,7 @@
         });
         document.getElementById('settingsProfileName').textContent = data.profile.name || 'مستخدم جديد';
         renderLog();
+        updateIndicators();
     }
 
     document.getElementById('langSelect').addEventListener('change', function() {
@@ -1484,7 +1661,7 @@
     });
 
     // ================================================================
-    // 14. NAVIGATION
+    // 15. NAVIGATION
     // ================================================================
     document.querySelectorAll('.nav-item').forEach(item => {
         item.addEventListener('click', function() {
@@ -1497,12 +1674,19 @@
             if (tabId === 'wallet') updateWalletUI();
             if (tabId === 'shop') updateShopUI();
             if (tabId === 'settings') { updateProfileUI(); applyLanguage(); }
-            if (tabId === 'mining') { renderMiningList(); updateTotalPendingCash(); }
+            if (tabId === 'mining') { renderMiningList(); updateTotalPendingCash(); updateIndicators(); }
         });
     });
 
     // ================================================================
-    // 15. SETTINGS EVENTS
+    // 16. HEAT SYSTEM TIMER
+    // ================================================================
+    setInterval(() => {
+        updateHeatSystem();
+    }, 1000);
+
+    // ================================================================
+    // 17. SETTINGS EVENTS
     // ================================================================
     document.getElementById('soundToggle').addEventListener('change', function() { data.settings.sound = this.checked; saveData(); });
     document.getElementById('vibeToggle').addEventListener('change', function() { data.settings.vibe = this.checked; saveData(); });
@@ -1514,7 +1698,7 @@
     });
 
     // ================================================================
-    // 16. INIT
+    // 18. INIT
     // ================================================================
     window.onload = function() {
         loadData();
@@ -1524,14 +1708,15 @@
         setTheme(data.settings.theme || 'dark');
         applyLanguage();
         renderMiningList();
-        // بدء تشغيل NC تلقائياً
-        if (data.miningActive.nc) {
+        // بدء تشغيل NC تلقائياً (إذا لم يكن محموماً)
+        if (data.miningActive.nc && !data.heat.isOverheated) {
             startMiningForCurrency('nc');
         }
         updateAllUI();
         renderLog();
         updateProfileUI();
         updateShopUI();
+        updateIndicators();
 
         addLog('🏛️ ' + translate('subtitle'));
         updateTotalPendingCash();
