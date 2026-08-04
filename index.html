@@ -208,7 +208,7 @@
         .indicator-box .bar-track .bar-fill.warning { background: var(--orange); }
         .indicator-box .bar-track .bar-fill.danger { background: var(--red); }
 
-        /* ===== BATTERY INDICATOR ===== */
+        /* ===== BATTERY ===== */
         .battery-container {
             background: var(--bg-input);
             border-radius: 12px;
@@ -663,7 +663,7 @@
             <h1>🏛️ HyeX Exchange</h1>
             <div class="subtitle" data-i18n="subtitle">المنصة الرقمية الرسمية | نسخة تجريبية</div>
         </div>
-        <div class="badge"><i class="fas fa-shield-alt"></i> v22.0</div>
+        <div class="badge"><i class="fas fa-shield-alt"></i> v22.1</div>
     </div>
 
     <!-- PRICE TICKER -->
@@ -716,8 +716,8 @@
                     <div class="battery-fill" id="batteryFill" style="width:100%;"></div>
                 </div>
                 <div class="battery-details">
-                    <span data-i18n="battery_ah">⚡ <span class="battery-ah" id="batteryAh">100000.0</span> Ah</span>
-                    <span data-i18n="battery_consumption" id="batteryConsumption">استهلاك: 0.0 Ah/د</span>
+                    <span>⚡ <span class="battery-ah" id="batteryAh">100000.0</span> Ah</span>
+                    <span data-i18n="battery_consumption_label" id="batteryConsumption">استهلاك: 0.0 Ah/د</span>
                 </div>
             </div>
 
@@ -938,7 +938,7 @@
             ah: 100000,
             maxAh: 100000,
             percent: 100,
-            consumptionRate: 0 // Ah per second
+            consumptionRate: 0
         }
     };
 
@@ -1014,7 +1014,6 @@
         if (!data.miningActive) data.miningActive = { nc: true, ncplus: false, miniCash: false, litnc: false };
         if (!data.heat) data.heat = { level: 0, activeFans: 1, timeToOverheat: 1800, elapsed: 0, isOverheated: false, cooldownRemaining: 0 };
         if (!data.battery) data.battery = { ah: 100000, maxAh: 100000, percent: 100, consumptionRate: 0 };
-        // التأكد من أن البطارية تبدأ مشحونة بالكامل
         if (data.battery.ah === 0 && !saved) data.battery.ah = 100000;
         if (data.battery.maxAh === 0) data.battery.maxAh = 100000;
         data.battery.percent = (data.battery.ah / data.battery.maxAh) * 100;
@@ -1145,7 +1144,7 @@
         const maxAh = data.battery.maxAh;
 
         document.getElementById('batteryPercent').textContent = percent + '%';
-        document.getElementById('batteryAh').textContent = ah.toFixed(1);
+        document.getElementById('batteryAh').innerHTML = ah.toFixed(1) + ' Ah';
 
         // شريط البطارية
         const bar = document.getElementById('batteryFill');
@@ -1344,10 +1343,11 @@
     }
 
     // ================================================================
-    // 11. RENDER MINING LIST
+    // 11. RENDER MINING LIST (مع إصلاح التأخير)
     // ================================================================
     function renderMiningList() {
         const container = document.getElementById('miningList');
+        if (!container) return;
         container.innerHTML = '';
         CURRENCIES.forEach(curr => {
             const isActive = data.miningActive[curr] || false;
@@ -1810,12 +1810,10 @@
             cooldown_label: '❄️ تبريد',
             mining_efficiency: '📈 كفاءة التعدين',
             battery: '🔋 البطارية',
-            battery_status: '🟢 مشحونة بالكامل',
             battery_full: '🟢 مشحونة بالكامل',
             battery_medium: '🟡 شحن متوسط',
             battery_low: '🟠 شحن منخفض',
             battery_critical: '🔴 شحن حرج',
-            battery_ah: '⚡ <span class="battery-ah" id="batteryAh">100000.0</span> Ah',
             battery_consumption_label: 'استهلاك',
             profit_hour: '⏱️ الساعة',
             profit_day: '📅 اليوم',
@@ -1893,12 +1891,10 @@
             cooldown_label: '❄️ Cooldown',
             mining_efficiency: '📈 Mining Efficiency',
             battery: '🔋 Battery',
-            battery_status: '🟢 Fully Charged',
             battery_full: '🟢 Fully Charged',
             battery_medium: '🟡 Medium Charge',
             battery_low: '🟠 Low Charge',
             battery_critical: '🔴 Critical Charge',
-            battery_ah: '⚡ <span class="battery-ah" id="batteryAh">100000.0</span> Ah',
             battery_consumption_label: 'Consumption',
             profit_hour: '⏱️ Hour',
             profit_day: '📅 Day',
@@ -2011,7 +2007,12 @@
             if (tabId === 'wallet') updateWalletUI();
             if (tabId === 'shop') updateShopUI();
             if (tabId === 'settings') { updateProfileUI(); applyLanguage(); }
-            if (tabId === 'mining') { renderMiningList(); updateTotalPendingCash(); updateAllIndicators(); }
+            if (tabId === 'mining') {
+                // تأكد من عرض قائمة التعدين عند التبديل إليه
+                renderMiningList();
+                updateTotalPendingCash();
+                updateAllIndicators();
+            }
         });
     });
 
@@ -2037,7 +2038,12 @@
         document.getElementById('langSelect').value = data.settings.lang || 'ar';
         setTheme(data.settings.theme || 'dark');
         applyLanguage();
-        renderMiningList();
+
+        // تأخير عرض قائمة التعدين لضمان اكتمال DOM
+        setTimeout(() => {
+            renderMiningList();
+        }, 100);
+
         // بدء تشغيل NC تلقائياً (إذا لم يكن محموماً والبطارية مشحونة)
         if (data.miningActive.nc && !data.heat.isOverheated && data.battery.ah > 0) {
             startMiningForCurrency('nc');
