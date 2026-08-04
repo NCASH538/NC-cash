@@ -25,7 +25,6 @@
             --shadow: 0 4px 20px rgba(0,0,0,0.4);
             --header-bg: linear-gradient(135deg, #0A0E1A, #141A2B);
             --nav-bg: #0A0E18;
-            --glow: 0 0 10px rgba(201, 168, 76, 0.3);
         }
 
         [data-theme="light"] {
@@ -46,7 +45,6 @@
             --shadow: 0 4px 20px rgba(0,0,0,0.1);
             --header-bg: linear-gradient(135deg, #E4E7EC, #D0D4DC);
             --nav-bg: #E4E7EC;
-            --glow: 0 0 10px rgba(184, 146, 58, 0.3);
         }
 
         /* ===== RESET & BASE ===== */
@@ -182,7 +180,7 @@
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 6px;
-            margin: 6px 0 10px;
+            margin: 6px 0 8px;
         }
         .indicator-box {
             background: var(--bg-input);
@@ -209,10 +207,66 @@
         }
         .indicator-box .bar-track .bar-fill.warning { background: var(--orange); }
         .indicator-box .bar-track .bar-fill.danger { background: var(--red); }
-        .indicator-box .bar-track .bar-fill.cooling { background: var(--blue); animation: pulse-cool 1s infinite; }
-        @keyframes pulse-cool { 0% { opacity: 0.5; } 50% { opacity: 1; } 100% { opacity: 0.5; } }
 
-        /* ===== COOLDOWN BAR (NEW) ===== */
+        /* ===== BATTERY INDICATOR ===== */
+        .battery-container {
+            background: var(--bg-input);
+            border-radius: 12px;
+            padding: 8px 12px;
+            border: 1px solid var(--border-color);
+            margin: 6px 0 8px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        .battery-container .battery-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 11px;
+            color: var(--text-secondary);
+        }
+        .battery-container .battery-header .battery-icon {
+            font-size: 20px;
+            color: var(--green);
+        }
+        .battery-container .battery-track {
+            width: 100%;
+            height: 10px;
+            background: var(--border-color);
+            border-radius: 8px;
+            overflow: hidden;
+            position: relative;
+        }
+        .battery-container .battery-track .battery-fill {
+            height: 100%;
+            border-radius: 8px;
+            transition: width 0.5s ease;
+            background: linear-gradient(90deg, var(--red), var(--orange), var(--green));
+        }
+        .battery-container .battery-details {
+            display: flex;
+            justify-content: space-between;
+            font-size: 10px;
+            color: var(--text-muted);
+        }
+        .battery-container .battery-details .battery-ah {
+            font-weight: 700;
+            color: var(--gold);
+        }
+
+        /* ===== HEAT STATUS ===== */
+        .heat-status-text {
+            font-size: 10px;
+            font-weight: 600;
+            margin-top: 2px;
+        }
+        .heat-status-text.normal { color: var(--green); }
+        .heat-status-text.warning { color: var(--orange); }
+        .heat-status-text.danger { color: var(--red); }
+        .heat-status-text.cooling { color: var(--blue); }
+
+        /* ===== COOLDOWN BAR ===== */
         .cooldown-container {
             background: var(--bg-input);
             border-radius: 12px;
@@ -253,16 +307,6 @@
             margin-top: 4px;
         }
 
-        .heat-status-text {
-            font-size: 10px;
-            font-weight: 600;
-            margin-top: 2px;
-        }
-        .heat-status-text.normal { color: var(--green); }
-        .heat-status-text.warning { color: var(--orange); }
-        .heat-status-text.danger { color: var(--red); }
-        .heat-status-text.cooling { color: var(--blue); }
-
         /* ===== PROFIT INDICATORS ===== */
         .profit-indicators {
             display: grid;
@@ -294,20 +338,20 @@
         .mining-total-pending .label { color: var(--text-muted); }
         .mining-total-pending .value { color: var(--green); font-weight: 700; }
 
-        /* ===== ACTION BAR (Hidden by default, shown only in mining tab) ===== */
+        /* ===== ACTION BAR ===== */
         .action-bar {
             flex-shrink: 0;
             background: var(--bg-card);
             border-top: 2px solid var(--gold-dim);
             border-bottom: 2px solid var(--gold-dim);
             padding: 6px 12px;
-            display: none;
+            display: flex;
             justify-content: space-around;
             align-items: center;
             z-index: 5;
             transition: background 0.3s, border-color 0.3s;
+            margin-top: 6px;
         }
-        .action-bar.visible { display: flex; }
         .action-bar .btn {
             padding: 6px 0;
             border: none;
@@ -619,7 +663,7 @@
             <h1>🏛️ HyeX Exchange</h1>
             <div class="subtitle" data-i18n="subtitle">المنصة الرقمية الرسمية | نسخة تجريبية</div>
         </div>
-        <div class="badge"><i class="fas fa-shield-alt"></i> v21.0</div>
+        <div class="badge"><i class="fas fa-shield-alt"></i> v22.0</div>
     </div>
 
     <!-- PRICE TICKER -->
@@ -633,7 +677,8 @@
     <!-- TAB: MINING -->
     <div id="tab-mining" class="tab-content active">
         <div class="card">
-            <div class="card-title"><span data-i18n="mining_dashboard">⚡ لوحة التعدين</span></div>
+            <!-- تم إزالة عنوان "لوحة التعدين" -->
+
             <div class="mining-currency-list" id="miningList"></div>
 
             <!-- المؤشرات الأساسية -->
@@ -650,18 +695,33 @@
                     <div class="heat-status-text normal" id="heatStatus" data-i18n="heat_normal">🟢 عادية</div>
                 </div>
                 <div class="indicator-box">
-                    <span class="label" data-i18n="power_consumption">⚡ استهلاك الطاقة</span>
-                    <span class="value" id="powerIndicator">0 W</span>
-                    <div class="bar-track"><div class="bar-fill" id="powerBar" style="width:0%;"></div></div>
-                </div>
-                <div class="indicator-box">
                     <span class="label" data-i18n="mining_efficiency">📈 كفاءة التعدين</span>
                     <span class="value" id="efficiencyIndicator">0%</span>
                     <div class="bar-track"><div class="bar-fill" id="efficiencyBar" style="width:0%;"></div></div>
                 </div>
+                <div class="indicator-box">
+                    <span class="label" data-i18n="battery">🔋 البطارية</span>
+                    <span class="value" id="batteryPercent">100%</span>
+                    <div class="bar-track"><div class="bar-fill" id="batteryBar" style="width:100%;"></div></div>
+                </div>
             </div>
 
-            <!-- COOLDOWN BAR (يظهر فقط أثناء التبريد) -->
+            <!-- تفاصيل البطارية -->
+            <div class="battery-container">
+                <div class="battery-header">
+                    <span class="battery-icon" id="batteryIcon">🔋</span>
+                    <span data-i18n="battery_status" id="batteryStatus">🟢 مشحونة بالكامل</span>
+                </div>
+                <div class="battery-track">
+                    <div class="battery-fill" id="batteryFill" style="width:100%;"></div>
+                </div>
+                <div class="battery-details">
+                    <span data-i18n="battery_ah">⚡ <span class="battery-ah" id="batteryAh">100000.0</span> Ah</span>
+                    <span data-i18n="battery_consumption" id="batteryConsumption">استهلاك: 0.0 Ah/د</span>
+                </div>
+            </div>
+
+            <!-- COOLDOWN BAR -->
             <div class="cooldown-container" id="cooldownContainer">
                 <div class="cooldown-header">
                     <span data-i18n="cooldown_label">❄️ تبريد</span>
@@ -687,8 +747,8 @@
                 <span class="value" id="pendingDisplayCash">0.00</span>
             </div>
 
-            <!-- ACTION BAR (داخل قسم التعدين) -->
-            <div class="action-bar visible" id="actionBar">
+            <!-- ACTION BAR -->
+            <div class="action-bar" id="actionBar">
                 <button class="btn btn-collect" id="collectBtn" data-i18n="collect"><i class="fas fa-wallet"></i> جمع</button>
                 <button class="btn btn-convert" id="convertBtn" data-i18n="convert"><i class="fas fa-exchange-alt"></i> تحويل</button>
                 <button class="btn btn-log" id="logToggleBtn" data-i18n="log"><i class="fas fa-list-ul"></i> السجل</button>
@@ -873,6 +933,12 @@
             elapsed: 0,
             isOverheated: false,
             cooldownRemaining: 0
+        },
+        battery: {
+            ah: 100000,
+            maxAh: 100000,
+            percent: 100,
+            consumptionRate: 0 // Ah per second
         }
     };
 
@@ -933,6 +999,8 @@
                         for (let a in parsed.miningActive) data.miningActive[a] = parsed.miningActive[a] !== undefined ? parsed.miningActive[a] : false;
                     } else if (key === 'heat') {
                         for (let h in parsed.heat) data.heat[h] = parsed.heat[h] !== undefined ? parsed.heat[h] : (h === 'activeFans' ? 1 : 0);
+                    } else if (key === 'battery') {
+                        for (let b in parsed.battery) data.battery[b] = parsed.battery[b] !== undefined ? parsed.battery[b] : (b === 'maxAh' ? 100000 : 0);
                     } else data[key] = parsed[key];
                 }
             }
@@ -945,6 +1013,11 @@
         if (!data.profile) data.profile = { name: 'مستخدم جديد', level: 1, xp: 0, totalProfit: 0, totalMined: 0, image: null };
         if (!data.miningActive) data.miningActive = { nc: true, ncplus: false, miniCash: false, litnc: false };
         if (!data.heat) data.heat = { level: 0, activeFans: 1, timeToOverheat: 1800, elapsed: 0, isOverheated: false, cooldownRemaining: 0 };
+        if (!data.battery) data.battery = { ah: 100000, maxAh: 100000, percent: 100, consumptionRate: 0 };
+        // التأكد من أن البطارية تبدأ مشحونة بالكامل
+        if (data.battery.ah === 0 && !saved) data.battery.ah = 100000;
+        if (data.battery.maxAh === 0) data.battery.maxAh = 100000;
+        data.battery.percent = (data.battery.ah / data.battery.maxAh) * 100;
         if (data.wallet.Cash === 0 && !saved) data.wallet.Cash = 100;
         if (!data.settings) data.settings = { sound: true, vibe: true, theme: 'dark', lang: 'ar' };
         if (!data.settings.theme) data.settings.theme = 'dark';
@@ -986,7 +1059,8 @@
     // ================================================================
     const CURRENCIES = ['nc', 'ncplus', 'miniCash', 'litnc'];
     const CURRENCY_NAMES = { nc: 'NC', ncplus: 'NC+', miniCash: 'mini-cash', litnc: 'LitNC' };
-    const BASE_SPEEDS = { nc: 0.0000001, ncplus: 0.000001, miniCash: 0.00001, litnc: 0.0001 };
+    // سرعات التعدين المتزايدة تدريجياً (بدءاً من 0.000001)
+    const BASE_SPEEDS = { nc: 0.000001, ncplus: 0.00001, miniCash: 0.0001, litnc: 0.001 };
     const RATES = { nc: 1, ncplus: 0.8, miniCash: 0.6, litnc: 0.4 };
 
     function getMiningSpeed(currency) {
@@ -1020,100 +1094,99 @@
         return totalCashPerSecond;
     }
 
-    function updateAllIndicators() {
-        // Speed
-        const speedVal = getTotalSpeedInCash() * 1000000;
-        document.getElementById('speedIndicator').textContent = speedVal.toFixed(2);
-        const speedPercent = Math.min(100, (speedVal / 20) * 100);
-        document.getElementById('speedBar').style.width = speedPercent + '%';
-        document.getElementById('speedBar').className = 'bar-fill';
+    // ================================================================
+    // 7. BATTERY SYSTEM
+    // ================================================================
+    const AH_PER_FAN_PER_SECOND = 0.5; // كل مروحة تستهلك 0.5 Ah في الثانية (30 Ah في الدقيقة)
+    const CHARGE_RATE_PER_SECOND = 1.157; // 100000 Ah / 86400 ثانية (24 ساعة)
 
-        // Heat
-        const heatVal = Math.round(data.heat.level);
-        document.getElementById('heatValue').textContent = heatVal + '%';
-        const heatBar = document.getElementById('heatBar');
-        const heatStatus = document.getElementById('heatStatus');
-        if (data.heat.isOverheated) {
-            heatBar.className = 'bar-fill danger';
-            heatBar.style.width = '100%';
-            heatStatus.className = 'heat-status-text danger';
-            heatStatus.textContent = translate('heat_danger') + ' 🔥';
-            // عرض شريط التبريد
-            showCooldown();
+    function updateBattery() {
+        const activeCount = CURRENCIES.filter(c => data.miningActive[c]).length;
+
+        // حساب الاستهلاك
+        if (activeCount > 0 && !data.heat.isOverheated) {
+            // استهلاك البطارية
+            const consumption = activeCount * AH_PER_FAN_PER_SECOND;
+            data.battery.ah = Math.max(0, data.battery.ah - consumption);
+            data.battery.consumptionRate = consumption;
         } else {
-            hideCooldown();
-            if (heatVal > 80) {
-                heatBar.className = 'bar-fill danger';
-                heatBar.style.width = heatVal + '%';
-                heatStatus.className = 'heat-status-text danger';
-                heatStatus.textContent = translate('heat_danger');
-            } else if (heatVal > 50) {
-                heatBar.className = 'bar-fill warning';
-                heatBar.style.width = heatVal + '%';
-                heatStatus.className = 'heat-status-text warning';
-                heatStatus.textContent = translate('heat_warning');
-            } else {
-                heatBar.className = 'bar-fill';
-                heatBar.style.width = heatVal + '%';
-                heatStatus.className = 'heat-status-text normal';
-                heatStatus.textContent = translate('heat_normal');
+            // شحن البطارية (عند عدم وجود مراوح عاملة أو في حالة تبريد)
+            if (data.battery.ah < data.battery.maxAh) {
+                data.battery.ah = Math.min(data.battery.maxAh, data.battery.ah + CHARGE_RATE_PER_SECOND);
             }
+            data.battery.consumptionRate = 0;
         }
 
-        // Power
-        const activeCount = CURRENCIES.filter(c => data.miningActive[c]).length;
-        const powerUsage = activeCount * 10 + data.upgrades.power * 2;
-        document.getElementById('powerIndicator').textContent = powerUsage + ' W';
-        const powerPercent = Math.min(100, (powerUsage / 80) * 100);
-        const powerBar = document.getElementById('powerBar');
-        powerBar.style.width = powerPercent + '%';
-        powerBar.className = 'bar-fill' + (powerPercent > 70 ? ' warning' : '');
+        // تحديث النسبة المئوية
+        data.battery.percent = (data.battery.ah / data.battery.maxAh) * 100;
 
-        // Efficiency
-        const avgHealth = CURRENCIES.reduce((sum, c) => sum + data.maintenance[c].health, 0) / CURRENCIES.length;
-        const heatPenalty = Math.max(0, 1 - (data.heat.level / 150));
-        const efficiency = (avgHealth / 100) * heatPenalty * (1 + data.upgrades.efficiency * 0.1);
-        const effPercent = Math.min(100, Math.round(efficiency * 100));
-        document.getElementById('efficiencyIndicator').textContent = effPercent + '%';
-        const effBar = document.getElementById('efficiencyBar');
-        effBar.style.width = effPercent + '%';
-        effBar.className = 'bar-fill' + (effPercent < 50 ? ' danger' : (effPercent < 70 ? ' warning' : ''));
+        // إذا وصلت البطارية إلى 0%، إيقاف جميع المراوح
+        if (data.battery.ah <= 0) {
+            data.battery.ah = 0;
+            data.battery.percent = 0;
+            // إيقاف جميع المراوح العاملة
+            CURRENCIES.forEach(curr => {
+                if (data.miningActive[curr]) {
+                    stopMiningForCurrency(curr, true);
+                    addLog(translate('battery_empty_stop', CURRENCY_NAMES[curr]));
+                }
+            });
+            playBeep(200, 0.3);
+            doVibe();
+        }
 
-        // Profits
-        const cashPerSecond = getTotalSpeedInCash();
-        const hour = cashPerSecond * 3600;
-        const day = hour * 24;
-        const month = day * 30;
-        const year = day * 365;
-        document.getElementById('profitHour').textContent = hour.toFixed(2);
-        document.getElementById('profitDay').textContent = day.toFixed(2);
-        document.getElementById('profitMonth').textContent = month.toFixed(2);
-        document.getElementById('profitYear').textContent = year.toFixed(2);
+        // تحديث واجهة البطارية
+        updateBatteryUI();
+    }
+
+    function updateBatteryUI() {
+        const percent = Math.round(data.battery.percent);
+        const ah = data.battery.ah;
+        const maxAh = data.battery.maxAh;
+
+        document.getElementById('batteryPercent').textContent = percent + '%';
+        document.getElementById('batteryAh').textContent = ah.toFixed(1);
+
+        // شريط البطارية
+        const bar = document.getElementById('batteryFill');
+        bar.style.width = percent + '%';
+        if (percent > 50) {
+            bar.style.background = 'linear-gradient(90deg, var(--green), var(--green))';
+        } else if (percent > 20) {
+            bar.style.background = 'linear-gradient(90deg, var(--orange), var(--orange))';
+        } else {
+            bar.style.background = 'linear-gradient(90deg, var(--red), var(--red))';
+        }
+
+        // الأيقونة والحالة
+        const icon = document.getElementById('batteryIcon');
+        const status = document.getElementById('batteryStatus');
+        if (percent > 70) {
+            icon.textContent = '🔋';
+            status.textContent = translate('battery_full');
+            status.style.color = 'var(--green)';
+        } else if (percent > 30) {
+            icon.textContent = '🔋';
+            status.textContent = translate('battery_medium');
+            status.style.color = 'var(--orange)';
+        } else if (percent > 10) {
+            icon.textContent = '🪫';
+            status.textContent = translate('battery_low');
+            status.style.color = 'var(--orange)';
+        } else {
+            icon.textContent = '🪫';
+            status.textContent = translate('battery_critical');
+            status.style.color = 'var(--red)';
+        }
+
+        // استهلاك البطارية
+        const consumptionPerMin = data.battery.consumptionRate * 60;
+        document.getElementById('batteryConsumption').textContent = 
+            translate('battery_consumption_label') + ': ' + consumptionPerMin.toFixed(1) + ' Ah/د';
     }
 
     // ================================================================
-    // 7. COOLDOWN BAR
-    // ================================================================
-    function showCooldown() {
-        const container = document.getElementById('cooldownContainer');
-        container.classList.add('active');
-        const remaining = data.heat.cooldownRemaining;
-        const totalCooldown = 600; // 10 دقائق
-        const percent = Math.round((remaining / totalCooldown) * 100);
-        document.getElementById('cooldownPercent').textContent = percent + '%';
-        document.getElementById('cooldownFill').style.width = percent + '%';
-        const mins = Math.floor(remaining / 60);
-        const secs = Math.floor(remaining % 60);
-        document.getElementById('cooldownTime').textContent = 
-            String(mins).padStart(2, '0') + ':' + String(secs).padStart(2, '0');
-    }
-
-    function hideCooldown() {
-        document.getElementById('cooldownContainer').classList.remove('active');
-    }
-
-    // ================================================================
-    // 8. HEAT SYSTEM (Gradual Cooling)
+    // 8. HEAT SYSTEM
     // ================================================================
     function updateHeatSystem() {
         const activeCount = CURRENCIES.filter(c => data.miningActive[c]).length;
@@ -1127,6 +1200,7 @@
                 data.heat.elapsed = 0;
                 addLog(translate('cooling_complete'));
                 playBeep(600, 0.2);
+                // إعادة تشغيل المراوح التي كانت تعمل قبل التبريد
                 CURRENCIES.forEach(c => {
                     if (data.miningActive[c]) startMiningForCurrency(c);
                 });
@@ -1170,7 +1244,28 @@
     }
 
     // ================================================================
-    // 9. MINING START/STOP
+    // 9. COOLDOWN BAR
+    // ================================================================
+    function showCooldown() {
+        const container = document.getElementById('cooldownContainer');
+        container.classList.add('active');
+        const remaining = data.heat.cooldownRemaining;
+        const totalCooldown = 600;
+        const percent = Math.round((remaining / totalCooldown) * 100);
+        document.getElementById('cooldownPercent').textContent = percent + '%';
+        document.getElementById('cooldownFill').style.width = percent + '%';
+        const mins = Math.floor(remaining / 60);
+        const secs = Math.floor(remaining % 60);
+        document.getElementById('cooldownTime').textContent = 
+            String(mins).padStart(2, '0') + ':' + String(secs).padStart(2, '0');
+    }
+
+    function hideCooldown() {
+        document.getElementById('cooldownContainer').classList.remove('active');
+    }
+
+    // ================================================================
+    // 10. MINING START/STOP
     // ================================================================
     let miningIntervals = {};
 
@@ -1180,11 +1275,19 @@
             addLog(translate('cannot_mine_overheat'));
             return;
         }
+        if (data.battery.ah <= 0) {
+            addLog(translate('battery_empty'));
+            playBeep(300, 0.15);
+            return;
+        }
         data.miningActive[currency] = true;
         const btn = document.querySelector(`.fan-btn[data-currency="${currency}"]`);
         if (btn) btn.classList.add('active');
         miningIntervals[currency] = setInterval(() => {
-            if (data.heat.isOverheated) {
+            if (data.heat.isOverheated || data.battery.ah <= 0) {
+                if (data.battery.ah <= 0) {
+                    addLog(translate('battery_empty_stop', CURRENCY_NAMES[currency]));
+                }
                 stopMiningForCurrency(currency, true);
                 return;
             }
@@ -1222,6 +1325,11 @@
             playBeep(300,0.15);
             return;
         }
+        if (data.battery.ah <= 0) {
+            addLog(translate('battery_empty'));
+            playBeep(300,0.15);
+            return;
+        }
         if (data.miningActive[currency]) {
             stopMiningForCurrency(currency);
             addLog(translate('stopped_mining', CURRENCY_NAMES[currency]));
@@ -1236,7 +1344,7 @@
     }
 
     // ================================================================
-    // 10. RENDER MINING LIST
+    // 11. RENDER MINING LIST
     // ================================================================
     function renderMiningList() {
         const container = document.getElementById('miningList');
@@ -1277,7 +1385,72 @@
     }
 
     // ================================================================
-    // 11. WALLET & UI UPDATES
+    // 12. UPDATE ALL INDICATORS
+    // ================================================================
+    function updateAllIndicators() {
+        // Speed
+        const speedVal = getTotalSpeedInCash() * 1000000;
+        document.getElementById('speedIndicator').textContent = speedVal.toFixed(2);
+        const speedPercent = Math.min(100, (speedVal / 20) * 100);
+        document.getElementById('speedBar').style.width = speedPercent + '%';
+        document.getElementById('speedBar').className = 'bar-fill';
+
+        // Heat
+        const heatVal = Math.round(data.heat.level);
+        document.getElementById('heatValue').textContent = heatVal + '%';
+        const heatBar = document.getElementById('heatBar');
+        const heatStatus = document.getElementById('heatStatus');
+        if (data.heat.isOverheated) {
+            heatBar.className = 'bar-fill danger';
+            heatBar.style.width = '100%';
+            heatStatus.className = 'heat-status-text danger';
+            heatStatus.textContent = translate('heat_danger') + ' 🔥';
+        } else {
+            if (heatVal > 80) {
+                heatBar.className = 'bar-fill danger';
+                heatBar.style.width = heatVal + '%';
+                heatStatus.className = 'heat-status-text danger';
+                heatStatus.textContent = translate('heat_danger');
+            } else if (heatVal > 50) {
+                heatBar.className = 'bar-fill warning';
+                heatBar.style.width = heatVal + '%';
+                heatStatus.className = 'heat-status-text warning';
+                heatStatus.textContent = translate('heat_warning');
+            } else {
+                heatBar.className = 'bar-fill';
+                heatBar.style.width = heatVal + '%';
+                heatStatus.className = 'heat-status-text normal';
+                heatStatus.textContent = translate('heat_normal');
+            }
+        }
+
+        // Efficiency
+        const avgHealth = CURRENCIES.reduce((sum, c) => sum + data.maintenance[c].health, 0) / CURRENCIES.length;
+        const heatPenalty = Math.max(0, 1 - (data.heat.level / 150));
+        const efficiency = (avgHealth / 100) * heatPenalty * (1 + data.upgrades.efficiency * 0.1);
+        const effPercent = Math.min(100, Math.round(efficiency * 100));
+        document.getElementById('efficiencyIndicator').textContent = effPercent + '%';
+        const effBar = document.getElementById('efficiencyBar');
+        effBar.style.width = effPercent + '%';
+        effBar.className = 'bar-fill' + (effPercent < 50 ? ' danger' : (effPercent < 70 ? ' warning' : ''));
+
+        // Profits
+        const cashPerSecond = getTotalSpeedInCash();
+        const hour = cashPerSecond * 3600;
+        const day = hour * 24;
+        const month = day * 30;
+        const year = day * 365;
+        document.getElementById('profitHour').textContent = hour.toFixed(2);
+        document.getElementById('profitDay').textContent = day.toFixed(2);
+        document.getElementById('profitMonth').textContent = month.toFixed(2);
+        document.getElementById('profitYear').textContent = year.toFixed(2);
+
+        // Battery (تم تحديثها بشكل منفصل)
+        updateBatteryUI();
+    }
+
+    // ================================================================
+    // 13. WALLET & UI UPDATES
     // ================================================================
     function updateWalletUI() {
         document.getElementById('balNC').textContent = data.wallet.NC.toFixed(6);
@@ -1299,7 +1472,7 @@
     }
 
     // ================================================================
-    // 12. COLLECT & CONVERT
+    // 14. COLLECT & CONVERT
     // ================================================================
     document.getElementById('collectBtn').addEventListener('click', function() {
         let collected = false;
@@ -1353,7 +1526,7 @@
     });
 
     // ================================================================
-    // 13. SHOP
+    // 15. SHOP
     // ================================================================
     function renderShopAll() {
         renderShopCategory('miners');
@@ -1523,7 +1696,7 @@
     }
 
     // ================================================================
-    // 14. PROFILE
+    // 16. PROFILE
     // ================================================================
     function toggleProfile() {
         const slide = document.getElementById('profileSlide');
@@ -1594,7 +1767,7 @@
     }
 
     // ================================================================
-    // 15. THEME & LANGUAGE
+    // 17. THEME & LANGUAGE
     // ================================================================
     function setTheme(theme) {
         document.documentElement.setAttribute('data-theme', theme);
@@ -1623,12 +1796,11 @@
     document.getElementById('themeLightBtn').addEventListener('click', function() { setTheme('light'); });
 
     // ================================================================
-    // 16. LANGUAGE
+    // 18. LANGUAGE
     // ================================================================
     const translations = {
         ar: {
             subtitle: 'المنصة الرقمية الرسمية | نسخة تجريبية',
-            mining_dashboard: '⚡ لوحة التعدين',
             speed_indicator: '🚀 السرعة الإجمالية',
             heat_indicator: '🌡️ الحرارة',
             heat_normal: '🟢 عادية',
@@ -1636,8 +1808,15 @@
             heat_danger: '🔴 حرجة',
             heat_cooling: '🔵 تبريد',
             cooldown_label: '❄️ تبريد',
-            power_consumption: '⚡ استهلاك الطاقة',
             mining_efficiency: '📈 كفاءة التعدين',
+            battery: '🔋 البطارية',
+            battery_status: '🟢 مشحونة بالكامل',
+            battery_full: '🟢 مشحونة بالكامل',
+            battery_medium: '🟡 شحن متوسط',
+            battery_low: '🟠 شحن منخفض',
+            battery_critical: '🔴 شحن حرج',
+            battery_ah: '⚡ <span class="battery-ah" id="batteryAh">100000.0</span> Ah',
+            battery_consumption_label: 'استهلاك',
             profit_hour: '⏱️ الساعة',
             profit_day: '📅 اليوم',
             profit_month: '🗓️ الشهر',
@@ -1699,11 +1878,12 @@
             stopped_mining: '⏹ توقف تعدين {0}',
             overheat_shutdown: '🔥 ارتفاع الحرارة! تم إيقاف جميع المراوح للتبريد.',
             cooling_complete: '✅ تم التبريد. يمكن إعادة تشغيل المراوح.',
-            cannot_mine_overheat: '⚠️ لا يمكن التعدين، الجهاز في حالة تبريد.'
+            cannot_mine_overheat: '⚠️ لا يمكن التعدين، الجهاز في حالة تبريد.',
+            battery_empty: '⚠️ البطارية فارغة! انتظر حتى تشحن.',
+            battery_empty_stop: '🔋 البطارية فارغة! تم إيقاف تعدين {0}.'
         },
         en: {
             subtitle: 'Official Digital Platform | Beta Version',
-            mining_dashboard: '⚡ Mining Dashboard',
             speed_indicator: '🚀 Total Speed',
             heat_indicator: '🌡️ Heat',
             heat_normal: '🟢 Normal',
@@ -1711,8 +1891,15 @@
             heat_danger: '🔴 Critical',
             heat_cooling: '🔵 Cooling',
             cooldown_label: '❄️ Cooldown',
-            power_consumption: '⚡ Power Consumption',
             mining_efficiency: '📈 Mining Efficiency',
+            battery: '🔋 Battery',
+            battery_status: '🟢 Fully Charged',
+            battery_full: '🟢 Fully Charged',
+            battery_medium: '🟡 Medium Charge',
+            battery_low: '🟠 Low Charge',
+            battery_critical: '🔴 Critical Charge',
+            battery_ah: '⚡ <span class="battery-ah" id="batteryAh">100000.0</span> Ah',
+            battery_consumption_label: 'Consumption',
             profit_hour: '⏱️ Hour',
             profit_day: '📅 Day',
             profit_month: '🗓️ Month',
@@ -1774,7 +1961,9 @@
             stopped_mining: '⏹ Stopped mining {0}',
             overheat_shutdown: '🔥 Overheat! All fans stopped for cooling.',
             cooling_complete: '✅ Cooling complete. Fans can be restarted.',
-            cannot_mine_overheat: '⚠️ Cannot mine, device is cooling down.'
+            cannot_mine_overheat: '⚠️ Cannot mine, device is cooling down.',
+            battery_empty: '⚠️ Battery empty! Wait for recharge.',
+            battery_empty_stop: '🔋 Battery empty! Stopped mining {0}.'
         }
     };
 
@@ -1798,6 +1987,8 @@
         document.getElementById('settingsProfileName').textContent = data.profile.name || 'مستخدم جديد';
         renderLog();
         updateAllIndicators();
+        // تحديث نصوص البطارية الديناميكية
+        updateBatteryUI();
     }
 
     document.getElementById('langSelect').addEventListener('change', function() {
@@ -1807,7 +1998,7 @@
     });
 
     // ================================================================
-    // 17. NAVIGATION
+    // 19. NAVIGATION
     // ================================================================
     document.querySelectorAll('.nav-item').forEach(item => {
         item.addEventListener('click', function() {
@@ -1825,7 +2016,7 @@
     });
 
     // ================================================================
-    // 18. SETTINGS EVENTS
+    // 20. SETTINGS EVENTS
     // ================================================================
     document.getElementById('soundToggle').addEventListener('change', function() { data.settings.sound = this.checked; saveData(); });
     document.getElementById('vibeToggle').addEventListener('change', function() { data.settings.vibe = this.checked; saveData(); });
@@ -1837,7 +2028,7 @@
     });
 
     // ================================================================
-    // 19. INIT
+    // 21. INIT
     // ================================================================
     window.onload = function() {
         loadData();
@@ -1847,7 +2038,8 @@
         setTheme(data.settings.theme || 'dark');
         applyLanguage();
         renderMiningList();
-        if (data.miningActive.nc && !data.heat.isOverheated) {
+        // بدء تشغيل NC تلقائياً (إذا لم يكن محموماً والبطارية مشحونة)
+        if (data.miningActive.nc && !data.heat.isOverheated && data.battery.ah > 0) {
             startMiningForCurrency('nc');
         }
         updateAllUI();
@@ -1855,16 +2047,24 @@
         updateProfileUI();
         updateShopUI();
         updateAllIndicators();
+        updateBatteryUI();
 
         addLog('🏛️ ' + translate('subtitle'));
         updateTotalPendingCash();
     };
 
-    // Heat timer
+    // ===== TIMERS =====
+    // تحديث البطارية كل ثانية
+    setInterval(() => {
+        updateBattery();
+    }, 1000);
+
+    // تحديث الحرارة كل ثانية
     setInterval(() => {
         updateHeatSystem();
     }, 1000);
 
+    // حفظ البيانات كل 5 ثوانٍ
     setInterval(() => saveData(), 5000);
 </script>
 </body>
