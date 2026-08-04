@@ -24,6 +24,7 @@
             --shadow: 0 4px 20px rgba(0,0,0,0.4);
             --header-bg: linear-gradient(135deg, #0A0E1A, #141A2B);
             --nav-bg: #0A0E18;
+            --glow: 0 0 10px rgba(201, 168, 76, 0.3);
         }
 
         [data-theme="light"] {
@@ -43,6 +44,7 @@
             --shadow: 0 4px 20px rgba(0,0,0,0.1);
             --header-bg: linear-gradient(135deg, #E4E7EC, #D0D4DC);
             --nav-bg: #E4E7EC;
+            --glow: 0 0 10px rgba(184, 146, 58, 0.3);
         }
 
         /* ===== RESET & BASE ===== */
@@ -68,7 +70,7 @@
         .corp-header .subtitle { font-size: 9px; color: var(--text-muted); letter-spacing: 0.5px; font-weight: 300; }
         .corp-header .badge { background: #1E2A3A; padding: 4px 12px; border-radius: 30px; font-size: 9px; border: 1px solid var(--gold-dim); color: var(--gold); white-space: nowrap; letter-spacing: 0.5px; }
 
-        /* ===== PRICE TICKER ===== */
+        /* ===== PRICE TICKER (يُظهر سرعات التعدين) ===== */
         .price-ticker {
             flex-shrink: 0;
             background: var(--bg-input);
@@ -174,24 +176,110 @@
         .wallet-item .balance.bitnc { color: #FFD700; }
         .wallet-item .balance.cash { color: var(--green); }
 
-        /* ===== MINING ===== */
-        .mining-speeds {
+        /* ===== MINING DASHBOARD ===== */
+        .mining-dashboard {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 4px;
+            gap: 6px;
             margin-top: 4px;
         }
-        .mining-speeds .speed-item {
+        .mining-device {
             background: var(--bg-input);
-            border-radius: 10px;
-            padding: 4px 6px;
-            text-align: center;
+            border-radius: 12px;
+            padding: 8px 6px;
             border: 1px solid var(--border-color);
-            font-size: 10px;
-            transition: background 0.3s, border-color 0.3s;
+            text-align: center;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
         }
-        .mining-speeds .speed-item .label { color: var(--text-muted); font-size: 8px; }
-        .mining-speeds .speed-item .value { color: var(--gold); font-weight: 700; font-size: 11px; }
+        .mining-device .device-icon {
+            font-size: 24px;
+            margin-bottom: 2px;
+            display: block;
+        }
+        .mining-device .device-name {
+            font-size: 10px;
+            color: var(--text-secondary);
+            font-weight: 600;
+        }
+        .mining-device .device-amount {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--gold);
+            font-variant-numeric: tabular-nums;
+            transition: all 0.1s;
+            padding: 2px 0;
+        }
+        .mining-device .device-status {
+            font-size: 8px;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+        }
+        .mining-device .device-status .dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            display: inline-block;
+            background: var(--green);
+            animation: pulse-dot 1.5s infinite;
+        }
+        .mining-device .device-status .dot.inactive {
+            background: var(--text-muted);
+            animation: none;
+        }
+        .mining-device .device-status .dot.mining {
+            background: var(--gold);
+            animation: pulse-dot-gold 1s infinite;
+        }
+        @keyframes pulse-dot {
+            0% { opacity: 0.4; transform: scale(0.8); }
+            50% { opacity: 1; transform: scale(1.2); }
+            100% { opacity: 0.4; transform: scale(0.8); }
+        }
+        @keyframes pulse-dot-gold {
+            0% { opacity: 0.4; transform: scale(0.8); box-shadow: 0 0 0 0 var(--gold-dim); }
+            50% { opacity: 1; transform: scale(1.3); box-shadow: 0 0 15px var(--gold); }
+            100% { opacity: 0.4; transform: scale(0.8); box-shadow: 0 0 0 0 var(--gold-dim); }
+        }
+        .mining-device .device-glow {
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at center, var(--gold-dim) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.5s;
+            pointer-events: none;
+        }
+        .mining-device.active .device-glow {
+            opacity: 0.15;
+            animation: glow-pulse 2s infinite;
+        }
+        @keyframes glow-pulse {
+            0% { opacity: 0.05; transform: scale(1); }
+            50% { opacity: 0.2; transform: scale(1.1); }
+            100% { opacity: 0.05; transform: scale(1); }
+        }
+
+        .pending-summary {
+            background: var(--bg-input);
+            border-radius: 12px;
+            padding: 8px 12px;
+            border: 1px solid var(--border-color);
+            margin-top: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 13px;
+        }
+        .pending-summary .label { color: var(--text-muted); }
+        .pending-summary .value { color: var(--blue); font-weight: 700; font-size: 16px; }
+
         .mining-actions {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -474,16 +562,14 @@
     <!-- ===== TAB: MINING ===== -->
     <div id="tab-mining" class="tab-content active">
         <div class="card">
-            <div class="card-title"><span data-i18n="mining_speeds">⚡ سرعات التعدين</span> <span id="hashRateDisplay">0.0000 NC/ث</span></div>
-            <div class="mining-speeds" id="miningSpeeds">
-                <div class="speed-item"><div class="label">NC</div><div class="value" id="speedNC">0.0000</div></div>
-                <div class="speed-item"><div class="label">NC+</div><div class="value" id="speedNCplus">0.0000</div></div>
-                <div class="speed-item"><div class="label">mini-cash</div><div class="value" id="speedMiniCash">0.0000</div></div>
-                <div class="speed-item"><div class="label">LitNC</div><div class="value" id="speedLitNC">0.0000</div></div>
-                <div class="speed-item"><div class="label">BitNC</div><div class="value" id="speedBitNC">0.0000</div></div>
+            <div class="card-title"><span data-i18n="mining_dashboard">⚡ لوحة التعدين</span> <span id="hashRateDisplay">0.0000 NC/ث</span></div>
+            <div class="mining-dashboard" id="miningDashboard">
+                <!-- سيتم توليدها بواسطة JS -->
             </div>
-            <div style="font-size:22px; font-weight:700; color:var(--blue); text-align:center; padding:4px 0;" id="pendingDisplay">0.00000000 NC</div>
-            <div style="text-align:center; font-size:10px; color:var(--text-muted);" data-i18n="pending_label">المبلغ العالق (قيد التعدين)</div>
+            <div class="pending-summary">
+                <span class="label" data-i18n="total_pending">💰 الإجمالي العالق:</span>
+                <span class="value" id="pendingDisplay">0.00000000 NC</span>
+            </div>
         </div>
         <div class="mining-actions">
             <button class="btn btn-start" id="miningToggleBtn" data-i18n="start_mining"><i class="fas fa-play"></i> تعدين</button>
@@ -732,7 +818,6 @@
         if (!data.maintenance) data.maintenance = { nc: { health: 100 }, ncplus: { health: 100 }, miniCash: { health: 100 }, litnc: { health: 100 }, bitnc: { health: 100 } };
         if (!data.profile) data.profile = { name: 'مستخدم جديد', level: 1, xp: 0, totalProfit: 0, totalMined: 0, image: null };
         if (data.wallet.Cash === 0 && !saved) data.wallet.Cash = 100;
-        // تحميل الإعدادات المحفوظة
         if (!data.settings) data.settings = { sound: true, vibe: true, theme: 'dark', lang: 'ar' };
         if (!data.settings.theme) data.settings.theme = 'dark';
         if (!data.settings.lang) data.settings.lang = 'ar';
@@ -769,11 +854,11 @@
     }
 
     // ================================================================
-    // 6. MINING (6 عملات)
+    // 6. MINING DASHBOARD
     // ================================================================
-    let miningInterval = null;
     const CURRENCIES = ['nc', 'ncplus', 'miniCash', 'litnc', 'bitnc'];
-    const CURRENCY_LABELS = { nc: 'NC', ncplus: 'NC+', miniCash: 'mini-cash', litnc: 'LitNC', bitnc: 'BitNC' };
+    const CURRENCY_NAMES = { nc: 'NC', ncplus: 'NC+', miniCash: 'mini-cash', litnc: 'LitNC', bitnc: 'BitNC' };
+    const CURRENCY_ICONS = { nc: '🪙', ncplus: '💎', miniCash: '🪙', litnc: '⚡', bitnc: '🔶' };
     const BASE_SPEEDS = { nc: 0.0001, ncplus: 0.00008, miniCash: 0.00006, litnc: 0.00004, bitnc: 0.00003 };
 
     function getMiningSpeed(currency) {
@@ -796,20 +881,79 @@
         return Math.max(0.000001, speed);
     }
 
+    function renderMiningDashboard() {
+        const dashboard = document.getElementById('miningDashboard');
+        dashboard.innerHTML = '';
+        CURRENCIES.forEach(curr => {
+            const pendingAmount = data.pending[curr] || 0;
+            const isActive = data.isMining;
+            const div = document.createElement('div');
+            div.className = `mining-device ${isActive ? 'active' : ''}`;
+            div.dataset.currency = curr;
+            div.innerHTML = `
+                <span class="device-icon">${CURRENCY_ICONS[curr]}</span>
+                <div class="device-name">${CURRENCY_NAMES[curr]}</div>
+                <div class="device-amount" id="pending_${curr}">${pendingAmount.toFixed(8)}</div>
+                <div class="device-status">
+                    <span class="dot ${isActive ? 'mining' : 'inactive'}"></span>
+                    ${isActive ? 'قيد التعدين' : 'متوقف'}
+                </div>
+                <div class="device-glow"></div>
+            `;
+            dashboard.appendChild(div);
+        });
+        updatePendingDisplay();
+    }
+
+    function updatePendingDisplay() {
+        let totalPending = 0;
+        CURRENCIES.forEach(curr => {
+            totalPending += data.pending[curr] || 0;
+            const el = document.getElementById(`pending_${curr}`);
+            if (el) el.textContent = (data.pending[curr] || 0).toFixed(8);
+        });
+        document.getElementById('pendingDisplay').textContent = totalPending.toFixed(8) + ' NC';
+    }
+
+    function updateSpeedsUI() {
+        CURRENCIES.forEach(curr => {
+            const speed = getMiningSpeed(curr);
+            const tickerId = 'ticker' + (curr === 'nc' ? 'NC' : curr === 'ncplus' ? 'NCplus' : curr === 'miniCash' ? 'MiniCash' : curr === 'litnc' ? 'LitNC' : 'BitNC');
+            document.getElementById(tickerId).textContent = speed.toFixed(6);
+        });
+        document.getElementById('hashRateDisplay').textContent = getMiningSpeed('nc').toFixed(6) + ' NC/ث';
+    }
+
+    // ================================================================
+    // 7. MINING START/STOP
+    // ================================================================
+    let miningInterval = null;
+
     function startMining() {
         if (data.isMining) return;
         data.isMining = true;
         document.getElementById('miningToggleBtn').innerHTML = '<i class="fas fa-stop"></i> ' + translate('stop_mining');
         document.getElementById('miningToggleBtn').classList.add('active');
         playBeep(800,0.1); doVibe();
+        // تحديث واجهة الأجهزة
+        document.querySelectorAll('.mining-device').forEach(el => {
+            el.classList.add('active');
+            const dot = el.querySelector('.dot');
+            if (dot) { dot.className = 'dot mining'; }
+            const statusText = el.querySelector('.device-status');
+            if (statusText) {
+                const textNode = statusText.childNodes[1];
+                if (textNode) textNode.textContent = 'قيد التعدين';
+            }
+        });
         miningInterval = setInterval(() => {
             CURRENCIES.forEach(curr => {
                 const speed = getMiningSpeed(curr);
                 data.pending[curr] += speed;
                 data.profile.totalMined += speed;
             });
+            updatePendingDisplay();
             updateSpeedsUI();
-            document.getElementById('pendingDisplay').textContent = data.pending.nc.toFixed(8) + ' NC';
             updateShopUI();
             updateProfileUI();
             saveData();
@@ -823,20 +967,21 @@
         document.getElementById('miningToggleBtn').innerHTML = '<i class="fas fa-play"></i> ' + translate('start_mining');
         document.getElementById('miningToggleBtn').classList.remove('active');
         playBeep(400,0.15); doVibe();
+        // تحديث واجهة الأجهزة
+        document.querySelectorAll('.mining-device').forEach(el => {
+            el.classList.remove('active');
+            const dot = el.querySelector('.dot');
+            if (dot) { dot.className = 'dot inactive'; }
+            const statusText = el.querySelector('.device-status');
+            if (statusText) {
+                const textNode = statusText.childNodes[1];
+                if (textNode) textNode.textContent = 'متوقف';
+            }
+        });
         saveData();
     }
-    document.getElementById('miningToggleBtn').addEventListener('click', function() { data.isMining ? stopMining() : startMining(); });
 
-    function updateSpeedsUI() {
-        CURRENCIES.forEach(curr => {
-            const speed = getMiningSpeed(curr);
-            const id = 'speed' + (curr === 'nc' ? 'NC' : curr === 'ncplus' ? 'NCplus' : curr === 'miniCash' ? 'MiniCash' : curr === 'litnc' ? 'LitNC' : 'BitNC');
-            document.getElementById(id).textContent = speed.toFixed(6);
-            const tickerId = 'ticker' + (curr === 'nc' ? 'NC' : curr === 'ncplus' ? 'NCplus' : curr === 'miniCash' ? 'MiniCash' : curr === 'litnc' ? 'LitNC' : 'BitNC');
-            document.getElementById(tickerId).textContent = speed.toFixed(6);
-        });
-        document.getElementById('hashRateDisplay').textContent = getMiningSpeed('nc').toFixed(6) + ' NC/ث';
-    }
+    document.getElementById('miningToggleBtn').addEventListener('click', function() { data.isMining ? stopMining() : startMining(); });
 
     document.getElementById('collectBtn').addEventListener('click', function() {
         let collected = false;
@@ -887,7 +1032,7 @@
     });
 
     // ================================================================
-    // 7. UI UPDATES
+    // 8. UI UPDATES
     // ================================================================
     function updateWalletUI() {
         document.getElementById('balNC').textContent = data.wallet.NC.toFixed(6);
@@ -896,9 +1041,9 @@
         document.getElementById('balLitNC').textContent = data.wallet.LitNC.toFixed(6);
         document.getElementById('balBitNC').textContent = data.wallet.BitNC.toFixed(6);
         document.getElementById('balCash').textContent = data.wallet.Cash.toFixed(2);
-        document.getElementById('pendingDisplay').textContent = data.pending.nc.toFixed(8) + ' NC';
         document.getElementById('shopBalance').textContent = data.wallet.NC.toFixed(2) + ' NC';
         updateSpeedsUI();
+        updatePendingDisplay();
     }
 
     function updateAllUI() {
@@ -916,7 +1061,7 @@
     }
 
     // ================================================================
-    // 8. SHOP
+    // 9. SHOP
     // ================================================================
     function renderShopAll() {
         renderShopCategory('miners');
@@ -1086,7 +1231,7 @@
     }
 
     // ================================================================
-    // 9. PROFILE
+    // 10. PROFILE
     // ================================================================
     function toggleProfile() {
         const slide = document.getElementById('profileSlide');
@@ -1157,7 +1302,7 @@
     }
 
     // ================================================================
-    // 10. THEME & LANGUAGE
+    // 11. THEME & LANGUAGE
     // ================================================================
     function setTheme(theme) {
         document.documentElement.setAttribute('data-theme', theme);
@@ -1186,13 +1331,13 @@
     document.getElementById('themeLightBtn').addEventListener('click', function() { setTheme('light'); });
 
     // ================================================================
-    // 11. LANGUAGE
+    // 12. LANGUAGE
     // ================================================================
     const translations = {
         ar: {
             subtitle: 'المنصة الرقمية الرسمية | نسخة تجريبية',
-            mining_speeds: '⚡ سرعات التعدين',
-            pending_label: 'المبلغ العالق (قيد التعدين)',
+            mining_dashboard: '⚡ لوحة التعدين',
+            total_pending: '💰 الإجمالي العالق:',
             start_mining: 'تعدين',
             stop_mining: 'إيقاف',
             collect: 'جمع',
@@ -1250,8 +1395,8 @@
         },
         en: {
             subtitle: 'Official Digital Platform | Beta Version',
-            mining_speeds: '⚡ Mining Speeds',
-            pending_label: 'Pending amount (mining in progress)',
+            mining_dashboard: '⚡ Mining Dashboard',
+            total_pending: '💰 Total Pending:',
             start_mining: 'Start Mining',
             stop_mining: 'Stop',
             collect: 'Collect',
@@ -1326,17 +1471,26 @@
             const key = el.dataset.i18n;
             el.textContent = translate(key);
         });
-        // تحديث النصوص الديناميكية
         document.getElementById('settingsProfileName').textContent = data.profile.name || 'مستخدم جديد';
-        // تحديث أزرار التعدين
         const miningBtn = document.getElementById('miningToggleBtn');
         if (data.isMining) {
             miningBtn.innerHTML = '<i class="fas fa-stop"></i> ' + translate('stop_mining');
         } else {
             miningBtn.innerHTML = '<i class="fas fa-play"></i> ' + translate('start_mining');
         }
-        // تحديث السجل
         renderLog();
+        // تحديث النصوص الديناميكية في لوحة التعدين
+        document.querySelectorAll('.mining-device .device-status').forEach(el => {
+            const isActive = data.isMining;
+            const dot = el.querySelector('.dot');
+            if (dot) {
+                dot.className = `dot ${isActive ? 'mining' : 'inactive'}`;
+            }
+            const textNode = el.childNodes[1];
+            if (textNode) {
+                textNode.textContent = isActive ? 'قيد التعدين' : 'متوقف';
+            }
+        });
     }
 
     document.getElementById('langSelect').addEventListener('change', function() {
@@ -1346,7 +1500,7 @@
     });
 
     // ================================================================
-    // 12. NAVIGATION
+    // 13. NAVIGATION
     // ================================================================
     document.querySelectorAll('.nav-item').forEach(item => {
         item.addEventListener('click', function() {
@@ -1359,11 +1513,12 @@
             if (tabId === 'wallet') updateWalletUI();
             if (tabId === 'shop') updateShopUI();
             if (tabId === 'settings') { updateProfileUI(); applyLanguage(); }
+            if (tabId === 'mining') { renderMiningDashboard(); updatePendingDisplay(); }
         });
     });
 
     // ================================================================
-    // 13. SETTINGS EVENTS
+    // 14. SETTINGS EVENTS
     // ================================================================
     document.getElementById('soundToggle').addEventListener('change', function() { data.settings.sound = this.checked; saveData(); });
     document.getElementById('vibeToggle').addEventListener('change', function() { data.settings.vibe = this.checked; saveData(); });
@@ -1375,17 +1530,17 @@
     });
 
     // ================================================================
-    // 14. INIT
+    // 15. INIT
     // ================================================================
     window.onload = function() {
         loadData();
-        // تطبيق الإعدادات
         document.getElementById('soundToggle').checked = data.settings.sound !== false;
         document.getElementById('vibeToggle').checked = data.settings.vibe !== false;
         document.getElementById('langSelect').value = data.settings.lang || 'ar';
         setTheme(data.settings.theme || 'dark');
         applyLanguage();
-        startMining();
+        renderMiningDashboard();
+        startMining(); // بدء التعدين تلقائياً
         updateAllUI();
         renderLog();
         updateProfileUI();
