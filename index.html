@@ -335,7 +335,6 @@
         }
         .action-bar .btn:active { transform: scale(0.94); }
         .action-bar .btn-collect { background: #1A2A4A; color: var(--blue); border-color: #2A4A6A; }
-        .action-bar .btn-convert { background: #3A2A1A; color: var(--gold); border-color: #5A4A2A; }
         .action-bar .btn-log { background: #1A1A2A; color: var(--text-muted); border-color: #3A3A4A; }
 
         /* ===== LOG ===== */
@@ -687,10 +686,9 @@
                 <span class="value" id="pendingDisplayCash">0.00</span>
             </div>
 
-            <!-- ACTION BAR -->
+            <!-- ACTION BAR (بدون زر تحويل) -->
             <div class="action-bar" id="actionBar">
                 <button class="btn btn-collect" id="collectBtn" data-i18n="collect"><i class="fas fa-wallet"></i> جمع</button>
-                <button class="btn btn-convert" id="convertBtn" data-i18n="convert"><i class="fas fa-exchange-alt"></i> تحويل</button>
                 <button class="btn btn-log" id="logToggleBtn" data-i18n="log"><i class="fas fa-list-ul"></i> السجل</button>
             </div>
         </div>
@@ -700,23 +698,6 @@
             <div class="card" style="padding:8px;">
                 <div class="card-title"><span data-i18n="mining_log">📋 سجل التعدين</span> <span id="logCount">0</span></div>
                 <div class="log-container" id="logList"><div class="log-item" style="color:var(--text-muted);text-align:center;" data-i18n="no_logs">لا توجد عمليات</div></div>
-            </div>
-        </div>
-
-        <!-- لوحة التحويل (منبثقة) -->
-        <div id="convertPanel" style="display:none; margin-top:6px;">
-            <div class="card">
-                <div class="card-title" data-i18n="convert_currency">🔄 تحويل العملات</div>
-                <div style="display:flex; gap:4px; flex-wrap:wrap;">
-                    <select id="convertFrom" style="flex:1; background:var(--bg-input); border:1px solid var(--border-color); color:var(--text-primary); padding:4px 8px; border-radius:10px; font-size:11px;">
-                        <option value="NC">NC</option><option value="NCplus">NC+</option><option value="miniCash">mini-cash</option><option value="LitNC">LitNC</option><option value="Cash">Cash</option>
-                    </select>
-                    <input type="number" id="convertAmount" placeholder="المبلغ" value="1" style="flex:1.5; background:var(--bg-input); border:1px solid var(--border-color); color:var(--text-primary); padding:4px 8px; border-radius:10px; font-size:11px;">
-                    <select id="convertTo" style="flex:1; background:var(--bg-input); border:1px solid var(--border-color); color:var(--text-primary); padding:4px 8px; border-radius:10px; font-size:11px;">
-                        <option value="NC">NC</option><option value="NCplus">NC+</option><option value="miniCash">mini-cash</option><option value="LitNC">LitNC</option><option value="Cash">Cash</option>
-                    </select>
-                    <button id="executeConvertBtn" style="flex:0.8; background:var(--gold); border:none; color:#0A0E18; font-weight:700; border-radius:30px; cursor:pointer; font-size:11px; padding:4px;" data-i18n="execute">تنفيذ</button>
-                </div>
             </div>
         </div>
     </div>
@@ -1354,7 +1335,7 @@
     }
 
     // ================================================================
-    // 12. COLLECT & CONVERT
+    // 12. COLLECT & CONVERT (تم إزالة التحويل)
     // ================================================================
     document.getElementById('collectBtn').addEventListener('click', function() {
         let collected = false;
@@ -1372,30 +1353,6 @@
         updateAllUI();
         renderMiningList();
         saveData();
-    });
-
-    let convertPanelVisible = false;
-    document.getElementById('convertBtn').addEventListener('click', function() {
-        const panel = document.getElementById('convertPanel');
-        convertPanelVisible = !convertPanelVisible;
-        panel.style.display = convertPanelVisible ? 'block' : 'none';
-        if (convertPanelVisible) playBeep(500,0.05);
-    });
-    document.getElementById('executeConvertBtn').addEventListener('click', function() {
-        const from = document.getElementById('convertFrom').value;
-        const to = document.getElementById('convertTo').value;
-        let amount = parseFloat(document.getElementById('convertAmount').value);
-        if (isNaN(amount) || amount <= 0) { alert(translate('enter_valid_amount')); return; }
-        const rate = getRate(from, to);
-        const needed = amount * rate;
-        if (data.wallet[from] < amount) { addLog(translate('insufficient_balance', from)); playBeep(200,0.2); return; }
-        data.wallet[from] -= amount;
-        data.wallet[to] = (data.wallet[to] || 0) + needed;
-        addLog(translate('converted', from, to, amount, needed));
-        playBeep(1100,0.15); doVibe();
-        updateAllUI(); saveData();
-        document.getElementById('convertPanel').style.display = 'none';
-        convertPanelVisible = false;
     });
 
     let logVisible = false;
@@ -1699,12 +1656,9 @@
             profit_year: '📆 السنة',
             total_pending_cash: '💰 الإجمالي العالق (Cash):',
             collect: 'جمع',
-            convert: 'تحويل',
             log: 'السجل',
             mining_log: '📋 سجل التعدين',
             no_logs: 'لا توجد عمليات',
-            convert_currency: '🔄 تحويل العملات',
-            execute: 'تنفيذ',
             balances: '💰 الأرصدة',
             all_balances_encrypted: 'جميع الأرصدة مشفرة ومركزية (للترفيه)',
             shop_title: '🛒 المتجر الرسمي',
@@ -1740,8 +1694,6 @@
             no_pending: '⚠️ لا توجد عملات عالقة',
             collected_all: '✅ تم جمع جميع العملات العالقة',
             enter_valid_amount: 'أدخل مبلغ صحيح',
-            insufficient_balance: '❌ رصيد غير كاف من {0}',
-            converted: '🔄 تحويل {0} {1} → {2} {3}',
             insufficient_balance_shop: '❌ رصيد غير كاف. تحتاج {0} {1}',
             bought_miner: '⛏️ تم شراء جهاز تعدين {0}',
             bought_upgrade: '🔧 تم شراء ترقية {0}',
@@ -1776,12 +1728,9 @@
             profit_year: '📆 Year',
             total_pending_cash: '💰 Total Pending (Cash):',
             collect: 'Collect',
-            convert: 'Convert',
             log: 'Log',
             mining_log: '📋 Mining Log',
             no_logs: 'No operations',
-            convert_currency: '🔄 Convert Currency',
-            execute: 'Execute',
             balances: '💰 Balances',
             all_balances_encrypted: 'All balances are encrypted and centralized (for entertainment)',
             shop_title: '🛒 Official Store',
@@ -1817,8 +1766,6 @@
             no_pending: '⚠️ No pending coins',
             collected_all: '✅ Collected all pending coins',
             enter_valid_amount: 'Enter a valid amount',
-            insufficient_balance: '❌ Insufficient balance of {0}',
-            converted: '🔄 Converted {0} {1} → {2} {3}',
             insufficient_balance_shop: '❌ Insufficient balance. Need {0} {1}',
             bought_miner: '⛏️ Bought {0} miner',
             bought_upgrade: '🔧 Bought upgrade {0}',
@@ -1941,4 +1888,4 @@
     setInterval(() => saveData(), 5000);
 </script>
 </body>
-    </html>
+                </html>
