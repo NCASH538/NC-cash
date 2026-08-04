@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>HyeX Exchange - سوق NFT</title>
+    <title>HyeX Exchange - المتجر المتكامل</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         /* ===== BASE RESET ===== */
@@ -122,6 +122,16 @@
         .wallet-item .balance.linc { color: #A29BFE; }
 
         /* ===== MINING ===== */
+        .mining-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4px;
+            margin-top: 4px;
+        }
+        .mining-stats .stat { background: #0E0E16; border-radius: 10px; padding: 4px 6px; text-align: center; border: 1px solid #2A2A35; }
+        .mining-stats .stat .label { font-size: 7px; color: #8E8E9A; }
+        .mining-stats .stat .value { font-size: 12px; font-weight: 700; color: #C9A84C; }
+
         .mining-actions {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -170,161 +180,75 @@
         }
         .log-item .time { color: #777; font-size: 9px; }
 
-        /* ===== SHOP ===== */
-        .shop-item {
+        /* ===== SHOP (NEW INTEGRATED) ===== */
+        .shop-category-tabs {
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: #11111B;
-            padding: 6px 10px;
-            border-radius: 12px;
-            margin-bottom: 4px;
-            border: 1px solid #2A2A35;
-        }
-        .shop-item .info small { color: #888; display: block; font-size: 9px; }
-        .shop-item .buy-btn {
-            background: #C9A84C;
-            border: none;
-            color: #0A0A0F;
-            padding: 3px 12px;
-            border-radius: 30px;
-            font-weight: 700;
-            cursor: pointer;
-            font-size: 11px;
-        }
-        .shop-item .buy-btn:disabled { opacity: 0.3; cursor: not-allowed; }
-
-        /* ===== SETTINGS ===== */
-        .settings-item {
-            display: flex;
-            justify-content: space-between;
-            padding: 8px 0;
-            border-bottom: 1px solid #1A1A22;
-            align-items: center;
-            color: #C0C0D0;
-        }
-        .settings-item .profile-trigger {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            cursor: pointer;
-            background: #1A2A4A;
-            padding: 6px 14px 6px 10px;
-            border-radius: 30px;
-            border: 1px solid #C9A84C55;
-            transition: 0.3s;
-            color: #C9A84C;
-            font-weight: 700;
-            font-size: 12px;
-        }
-        .settings-item .profile-trigger:hover { background: #2A3A5A; border-color: #C9A84C; box-shadow: 0 0 20px #C9A84C33; }
-        .settings-item .profile-trigger img { width: 24px; height: 24px; border-radius: 50%; object-fit: cover; border: 1px solid #C9A84C; }
-        .settings-item .profile-trigger i { font-size: 18px; }
-        .switch input { display: none; }
-        .switch .slider {
-            display: inline-block;
-            width: 30px;
-            height: 16px;
-            background: #333;
-            border-radius: 30px;
-            position: relative;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-        .switch .slider::after {
-            content: '';
-            position: absolute;
-            width: 10px;
-            height: 10px;
-            background: #fff;
-            border-radius: 50%;
-            top: 3px;
-            left: 3px;
-            transition: 0.3s;
-        }
-        .switch input:checked+.slider { background: #4A9CFF; }
-        .switch input:checked+.slider::after { left: 17px; }
-
-        /* ===== TAP COIN ===== */
-        .tap-coin {
-            width: 170px;
-            height: 170px;
-            border-radius: 50%;
-            background: radial-gradient(circle at 28% 28%, #FFE066, #F5B342, #C28F2C, #8B6508);
-            box-shadow: 0 0 80px rgba(255,215,0,0.3), inset 0 -25px 40px rgba(0,0,0,0.5), inset 0 25px 40px rgba(255,255,255,0.15);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 48px;
-            font-weight: 900;
-            color: #7A5A0A;
-            text-shadow: 0 2px 12px rgba(0,0,0,0.6);
-            cursor: pointer;
-            user-select: none;
-            transition: transform 0.12s ease, box-shadow 0.12s ease;
-            position: relative;
-            border: 8px solid #A87D2A;
-            margin: 8px auto;
-            background-image: radial-gradient(circle at 35% 30%, rgba(255,255,255,0.2) 0%, transparent 60%);
-        }
-        .tap-coin::before { content: 'NC'; font-size: 32px; font-weight: 900; color: #7A5A0A; text-shadow: 0 2px 12px rgba(0,0,0,0.4), 0 -1px 4px rgba(255,215,0,0.2); letter-spacing: 2px; }
-        .tap-coin::after {
-            content: '';
-            position: absolute;
-            top: 8%;
-            left: 18%;
-            width: 35%;
-            height: 18%;
-            background: radial-gradient(circle, rgba(255,255,255,0.35) 0%, transparent 70%);
-            border-radius: 50%;
-            opacity: 0.6;
-            pointer-events: none;
-        }
-        .tap-coin:active {
-            transform: scale(0.90);
-            box-shadow: 0 0 100px rgba(255,215,0,0.5), inset 0 -25px 40px rgba(0,0,0,0.7), inset 0 25px 40px rgba(255,255,255,0.2);
-        }
-        .tap-coin .tap-ripple {
-            position: absolute;
-            border-radius: 50%;
-            background: rgba(255,215,0,0.35);
-            animation: ripple 0.7s ease-out forwards;
-            pointer-events: none;
-        }
-        @keyframes ripple {
-            0% { width: 10px; height: 10px; opacity: 0.9; }
-            100% { width: 240px; height: 240px; opacity: 0; }
-        }
-        .tap-stats {
-            display: flex;
-            gap: 20px;
-            justify-content: center;
-            margin: 6px 0;
+            gap: 4px;
+            margin-bottom: 6px;
             flex-wrap: wrap;
         }
-        .tap-stats .stat {
-            text-align: center;
-            background: #0E0E16;
-            padding: 6px 14px;
+        .shop-category-tabs .tab-btn {
+            flex: 1;
+            padding: 4px;
             border-radius: 12px;
             border: 1px solid #2A2A35;
+            background: transparent;
+            color: #8E8E9A;
+            font-size: 9px;
+            cursor: pointer;
+            transition: 0.2s;
+            text-align: center;
         }
-        .tap-stats .stat .label { font-size: 9px; color: #8E8E9A; }
-        .tap-stats .stat .value { font-weight: 700; font-size: 14px; color: #C9A84C; }
-        .tap-stats .stat .value.blue { color: #4A9CFF; }
-        .tap-log {
-            max-height: 100px;
-            overflow-y: auto;
-            background: #0E0E16;
-            border-radius: 12px;
-            padding: 4px 8px;
-            border: 1px solid #222;
-            margin-top: 6px;
-        }
-        .tap-log .log-item { font-size: 10px; padding: 3px 0; border-bottom: 1px solid #1A1A22; color: #C0C0D0; display: flex; justify-content: space-between; }
-        .tap-log .log-item .time { color: #777; font-size: 9px; }
+        .shop-category-tabs .tab-btn.active { background: #4A9CFF33; border-color: #4A9CFF; color: #4A9CFF; }
+        .shop-category-content { display: none; }
+        .shop-category-content.active { display: block; }
 
-        /* ===== NFT MARKET (CARDS & PLAYERS) ===== */
+        .shop-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .shop-item-card {
+            background: #11111B;
+            border-radius: 12px;
+            padding: 8px;
+            border: 1px solid #2A2A35;
+            text-align: center;
+            transition: 0.2s;
+        }
+        .shop-item-card:hover { border-color: #C9A84C55; }
+        .shop-item-card .item-icon { font-size: 24px; margin-bottom: 2px; }
+        .shop-item-card .item-name { font-size: 10px; font-weight: 700; color: #E0E0E0; }
+        .shop-item-card .item-desc { font-size: 8px; color: #8E8E9A; }
+        .shop-item-card .item-price { font-size: 10px; color: #C9A84C; font-weight: 700; margin: 2px 0; }
+        .shop-item-card .item-owned { font-size: 8px; color: #7BED9F; }
+        .shop-item-card .btn { padding: 2px 10px; border-radius: 30px; border: none; font-size: 9px; font-weight: 700; cursor: pointer; transition: 0.15s; width: 100%; margin-top: 2px; }
+        .shop-item-card .btn:active { transform: scale(0.94); }
+        .btn-buy-shop { background: #1A3A2A; color: #7BED9F; border: 1px solid #2A5A3A; }
+        .btn-buy-shop:disabled { opacity: 0.4; cursor: not-allowed; }
+        .btn-sell-shop { background: #3A1A1A; color: #FF6B8A; border: 1px solid #5A2A2A; }
+        .btn-sell-shop:disabled { opacity: 0.4; cursor: not-allowed; }
+
+        .shop-stats {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 6px;
+            flex-wrap: wrap;
+        }
+        .shop-stats .stat {
+            background: #0E0E16;
+            border-radius: 10px;
+            padding: 4px 8px;
+            border: 1px solid #2A2A35;
+            text-align: center;
+            flex: 1;
+        }
+        .shop-stats .stat .label { font-size: 7px; color: #8E8E9A; }
+        .shop-stats .stat .value { font-size: 12px; font-weight: 700; color: #C9A84C; }
+
+        /* ===== NFT ===== */
         .nft-category-tabs {
             display: flex;
             gap: 6px;
@@ -343,11 +267,7 @@
             transition: 0.2s;
             text-align: center;
         }
-        .nft-category-tabs .tab-btn.active {
-            background: #4A9CFF33;
-            border-color: #4A9CFF;
-            color: #4A9CFF;
-        }
+        .nft-category-tabs .tab-btn.active { background: #4A9CFF33; border-color: #4A9CFF; color: #4A9CFF; }
         .nft-category-content { display: none; }
         .nft-category-content.active { display: block; }
 
@@ -370,18 +290,7 @@
             align-items: center;
             text-align: center;
         }
-        .nft-card .nft-image {
-            width: 60px;
-            height: 60px;
-            border-radius: 12px;
-            background: #0A0A10;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 32px;
-            margin-bottom: 4px;
-            border: 1px solid #2A2A35;
-        }
+        .nft-card .nft-image { width: 60px; height: 60px; border-radius: 12px; background: #0A0A10; display: flex; align-items: center; justify-content: center; font-size: 32px; margin-bottom: 4px; border: 1px solid #2A2A35; }
         .nft-card .nft-name { font-size: 11px; font-weight: 700; color: #E0E0E0; line-height: 1.2; }
         .nft-card .nft-detail { font-size: 8px; color: #8E8E9A; }
         .nft-card .nft-price { font-size: 10px; color: #C9A84C; font-weight: 700; margin: 2px 0; }
@@ -398,23 +307,8 @@
         .nft-card .nft-rarity.rare { background: #2A3A5A; color: #4A9CFF; border: 1px solid #4A6A9A; }
         .nft-card .nft-rarity.legendary { background: #5A3A2A; color: #FFA500; border: 1px solid #9A6A3A; }
 
-        .nft-card .nft-actions {
-            display: flex;
-            gap: 4px;
-            margin-top: 4px;
-            width: 100%;
-            justify-content: center;
-        }
-        .nft-card .nft-actions .btn {
-            flex: 1;
-            padding: 2px 0;
-            border: none;
-            border-radius: 30px;
-            font-size: 9px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: 0.15s;
-        }
+        .nft-card .nft-actions { display: flex; gap: 4px; margin-top: 4px; width: 100%; justify-content: center; }
+        .nft-card .nft-actions .btn { flex: 1; padding: 2px 0; border: none; border-radius: 30px; font-size: 9px; font-weight: 700; cursor: pointer; transition: 0.15s; }
         .nft-card .nft-actions .btn:active { transform: scale(0.94); }
         .btn-buy-nft { background: #1A3A2A; color: #7BED9F; border: 1px solid #2A5A3A; }
         .btn-sell-nft { background: #3A1A1A; color: #FF6B8A; border: 1px solid #5A2A2A; }
@@ -433,7 +327,7 @@
         }
         .club-status .btn { padding: 2px 12px; border-radius: 30px; border: none; font-size: 10px; font-weight: 700; cursor: pointer; }
 
-        /* ===== GAMES SECTION ===== */
+        /* ===== GAMES ===== */
         .games-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -489,47 +383,13 @@
             display: flex;
             flex-direction: column;
         }
-        .game-modal-box .modal-header {
-            padding: 10px 16px;
-            background: #0E0E16;
-            border-bottom: 1px solid #2A2A35;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-shrink: 0;
-        }
+        .game-modal-box .modal-header { padding: 10px 16px; background: #0E0E16; border-bottom: 1px solid #2A2A35; display: flex; justify-content: space-between; align-items: center; flex-shrink: 0; }
         .game-modal-box .modal-header .game-title { font-size: 14px; font-weight: 700; color: #C9A84C; }
         .game-modal-box .modal-header .close-btn { background: none; border: none; color: #8E8E9A; font-size: 22px; cursor: pointer; transition: 0.3s; padding: 0 4px; }
         .game-modal-box .modal-header .close-btn:hover { color: #FF6B8A; transform: rotate(90deg); }
-        .game-modal-box .modal-body {
-            flex: 1;
-            position: relative;
-            padding-bottom: 75%;
-            height: 0;
-            overflow: hidden;
-            background: #0A0A10;
-        }
-        .game-modal-box .modal-body iframe {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
-        .game-modal-box .modal-footer {
-            padding: 8px 14px;
-            background: #0E0E16;
-            border-top: 1px solid #2A2A35;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-shrink: 0;
-            font-size: 10px;
-            color: #8E8E9A;
-            flex-wrap: wrap;
-            gap: 4px;
-        }
+        .game-modal-box .modal-body { flex: 1; position: relative; padding-bottom: 75%; height: 0; overflow: hidden; background: #0A0A10; }
+        .game-modal-box .modal-body iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
+        .game-modal-box .modal-footer { padding: 8px 14px; background: #0E0E16; border-top: 1px solid #2A2A35; display: flex; justify-content: space-between; align-items: center; flex-shrink: 0; font-size: 10px; color: #8E8E9A; flex-wrap: wrap; gap: 4px; }
         .game-modal-box .modal-footer .reward-info { color: #7BED9F; font-weight: 700; }
 
         /* ===== PROFILE SLIDE ===== */
@@ -550,14 +410,7 @@
             overflow: hidden;
         }
         .profile-slide.open { right: 0; }
-        .profile-slide .header {
-            padding: 16px 20px 12px;
-            background: linear-gradient(135deg, #0B1320, #1A1F2E);
-            border-bottom: 1px solid #2A2A35;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+        .profile-slide .header { padding: 16px 20px 12px; background: linear-gradient(135deg, #0B1320, #1A1F2E); border-bottom: 1px solid #2A2A35; display: flex; justify-content: space-between; align-items: center; }
         .profile-slide .header h2 { color: #C9A84C; font-size: 18px; font-weight: 700; }
         .profile-slide .header .close-btn { background: none; border: none; color: #8E8E9A; font-size: 24px; cursor: pointer; transition: 0.3s; }
         .profile-slide .header .close-btn:hover { color: #FF6B8A; transform: rotate(90deg); }
@@ -586,91 +439,30 @@
         }
         .profile-slide .profile-pic-large:hover { border-color: #4A9CFF; box-shadow: 0 0 40px #4A9CFF55; transform: scale(1.02); }
         .profile-slide .profile-pic-large img { width: 100%; height: 100%; object-fit: cover; }
-        .profile-slide .profile-pic-large .upload-overlay {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: rgba(0,0,0,0.7);
-            color: #fff;
-            font-size: 9px;
-            padding: 4px;
-            text-align: center;
-            opacity: 0;
-            transition: 0.3s;
-        }
+        .profile-slide .profile-pic-large .upload-overlay { position: absolute; bottom: 0; left: 0; right: 0; background: rgba(0,0,0,0.7); color: #fff; font-size: 9px; padding: 4px; text-align: center; opacity: 0; transition: 0.3s; }
         .profile-slide .profile-pic-large:hover .upload-overlay { opacity: 1; }
 
-        .profile-slide .input-field {
-            width: 100%;
-            padding: 10px 14px;
-            background: #0A0A0F;
-            border: 1px solid #2A2A35;
-            border-radius: 14px;
-            color: #E0E0E0;
-            font-size: 14px;
-            margin-bottom: 12px;
-            transition: 0.3s;
-        }
+        .profile-slide .input-field { width: 100%; padding: 10px 14px; background: #0A0A0F; border: 1px solid #2A2A35; border-radius: 14px; color: #E0E0E0; font-size: 14px; margin-bottom: 12px; transition: 0.3s; }
         .profile-slide .input-field:focus { border-color: #C9A84C; outline: none; box-shadow: 0 0 20px #C9A84C22; }
 
-        .profile-slide .level-card {
-            background: linear-gradient(135deg, #0E0E16, #1A1A28);
-            border-radius: 16px;
-            padding: 14px 16px;
-            border: 1px solid #2A2A35;
-            margin-bottom: 12px;
-        }
+        .profile-slide .level-card { background: linear-gradient(135deg, #0E0E16, #1A1A28); border-radius: 16px; padding: 14px 16px; border: 1px solid #2A2A35; margin-bottom: 12px; }
         .profile-slide .level-card .level-row { display: flex; justify-content: space-between; font-size: 13px; color: #C0C0D0; }
         .profile-slide .level-card .level-row .highlight { color: #C9A84C; font-weight: 700; }
         .profile-slide .level-card .level-bar { width: 100%; height: 6px; background: #2A2A35; border-radius: 10px; overflow: hidden; margin-top: 6px; }
         .profile-slide .level-card .level-bar .fill { height: 100%; background: linear-gradient(90deg, #C9A84C, #4A9CFF); border-radius: 10px; transition: width 0.5s ease; }
 
-        .profile-slide .stat-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 8px;
-            margin-bottom: 12px;
-        }
-        .profile-slide .stat-item {
-            background: #0E0E16;
-            border-radius: 14px;
-            padding: 10px 12px;
-            border: 1px solid #2A2A35;
-            text-align: center;
-        }
+        .profile-slide .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px; }
+        .profile-slide .stat-item { background: #0E0E16; border-radius: 14px; padding: 10px 12px; border: 1px solid #2A2A35; text-align: center; }
         .profile-slide .stat-item .stat-label { font-size: 9px; color: #8E8E9A; }
         .profile-slide .stat-item .stat-value { font-size: 16px; font-weight: 700; color: #C9A84C; margin-top: 2px; }
         .profile-slide .stat-item .stat-value.green { color: #7BED9F; }
         .profile-slide .stat-item .stat-value.blue { color: #4A9CFF; }
         .profile-slide .stat-item .stat-value.pink { color: #FF6B8A; }
 
-        .profile-slide .save-btn {
-            width: 100%;
-            padding: 12px;
-            background: linear-gradient(135deg, #C9A84C, #B8923A);
-            border: none;
-            border-radius: 30px;
-            font-weight: 700;
-            font-size: 16px;
-            color: #0A0A0F;
-            cursor: pointer;
-            transition: 0.3s;
-            margin-top: 4px;
-        }
+        .profile-slide .save-btn { width: 100%; padding: 12px; background: linear-gradient(135deg, #C9A84C, #B8923A); border: none; border-radius: 30px; font-weight: 700; font-size: 16px; color: #0A0A0F; cursor: pointer; transition: 0.3s; margin-top: 4px; }
         .profile-slide .save-btn:hover { transform: scale(1.02); box-shadow: 0 0 30px #C9A84C55; }
 
-        .profile-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0,0,0,0.6);
-            z-index: 999;
-            display: none;
-            backdrop-filter: blur(4px);
-        }
+        .profile-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.6); z-index: 999; display: none; backdrop-filter: blur(4px); }
         .profile-overlay.show { display: block; }
 
         .text-muted { color: #8E8E9A; }
@@ -679,15 +471,7 @@
         .text-red { color: #FF6B8A; }
         .text-white { color: #E0E0E0; }
         .text-blue { color: #4A9CFF; }
-        .badge {
-            background: #1E2A3A;
-            padding: 2px 8px;
-            border-radius: 30px;
-            font-size: 9px;
-            border: 1px solid #C9A84C55;
-            color: #C9A84C;
-            white-space: nowrap;
-        }
+        .badge { background: #1E2A3A; padding: 2px 8px; border-radius: 30px; font-size: 9px; border: 1px solid #C9A84C55; color: #C9A84C; white-space: nowrap; }
     </style>
 </head>
 <body>
@@ -700,7 +484,7 @@
             <h1>🏛️ HyeX Exchange</h1>
             <div class="subtitle">منصة محلية قيد التطوير (نسخة تجريبية)</div>
         </div>
-        <div class="badge"><i class="fas fa-shield-alt"></i> v14.0</div>
+        <div class="badge"><i class="fas fa-shield-alt"></i> v15.0</div>
     </div>
 
     <!-- PRICE TICKER -->
@@ -761,68 +545,53 @@
         <div class="card" style="text-align:center; color:#8E8E9A; font-size:10px;"><i class="fas fa-lock"></i> جميع الأرصدة مشفرة ومركزية (للترفيه)</div>
     </div>
 
-    <!-- ===== TAB: SHOP ===== -->
+    <!-- ===== TAB: SHOP (INTEGRATED) ===== -->
     <div id="tab-shop" class="tab-content">
         <div class="card">
-            <div class="card-title"><span>🛒 متجر الترقيات</span> <span class="text-gold">NC فقط</span></div>
-            <div id="shopList"></div>
-        </div>
-    </div>
-
-    <!-- ===== TAB: TAP ===== -->
-    <div id="tab-tap" class="tab-content">
-        <div class="card">
-            <div class="card-title"><span>🪙 النقر الذكي</span> <span style="color:#4A9CFF; font-size:10px;">كل نقرة = 0.01 NC</span></div>
-            <div class="tap-coin" id="tapCoin"></div>
-            <div class="tap-stats">
-                <div class="stat"><div class="label">💰 أرباح النقر</div><div class="value" id="tapEarnings">0.00 NC</div></div>
-                <div class="stat"><div class="label">👆 عدد النقرات</div><div class="value blue" id="tapCount">0</div></div>
+            <div class="card-title"><span>🛒 المتجر المتكامل</span> <span style="color:#4A9CFF; font-size:10px;" id="shopCount">0 عنصر</span></div>
+            <div class="shop-stats">
+                <div class="stat"><div class="label">💰 الرصيد</div><div class="value" id="shopBalance">0.00 NC</div></div>
+                <div class="stat"><div class="label">📦 الأجهزة</div><div class="value" id="shopDevices">0</div></div>
+                <div class="stat"><div class="label">⚡ الطاقة</div><div class="value" id="shopPower">0</div></div>
             </div>
-            <div class="card-title" style="margin-top:6px;"><span>📋 سجل النقرات</span> <span id="tapLogCount">0</span></div>
-            <div class="tap-log" id="tapLogList"><div class="log-item" style="color:#777;text-align:center;">لا توجد نقرات بعد</div></div>
+            <div class="shop-category-tabs">
+                <button class="tab-btn active" data-cat="miners">⛏️ أجهزة تعدين</button>
+                <button class="tab-btn" data-cat="boosters">⚡ تسريعات</button>
+                <button class="tab-btn" data-cat="upgrades">🔧 ترقيات</button>
+                <button class="tab-btn" data-cat="maintenance">🛠️ صيانة</button>
+                <button class="tab-btn" data-cat="specials">🎁 عروض خاصة</button>
+            </div>
+            <div class="shop-category-content active" id="shop-miners"><div class="shop-grid" id="minersGrid"></div></div>
+            <div class="shop-category-content" id="shop-boosters"><div class="shop-grid" id="boostersGrid"></div></div>
+            <div class="shop-category-content" id="shop-upgrades"><div class="shop-grid" id="upgradesGrid"></div></div>
+            <div class="shop-category-content" id="shop-maintenance"><div class="shop-grid" id="maintenanceGrid"></div></div>
+            <div class="shop-category-content" id="shop-specials"><div class="shop-grid" id="specialsGrid"></div></div>
         </div>
     </div>
 
-    <!-- ===== TAB: NFT MARKET (SIDEBAR) ===== -->
+    <!-- ===== TAB: NFT ===== -->
     <div id="tab-nft" class="tab-content">
         <div class="card">
-            <div class="card-title">
-                <span>🎴 سوق NFT</span>
-                <span style="color:#4A9CFF; font-size:10px;" id="nftCount">0</span>
-            </div>
-
-            <!-- حالة النادي -->
+            <div class="card-title"><span>🎴 سوق NFT</span> <span style="color:#4A9CFF; font-size:10px;" id="nftCount">0</span></div>
             <div class="club-status" id="clubStatus">
                 <span id="clubStatusText">⚠️ النادي مغلق</span>
                 <button class="btn btn-gold" id="clubBuyBtn" style="padding:2px 12px; font-size:10px; border-radius:30px; border:none; font-weight:700; cursor:pointer;">فتح النادي (0.5 NC)</button>
             </div>
-
-            <!-- أقسام NFT -->
             <div class="nft-category-tabs">
                 <button class="tab-btn active" data-cat="players">⚽ لاعبين</button>
                 <button class="tab-btn" data-cat="cars">🚗 سيارات</button>
                 <button class="tab-btn" data-cat="mycollection">📦 مجموعتي</button>
             </div>
-
-            <div class="nft-category-content active" id="nft-players">
-                <div class="nft-grid" id="playersGrid"></div>
-            </div>
-            <div class="nft-category-content" id="nft-cars">
-                <div class="nft-grid" id="carsGrid"></div>
-            </div>
-            <div class="nft-category-content" id="nft-mycollection">
-                <div class="nft-grid" id="myCollectionGrid"></div>
-            </div>
+            <div class="nft-category-content active" id="nft-players"><div class="nft-grid" id="playersGrid"></div></div>
+            <div class="nft-category-content" id="nft-cars"><div class="nft-grid" id="carsGrid"></div></div>
+            <div class="nft-category-content" id="nft-mycollection"><div class="nft-grid" id="myCollectionGrid"></div></div>
         </div>
     </div>
 
     <!-- ===== TAB: GAMES ===== -->
     <div id="tab-games" class="tab-content">
         <div class="card">
-            <div class="card-title">
-                <span>🎮 الألعاب الحديثة</span>
-                <span style="color:#4A9CFF; font-size:10px;" id="gameCount">0 لعبة</span>
-            </div>
+            <div class="card-title"><span>🎮 الألعاب الحديثة</span> <span style="color:#4A9CFF; font-size:10px;" id="gameCount">0 لعبة</span></div>
             <div class="games-grid" id="gamesGrid"></div>
             <div style="font-size:9px; color:#8E8E9A; text-align:center; padding:4px 0;">
                 <i class="fas fa-info-circle"></i> اضغط على أي لعبة لتشغيلها فوراً
@@ -855,7 +624,6 @@
         <div class="nav-item active" data-tab="mining"><i class="fas fa-hard-hat"></i><span>تعدين</span></div>
         <div class="nav-item" data-tab="wallet"><i class="fas fa-wallet"></i><span>محفظة</span></div>
         <div class="nav-item" data-tab="shop"><i class="fas fa-store"></i><span>متجر</span></div>
-        <div class="nav-item" data-tab="tap"><i class="fas fa-hand-pointer"></i><span>نقر</span></div>
         <div class="nav-item" data-tab="nft"><i class="fas fa-image"></i><span>NFT</span></div>
         <div class="nav-item" data-tab="games"><i class="fas fa-gamepad"></i><span>ألعاب</span></div>
         <div class="nav-item" data-tab="settings"><i class="fas fa-cog"></i><span>إعدادات</span></div>
@@ -902,7 +670,7 @@
             <div class="stat-grid">
                 <div class="stat-item"><div class="stat-label">💰 إجمالي الأرباح</div><div class="stat-value green" id="modalTotalProfit">0.00 Cash</div></div>
                 <div class="stat-item"><div class="stat-label">⛏️ إجمالي التعدين</div><div class="stat-value blue" id="modalTotalMined">0.00 NC</div></div>
-                <div class="stat-item"><div class="stat-label">👆 إجمالي النقرات</div><div class="stat-value" id="modalTotalTaps">0</div></div>
+                <div class="stat-item"><div class="stat-label">📦 الأجهزة المملوكة</div><div class="stat-value" id="modalTotalDevices">0</div></div>
                 <div class="stat-item"><div class="stat-label">🎴 البطاقات المملوكة</div><div class="stat-value pink" id="modalTotalNFT">0</div></div>
             </div>
             <button class="save-btn" onclick="saveProfile()">💾 حفظ التغييرات</button>
@@ -919,78 +687,97 @@
     let data = {
         wallet: { NC: 0, NCR: 0, BitNC: 0, LiNC: 0, Cash: 1000 },
         pendingNC: 0,
+        pendingNCR: 0,
+        pendingBitNC: 0,
+        pendingLiNC: 0,
         isMining: false,
         log: [],
-        upgrades: { speed: 0, bonus: 0 },
-        settings: { sound: true, vibe: true },
-        tapData: { totalTaps: 0, totalEarned: 0, log: [] },
-        gameData: { sessions: 0, totalReward: 0, log: [] },
-        // NFT DATA
-        nftData: {
-            clubOwned: false,
-            players: [], // array of player ids
-            cars: [],    // array of car ids
-            transactions: []
+        upgrades: {
+            speed: 0, // عدد ترقيات سرعة NC
+            ncrSpeed: 0,
+            bitncSpeed: 0,
+            lincSpeed: 0,
+            power: 0, // الطاقة القصوى
+            efficiency: 0 // كفاءة التعدين
         },
+        settings: { sound: true, vibe: true },
+        // أجهزة التعدين
+        devices: {
+            nc: { count: 1, level: 0 }, // جهاز NC الأساسي
+            ncr: { count: 0, level: 0 },
+            bitnc: { count: 0, level: 0 },
+            linc: { count: 0, level: 0 }
+        },
+        // التريكات المؤقتة
+        boosters: {
+            nc: { active: false, remaining: 0, multiplier: 1 },
+            ncr: { active: false, remaining: 0, multiplier: 1 },
+            bitnc: { active: false, remaining: 0, multiplier: 1 },
+            linc: { active: false, remaining: 0, multiplier: 1 }
+        },
+        // الصيانة (تدهور الأجهزة)
+        maintenance: {
+            nc: { health: 100 },
+            ncr: { health: 100 },
+            bitnc: { health: 100 },
+            linc: { health: 100 }
+        },
+        // بيانات الألعاب
+        gameData: { sessions: 0, totalReward: 0, log: [] },
+        // NFT
+        nftData: { clubOwned: false, players: [], cars: [], transactions: [] },
         profile: { name: 'مستخدم جديد', level: 1, xp: 0, totalProfit: 0, totalMined: 0, image: null }
     };
 
-    // ===== NFT DATABASE =====
-    const PLAYERS_DB = [
-        // منتخبات ولاعبين
-        { id: 'messi', name: 'ليونيل ميسي', country: '🇦🇷 الأرجنتين', team: 'إنتر ميامي', rating: 95, category: 'legendary',
-        price: 1.5, emoji: '⚽' },
-        { id: 'ronaldo', name: 'كريستيانو رونالدو', country: '🇵🇹 البرتغال', team: 'النصر', rating: 94,
-        category: 'legendary', price: 1.4, emoji: '⚽' },
-        { id: 'neymar', name: 'نيمار جونيور', country: '🇧🇷 البرازيل', team: 'الهلال', rating: 90, category: 'rare',
-            price: 0.8, emoji: '⚽' },
-        { id: 'mbappe', name: 'كيليان مبابي', country: '🇫🇷 فرنسا', team: 'باريس سان جيرمان', rating: 92,
-            category: 'legendary', price: 1.2, emoji: '⚽' },
-        { id: 'haaland', name: 'إيرلينغ هالاند', country: '🇳🇴 النرويج', team: 'مانشستر سيتي', rating: 91,
-            category: 'rare', price: 0.9, emoji: '⚽' },
-        { id: 'salah', name: 'محمد صلاح', country: '🇪🇬 مصر', team: 'ليفربول', rating: 89, category: 'rare', price: 0.7,
-            emoji: '⚽' },
-        { id: 'benzema', name: 'كريم بنزيما', country: '🇫🇷 فرنسا', team: 'الاتحاد', rating: 88, category: 'rare',
-            price: 0.6, emoji: '⚽' },
-        { id: 'modric', name: 'لوكا مودريتش', country: '🇭🇷 كرواتيا', team: 'ريال مدريد', rating: 87, category: 'common',
-            price: 0.3, emoji: '⚽' },
-        { id: 'kroos', name: 'توني كروس', country: '🇩🇪 ألمانيا', team: 'ريال مدريد', rating: 86, category: 'common',
-            price: 0.25, emoji: '⚽' },
-        { id: 'debruyne', name: 'كيفن دي بروين', country: '🇧🇪 بلجيكا', team: 'مانشستر سيتي', rating: 90,
-            category: 'rare', price: 0.75, emoji: '⚽' },
-        { id: 'vinicius', name: 'فينيسيوس جونيور', country: '🇧🇷 البرازيل', team: 'ريال مدريد', rating: 89,
-            category: 'rare', price: 0.7, emoji: '⚽' },
-        { id: 'bellingham', name: 'جود بيلينغهام', country: '🏴󠁧󠁢󠁥󠁮󠁧󠁿 إنجلترا', team: 'ريال مدريد', rating: 88,
-            category: 'rare', price: 0.65, emoji: '⚽' },
-        { id: 'kane', name: 'هاري كين', country: '🏴󠁧󠁢󠁥󠁮󠁧󠁿 إنجلترا', team: 'بايرن ميونخ', rating: 89, category: 'rare',
-            price: 0.7, emoji: '⚽' },
-        { id: 'lewa', name: 'روبرت ليفاندوفسكي', country: '🇵🇱 بولندا', team: 'برشلونة', rating: 88, category: 'rare',
-            price: 0.6, emoji: '⚽' },
-        { id: 'griezmann', name: 'أنطوان غريزمان', country: '🇫🇷 فرنسا', team: 'أتلتيكو مدريد', rating: 86,
-            category: 'common', price: 0.3, emoji: '⚽' },
-        { id: 'ramos', name: 'سيرخيو راموس', country: '🇪🇸 إسبانيا', team: 'إشبيلية', rating: 85, category: 'common',
-            price: 0.25, emoji: '⚽' },
-    ];
+    // أسعار الصرف
+    let prices = { NC: 1.00, NCR: 0.05, BitNC: 0.50, LiNC: 0.20 };
 
-    const CARS_DB = [
-        // سيارات
-        { id: 'ferrari', name: 'فيراري F8', brand: 'فيراري', year: 2022, category: 'legendary', price: 1.8, emoji: '🏎️' },
-        { id: 'lambo', name: 'لامبورغيني أفينتادور', brand: 'لامبورغيني', year: 2021, category: 'legendary', price: 1.6,
-            emoji: '🏎️' },
-        { id: 'porsche', name: 'بورش 911', brand: 'بورش', year: 2023, category: 'rare', price: 0.9, emoji: '🏎️' },
-        { id: 'tesla', name: 'تسلا موديل S', brand: 'تسلا', year: 2023, category: 'rare', price: 0.8, emoji: '🚗' },
-        { id: 'mercedes', name: 'مرسيدس AMG GT', brand: 'مرسيدس', year: 2022, category: 'rare', price: 0.7, emoji: '🚗' },
-        { id: 'bmw', name: 'BMW M4', brand: 'BMW', year: 2023, category: 'rare', price: 0.65, emoji: '🚗' },
-        { id: 'audi', name: 'أودي R8', brand: 'أودي', year: 2021, category: 'common', price: 0.35, emoji: '🚗' },
-        { id: 'nissan', name: 'نيسان GTR', brand: 'نيسان', year: 2020, category: 'common', price: 0.3, emoji: '🚗' },
-        { id: 'ford', name: 'فورد موستانغ', brand: 'فورد', year: 2022, category: 'common', price: 0.25, emoji: '🚗' },
-        { id: 'chevrolet', name: 'شيفروليه كامارو', brand: 'شيفروليه', year: 2021, category: 'common', price: 0.2,
-            emoji: '🚗' },
-        { id: 'bugatti', name: 'بوجاتي شيرون', brand: 'بوجاتي', year: 2020, category: 'legendary', price: 2.0,
-        emoji: '🏎️' },
-        { id: 'koenigsegg', name: 'كونيغسيغ جيسكو', brand: 'كونيغسيغ', year: 2023, category: 'legendary', price: 2.2,
-            emoji: '🏎️' },
-    ];
+    // ===== SHOP DATABASE =====
+    const SHOP_DB = {
+        miners: [
+            { id: 'miner_ncr', name: 'جهاز تعدين NCR', icon: '⛏️', desc: 'يعدن عملات NCR', price: 0.5, currency: 'NC',
+                type: 'miner', target: 'ncr', baseSpeed: 0.00005 },
+            { id: 'miner_bitnc', name: 'جهاز تعدين BitNC', icon: '⛏️', desc: 'يعدن عملات BitNC', price: 1.0,
+                currency: 'NC', type: 'miner', target: 'bitnc', baseSpeed: 0.00003 },
+            { id: 'miner_linc', name: 'جهاز تعدين LiNC', icon: '⛏️', desc: 'يعدن عملات LiNC', price: 0.8,
+                currency: 'NC', type: 'miner', target: 'linc', baseSpeed: 0.00004 },
+        ],
+        boosters: [
+            { id: 'booster_nc_2x', name: 'مضاعف NC ×2', icon: '⚡', desc: 'مضاعفة سرعة NC لمدة 5 دقائق', price: 0.2,
+                currency: 'NC', type: 'booster', target: 'nc', duration: 300, multiplier: 2 },
+            { id: 'booster_ncr_2x', name: 'مضاعف NCR ×2', icon: '⚡', desc: 'مضاعفة سرعة NCR لمدة 5 دقائق', price: 0.3,
+                currency: 'NC', type: 'booster', target: 'ncr', duration: 300, multiplier: 2 },
+            { id: 'booster_all_3x', name: 'مضاعف شامل ×3', icon: '🔥', desc: 'مضاعفة جميع العملات 3x لمدة 3 دقائق',
+                price: 0.5, currency: 'NC', type: 'booster', target: 'all', duration: 180, multiplier: 3 },
+        ],
+        upgrades: [
+            { id: 'upgrade_nc_speed', name: 'ترقية سرعة NC', icon: '🔧', desc: '+20% سرعة NC', price: 0.3,
+                currency: 'NC', type: 'upgrade', target: 'nc_speed', maxLevel: 10 },
+            { id: 'upgrade_power', name: 'ترقية الطاقة', icon: '💡', desc: '+5 طاقة قصوى', price: 0.5, currency: 'NC',
+                type: 'upgrade', target: 'power', maxLevel: 10 },
+            { id: 'upgrade_efficiency', name: 'ترقية الكفاءة', icon: '📈', desc: '+10% كفاءة التعدين', price: 0.4,
+                currency: 'NC', type: 'upgrade', target: 'efficiency', maxLevel: 8 },
+        ],
+        maintenance: [
+            { id: 'repair_nc', name: 'صيانة جهاز NC', icon: '🛠️', desc: 'إصلاح جهاز NC بالكامل', price: 0.05,
+                currency: 'NC', type: 'repair', target: 'nc' },
+            { id: 'repair_ncr', name: 'صيانة جهاز NCR', icon: '🛠️', desc: 'إصلاح جهاز NCR بالكامل', price: 0.08,
+                currency: 'NC', type: 'repair', target: 'ncr' },
+            { id: 'repair_bitnc', name: 'صيانة جهاز BitNC', icon: '🛠️', desc: 'إصلاح جهاز BitNC بالكامل', price: 0.1,
+                currency: 'NC', type: 'repair', target: 'bitnc' },
+            { id: 'repair_linc', name: 'صيانة جهاز LiNC', icon: '🛠️', desc: 'إصلاح جهاز LiNC بالكامل', price: 0.08,
+                currency: 'NC', type: 'repair', target: 'linc' },
+        ],
+        specials: [
+            { id: 'special_startup', name: 'حزمة البداية', icon: '🎁', desc: 'جهاز NCR + مضاعف 2x لمدة 10 دقائق',
+                price: 0.6, currency: 'NC', type: 'special', items: [{ type: 'miner', target: 'ncr' }, { type: 'booster',
+                    target: 'ncr', duration: 600, multiplier: 2 }] },
+            { id: 'special_mega', name: 'الحزمة العملاقة', icon: '🚀', desc: 'جميع الأجهزة + مضاعف شامل 3x لمدة 5 دقائق',
+                price: 2.0, currency: 'NC', type: 'special', items: [{ type: 'miner', target: 'ncr' }, { type: 'miner',
+                    target: 'bitnc' }, { type: 'miner', target: 'linc' }, { type: 'booster', target: 'all',
+                    duration: 300, multiplier: 3 }] },
+        ]
+    };
 
     // ================================================================
     // 2. LOAD / SAVE
@@ -1009,29 +796,39 @@
                     else if (key === 'profile') {
                         for (let p in parsed.profile) data.profile[p] = parsed.profile[p] || (p === 'name' ?
                             'مستخدم جديد' : (p === 'level' ? 1 : 0));
-                    } else if (key === 'tapData') {
-                        for (let t in parsed.tapData) data.tapData[t] = parsed.tapData[t] || (t === 'log' ? [] :
-                        0);
                     } else if (key === 'gameData') {
                         for (let g in parsed.gameData) data.gameData[g] = parsed.gameData[g] || (g === 'log' ? [] :
                             0);
                     } else if (key === 'nftData') {
                         for (let n in parsed.nftData) data.nftData[n] = parsed.nftData[n] || (n === 'players' || n ===
                             'cars' || n === 'transactions' ? [] : false);
+                    } else if (key === 'devices') {
+                        for (let d in parsed.devices) data.devices[d] = parsed.devices[d] || { count: 0, level: 0 };
+                    } else if (key === 'boosters') {
+                        for (let b in parsed.boosters) data.boosters[b] = parsed.boosters[b] || { active: false,
+                            remaining: 0, multiplier: 1 };
+                    } else if (key === 'maintenance') {
+                        for (let m in parsed.maintenance) data.maintenance[m] = parsed.maintenance[m] || { health: 100 };
                     } else data[key] = parsed[key];
                 }
             }
         } catch (e) {}
         if (!data.log) data.log = [];
-        if (!data.tapData) data.tapData = { totalTaps: 0, totalEarned: 0, log: [] };
-        if (!data.tapData.log) data.tapData.log = [];
         if (!data.gameData) data.gameData = { sessions: 0, totalReward: 0, log: [] };
         if (!data.gameData.log) data.gameData.log = [];
         if (!data.nftData) data.nftData = { clubOwned: false, players: [], cars: [], transactions: [] };
         if (!data.nftData.players) data.nftData.players = [];
         if (!data.nftData.cars) data.nftData.cars = [];
         if (!data.nftData.transactions) data.nftData.transactions = [];
-        if (!data.upgrades) data.upgrades = { speed: 0, bonus: 0 };
+        if (!data.upgrades) data.upgrades = { speed: 0, ncrSpeed: 0, bitncSpeed: 0, lincSpeed: 0, power: 0,
+            efficiency: 0 };
+        if (!data.devices) data.devices = { nc: { count: 1, level: 0 }, ncr: { count: 0, level: 0 }, bitnc: { count: 0,
+                level: 0 }, linc: { count: 0, level: 0 } };
+        if (!data.boosters) data.boosters = { nc: { active: false, remaining: 0, multiplier: 1 }, ncr: { active: false,
+                remaining: 0, multiplier: 1 }, bitnc: { active: false, remaining: 0, multiplier: 1 }, linc: { active: false,
+                remaining: 0, multiplier: 1 } };
+        if (!data.maintenance) data.maintenance = { nc: { health: 100 }, ncr: { health: 100 }, bitnc: { health: 100 },
+            linc: { health: 100 } };
         if (!data.profile) data.profile = { name: 'مستخدم جديد', level: 1, xp: 0, totalProfit: 0, totalMined: 0,
             image: null };
     }
@@ -1081,9 +878,36 @@
     }
 
     // ================================================================
-    // 5. MINING (unchanged)
+    // 5. MINING (with multiple currencies)
     // ================================================================
     let miningInterval = null;
+
+    function getMiningSpeed(currency) {
+        const baseSpeed = {
+            nc: 0.0001,
+            ncr: 0.00005,
+            bitnc: 0.00003,
+            linc: 0.00004
+        };
+        const deviceCount = data.devices[currency]?.count || 0;
+        const level = data.devices[currency]?.level || 0;
+        const speedUpgrade = data.upgrades[currency === 'nc' ? 'speed' : currency + 'Speed'] || 0;
+        const efficiency = data.upgrades.efficiency || 0;
+        const booster = data.boosters[currency];
+        const multiplier = (booster?.active ? booster.multiplier : 1);
+        const health = data.maintenance[currency]?.health || 100;
+        const healthPenalty = 1 - (100 - health) / 200; // 50% عند الصفر
+
+        let speed = baseSpeed[currency] || 0;
+        speed *= (1 + deviceCount * 0.1);
+        speed *= (1 + level * 0.05);
+        speed *= (1 + speedUpgrade * 0.2);
+        speed *= (1 + efficiency * 0.1);
+        speed *= multiplier;
+        speed *= healthPenalty;
+        speed *= (1 + (data.upgrades.power || 0) * 0.02);
+        return Math.max(0.000001, speed);
+    }
 
     function startMining() {
         if (data.isMining) return;
@@ -1093,11 +917,26 @@
         playBeep(800, 0.1);
         doVibe();
         miningInterval = setInterval(() => {
-            let speed = 0.0001 * (1 + (data.upgrades.speed || 0) * 0.2);
-            data.pendingNC += speed;
-            data.profile.totalMined += speed;
+            // NC
+            const ncSpeed = getMiningSpeed('nc');
+            data.pendingNC += ncSpeed;
+            data.profile.totalMined += ncSpeed;
+            // NCR
+            const ncrSpeed = getMiningSpeed('ncr');
+            data.pendingNCR += ncrSpeed;
+            // BitNC
+            const bitncSpeed = getMiningSpeed('bitnc');
+            data.pendingBitNC += bitncSpeed;
+            // LiNC
+            const lincSpeed = getMiningSpeed('linc');
+            data.pendingLiNC += lincSpeed;
+
+            // تحديث الواجهة
             document.getElementById('pendingDisplay').textContent = data.pendingNC.toFixed(8) + ' NC';
-            document.getElementById('hashRateDisplay').textContent = (speed * 10).toFixed(4) + ' NC/ث';
+            document.getElementById('hashRateDisplay').textContent = (ncSpeed * 10).toFixed(4) + ' NC/ث';
+
+            // تحديث الأجهزة
+            updateShopUI();
             updateProfileUI();
             saveData();
         }, 100);
@@ -1117,21 +956,42 @@
     document.getElementById('miningToggleBtn').addEventListener('click', function() { data.isMining ? stopMining() :
         startMining(); });
 
+    // جمع جميع العملات
     document.getElementById('collectBtn').addEventListener('click', function() {
-        if (data.pendingNC <= 0) { addLog('⚠️ لا يوجد مبلغ عالق');
-            playBeep(300, 0.1); return; }
-        let bonus = 1 + (data.upgrades.bonus || 0) * 0.1;
-        let amount = data.pendingNC * bonus;
-        data.wallet.NC += amount;
-        data.pendingNC = 0;
-        document.getElementById('pendingDisplay').textContent = '0.00000000 NC';
+        let collected = false;
+        if (data.pendingNC > 0) {
+            data.wallet.NC += data.pendingNC;
+            data.pendingNC = 0;
+            collected = true;
+        }
+        if (data.pendingNCR > 0) {
+            data.wallet.NCR += data.pendingNCR;
+            data.pendingNCR = 0;
+            collected = true;
+        }
+        if (data.pendingBitNC > 0) {
+            data.wallet.BitNC += data.pendingBitNC;
+            data.pendingBitNC = 0;
+            collected = true;
+        }
+        if (data.pendingLiNC > 0) {
+            data.wallet.LiNC += data.pendingLiNC;
+            data.pendingLiNC = 0;
+            collected = true;
+        }
+        if (!collected) {
+            addLog('⚠️ لا توجد عملات عالقة');
+            playBeep(300, 0.1);
+            return;
+        }
         playBeep(1000, 0.2);
         doVibe();
-        addLog(`✅ تم جمع ${amount.toFixed(8)} NC (مع مكافأة ${(bonus-1)*100}%)`);
+        addLog('✅ تم جمع جميع العملات العالقة');
         updateAllUI();
         saveData();
     });
 
+    // تحويل العملات (بين العملات)
     let convertPanelVisible = false;
     document.getElementById('convertBtn').addEventListener('click', function() {
         const panel = document.getElementById('convertPanel');
@@ -1169,7 +1029,7 @@
     });
 
     // ================================================================
-    // 6. UI UPDATES (Wallet, Shop)
+    // 6. UI UPDATES (Wallet, Profile, Shop)
     // ================================================================
     function updateWalletUI() {
         document.getElementById('balNC').textContent = data.wallet.NC.toFixed(6);
@@ -1179,45 +1039,16 @@
         document.getElementById('balCash').textContent = data.wallet.Cash.toFixed(2);
         document.getElementById('pendingDisplay').textContent = data.pendingNC.toFixed(8) + ' NC';
         document.getElementById('headerPrice').textContent = prices.NC.toFixed(3);
-    }
-
-    function renderShop() {
-        const list = document.getElementById('shopList');
-        const items = [
-            { id: 'speed', name: '⚙️ تحسين سرعة التعدين', cost: 0.5, desc: 'زيادة السرعة 20%', level: data.upgrades
-                    .speed || 0, max: 10 },
-            { id: 'bonus', name: '🎯 مضاعف الجمع', cost: 1.0, desc: 'مكافأة 10% عند الجمع', level: data.upgrades
-                    .bonus || 0, max: 5 }
-        ];
-        list.innerHTML = items.map(item => {
-            const canBuy = data.wallet.NC >= item.cost && item.level < item.max;
-            return `<div class="shop-item"><div class="info"><strong class="text-white">${item.name}</strong> <small>${item.desc} (${item.level}/${item.max})</small></div><button class="buy-btn" data-id="${item.id}" data-cost="${item.cost}" ${!canBuy ? 'disabled' : ''}>${item.level >= item.max ? 'مكتمل' : item.cost + ' NC'}</button></div>`;
-        }).join('');
-        document.querySelectorAll('.shop-item .buy-btn').forEach(btn => {
-            btn.addEventListener('click', function() {
-                const id = this.dataset.id,
-                    cost = parseFloat(this.dataset.cost);
-                if (data.wallet.NC < cost) { playBeep(200, 0.1); return; }
-                data.wallet.NC -= cost;
-                if (id === 'speed') data.upgrades.speed = (data.upgrades.speed || 0) + 1;
-                if (id === 'bonus') data.upgrades.bonus = (data.upgrades.bonus || 0) + 1;
-                addLog(`🛒 شراء ترقية: ${id} مقابل ${cost} NC`);
-                playBeep(1300, 0.2);
-                doVibe();
-                updateAllUI();
-                saveData();
-                renderShop();
-            });
-        });
+        document.getElementById('shopBalance').textContent = data.wallet.NC.toFixed(2) + ' NC';
     }
 
     function updateAllUI() {
         updateWalletUI();
-        renderShop();
+        renderShopAll();
         renderLog();
-        saveData();
         updateNFTUI();
         updateProfileUI();
+        saveData();
     }
 
     // ================================================================
@@ -1230,68 +1061,280 @@
     }
 
     // ================================================================
-    // 8. TAP (0.01 NC)
+    // 8. SHOP (INTEGRATED)
     // ================================================================
-    const TAP_REWARD = 0.01;
 
-    function handleTap(e) {
-        const coin = document.getElementById('tapCoin');
-        const rect = coin.getBoundingClientRect();
-        const x = (e.clientX || e.touches?.[0]?.clientX || rect.left + rect.width / 2) - rect.left;
-        const y = (e.clientY || e.touches?.[0]?.clientY || rect.top + rect.height / 2) - rect.top;
-        const ripple = document.createElement('span');
-        ripple.className = 'tap-ripple';
-        ripple.style.left = (x - 5) + 'px';
-        ripple.style.top = (y - 5) + 'px';
-        coin.appendChild(ripple);
-        setTimeout(() => ripple.remove(), 700);
+    function renderShopAll() {
+        renderShopCategory('miners');
+        renderShopCategory('boosters');
+        renderShopCategory('upgrades');
+        renderShopCategory('maintenance');
+        renderShopCategory('specials');
 
-        data.wallet.NC += TAP_REWARD;
-        data.tapData.totalTaps++;
-        data.tapData.totalEarned += TAP_REWARD;
-        data.profile.totalProfit += TAP_REWARD * 0.5;
-
-        const now = new Date();
-        const timeStr = now.toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-        data.tapData.log.unshift({ time: timeStr, text: `👆 نقرة +${TAP_REWARD.toFixed(2)} NC` });
-        if (data.tapData.log.length > 30) data.tapData.log.pop();
-
-        updateTapUI();
-        updateAllUI();
-        updateProfileUI();
-        saveData();
-        playBeep(900, 0.06);
-        doVibe();
-        renderTapLog();
+        // تحديث العدد
+        let totalItems = 0;
+        for (let cat in SHOP_DB) {
+            totalItems += SHOP_DB[cat].length;
+        }
+        document.getElementById('shopCount').textContent = totalItems + ' عنصر';
+        // تحديث إحصائيات
+        let totalDevices = 0;
+        for (let d in data.devices) totalDevices += data.devices[d].count;
+        document.getElementById('shopDevices').textContent = totalDevices;
+        document.getElementById('shopPower').textContent = data.upgrades.power || 0;
     }
 
-    function updateTapUI() {
-        document.getElementById('tapEarnings').textContent = data.tapData.totalEarned.toFixed(2) + ' NC';
-        document.getElementById('tapCount').textContent = data.tapData.totalTaps;
+    function renderShopCategory(category) {
+        const gridId = category + 'Grid';
+        const grid = document.getElementById(gridId);
+        if (!grid) return;
+        const items = SHOP_DB[category] || [];
+        grid.innerHTML = items.map(item => {
+            // التحقق من التملك
+            let owned = false;
+            let canBuy = true;
+            let price = item.price;
+            let currency = item.currency || 'NC';
+            let maxLevelReached = false;
+
+            if (item.type === 'miner') {
+                const dev = data.devices[item.target];
+                owned = dev && dev.count > 0;
+                // يمكن شراء أجهزة متعددة
+                canBuy = data.wallet[currency] >= price;
+            } else if (item.type === 'upgrade') {
+                const currentLevel = data.upgrades[item.target] || 0;
+                maxLevelReached = currentLevel >= item.maxLevel;
+                owned = currentLevel > 0;
+                canBuy = data.wallet[currency] >= price && !maxLevelReached;
+                // سعر متزايد
+                const levelFactor = 1 + currentLevel * 0.2;
+                price = item.price * levelFactor;
+            } else if (item.type === 'booster') {
+                const boost = data.boosters[item.target] || data.boosters['nc'];
+                owned = boost.active;
+                canBuy = data.wallet[currency] >= price && !boost.active;
+            } else if (item.type === 'repair') {
+                const health = data.maintenance[item.target]?.health || 100;
+                owned = health >= 100;
+                canBuy = data.wallet[currency] >= price && health < 100;
+            } else if (item.type === 'special') {
+                canBuy = data.wallet[currency] >= price;
+                owned = false;
+            }
+
+            const isDisabled = !canBuy || maxLevelReached;
+
+            return `
+                <div class="shop-item-card">
+                    <div class="item-icon">${item.icon}</div>
+                    <div class="item-name">${item.name}</div>
+                    <div class="item-desc">${item.desc}</div>
+                    <div class="item-price">${price.toFixed(2)} ${currency}</div>
+                    ${owned ? '<div class="item-owned">✅ مملوك</div>' : ''}
+                    ${maxLevelReached ? '<div class="item-owned" style="color:#FFA500;">🔝 الحد الأقصى</div>' : ''}
+                    <button class="btn btn-buy-shop shop-buy-btn" data-id="${item.id}" data-category="${category}" ${isDisabled ? 'disabled' : ''}>
+                        ${item.type === 'repair' ? '🔧 إصلاح' : (maxLevelReached ? 'مكتمل' : 'شراء')}
+                    </button>
+                </div>
+            `;
+        }).join('');
+
+        // ربط الأحداث
+        grid.querySelectorAll('.shop-buy-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const id = this.dataset.id;
+                const category = this.dataset.category;
+                buyShopItem(id, category);
+            });
+        });
     }
 
-    function renderTapLog() {
-        const list = document.getElementById('tapLogList');
-        const count = document.getElementById('tapLogCount');
-        count.textContent = data.tapData.log.length;
-        if (data.tapData.log.length === 0) {
-            list.innerHTML = '<div class="log-item" style="color:#777;text-align:center;">لا توجد نقرات بعد</div>';
+    function buyShopItem(itemId, category) {
+        const item = SHOP_DB[category]?.find(i => i.id === itemId);
+        if (!item) return;
+
+        let price = item.price;
+        let currency = item.currency || 'NC';
+
+        // تعديل السعر حسب المستوى للترقيات
+        if (item.type === 'upgrade') {
+            const currentLevel = data.upgrades[item.target] || 0;
+            price = item.price * (1 + currentLevel * 0.2);
+        }
+
+        if (data.wallet[currency] < price) {
+            alert(`❌ رصيد غير كاف. تحتاج ${price.toFixed(2)} ${currency}`);
+            playBeep(200, 0.2);
             return;
         }
-        list.innerHTML = data.tapData.log.slice(0, 30).map(l =>
-            `<div class="log-item"><span>${l.text}</span><span class="time">${l.time}</span></div>`
-        ).join('');
+
+        // تنفيذ الشراء
+        data.wallet[currency] -= price;
+
+        if (item.type === 'miner') {
+            data.devices[item.target].count = (data.devices[item.target].count || 0) + 1;
+            addLog(`⛏️ تم شراء جهاز تعدين ${item.target.toUpperCase()}`);
+        } else if (item.type === 'upgrade') {
+            data.upgrades[item.target] = (data.upgrades[item.target] || 0) + 1;
+            addLog(`🔧 تم شراء ترقية ${item.name}`);
+        } else if (item.type === 'booster') {
+            const target = item.target === 'all' ? 'nc' : item.target;
+            // تفعيل المضاعف لجميع العملات أو للعملة المحددة
+            if (item.target === 'all') {
+                for (let c of ['nc', 'ncr', 'bitnc', 'linc']) {
+                    data.boosters[c].active = true;
+                    data.boosters[c].remaining = item.duration;
+                    data.boosters[c].multiplier = item.multiplier;
+                }
+                // مؤقت لإنهاء المضاعفات
+                if (window.boosterTimer) clearInterval(window.boosterTimer);
+                window.boosterTimer = setInterval(() => {
+                    let allDone = true;
+                    for (let c of ['nc', 'ncr', 'bitnc', 'linc']) {
+                        if (data.boosters[c].active) {
+                            data.boosters[c].remaining--;
+                            if (data.boosters[c].remaining <= 0) {
+                                data.boosters[c].active = false;
+                                data.boosters[c].remaining = 0;
+                                data.boosters[c].multiplier = 1;
+                            } else {
+                                allDone = false;
+                            }
+                        }
+                    }
+                    if (allDone) clearInterval(window.boosterTimer);
+                    saveData();
+                }, 1000);
+            } else {
+                data.boosters[target].active = true;
+                data.boosters[target].remaining = item.duration;
+                data.boosters[target].multiplier = item.multiplier;
+                setTimeout(() => {
+                    data.boosters[target].active = false;
+                    data.boosters[target].remaining = 0;
+                    data.boosters[target].multiplier = 1;
+                    saveData();
+                    updateShopUI();
+                }, item.duration * 1000);
+            }
+            addLog(`⚡ تم تفعيل مضاعف ${item.name}`);
+        } else if (item.type === 'repair') {
+            data.maintenance[item.target].health = 100;
+            addLog(`🛠️ تم إصلاح جهاز ${item.target.toUpperCase()}`);
+        } else if (item.type === 'special') {
+            // تنفيذ الحزمة الخاصة
+            item.items.forEach(sub => {
+                if (sub.type === 'miner') {
+                    data.devices[sub.target].count = (data.devices[sub.target].count || 0) + 1;
+                } else if (sub.type === 'booster') {
+                    const t = sub.target === 'all' ? 'nc' : sub.target;
+                    if (sub.target === 'all') {
+                        for (let c of ['nc', 'ncr', 'bitnc', 'linc']) {
+                            data.boosters[c].active = true;
+                            data.boosters[c].remaining = sub.duration;
+                            data.boosters[c].multiplier = sub.multiplier;
+                        }
+                    } else {
+                        data.boosters[t].active = true;
+                        data.boosters[t].remaining = sub.duration;
+                        data.boosters[t].multiplier = sub.multiplier;
+                    }
+                }
+            });
+            addLog(`🎁 تم شراء الحزمة الخاصة: ${item.name}`);
+        }
+
+        playBeep(1000, 0.2);
+        doVibe();
+        updateAllUI();
+        saveData();
     }
 
-    document.getElementById('tapCoin').addEventListener('click', handleTap);
-    document.getElementById('tapCoin').addEventListener('touchstart', function(e) {
-        e.preventDefault();
-        handleTap(e);
+    // Shop Category Tabs
+    document.querySelectorAll('.shop-category-tabs .tab-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            document.querySelectorAll('.shop-category-tabs .tab-btn').forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+            const cat = this.dataset.cat;
+            document.querySelectorAll('.shop-category-content').forEach(c => c.classList.remove('active'));
+            document.getElementById('shop-' + cat).classList.add('active');
+            renderShopCategory(cat);
+        });
     });
 
+    function updateShopUI() {
+        renderShopAll();
+        // تحديث الـ boosters في الواجهة
+        for (let c of ['nc', 'ncr', 'bitnc', 'linc']) {
+            const boost = data.boosters[c];
+            if (boost.active) {
+                // يمكن عرض مؤقت في مكان آخر إذا أردت
+            }
+        }
+        document.getElementById('shopBalance').textContent = data.wallet.NC.toFixed(2) + ' NC';
+        let totalDevices = 0;
+        for (let d in data.devices) totalDevices += data.devices[d].count;
+        document.getElementById('shopDevices').textContent = totalDevices;
+        document.getElementById('shopPower').textContent = data.upgrades.power || 0;
+    }
+
     // ================================================================
-    // 9. NFT MARKET
+    // 9. NFT MARKET (unchanged from previous)
     // ================================================================
+    const PLAYERS_DB = [
+        { id: 'messi', name: 'ليونيل ميسي', country: '🇦🇷 الأرجنتين', team: 'إنتر ميامي', rating: 95, category: 'legendary',
+            price: 1.5, emoji: '⚽' },
+        { id: 'ronaldo', name: 'كريستيانو رونالدو', country: '🇵🇹 البرتغال', team: 'النصر', rating: 94,
+            category: 'legendary', price: 1.4, emoji: '⚽' },
+        { id: 'neymar', name: 'نيمار جونيور', country: '🇧🇷 البرازيل', team: 'الهلال', rating: 90, category: 'rare',
+            price: 0.8, emoji: '⚽' },
+        { id: 'mbappe', name: 'كيليان مبابي', country: '🇫🇷 فرنسا', team: 'باريس سان جيرمان', rating: 92,
+            category: 'legendary', price: 1.2, emoji: '⚽' },
+        { id: 'haaland', name: 'إيرلينغ هالاند', country: '🇳🇴 النرويج', team: 'مانشستر سيتي', rating: 91,
+            category: 'rare', price: 0.9, emoji: '⚽' },
+        { id: 'salah', name: 'محمد صلاح', country: '🇪🇬 مصر', team: 'ليفربول', rating: 89, category: 'rare', price: 0.7,
+            emoji: '⚽' },
+        { id: 'benzema', name: 'كريم بنزيما', country: '🇫🇷 فرنسا', team: 'الاتحاد', rating: 88, category: 'rare',
+            price: 0.6, emoji: '⚽' },
+        { id: 'modric', name: 'لوكا مودريتش', country: '🇭🇷 كرواتيا', team: 'ريال مدريد', rating: 87, category: 'common',
+            price: 0.3, emoji: '⚽' },
+        { id: 'kroos', name: 'توني كروس', country: '🇩🇪 ألمانيا', team: 'ريال مدريد', rating: 86, category: 'common',
+            price: 0.25, emoji: '⚽' },
+        { id: 'debruyne', name: 'كيفن دي بروين', country: '🇧🇪 بلجيكا', team: 'مانشستر سيتي', rating: 90,
+            category: 'rare', price: 0.75, emoji: '⚽' },
+        { id: 'vinicius', name: 'فينيسيوس جونيور', country: '🇧🇷 البرازيل', team: 'ريال مدريد', rating: 89,
+            category: 'rare', price: 0.7, emoji: '⚽' },
+        { id: 'bellingham', name: 'جود بيلينغهام', country: '🏴󠁧󠁢󠁥󠁮󠁧󠁿 إنجلترا', team: 'ريال مدريد', rating: 88,
+            category: 'rare', price: 0.65, emoji: '⚽' },
+        { id: 'kane', name: 'هاري كين', country: '🏴󠁧󠁢󠁥󠁮󠁧󠁿 إنجلترا', team: 'بايرن ميونخ', rating: 89, category: 'rare',
+            price: 0.7, emoji: '⚽' },
+        { id: 'lewa', name: 'روبرت ليفاندوفسكي', country: '🇵🇱 بولندا', team: 'برشلونة', rating: 88, category: 'rare',
+            price: 0.6, emoji: '⚽' },
+        { id: 'griezmann', name: 'أنطوان غريزمان', country: '🇫🇷 فرنسا', team: 'أتلتيكو مدريد', rating: 86,
+            category: 'common', price: 0.3, emoji: '⚽' },
+        { id: 'ramos', name: 'سيرخيو راموس', country: '🇪🇸 إسبانيا', team: 'إشبيلية', rating: 85, category: 'common',
+            price: 0.25, emoji: '⚽' },
+    ];
+
+    const CARS_DB = [
+        { id: 'ferrari', name: 'فيراري F8', brand: 'فيراري', year: 2022, category: 'legendary', price: 1.8, emoji: '🏎️' },
+        { id: 'lambo', name: 'لامبورغيني أفينتادور', brand: 'لامبورغيني', year: 2021, category: 'legendary', price: 1.6,
+            emoji: '🏎️' },
+        { id: 'porsche', name: 'بورش 911', brand: 'بورش', year: 2023, category: 'rare', price: 0.9, emoji: '🏎️' },
+        { id: 'tesla', name: 'تسلا موديل S', brand: 'تسلا', year: 2023, category: 'rare', price: 0.8, emoji: '🚗' },
+        { id: 'mercedes', name: 'مرسيدس AMG GT', brand: 'مرسيدس', year: 2022, category: 'rare', price: 0.7, emoji: '🚗' },
+        { id: 'bmw', name: 'BMW M4', brand: 'BMW', year: 2023, category: 'rare', price: 0.65, emoji: '🚗' },
+        { id: 'audi', name: 'أودي R8', brand: 'أودي', year: 2021, category: 'common', price: 0.35, emoji: '🚗' },
+        { id: 'nissan', name: 'نيسان GTR', brand: 'نيسان', year: 2020, category: 'common', price: 0.3, emoji: '🚗' },
+        { id: 'ford', name: 'فورد موستانغ', brand: 'فورد', year: 2022, category: 'common', price: 0.25, emoji: '🚗' },
+        { id: 'chevrolet', name: 'شيفروليه كامارو', brand: 'شيفروليه', year: 2021, category: 'common', price: 0.2,
+            emoji: '🚗' },
+        { id: 'bugatti', name: 'بوجاتي شيرون', brand: 'بوجاتي', year: 2020, category: 'legendary', price: 2.0,
+            emoji: '🏎️' },
+        { id: 'koenigsegg', name: 'كونيغسيغ جيسكو', brand: 'كونيغسيغ', year: 2023, category: 'legendary', price: 2.2,
+            emoji: '🏎️' },
+    ];
 
     function getRarityClass(category) {
         switch (category) {
@@ -1341,7 +1384,6 @@
                     </div>
                 `;
             }).join('');
-            // bind events
             playersGrid.querySelectorAll('.btn-buy-nft').forEach(btn => {
                 btn.addEventListener('click', function() {
                     const id = this.dataset.id;
@@ -1391,7 +1433,6 @@
                 });
             });
         } else {
-            // My Collection
             const allMyItems = [];
             data.nftData.players.forEach(id => {
                 const p = PLAYERS_DB.find(x => x.id === id);
@@ -1433,28 +1474,14 @@
     }
 
     function buyNFT(id, type, price) {
-        if (!data.nftData.clubOwned) {
-            alert('⚠️ يجب فتح النادي أولاً! (زر "فتح النادي")');
-            return;
-        }
-        if (data.wallet.NC < price) {
-            alert('❌ رصيد غير كاف');
-            playBeep(200, 0.2);
-            return;
-        }
-        if (type === 'player' && data.nftData.players.includes(id)) {
-            alert('⚠️ هذه البطاقة مملوكة بالفعل');
-            return;
-        }
-        if (type === 'car' && data.nftData.cars.includes(id)) {
-            alert('⚠️ هذه البطاقة مملوكة بالفعل');
-            return;
-        }
+        if (!data.nftData.clubOwned) { alert('⚠️ يجب فتح النادي أولاً!'); return; }
+        if (data.wallet.NC < price) { alert('❌ رصيد غير كاف');
+            playBeep(200, 0.2); return; }
+        if (type === 'player' && data.nftData.players.includes(id)) { alert('⚠️ هذه البطاقة مملوكة بالفعل'); return; }
+        if (type === 'car' && data.nftData.cars.includes(id)) { alert('⚠️ هذه البطاقة مملوكة بالفعل'); return; }
         data.wallet.NC -= price;
         if (type === 'player') data.nftData.players.push(id);
         else data.nftData.cars.push(id);
-        data.nftData.transactions.push({ time: new Date().toISOString(), text: `شراء ${type} ${id} بـ ${price.toFixed(2)} NC`,
-            type: 'buy' });
         addLog(`🎴 شراء ${type} ${id} بـ ${price.toFixed(2)} NC`);
         playBeep(1000, 0.2);
         doVibe();
@@ -1476,8 +1503,6 @@
             data.nftData.cars.splice(idx, 1);
         }
         data.wallet.NC += price;
-        data.nftData.transactions.push({ time: new Date().toISOString(), text: `بيع ${type} ${id} بـ ${price.toFixed(2)} NC`,
-            type: 'sell' });
         addLog(`💰 بيع ${type} ${id} بـ ${price.toFixed(2)} NC`);
         playBeep(800, 0.15);
         doVibe();
@@ -1489,15 +1514,9 @@
     }
 
     function toggleClub() {
-        if (data.nftData.clubOwned) {
-            alert('✅ النادي مفتوح بالفعل');
-            return;
-        }
-        if (data.wallet.NC < 0.5) {
-            alert('❌ رصيد غير كاف. تحتاج 0.5 NC لفتح النادي');
-            playBeep(200, 0.2);
-            return;
-        }
+        if (data.nftData.clubOwned) { alert('✅ النادي مفتوح بالفعل'); return; }
+        if (data.wallet.NC < 0.5) { alert('❌ رصيد غير كاف. تحتاج 0.5 NC لفتح النادي');
+            playBeep(200, 0.2); return; }
         data.wallet.NC -= 0.5;
         data.nftData.clubOwned = true;
         addLog('🏟️ تم فتح النادي');
@@ -1529,10 +1548,9 @@
 
     document.getElementById('clubBuyBtn').addEventListener('click', toggleClub);
 
-    // NFT Category Tabs
-    document.querySelectorAll('.tab-btn[data-cat]').forEach(btn => {
+    document.querySelectorAll('.nft-category-tabs .tab-btn').forEach(btn => {
         btn.addEventListener('click', function() {
-            document.querySelectorAll('.tab-btn[data-cat]').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.nft-category-tabs .tab-btn').forEach(b => b.classList.remove('active'));
             this.classList.add('active');
             const cat = this.dataset.cat;
             document.querySelectorAll('.nft-category-content').forEach(c => c.classList.remove('active'));
@@ -1567,11 +1585,8 @@
         GAMES_LIST.forEach(game => {
             const card = document.createElement('div');
             card.className = 'game-card';
-            card.innerHTML = `
-                <div class="game-emoji">${game.emoji}</div>
-                <div class="game-name">${game.name}</div>
-                <div class="game-category">${game.category}</div>
-            `;
+            card.innerHTML =
+                `<div class="game-emoji">${game.emoji}</div><div class="game-name">${game.name}</div><div class="game-category">${game.category}</div>`;
             card.addEventListener('click', () => openGame(game));
             grid.appendChild(card);
         });
@@ -1582,7 +1597,6 @@
     let gameTimer = null;
     let gameSeconds = 0;
     let gameReward = 0;
-    let gameSessionActive = false;
 
     function openGame(game) {
         currentGame = game;
@@ -1620,7 +1634,6 @@
             gameTimer = null; }
         gameSeconds = 0;
         gameReward = 0;
-        gameSessionActive = false;
         document.getElementById('gamePlayTime').textContent = '00:00';
         document.getElementById('gameRewardDisplay').textContent = '0.0000 NC';
         document.getElementById('claimGameRewardBtn').disabled = false;
@@ -1629,7 +1642,6 @@
 
     function startGameTimer() {
         if (gameTimer) return;
-        gameSessionActive = true;
         gameTimer = setInterval(() => {
             gameSeconds++;
             const mins = Math.floor(gameSeconds / 60);
@@ -1648,7 +1660,6 @@
 
     document.getElementById('claimGameRewardBtn').addEventListener('click', function() {
         if (gameReward <= 0) { alert('لا توجد مكافأة مستحقة. العب لمدة 30 ثانية على الأقل!'); return; }
-        if (data.wallet.NC === undefined) data.wallet.NC = 0;
         data.wallet.NC += gameReward;
         data.gameData.totalReward += gameReward;
         const now = new Date();
@@ -1695,10 +1706,12 @@
     }
 
     function updateProfileUI() {
+        let totalDevices = 0;
+        for (let d in data.devices) totalDevices += data.devices[d].count;
         let xp = data.profile.totalMined * 100 + data.profile.totalProfit * 0.5 +
-            data.tapData.totalTaps * 0.5 + data.tapData.totalEarned * 2 +
             data.gameData.sessions * 2 + data.gameData.totalReward * 5 +
-            (data.nftData.players.length + data.nftData.cars.length) * 3;
+            (data.nftData.players.length + data.nftData.cars.length) * 3 +
+            totalDevices * 2 + data.upgrades.speed * 5 + data.upgrades.power * 10;
         data.profile.xp = Math.floor(xp);
         let level = Math.floor(xp / 500) + 1;
         data.profile.level = Math.min(level, 100);
@@ -1710,7 +1723,7 @@
         document.getElementById('modalLevelBar').style.width = progress + '%';
         document.getElementById('modalTotalProfit').textContent = data.profile.totalProfit.toFixed(2) + ' Cash';
         document.getElementById('modalTotalMined').textContent = data.profile.totalMined.toFixed(6) + ' NC';
-        document.getElementById('modalTotalTaps').textContent = data.tapData.totalTaps;
+        document.getElementById('modalTotalDevices').textContent = totalDevices;
         document.getElementById('modalTotalNFT').textContent = data.nftData.players.length + data.nftData.cars.length;
 
         document.getElementById('settingsProfileName').textContent = data.profile.name || 'مستخدم جديد';
@@ -1769,9 +1782,7 @@
             document.getElementById('tab-' + tabId).classList.add('active');
             playBeep(300, 0.03);
             if (tabId === 'wallet') updateWalletUI();
-            if (tabId === 'shop') renderShop();
-            if (tabId === 'tap') { updateTapUI();
-                renderTapLog(); }
+            if (tabId === 'shop') { updateShopUI(); }
             if (tabId === 'nft') { updateNFTUI();
                 renderNFT('players'); }
             if (tabId === 'games') renderGames();
@@ -1803,18 +1814,17 @@
         startMining();
         updateAllUI();
         renderLog();
-        updateTapUI();
-        renderTapLog();
         renderGames();
         updateProfileUI();
         updateNFTUI();
         renderNFT('players');
+        updateShopUI();
 
-        addLog('🏛️ مرحباً في HyeX Exchange - الإصدار 14.0 (سوق NFT)');
+        addLog('🏛️ مرحباً في HyeX Exchange - الإصدار 15.0 (متجر متكامل)');
         if (data.pendingNC > 0) document.getElementById('pendingDisplay').textContent = data.pendingNC.toFixed(8) + ' NC';
     };
 
     setInterval(() => saveData(), 5000);
 </script>
 </body>
-                                                                                   </html>
+    </html>
