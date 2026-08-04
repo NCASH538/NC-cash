@@ -108,7 +108,7 @@
         .tab-content::-webkit-scrollbar-track { background: var(--bg-input); }
         .tab-content::-webkit-scrollbar-thumb { background: var(--blue); border-radius: 10px; }
 
-        /* ===== MINING AREA (New Design) ===== */
+        /* ===== MINING AREA ===== */
         .mining-currency-list {
             display: flex;
             flex-direction: column;
@@ -177,7 +177,7 @@
         }
         @keyframes spin-fan { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-        /* ===== HEAT & SPEED INDICATORS ===== */
+        /* ===== INDICATORS ===== */
         .mining-indicators {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -222,6 +222,23 @@
         .heat-status-text.danger { color: var(--red); }
         .heat-status-text.cooling { color: var(--blue); }
 
+        /* ===== PROFIT INDICATORS ===== */
+        .profit-indicators {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4px;
+            margin: 6px 0 8px;
+        }
+        .profit-box {
+            background: var(--bg-input);
+            border-radius: 10px;
+            padding: 4px 6px;
+            border: 1px solid var(--border-color);
+            text-align: center;
+        }
+        .profit-box .label { font-size: 7px; color: var(--text-muted); display: block; }
+        .profit-box .value { font-size: 14px; font-weight: 700; color: var(--green); font-variant-numeric: tabular-nums; }
+
         .mining-total-pending {
             display: flex;
             justify-content: space-between;
@@ -249,7 +266,7 @@
         .log-item { font-size: 10px; padding: 3px 0; border-bottom: 1px solid var(--border-color); color: var(--text-secondary); display: flex; justify-content: space-between; }
         .log-item .time { color: var(--text-muted); font-size: 9px; }
 
-        /* ===== BOTTOM ACTION BAR ===== */
+        /* ===== ACTION BAR ===== */
         .action-bar {
             flex-shrink: 0;
             background: var(--bg-card);
@@ -560,10 +577,10 @@
             <h1>🏛️ HyeX Exchange</h1>
             <div class="subtitle" data-i18n="subtitle">المنصة الرقمية الرسمية | نسخة تجريبية</div>
         </div>
-        <div class="badge"><i class="fas fa-shield-alt"></i> v20.0</div>
+        <div class="badge"><i class="fas fa-shield-alt"></i> v21.0</div>
     </div>
 
-    <!-- ===== PRICE TICKER (يُظهر سرعات التعدين) ===== -->
+    <!-- ===== PRICE TICKER ===== -->
     <div class="price-ticker" id="priceTicker">
         <div class="ticker-item"><span class="label">NC:</span> <span class="value" id="tickerNC">0.0000</span> <span class="unit">/ث</span></div>
         <div class="ticker-item"><span class="label">NC+:</span> <span class="value" id="tickerNCplus">0.0000</span> <span class="unit">/ث</span></div>
@@ -575,11 +592,9 @@
     <div id="tab-mining" class="tab-content active">
         <div class="card">
             <div class="card-title"><span data-i18n="mining_dashboard">⚡ لوحة التعدين</span></div>
-            <div class="mining-currency-list" id="miningList">
-                <!-- يتم توليدها بواسطة JS -->
-            </div>
+            <div class="mining-currency-list" id="miningList"></div>
 
-            <!-- المؤشرات -->
+            <!-- المؤشرات الأساسية -->
             <div class="mining-indicators">
                 <div class="indicator-box">
                     <span class="label" data-i18n="speed_indicator">🚀 السرعة الإجمالية</span>
@@ -592,6 +607,24 @@
                     <div class="bar-track"><div class="bar-fill" id="heatBar" style="width:0%;"></div></div>
                     <div class="heat-status-text normal" id="heatStatus" data-i18n="heat_normal">🟢 عادية</div>
                 </div>
+                <div class="indicator-box">
+                    <span class="label" data-i18n="power_consumption">⚡ استهلاك الطاقة</span>
+                    <span class="value" id="powerIndicator">0 W</span>
+                    <div class="bar-track"><div class="bar-fill" id="powerBar" style="width:0%;"></div></div>
+                </div>
+                <div class="indicator-box">
+                    <span class="label" data-i18n="mining_efficiency">📈 كفاءة التعدين</span>
+                    <span class="value" id="efficiencyIndicator">0%</span>
+                    <div class="bar-track"><div class="bar-fill" id="efficiencyBar" style="width:0%;"></div></div>
+                </div>
+            </div>
+
+            <!-- مؤشرات الأرباح -->
+            <div class="profit-indicators">
+                <div class="profit-box"><span class="label" data-i18n="profit_hour">⏱️ الساعة</span><span class="value" id="profitHour">0.00</span></div>
+                <div class="profit-box"><span class="label" data-i18n="profit_day">📅 اليوم</span><span class="value" id="profitDay">0.00</span></div>
+                <div class="profit-box"><span class="label" data-i18n="profit_month">🗓️ الشهر</span><span class="value" id="profitMonth">0.00</span></div>
+                <div class="profit-box"><span class="label" data-i18n="profit_year">📆 السنة</span><span class="value" id="profitYear">0.00</span></div>
             </div>
 
             <!-- الإجمالي -->
@@ -698,7 +731,7 @@
         </div>
     </div>
 
-    <!-- ===== ACTION BAR (أسفل التبويبات) ===== -->
+    <!-- ===== ACTION BAR ===== -->
     <div class="action-bar" id="actionBar">
         <button class="btn btn-collect" id="collectBtn" data-i18n="collect"><i class="fas fa-wallet"></i> جمع</button>
         <button class="btn btn-convert" id="convertBtn" data-i18n="convert"><i class="fas fa-exchange-alt"></i> تحويل</button>
@@ -779,14 +812,13 @@
         },
         profile: { name: 'مستخدم جديد', level: 1, xp: 0, totalProfit: 0, totalMined: 0, image: null },
         miningActive: { nc: true, ncplus: false, miniCash: false, litnc: false },
-        // نظام الحرارة
         heat: {
-            level: 0, // 0-100%
-            activeFans: 1, // عدد المراوح العاملة
-            timeToOverheat: 1800, // ثواني (30 دقيقة)
-            elapsed: 0, // ثواني
+            level: 0,
+            activeFans: 1,
+            timeToOverheat: 1800,
+            elapsed: 0,
             isOverheated: false,
-            cooldownRemaining: 0 // ثواني
+            cooldownRemaining: 0
         }
     };
 
@@ -900,8 +932,8 @@
     // ================================================================
     const CURRENCIES = ['nc', 'ncplus', 'miniCash', 'litnc'];
     const CURRENCY_NAMES = { nc: 'NC', ncplus: 'NC+', miniCash: 'mini-cash', litnc: 'LitNC' };
-    // سرعات التعدين الأساسية (تتضاعف مع كل عملة)
     const BASE_SPEEDS = { nc: 0.0000001, ncplus: 0.000001, miniCash: 0.00001, litnc: 0.0001 };
+    const RATES = { nc: 1, ncplus: 0.8, miniCash: 0.6, litnc: 0.4 };
 
     function getMiningSpeed(currency) {
         const deviceCount = data.devices[currency]?.count || 0;
@@ -923,95 +955,30 @@
         return Math.max(0.00000001, speed);
     }
 
-    // حساب السرعة الإجمالية المعروضة (قيمة رمزية)
-    function getTotalSpeedValue() {
-        let total = 0;
+    function getTotalSpeedInCash() {
+        let totalCashPerSecond = 0;
         CURRENCIES.forEach(curr => {
             if (data.miningActive[curr]) {
-                total += getMiningSpeed(curr) * 1000000; // للتكبير
+                const speed = getMiningSpeed(curr);
+                totalCashPerSecond += speed * RATES[curr];
             }
         });
-        return total;
+        return totalCashPerSecond;
     }
 
-    // حساب وقت الوصول للحرارة القصوى بناءً على عدد المراوح العاملة
-    function getTimeToOverheat() {
-        const activeCount = CURRENCIES.filter(c => data.miningActive[c]).length;
-        if (activeCount === 0) return Infinity;
-        // 1 مروحة = 1800 ثانية (30 دقيقة)، 2 = 1200، 3 = 600، 4 = 60
-        const times = { 1: 1800, 2: 1200, 3: 600, 4: 60 };
-        return times[activeCount] || 1800;
-    }
-
-    function updateHeatSystem() {
-        const activeCount = CURRENCIES.filter(c => data.miningActive[c]).length;
-        data.heat.activeFans = activeCount || 0;
-
-        if (data.heat.isOverheated) {
-            // فترة التبريد
-            data.heat.cooldownRemaining = Math.max(0, data.heat.cooldownRemaining - 1);
-            if (data.heat.cooldownRemaining <= 0) {
-                data.heat.isOverheated = false;
-                data.heat.level = 0;
-                data.heat.elapsed = 0;
-                addLog(translate('cooling_complete'));
-                playBeep(600, 0.2);
-                // إعادة تشغيل المراوح التي كانت تعمل
-                CURRENCIES.forEach(c => {
-                    if (data.miningActive[c]) {
-                        startMiningForCurrency(c);
-                    }
-                });
-            }
-            updateIndicators();
-            return;
-        }
-
-        if (activeCount === 0) {
-            // لا مراوح تعمل، تبرد تدريجياً
-            data.heat.level = Math.max(0, data.heat.level - 0.1);
-            data.heat.elapsed = Math.max(0, data.heat.elapsed - 1);
-            updateIndicators();
-            return;
-        }
-
-        const timeToOverheat = getTimeToOverheat();
-        data.heat.elapsed += 1;
-        data.heat.level = Math.min(100, (data.heat.elapsed / timeToOverheat) * 100);
-
-        if (data.heat.level >= 100) {
-            // ارتفاع الحرارة القصوى - تعطل جميع المراوح
-            data.heat.isOverheated = true;
-            data.heat.cooldownRemaining = 600; // 10 دقائق تبريد
-            data.heat.level = 100;
-            // إيقاف جميع المراوح
-            CURRENCIES.forEach(c => {
-                if (data.miningActive[c]) {
-                    stopMiningForCurrency(c, true);
-                }
-            });
-            addLog(translate('overheat_shutdown'));
-            playBeep(200, 0.5);
-            doVibe();
-        }
-
-        updateIndicators();
-    }
-
-    function updateIndicators() {
-        // مؤشر السرعة
-        const speedVal = getTotalSpeedValue();
+    function updateAllIndicators() {
+        // Speed
+        const speedVal = getTotalSpeedInCash() * 1000000; // Scaling for display
         document.getElementById('speedIndicator').textContent = speedVal.toFixed(2);
         const speedPercent = Math.min(100, (speedVal / 20) * 100);
         document.getElementById('speedBar').style.width = speedPercent + '%';
         document.getElementById('speedBar').className = 'bar-fill';
 
-        // مؤشر الحرارة
+        // Heat
         const heatVal = Math.round(data.heat.level);
         document.getElementById('heatValue').textContent = heatVal + '%';
         const heatBar = document.getElementById('heatBar');
         const heatStatus = document.getElementById('heatStatus');
-
         if (data.heat.isOverheated) {
             heatBar.className = 'bar-fill cooling';
             heatBar.style.width = '100%';
@@ -1033,10 +1000,94 @@
             heatStatus.className = 'heat-status-text normal';
             heatStatus.textContent = translate('heat_normal');
         }
+
+        // Power Consumption
+        const activeCount = CURRENCIES.filter(c => data.miningActive[c]).length;
+        const powerUsage = activeCount * 10 + data.upgrades.power * 2;
+        document.getElementById('powerIndicator').textContent = powerUsage + ' W';
+        const powerPercent = Math.min(100, (powerUsage / 80) * 100);
+        const powerBar = document.getElementById('powerBar');
+        powerBar.style.width = powerPercent + '%';
+        powerBar.className = 'bar-fill' + (powerPercent > 70 ? ' warning' : '');
+
+        // Efficiency
+        const avgHealth = CURRENCIES.reduce((sum, c) => sum + data.maintenance[c].health, 0) / CURRENCIES.length;
+        const heatPenalty = Math.max(0, 1 - (data.heat.level / 150));
+        const efficiency = (avgHealth / 100) * heatPenalty * (1 + data.upgrades.efficiency * 0.1);
+        const effPercent = Math.min(100, Math.round(efficiency * 100));
+        document.getElementById('efficiencyIndicator').textContent = effPercent + '%';
+        const effBar = document.getElementById('efficiencyBar');
+        effBar.style.width = effPercent + '%';
+        effBar.className = 'bar-fill' + (effPercent < 50 ? ' danger' : (effPercent < 70 ? ' warning' : ''));
+
+        // Profits
+        const cashPerSecond = getTotalSpeedInCash();
+        const hour = cashPerSecond * 3600;
+        const day = hour * 24;
+        const month = day * 30;
+        const year = day * 365;
+        document.getElementById('profitHour').textContent = hour.toFixed(2);
+        document.getElementById('profitDay').textContent = day.toFixed(2);
+        document.getElementById('profitMonth').textContent = month.toFixed(2);
+        document.getElementById('profitYear').textContent = year.toFixed(2);
     }
 
     // ================================================================
-    // 7. MINING START/STOP
+    // 7. HEAT SYSTEM (Gradual Cooling)
+    // ================================================================
+    function updateHeatSystem() {
+        const activeCount = CURRENCIES.filter(c => data.miningActive[c]).length;
+        data.heat.activeFans = activeCount || 0;
+
+        if (data.heat.isOverheated) {
+            data.heat.cooldownRemaining = Math.max(0, data.heat.cooldownRemaining - 1);
+            if (data.heat.cooldownRemaining <= 0) {
+                data.heat.isOverheated = false;
+                data.heat.level = 0;
+                data.heat.elapsed = 0;
+                addLog(translate('cooling_complete'));
+                playBeep(600, 0.2);
+                CURRENCIES.forEach(c => {
+                    if (data.miningActive[c]) startMiningForCurrency(c);
+                });
+            }
+            updateAllIndicators();
+            return;
+        }
+
+        if (activeCount === 0) {
+            // Cooling down gradually (0.5% per second)
+            data.heat.level = Math.max(0, data.heat.level - 0.5);
+            data.heat.elapsed = Math.max(0, data.heat.elapsed - 1);
+            updateAllIndicators();
+            return;
+        }
+
+        const timeToOverheat = getTimeToOverheat(activeCount);
+        data.heat.elapsed += 1;
+        data.heat.level = Math.min(100, (data.heat.elapsed / timeToOverheat) * 100);
+
+        if (data.heat.level >= 100) {
+            data.heat.isOverheated = true;
+            data.heat.cooldownRemaining = 600;
+            data.heat.level = 100;
+            CURRENCIES.forEach(c => {
+                if (data.miningActive[c]) stopMiningForCurrency(c, true);
+            });
+            addLog(translate('overheat_shutdown'));
+            playBeep(200, 0.5);
+            doVibe();
+        }
+        updateAllIndicators();
+    }
+
+    function getTimeToOverheat(count) {
+        const times = { 1: 1800, 2: 1200, 3: 600, 4: 60 };
+        return times[count] || 1800;
+    }
+
+    // ================================================================
+    // 8. MINING START/STOP
     // ================================================================
     let miningIntervals = {};
 
@@ -1064,7 +1115,7 @@
             saveData();
         }, 100);
         updateTotalPendingCash();
-        updateIndicators();
+        updateAllIndicators();
     }
 
     function stopMiningForCurrency(currency, silent = false) {
@@ -1077,7 +1128,7 @@
         if (btn) btn.classList.remove('active');
         if (!silent) {
             updateTotalPendingCash();
-            updateIndicators();
+            updateAllIndicators();
         }
         saveData();
     }
@@ -1098,11 +1149,11 @@
             doVibe();
         }
         updateTotalPendingCash();
-        updateIndicators();
+        updateAllIndicators();
     }
 
     // ================================================================
-    // 8. RENDER MINING LIST
+    // 9. RENDER MINING LIST
     // ================================================================
     function renderMiningList() {
         const container = document.getElementById('miningList');
@@ -1122,19 +1173,14 @@
             container.appendChild(row);
         });
         updateTotalPendingCash();
-        updateIndicators();
+        updateAllIndicators();
     }
 
-    // ================================================================
-    // 9. UPDATE FUNCTIONS
-    // ================================================================
     function updateTotalPendingCash() {
         let totalCash = 0;
-        const rates = { nc: 1, ncplus: 0.8, miniCash: 0.6, litnc: 0.4 };
         CURRENCIES.forEach(curr => {
             const amount = data.pending[curr] || 0;
-            const rate = rates[curr] || 1;
-            totalCash += amount * rate;
+            totalCash += amount * RATES[curr];
         });
         document.getElementById('pendingDisplayCash').textContent = totalCash.toFixed(2);
     }
@@ -1147,6 +1193,9 @@
         });
     }
 
+    // ================================================================
+    // 10. WALLET & UI UPDATES
+    // ================================================================
     function updateWalletUI() {
         document.getElementById('balNC').textContent = data.wallet.NC.toFixed(6);
         document.getElementById('balNCplus').textContent = data.wallet.NCplus.toFixed(6);
@@ -1167,7 +1216,7 @@
     }
 
     // ================================================================
-    // 10. COLLECT & CONVERT
+    // 11. COLLECT & CONVERT
     // ================================================================
     document.getElementById('collectBtn').addEventListener('click', function() {
         let collected = false;
@@ -1221,7 +1270,7 @@
     });
 
     // ================================================================
-    // 11. SHOP
+    // 12. SHOP
     // ================================================================
     function renderShopAll() {
         renderShopCategory('miners');
@@ -1391,7 +1440,7 @@
     }
 
     // ================================================================
-    // 12. PROFILE
+    // 13. PROFILE
     // ================================================================
     function toggleProfile() {
         const slide = document.getElementById('profileSlide');
@@ -1462,7 +1511,7 @@
     }
 
     // ================================================================
-    // 13. THEME & LANGUAGE
+    // 14. THEME & LANGUAGE
     // ================================================================
     function setTheme(theme) {
         document.documentElement.setAttribute('data-theme', theme);
@@ -1491,7 +1540,7 @@
     document.getElementById('themeLightBtn').addEventListener('click', function() { setTheme('light'); });
 
     // ================================================================
-    // 14. LANGUAGE
+    // 15. LANGUAGE
     // ================================================================
     const translations = {
         ar: {
@@ -1503,6 +1552,12 @@
             heat_warning: '🟡 مرتفعة',
             heat_danger: '🔴 حرجة',
             heat_cooling: '🔵 تبريد',
+            power_consumption: '⚡ استهلاك الطاقة',
+            mining_efficiency: '📈 كفاءة التعدين',
+            profit_hour: '⏱️ الساعة',
+            profit_day: '📅 اليوم',
+            profit_month: '🗓️ الشهر',
+            profit_year: '📆 السنة',
             total_pending_cash: '💰 الإجمالي العالق (Cash):',
             collect: 'جمع',
             convert: 'تحويل',
@@ -1571,6 +1626,12 @@
             heat_warning: '🟡 High',
             heat_danger: '🔴 Critical',
             heat_cooling: '🔵 Cooling',
+            power_consumption: '⚡ Power Consumption',
+            mining_efficiency: '📈 Mining Efficiency',
+            profit_hour: '⏱️ Hour',
+            profit_day: '📅 Day',
+            profit_month: '🗓️ Month',
+            profit_year: '📆 Year',
             total_pending_cash: '💰 Total Pending (Cash):',
             collect: 'Collect',
             convert: 'Convert',
@@ -1651,7 +1712,7 @@
         });
         document.getElementById('settingsProfileName').textContent = data.profile.name || 'مستخدم جديد';
         renderLog();
-        updateIndicators();
+        updateAllIndicators();
     }
 
     document.getElementById('langSelect').addEventListener('change', function() {
@@ -1661,7 +1722,7 @@
     });
 
     // ================================================================
-    // 15. NAVIGATION
+    // 16. NAVIGATION
     // ================================================================
     document.querySelectorAll('.nav-item').forEach(item => {
         item.addEventListener('click', function() {
@@ -1674,16 +1735,9 @@
             if (tabId === 'wallet') updateWalletUI();
             if (tabId === 'shop') updateShopUI();
             if (tabId === 'settings') { updateProfileUI(); applyLanguage(); }
-            if (tabId === 'mining') { renderMiningList(); updateTotalPendingCash(); updateIndicators(); }
+            if (tabId === 'mining') { renderMiningList(); updateTotalPendingCash(); updateAllIndicators(); }
         });
     });
-
-    // ================================================================
-    // 16. HEAT SYSTEM TIMER
-    // ================================================================
-    setInterval(() => {
-        updateHeatSystem();
-    }, 1000);
 
     // ================================================================
     // 17. SETTINGS EVENTS
@@ -1708,7 +1762,6 @@
         setTheme(data.settings.theme || 'dark');
         applyLanguage();
         renderMiningList();
-        // بدء تشغيل NC تلقائياً (إذا لم يكن محموماً)
         if (data.miningActive.nc && !data.heat.isOverheated) {
             startMiningForCurrency('nc');
         }
@@ -1716,13 +1769,18 @@
         renderLog();
         updateProfileUI();
         updateShopUI();
-        updateIndicators();
+        updateAllIndicators();
 
         addLog('🏛️ ' + translate('subtitle'));
         updateTotalPendingCash();
     };
 
+    // Heat timer
+    setInterval(() => {
+        updateHeatSystem();
+    }, 1000);
+
     setInterval(() => saveData(), 5000);
 </script>
 </body>
-    </html>
+</html>
