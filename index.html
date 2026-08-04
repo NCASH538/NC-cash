@@ -668,7 +668,7 @@
                     <div class="battery-fill" id="batteryFill" style="width:100%;"></div>
                 </div>
                 <div class="battery-details">
-                    <span data-i18n="battery_ah">⚡ <span class="battery-ah" id="batteryAh">100000.0</span> Ah</span>
+                    <span id="batteryAhDisplay">⚡ 100000.0 Ah</span>
                     <span id="batteryRateDisplay" class="battery-rate charge">الشحن: 69.4 Ah/د</span>
                 </div>
             </div>
@@ -1074,7 +1074,7 @@
         const percent = Math.round(data.battery.percent);
         const ah = data.battery.ah;
         document.getElementById('batteryPercent').textContent = percent + '%';
-        document.getElementById('batteryAh').textContent = ah.toFixed(1);
+        document.getElementById('batteryAhDisplay').textContent = '⚡ ' + ah.toFixed(1) + ' Ah';
         document.getElementById('batteryFill').style.width = percent + '%';
 
         const icon = document.getElementById('batteryIcon');
@@ -1101,11 +1101,11 @@
         const activeCount = CURRENCIES.filter(c => data.miningActive[c]).length;
         if (activeCount > 0 && !data.heat.isOverheated) {
             const dischargePerMin = data.battery.consumptionRate * 60;
-            rateDisplay.textContent = `التصريف: ${dischargePerMin.toFixed(1)} Ah/د`;
+            rateDisplay.textContent = 'التصريف: ' + dischargePerMin.toFixed(1) + ' Ah/د';
             rateDisplay.className = 'battery-rate discharge';
         } else {
             const chargePerMin = CHARGE_RATE_PER_SECOND * 60;
-            rateDisplay.textContent = `الشحن: ${chargePerMin.toFixed(1)} Ah/د`;
+            rateDisplay.textContent = 'الشحن: ' + chargePerMin.toFixed(1) + ' Ah/د';
             rateDisplay.className = 'battery-rate charge';
         }
     }
@@ -1176,7 +1176,7 @@
             heatStatus.className = 'heat-status-text danger';
             const mins = Math.floor(data.heat.cooldownRemaining / 60);
             const secs = Math.floor(data.heat.cooldownRemaining % 60);
-            heatStatus.textContent = `🟦 تبريد (${String(mins).padStart(2,'0')}:${String(secs).padStart(2,'0')})`;
+            heatStatus.textContent = '🟦 تبريد (' + String(mins).padStart(2,'0') + ':' + String(secs).padStart(2,'0') + ')';
             return;
         }
 
@@ -1278,7 +1278,7 @@
     }
 
     // ================================================================
-    // 10. RENDER MINING LIST (This makes the fans appear)
+    // 10. RENDER MINING LIST (FANS)
     // ================================================================
     function renderMiningList() {
         const container = document.getElementById('miningList');
@@ -1350,8 +1350,7 @@
         renderLog();
         updateProfileUI();
         saveData();
-        // إعادة رسم قائمة التعدين لضمان ظهور الأزرار
-        renderMiningList();
+        renderMiningList(); // Ensure fans are always rendered
     }
 
     // ================================================================
@@ -1694,7 +1693,6 @@
             battery_medium: '🟡 شحن متوسط',
             battery_low: '🟠 شحن منخفض',
             battery_critical: '🔴 شحن حرج',
-            battery_ah: '⚡ <span class="battery-ah">100000.0</span> Ah',
             profit_hour: '⏱️ الساعة',
             profit_day: '📅 اليوم',
             profit_month: '🗓️ الشهر',
@@ -1772,7 +1770,6 @@
             battery_medium: '🟡 Medium Charge',
             battery_low: '🟠 Low Charge',
             battery_critical: '🔴 Critical Charge',
-            battery_ah: '⚡ <span class="battery-ah">100000.0</span> Ah',
             profit_hour: '⏱️ Hour',
             profit_day: '📅 Day',
             profit_month: '🗓️ Month',
