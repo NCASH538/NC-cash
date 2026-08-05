@@ -138,36 +138,38 @@
         .mining-rig .rig-body {
             display: flex;
             align-items: center;
+            justify-content: space-between;
             gap: 10px;
+            margin: 10px 0;
         }
-        /* Fans area (left side) */
-        .rig-fans {
+        /* Fan control (single fan with speed) */
+        .rig-fan-container {
             display: flex;
-            gap: 6px;
+            flex-direction: column;
+            align-items: center;
             flex: 1;
-            justify-content: flex-start;
         }
         .rig-fan {
-            width: 44px;
-            height: 44px;
+            width: 70px;
+            height: 70px;
             border-radius: 50%;
-            border: 2px solid var(--border-color);
+            border: 3px solid var(--border-color);
             background: var(--bg-input);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 20px;
+            font-size: 32px;
             color: var(--text-muted);
             cursor: pointer;
             transition: all 0.3s;
-            position: relative;
             box-shadow: inset 0 2px 6px rgba(0,0,0,0.4);
+            position: relative;
         }
         .rig-fan:hover { border-color: var(--gold); }
         .rig-fan.active {
             border-color: var(--green);
             color: var(--green);
-            box-shadow: 0 0 12px var(--green), inset 0 0 8px var(--green);
+            box-shadow: 0 0 20px var(--green), inset 0 0 12px var(--green);
         }
         .rig-fan.active .fa-fan {
             animation: spin-fan 1s linear infinite;
@@ -181,8 +183,15 @@
             animation: none;
         }
         @keyframes spin-fan { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .rig-fan-speed {
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-top: 4px;
+            font-weight: 600;
+        }
+        .rig-fan-speed span { color: var(--gold); }
 
-        /* LED indicators (right side) */
+        /* LED indicators (for speed) */
         .rig-leds {
             display: flex;
             gap: 6px;
@@ -208,10 +217,9 @@
             opacity: 1;
         }
 
-        /* Pending amount display */
+        /* Pending amount */
         .rig-pending {
             text-align: center;
-            margin-top: 10px;
             padding: 6px 12px;
             background: var(--bg-input);
             border-radius: 10px;
@@ -223,7 +231,7 @@
         .rig-pending .label { color: var(--text-muted); font-weight: 400; }
         .rig-pending .value { color: var(--gold); }
 
-        /* Status bar (heat, battery, etc) */
+        /* Stats (Heat, Battery) */
         .rig-stats {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -265,13 +273,17 @@
         .heat-status-text.danger { color: var(--red); }
         .heat-status-text.cooling { color: var(--blue); }
 
-        /* Battery details */
+        /* Battery details inside rig */
         .battery-details {
             display: flex;
             justify-content: space-between;
             font-size: 10px;
             color: var(--text-muted);
             margin-top: 2px;
+            background: var(--bg-input);
+            padding: 4px 10px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
         }
         .battery-details .battery-ah { font-weight: 700; color: var(--gold); }
         .battery-details .battery-rate { font-weight: 600; }
@@ -649,7 +661,7 @@
             <h1>🏛️ HyeX Exchange</h1>
             <div class="subtitle" data-i18n="subtitle">المنصة الرقمية الرسمية | نسخة تجريبية</div>
         </div>
-        <div class="badge"><i class="fas fa-shield-alt"></i> v27.1</div>
+        <div class="badge"><i class="fas fa-shield-alt"></i> v28.0</div>
     </div>
 
     <!-- PRICE TICKER -->
@@ -666,9 +678,14 @@
                 <span class="rig-hash" id="rigHash">0.00 MH/s</span>
             </div>
 
-            <!-- Rig Body: Fans + LEDs -->
+            <!-- Rig Body: Single Fan + LEDs -->
             <div class="rig-body">
-                <div class="rig-fans" id="rigFans"></div>
+                <div class="rig-fan-container">
+                    <div class="rig-fan" id="mainFan">
+                        <i class="fas fa-fan"></i>
+                    </div>
+                    <div class="rig-fan-speed">السرعة: <span id="fanSpeedDisplay">1</span> / 4</div>
+                </div>
                 <div class="rig-leds" id="rigLEDs"></div>
             </div>
 
@@ -693,14 +710,12 @@
                 </div>
             </div>
 
-            <!-- Battery Details -->
-            <div style="margin-top:6px; background:var(--bg-input); border-radius:12px; padding:6px 12px; border:1px solid var(--border-color);">
-                <div class="battery-details">
-                    <span id="batteryAhDisplay">⚡ 10000.0 Ah</span>
-                    <span id="batteryRateDisplay" class="battery-rate charge">الشحن: 0.0 Ah/د</span>
-                </div>
-                <div class="battery-time" id="batteryTimeDisplay">⏱️ الوقت المتبقي: <span>--</span></div>
+            <!-- Battery Details (inside rig) -->
+            <div class="battery-details">
+                <span id="batteryAhDisplay">⚡ 10000.0 Ah</span>
+                <span id="batteryRateDisplay" class="battery-rate charge">الشحن: 0.0 Ah/د</span>
             </div>
+            <div class="battery-time" id="batteryTimeDisplay">⏱️ الوقت المتبقي: <span>--</span></div>
 
             <!-- Profit Indicators -->
             <div class="profit-indicators">
@@ -839,7 +854,7 @@
 
 <script>
     // ================================================================
-    // 1. DATA (4 Fans)
+    // 1. DATA (Single fan with speed 0-4)
     // ================================================================
     const STORAGE_KEY = 'hyex_data';
     let data = {
@@ -853,7 +868,7 @@
         },
         settings: { sound: true, vibe: true, theme: 'dark', lang: 'ar' },
         devices: {
-            nc: { count: 1, level: 0 }
+            nc: { count: 1, level: 0 } // not used for fan speed
         },
         boosters: {
             nc: { active: false, remaining: 0, multiplier: 1 }
@@ -862,10 +877,10 @@
             nc: { health: 100 }
         },
         profile: { name: 'مستخدم جديد', level: 1, xp: 0, totalProfit: 0, totalMined: 0, image: null },
-        fanStates: [true, false, false, false],
+        fanSpeed: 1, // 0 = off, 1-4 = speed
         heat: {
             level: 0,
-            activeFans: 1,
+            activeFans: 0, // calculated from fanSpeed
             elapsed: 0,
             isOverheated: false,
             cooldownRemaining: 0
@@ -887,7 +902,7 @@
     // ================================================================
     const SHOP_DB = {
         miners: [
-            { id: 'miner_nc', name: 'مروحة إضافية', icon: '🌀', desc: '+1 مروحة لتعدين NC', price: 0.5, currency: 'NC', type: 'miner', target: 'nc' },
+            { id: 'miner_nc', name: 'ترقية السرعة', icon: '🚀', desc: 'زيادة السرعة القصوى إلى 5 (تبقى 4)', price: 0.5, currency: 'NC', type: 'miner', target: 'nc' },
         ],
         boosters: [
             { id: 'booster_nc_2x', name: 'مضاعف NC ×2', icon: '⚡', desc: 'مدة 5 دقائق', price: 0.3, currency: 'NC', type: 'booster', target: 'nc', duration: 300, multiplier: 2 },
@@ -901,7 +916,7 @@
             { id: 'repair_nc', name: 'صيانة المروحة', icon: '🛠️', desc: 'إصلاح المروحة بالكامل', price: 0.05, currency: 'NC', type: 'repair', target: 'nc' },
         ],
         specials: [
-            { id: 'special_startup', name: 'حزمة البداية', icon: '🎁', desc: 'مروحة إضافية + مضاعف 2x 10د', price: 0.6, currency: 'NC', type: 'special', items: [{ type: 'miner', target: 'nc' }, { type: 'booster', target: 'nc', duration: 600, multiplier: 2 }] },
+            { id: 'special_startup', name: 'حزمة البداية', icon: '🎁', desc: 'ترقية السرعة + مضاعف 2x 10د', price: 0.6, currency: 'NC', type: 'special', items: [{ type: 'miner', target: 'nc' }, { type: 'booster', target: 'nc', duration: 600, multiplier: 2 }] },
             { id: 'quick_charger', name: 'شاحن سريع', icon: '🔋', desc: 'مضاعفة سرعة الشحن 3x لمدة 5 دقائق', price: 1.0, currency: 'NC', type: 'quick_charge', duration: 300, multiplier: 3 },
         ]
     };
@@ -931,10 +946,10 @@
                         for (let b in parsed.boosters) data.boosters[b] = parsed.boosters[b] || { active: false, remaining: 0, multiplier: 1 };
                     } else if (key === 'maintenance') {
                         for (let m in parsed.maintenance) data.maintenance[m] = parsed.maintenance[m] || { health: 100 };
-                    } else if (key === 'fanStates') {
-                        if (parsed.fanStates && parsed.fanStates.length === 4) data.fanStates = parsed.fanStates;
+                    } else if (key === 'fanSpeed') {
+                        if (parsed.fanSpeed !== undefined) data.fanSpeed = parsed.fanSpeed;
                     } else if (key === 'heat') {
-                        for (let h in parsed.heat) data.heat[h] = parsed.heat[h] !== undefined ? parsed.heat[h] : (h === 'activeFans' ? 1 : 0);
+                        for (let h in parsed.heat) data.heat[h] = parsed.heat[h] !== undefined ? parsed.heat[h] : (h === 'activeFans' ? 0 : 0);
                     } else if (key === 'battery') {
                         for (let b in parsed.battery) data.battery[b] = parsed.battery[b] !== undefined ? parsed.battery[b] : (b === 'maxAh' ? 10000 : 0);
                     } else if (key === 'autoMine') data.autoMine = parsed.autoMine || false;
@@ -951,8 +966,8 @@
         if (!data.boosters) data.boosters = { nc: { active: false, remaining: 0, multiplier: 1 } };
         if (!data.maintenance) data.maintenance = { nc: { health: 100 } };
         if (!data.profile) data.profile = { name: 'مستخدم جديد', level: 1, xp: 0, totalProfit: 0, totalMined: 0, image: null };
-        if (!data.fanStates || data.fanStates.length !== 4) data.fanStates = [true, false, false, false];
-        if (!data.heat) data.heat = { level: 0, activeFans: 1, elapsed: 0, isOverheated: false, cooldownRemaining: 0 };
+        if (data.fanSpeed === undefined) data.fanSpeed = 1;
+        if (!data.heat) data.heat = { level: 0, activeFans: 0, elapsed: 0, isOverheated: false, cooldownRemaining: 0 };
         if (!data.battery) data.battery = { ah: 10000, maxAh: 10000, percent: 100, consumptionRate: 0 };
         if (data.battery.ah === 0 && !saved) data.battery.ah = 10000;
         if (data.battery.maxAh === 0) data.battery.maxAh = 10000;
@@ -961,7 +976,11 @@
         if (!data.settings) data.settings = { sound: true, vibe: true, theme: 'dark', lang: 'ar' };
         if (!data.settings.theme) data.settings.theme = 'dark';
         if (!data.settings.lang) data.settings.lang = 'ar';
-        data.heat.activeFans = data.fanStates.filter(s => s).length;
+        // Calculate active fans from speed
+        data.heat.activeFans = data.fanSpeed;
+        // Ensure speed is between 0 and 4
+        if (data.fanSpeed < 0) data.fanSpeed = 0;
+        if (data.fanSpeed > 4) data.fanSpeed = 4;
     }
 
     function saveData() { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); }
@@ -1016,15 +1035,17 @@
     }
 
     // ================================================================
-    // 6. MINING SYSTEM (4 Fans)
+    // 6. MINING SYSTEM (Single fan with speed)
     // ================================================================
     const BASE_SPEED = 0.00001;
 
+    function getActiveFans() {
+        return data.fanSpeed; // 0-4
+    }
+
     function getMiningSpeed() {
-        const activeCount = data.fanStates.filter(s => s).length;
+        const activeCount = getActiveFans();
         if (activeCount === 0) return 0;
-        const deviceCount = activeCount;
-        const level = data.devices.nc?.level || 0;
         const speedUpgrade = data.upgrades.speed || 0;
         const efficiency = data.upgrades.efficiency || 0;
         const booster = data.boosters.nc;
@@ -1032,9 +1053,8 @@
         const health = data.maintenance.nc?.health || 100;
         const healthPenalty = 1 - (100 - health) / 200;
         const heatEfficiency = 1 - (data.heat.level / 150);
-        let speed = BASE_SPEED * deviceCount;
-        speed *= (1 + (deviceCount - 1) * 0.05);
-        speed *= (1 + level * 0.05);
+        let speed = BASE_SPEED * activeCount;
+        speed *= (1 + (activeCount - 1) * 0.05);
         speed *= (1 + speedUpgrade * 0.2);
         speed *= (1 + efficiency * 0.1);
         speed *= multiplier;
@@ -1063,7 +1083,7 @@
     }
 
     function updateBattery() {
-        const activeCount = data.fanStates.filter(s => s).length;
+        const activeCount = getActiveFans();
         const isOverheated = data.heat.isOverheated;
         const fansRunning = activeCount > 0 && !isOverheated;
 
@@ -1084,7 +1104,7 @@
         if (data.battery.ah <= 0) {
             data.battery.ah = 0;
             data.battery.percent = 0;
-            data.fanStates = data.fanStates.map(() => false);
+            data.fanSpeed = 0;
             data.heat.activeFans = 0;
             renderRig();
             addLog(translate('battery_empty_stop'));
@@ -1138,7 +1158,7 @@
         }
 
         const rateDisplay = document.getElementById('batteryRateDisplay');
-        const activeCount = data.fanStates.filter(s => s).length;
+        const activeCount = getActiveFans();
         const fansRunning = activeCount > 0 && !data.heat.isOverheated;
         if (fansRunning) {
             const dischargePerMin = data.battery.consumptionRate * 60;
@@ -1157,7 +1177,7 @@
     function updateBatteryTime() {
         const timeDisplay = document.getElementById('batteryTimeDisplay');
         const span = timeDisplay.querySelector('span');
-        const activeCount = data.fanStates.filter(s => s).length;
+        const activeCount = getActiveFans();
         const fansRunning = activeCount > 0 && !data.heat.isOverheated;
 
         if (fansRunning) {
@@ -1187,7 +1207,7 @@
     // 8. HEAT SYSTEM
     // ================================================================
     function updateHeatSystem() {
-        const activeCount = data.fanStates.filter(s => s).length;
+        const activeCount = getActiveFans();
         data.heat.activeFans = activeCount;
 
         if (data.heat.isOverheated) {
@@ -1219,7 +1239,7 @@
             data.heat.isOverheated = true;
             data.heat.cooldownRemaining = 600;
             data.heat.level = 100;
-            data.fanStates = data.fanStates.map(() => false);
+            data.fanSpeed = 0;
             data.heat.activeFans = 0;
             renderRig();
             addLog(translate('overheat_shutdown'));
@@ -1278,30 +1298,27 @@
     // 9. RIG RENDER
     // ================================================================
     function renderRig() {
-        const fansContainer = document.getElementById('rigFans');
+        // Update fan
+        const fanEl = document.getElementById('mainFan');
+        const speed = data.fanSpeed;
+        const isActive = speed > 0;
+        fanEl.className = 'rig-fan' + (isActive ? ' active' : '');
+        if (data.heat.isOverheated) fanEl.classList.add('overheat');
+        document.getElementById('fanSpeedDisplay').textContent = speed;
+
+        // Update LEDs
         const ledsContainer = document.getElementById('rigLEDs');
-        fansContainer.innerHTML = '';
         ledsContainer.innerHTML = '';
-
         for (let i = 0; i < 4; i++) {
-            const fan = document.createElement('div');
-            fan.className = 'rig-fan' + (data.fanStates[i] ? ' active' : '');
-            if (data.heat.isOverheated) fan.classList.add('overheat');
-            fan.dataset.index = i;
-            fan.innerHTML = '<i class="fas fa-fan"></i>';
-            fan.addEventListener('click', function() {
-                toggleFan(parseInt(this.dataset.index));
-            });
-            fansContainer.appendChild(fan);
-
             const led = document.createElement('div');
-            led.className = 'rig-led' + (data.fanStates[i] ? ' active' : '');
+            led.className = 'rig-led' + (i < speed ? ' active' : '');
             if (data.heat.isOverheated) led.classList.add('overheat');
             ledsContainer.appendChild(led);
         }
 
-        const speed = getMiningSpeed();
-        document.getElementById('rigHash').textContent = (speed * 1000000).toFixed(2) + ' MH/s';
+        // Update hash rate
+        const speedVal = getMiningSpeed();
+        document.getElementById('rigHash').textContent = (speedVal * 1000000).toFixed(2) + ' MH/s';
         document.getElementById('pendingNC').textContent = (data.pending.nc || 0).toFixed(8) + ' NC';
 
         updateTotalPendingCash();
@@ -1312,9 +1329,9 @@
     }
 
     // ================================================================
-    // 10. TOGGLE FAN
+    // 10. CHANGE FAN SPEED (click on fan)
     // ================================================================
-    function toggleFan(index) {
+    function changeFanSpeed() {
         if (data.heat.isOverheated) {
             addLog(translate('cannot_mine_overheat'));
             playBeep(300,0.15);
@@ -1325,22 +1342,27 @@
             playBeep(300,0.15);
             return;
         }
-        data.fanStates[index] = !data.fanStates[index];
-        data.heat.activeFans = data.fanStates.filter(s => s).length;
-        const fanName = 'مروحة ' + (index+1);
-        if (data.fanStates[index]) {
-            addLog(translate('started_mining', fanName));
+        // Cycle speed: 0->1->2->3->4->0
+        let newSpeed = data.fanSpeed + 1;
+        if (newSpeed > 4) newSpeed = 0;
+        data.fanSpeed = newSpeed;
+        data.heat.activeFans = newSpeed;
+        const speedName = newSpeed === 0 ? 'إيقاف' : 'سرعة ' + newSpeed;
+        addLog(translate('started_mining', speedName));
+        if (newSpeed > 0) {
             playBeep(800,0.1);
             doVibe();
             if (data.settings.sound) playFanSound();
         } else {
-            addLog(translate('stopped_mining', fanName));
+            playBeep(400,0.1);
         }
         renderRig();
         updateTotalPendingCash();
         updateProfitIndicators();
         saveData();
     }
+
+    document.getElementById('mainFan').addEventListener('click', changeFanSpeed);
 
     // ================================================================
     // 11. AUTO-MINE
@@ -1364,31 +1386,24 @@
     let autoMineTimer = null;
     function autoMineLoop() {
         if (!data.autoMine) return;
-        const activeCount = data.fanStates.filter(s => s).length;
         const batteryOk = data.battery.ah > 1000;
         const heatOk = data.heat.level < 70 && !data.heat.isOverheated;
 
         if (batteryOk && heatOk) {
-            for (let i = 0; i < data.fanStates.length; i++) {
-                if (!data.fanStates[i]) {
-                    data.fanStates[i] = true;
-                    data.heat.activeFans = data.fanStates.filter(s => s).length;
-                }
+            // Increase speed if not at max
+            if (data.fanSpeed < 4) {
+                data.fanSpeed = Math.min(4, data.fanSpeed + 1);
+                data.heat.activeFans = data.fanSpeed;
+                renderRig();
             }
         } else if (data.battery.ah < 500 || data.heat.level > 80) {
-            let count = data.fanStates.filter(s => s).length;
-            if (count > 0) {
-                for (let i = 0; i < data.fanStates.length && count > 0; i++) {
-                    if (data.fanStates[i]) {
-                        data.fanStates[i] = false;
-                        count--;
-                        data.heat.activeFans = data.fanStates.filter(s => s).length;
-                        if (count === 0) break;
-                    }
-                }
+            // Decrease speed
+            if (data.fanSpeed > 0) {
+                data.fanSpeed = Math.max(0, data.fanSpeed - 1);
+                data.heat.activeFans = data.fanSpeed;
+                renderRig();
             }
         }
-        renderRig();
         clearTimeout(autoMineTimer);
         autoMineTimer = setTimeout(autoMineLoop, 3000);
     }
@@ -1461,6 +1476,7 @@
         grid.innerHTML = items.map(item => {
             let owned = false, canBuy = true, price = item.price, currency = item.currency || 'NC', maxLevelReached = false;
             if (item.type === 'miner') {
+                // This is the "speed upgrade" - we just allow buying multiple
                 const dev = data.devices[item.target];
                 owned = dev && dev.count > 1;
                 canBuy = data.wallet[currency] >= price;
@@ -1524,8 +1540,8 @@
         data.wallet[currency] -= price;
         if (item.type === 'miner') {
             data.devices[item.target].count = (data.devices[item.target].count || 1) + 1;
-            addLog(translate('bought_miner', 'NC'));
-            if (data.fanStates.length < 4) data.fanStates.push(false);
+            addLog(translate('bought_miner', 'ترقية السرعة'));
+            // Increase max speed? Not needed, we already have 4 speeds.
             renderRig();
         } else if (item.type === 'upgrade') {
             data.upgrades[item.target] = (data.upgrades[item.target] || 0) + 1;
@@ -1549,7 +1565,6 @@
             item.items.forEach(sub => {
                 if (sub.type === 'miner') {
                     data.devices[sub.target].count = (data.devices[sub.target].count || 1) + 1;
-                    if (data.fanStates.length < 4) data.fanStates.push(false);
                 } else if (sub.type === 'booster') {
                     data.boosters[sub.target].active = true;
                     data.boosters[sub.target].remaining = sub.duration;
@@ -1772,7 +1787,7 @@
             collected_all: '✅ تم جمع جميع العملات العالقة',
             enter_valid_amount: 'أدخل مبلغ صحيح',
             insufficient_balance_shop: '❌ رصيد غير كاف. تحتاج {0} {1}',
-            bought_miner: '⛏️ تم شراء جهاز تعدين {0}',
+            bought_miner: '⛏️ تم شراء {0}',
             bought_upgrade: '🔧 تم شراء ترقية {0}',
             activated_booster: '⚡ تم تفعيل مضاعف {0}',
             repaired_device: '🛠️ تم إصلاح جهاز {0}',
@@ -1850,7 +1865,7 @@
             collected_all: '✅ Collected all pending coins',
             enter_valid_amount: 'Enter a valid amount',
             insufficient_balance_shop: '❌ Insufficient balance. Need {0} {1}',
-            bought_miner: '⛏️ Bought {0} miner',
+            bought_miner: '⛏️ Bought {0}',
             bought_upgrade: '🔧 Bought upgrade {0}',
             activated_booster: '⚡ Activated booster {0}',
             repaired_device: '🛠️ Repaired {0} device',
@@ -1924,6 +1939,7 @@
             if (tabId === 'shop') updateShopUI();
             if (tabId === 'settings') { updateProfileUI(); applyLanguage(); }
             if (tabId === 'mining') { 
+                // Re-render rig to fix any display issues
                 renderRig(); 
                 updateTotalPendingCash(); 
                 updateProfitIndicators(); 
@@ -1956,10 +1972,9 @@
         document.getElementById('langSelect').value = data.settings.lang || 'ar';
         setTheme(data.settings.theme || 'dark');
         applyLanguage();
-        if (data.fanStates.every(s => !s)) {
-            data.fanStates[0] = true;
-            data.heat.activeFans = 1;
-        }
+        // Ensure fan speed is valid
+        if (data.fanSpeed < 0 || data.fanSpeed > 4) data.fanSpeed = 1;
+        data.heat.activeFans = data.fanSpeed;
         renderRig();
         updateAllUI();
         renderLog();
