@@ -2,48 +2,58 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>HyeX - GPU Mining Rig</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>NC.CORP - Mining Console</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        /* ============================================================
-           RESET & BASE (مضغوط جداً)
-           ============================================================ */
+        /* ================================================================
+               ROOT VARIABLES - NC.CORP THEME
+            ================================================================ */
         :root {
-            --bg-primary: #070A12;
-            --bg-secondary: #0D1424;
-            --bg-card: rgba(10, 18, 34, 0.85);
-            --gold: #C9A84C;
-            --gold-dim: rgba(201, 168, 76, 0.15);
-            --cyan: #00E5FF;
-            --green: #39FF14;
-            --green-dim: rgba(57, 255, 20, 0.12);
-            --red: #FF4D6D;
+            --bg-primary: #080C18;
+            --bg-secondary: #0E1426;
+            --bg-card: rgba(20, 28, 48, 0.75);
+            --border-glow: rgba(200, 168, 78, 0.25);
+            --gold: #C8A84E;
+            --gold-dim: rgba(200, 168, 78, 0.12);
+            --gold-light: #E8D08E;
+            --cyan: #48C9FF;
+            --green: #4ADE80;
+            --red: #FF6B7A;
             --orange: #FFB347;
-            --text-primary: #E8EDF5;
-            --text-secondary: #9AA8C7;
-            --text-muted: #6A7A9A;
-            --shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
-            --radius: 14px;
+            --text-primary: #F0F4F8;
+            --text-secondary: #B0BECE;
+            --text-muted: #7989A0;
+            --shadow-card: 0 12px 40px rgba(0, 0, 0, 0.7);
+            --radius-card: 20px;
+            --radius-sm: 10px;
+            --transition: 0.25s ease;
+            --font: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
         }
+
+        /* ================================================================
+               RESET & BASE
+            ================================================================ */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
         }
         body {
             background: var(--bg-primary);
+            font-family: var(--font);
+            color: var(--text-primary);
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
             padding: 0;
-            color: var(--text-primary);
-            font-size: 10px;
+            margin: 0;
+            font-size: 14px;
+            line-height: 1.5;
         }
         .app {
-            max-width: 460px;
+            max-width: 480px;
             width: 100%;
             height: 100dvh;
             max-height: 100dvh;
@@ -51,74 +61,115 @@
             display: flex;
             flex-direction: column;
             overflow: hidden;
-            border: none;
-            box-shadow: var(--shadow);
+            box-shadow: 0 0 60px rgba(0, 0, 0, 0.8);
             position: relative;
         }
 
-        /* Header */
+        /* ================================================================
+               HEADER - NC.CORP BRANDING
+            ================================================================ */
         .corp-header {
             flex-shrink: 0;
-            padding: 6px 14px 5px;
-            background: rgba(7, 10, 18, 0.8);
+            padding: 14px 20px 10px;
+            background: linear-gradient(180deg, rgba(8, 12, 24, 0.95) 0%, rgba(8, 12, 24, 0.7) 100%);
             backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
             border-bottom: 1px solid var(--gold-dim);
             display: flex;
             justify-content: space-between;
             align-items: center;
             z-index: 10;
-            height: 40px;
+            min-height: 64px;
         }
-        .corp-header h1 {
+        .corp-header .brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .corp-header .brand .logo-icon {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, var(--gold), #A8893A);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
             font-size: 16px;
+            color: #080C18;
+            box-shadow: 0 0 20px var(--gold-dim);
+        }
+        .corp-header .brand .corp-name {
+            font-size: 20px;
             font-weight: 800;
+            letter-spacing: 1px;
             color: var(--gold);
-            text-shadow: 0 0 15px var(--gold-dim);
-            letter-spacing: 0.5px;
+            text-shadow: 0 0 30px var(--gold-dim);
+        }
+        .corp-header .brand .corp-name span {
+            font-weight: 300;
+            color: var(--text-secondary);
+            font-size: 12px;
+            letter-spacing: 2px;
         }
         .corp-header .badge {
-            background: rgba(201, 168, 76, 0.08);
+            background: rgba(200, 168, 78, 0.08);
             border: 1px solid var(--gold-dim);
-            padding: 2px 10px;
-            border-radius: 30px;
-            font-size: 7px;
-            color: var(--gold);
+            padding: 4px 14px;
+            border-radius: 40px;
+            font-size: 9px;
             font-weight: 600;
+            color: var(--gold-light);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
-        /* Ticker */
-        .price-ticker {
+        /* ================================================================
+               TICKER - MARKET DATA
+            ================================================================ */
+        .ticker-bar {
             flex-shrink: 0;
-            background: rgba(0, 0, 0, 0.2);
-            padding: 2px 12px;
+            background: rgba(0, 0, 0, 0.25);
+            padding: 4px 16px;
             display: flex;
-            justify-content: space-around;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.02);
-            font-size: 8px;
+            justify-content: space-between;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+            font-size: 10px;
             color: var(--text-secondary);
-            height: 20px;
+            height: 28px;
             align-items: center;
         }
-        .price-ticker .value {
+        .ticker-bar .item {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .ticker-bar .value {
             color: var(--cyan);
             font-weight: 700;
+            font-variant-numeric: tabular-nums;
+        }
+        .ticker-bar .value.gold {
+            color: var(--gold);
         }
 
-        /* Tab Content (يأخذ باقي المساحة مع تمرير داخلي) */
+        /* ================================================================
+               TAB CONTENT
+            ================================================================ */
         .tab-content {
             flex: 1 1 auto;
             overflow-y: auto;
-            padding: 4px 6px 2px;
+            padding: 10px 12px 6px;
             display: none;
-            animation: fade 0.2s ease;
+            animation: fadeIn 0.25s ease;
         }
         .tab-content.active {
             display: block;
         }
-        @keyframes fade {
+        @keyframes fadeIn {
             from {
                 opacity: 0;
-                transform: translateY(3px);
+                transform: translateY(6px);
             }
             to {
                 opacity: 1;
@@ -126,38 +177,46 @@
             }
         }
         .tab-content::-webkit-scrollbar {
-            width: 2px;
+            width: 3px;
+        }
+        .tab-content::-webkit-scrollbar-track {
+            background: transparent;
         }
         .tab-content::-webkit-scrollbar-thumb {
             background: var(--gold);
             border-radius: 10px;
         }
 
-        /* ============================================================
-           MINING RIG - تصميم مضغوط جداً
-           ============================================================ */
+        /* ================================================================
+               MINING RIG CARD - NC.CORP STYLE
+            ================================================================ */
         .mining-rig {
             background: var(--bg-card);
-            backdrop-filter: blur(10px);
-            border-radius: var(--radius);
-            border: 1px solid rgba(255, 255, 255, 0.04);
-            padding: 6px 8px 6px;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-radius: var(--radius-card);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: var(--shadow-card), inset 0 1px 0 rgba(255, 255, 255, 0.04);
+            padding: 16px 14px 14px;
             position: relative;
             overflow: hidden;
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+            transition: border-color 0.4s;
         }
+        /* Glow border (refined) */
         .mining-rig::before {
             content: '';
             position: absolute;
-            top: -2px;
-            left: -2px;
-            right: -2px;
-            bottom: -2px;
-            border-radius: var(--radius);
-            background: conic-gradient(from 0deg, transparent, var(--gold-dim), transparent, var(--cyan-dim), transparent);
-            z-index: -1;
-            opacity: 0.4;
-            animation: rotateGlow 10s linear infinite;
+            inset: -1px;
+            border-radius: var(--radius-card);
+            padding: 1px;
+            background: conic-gradient(from 120deg, transparent, var(--gold-dim), transparent, var(--gold-dim), transparent);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            pointer-events: none;
+            opacity: 0.6;
+            animation: rotateGlow 12s linear infinite;
         }
         @keyframes rotateGlow {
             0% {
@@ -168,46 +227,47 @@
             }
         }
 
-        /* Status Bar (مضغوط) */
-        .rig-status-bar {
+        /* STATUS BAR */
+        .rig-status {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 4px;
-            background: rgba(0, 0, 0, 0.25);
-            padding: 0 10px;
-            border-radius: 30px;
-            border: 1px solid rgba(255, 255, 255, 0.03);
-            height: 22px;
+            margin-bottom: 10px;
+            background: rgba(0, 0, 0, 0.2);
+            padding: 4px 14px;
+            border-radius: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            height: 28px;
         }
-        .rig-status-bar .status-dot {
+        .rig-status .status-group {
             display: flex;
             align-items: center;
-            gap: 4px;
-            font-size: 9px;
+            gap: 8px;
+            font-size: 11px;
             font-weight: 600;
+            color: var(--text-secondary);
         }
-        .rig-status-bar .status-dot .dot {
-            width: 6px;
-            height: 6px;
+        .rig-status .status-dot {
+            width: 8px;
+            height: 8px;
             border-radius: 50%;
             transition: 0.3s;
         }
-        .rig-status-bar .status-dot .dot.online {
+        .rig-status .status-dot.online {
             background: var(--green);
-            box-shadow: 0 0 8px var(--green);
-            animation: pulse 1.5s infinite;
+            box-shadow: 0 0 12px var(--green);
+            animation: pulse-dot 1.8s infinite;
         }
-        .rig-status-bar .status-dot .dot.offline {
+        .rig-status .status-dot.offline {
             background: var(--red);
-            box-shadow: 0 0 8px var(--red);
+            box-shadow: 0 0 12px var(--red);
         }
-        .rig-status-bar .status-dot .dot.cooling {
+        .rig-status .status-dot.cooling {
             background: var(--cyan);
-            box-shadow: 0 0 8px var(--cyan);
-            animation: pulse 0.8s infinite;
+            box-shadow: 0 0 12px var(--cyan);
+            animation: pulse-dot 0.8s infinite;
         }
-        @keyframes pulse {
+        @keyframes pulse-dot {
             0%,
             100% {
                 opacity: 1;
@@ -218,62 +278,87 @@
                 transform: scale(0.7);
             }
         }
-        .rig-status-bar .hash-rate {
-            font-size: 10px;
+        .rig-status .hash-rate {
+            font-size: 13px;
             font-weight: 700;
             color: var(--cyan);
             direction: ltr;
+            font-variant-numeric: tabular-nums;
         }
 
-        /* MAIN LAYOUT (مضغوط جداً) */
-        .rig-main-layout {
+        /* MAIN LAYOUT : FAN | CENTER | LEDS */
+        .rig-main {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            gap: 4px;
-            margin: 2px 0 4px;
+            gap: 6px;
+            margin: 4px 0 8px;
         }
 
-        /* LEFT: GPU Fan */
-        .rig-fan-wrapper {
-            flex: 0 0 62px;
+        /* FAN (Left) */
+        .fan-wrapper {
+            flex: 0 0 72px;
             display: flex;
             flex-direction: column;
             align-items: center;
             cursor: pointer;
+            transition: transform 0.2s;
         }
-        .fan-svg-container {
-            width: 56px;
-            height: 56px;
-            position: relative;
+        .fan-wrapper:active {
+            transform: scale(0.94);
         }
-        .fan-svg-container svg {
-            width: 100%;
-            height: 100%;
-            display: block;
+        .fan-svg {
+            width: 64px;
+            height: 64px;
         }
-        .fan-blade {
+        .fan-svg .blade {
             fill: rgba(255, 255, 255, 0.04);
-            stroke: rgba(201, 168, 76, 0.15);
-            stroke-width: 1;
-            transition: fill 0.3s, stroke 0.3s;
+            stroke: rgba(200, 168, 78, 0.2);
+            stroke-width: 1.2;
+            transition: fill 0.4s, stroke 0.4s;
         }
-        .fan-svg-container.spin1 {
-            animation: spinFan 1.2s linear infinite;
+        .fan-svg .hub {
+            fill: var(--gold);
+            stroke: rgba(255, 255, 255, 0.15);
+            stroke-width: 2;
         }
-        .fan-svg-container.spin2 {
-            animation: spinFan 0.8s linear infinite;
+        .fan-svg .hub-inner {
+            fill: #7a5d2e;
         }
-        .fan-svg-container.spin3 {
-            animation: spinFan 0.5s linear infinite;
+        .fan-svg .hub-center {
+            fill: rgba(255, 255, 255, 0.25);
         }
-        .fan-svg-container.spin4 {
-            animation: spinFan 0.25s linear infinite;
+
+        .fan-wrapper .fan-speed-label {
+            font-size: 9px;
+            color: var(--text-secondary);
+            margin-top: 2px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
         }
-        .fan-svg-container.overheat {
-            animation: shake 0.15s ease-in-out infinite alternate;
+        .fan-wrapper .fan-speed-label span {
+            color: var(--gold);
+            font-size: 14px;
+            font-weight: 800;
         }
-        @keyframes spinFan {
+
+        /* Fan Animations */
+        .fan-svg.spin-1 {
+            animation: spin 1.2s linear infinite;
+        }
+        .fan-svg.spin-2 {
+            animation: spin 0.8s linear infinite;
+        }
+        .fan-svg.spin-3 {
+            animation: spin 0.5s linear infinite;
+        }
+        .fan-svg.spin-4 {
+            animation: spin 0.25s linear infinite;
+        }
+        .fan-svg.overheat {
+            animation: shake 0.12s ease-in-out infinite alternate;
+        }
+        @keyframes spin {
             0% {
                 transform: rotate(0deg);
             }
@@ -290,94 +375,80 @@
             }
         }
 
-        .rig-fan-wrapper .fan-label {
-            font-size: 7px;
-            color: var(--text-secondary);
-            margin-top: 1px;
-            font-weight: 600;
-            letter-spacing: 0.3px;
-        }
-        .rig-fan-wrapper .fan-label span {
-            color: var(--gold);
-            font-size: 11px;
-        }
-
         /* CENTER */
         .rig-center {
             flex: 1;
             text-align: center;
             padding: 0 2px;
         }
-        .rig-center .main-title {
-            font-size: 13px;
-            font-weight: 900;
+        .rig-center .title {
+            font-size: 16px;
+            font-weight: 800;
             color: var(--gold);
-            text-shadow: 0 0 20px var(--gold-dim);
-            letter-spacing: 0.3px;
-            line-height: 1.2;
+            text-shadow: 0 0 25px var(--gold-dim);
+            letter-spacing: 0.5px;
         }
-        .rig-center .main-title i {
+        .rig-center .title i {
+            font-size: 14px;
+            margin-left: 4px;
+        }
+        .rig-center .pending {
+            margin-top: 2px;
             font-size: 13px;
-            margin-left: 3px;
-        }
-        .rig-center .pending-display {
-            margin-top: 1px;
-            font-size: 10px;
             font-weight: 700;
             color: var(--cyan);
             direction: ltr;
             background: rgba(0, 0, 0, 0.25);
-            padding: 0 8px;
-            border-radius: 30px;
+            padding: 0 14px;
+            border-radius: 40px;
             display: inline-block;
-            border: 1px solid rgba(0, 229, 255, 0.05);
-            height: 18px;
-            line-height: 18px;
+            border: 1px solid rgba(72, 201, 255, 0.08);
+            height: 24px;
+            line-height: 24px;
         }
-        .rig-center .pending-display small {
-            font-size: 7px;
+        .rig-center .pending small {
+            font-size: 9px;
             color: var(--text-secondary);
+            font-weight: 400;
         }
 
-        /* RIGHT: LEDs (مضغوط) */
-        .rig-leds-wrapper {
-            flex: 0 0 28px;
+        /* LEDS (Right) */
+        .leds-group {
+            flex: 0 0 32px;
             display: flex;
             flex-direction: column;
-            gap: 4px;
+            gap: 5px;
             align-items: center;
             justify-content: center;
         }
-        .led-btn {
-            width: 22px;
-            height: 6px;
+        .led {
+            width: 26px;
+            height: 7px;
             border-radius: 20px;
-            background: rgba(255, 255, 255, 0.03);
+            background: rgba(255, 255, 255, 0.04);
             border: 1px solid rgba(255, 255, 255, 0.04);
             transition: 0.3s;
         }
-        .led-btn.active {
+        .led.active {
             background: var(--green);
             border-color: var(--green);
-            box-shadow: 0 0 10px var(--green-dim);
-            animation: blinkGreen 0.8s ease-in-out infinite alternate;
+            box-shadow: 0 0 14px var(--gold-dim);
+            animation: blink-green 0.9s ease-in-out infinite alternate;
         }
-        .led-btn.active.high {
+        .led.active.high {
             background: var(--orange);
             border-color: var(--orange);
-            box-shadow: 0 0 10px rgba(255, 180, 50, 0.25);
-            animation: blinkOrange 0.6s ease-in-out infinite alternate;
+            animation: blink-orange 0.6s ease-in-out infinite alternate;
         }
-        .led-btn.active.max {
+        .led.active.max {
             background: var(--red);
             border-color: var(--red);
-            box-shadow: 0 0 10px rgba(255, 77, 109, 0.3);
-            animation: blinkRed 0.4s ease-in-out infinite alternate;
+            animation: blink-red 0.4s ease-in-out infinite alternate;
         }
-        .led-btn.off {
+        .led.off {
             opacity: 0.2;
         }
-        @keyframes blinkGreen {
+        @keyframes blink-green {
             0% {
                 opacity: 0.4;
             }
@@ -385,7 +456,7 @@
                 opacity: 1;
             }
         }
-        @keyframes blinkOrange {
+        @keyframes blink-orange {
             0% {
                 opacity: 0.4;
             }
@@ -393,7 +464,7 @@
                 opacity: 1;
             }
         }
-        @keyframes blinkRed {
+        @keyframes blink-red {
             0% {
                 opacity: 0.3;
             }
@@ -402,180 +473,235 @@
             }
         }
 
-        /* STATS GRID (مضغوط جداً) */
-        .rig-stats-grid {
+        /* STATS GRID - CIRCULAR GAUGES */
+        .stats-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 3px;
-            margin-top: 4px;
+            gap: 8px;
+            margin-top: 10px;
         }
-        .stat-box {
+        .stat-card {
             background: rgba(0, 0, 0, 0.2);
-            border-radius: 8px;
-            padding: 2px 6px;
-            border: 1px solid rgba(255, 255, 255, 0.03);
+            border-radius: var(--radius-sm);
+            padding: 6px 10px;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
-        .stat-box .label {
-            font-size: 7px;
-            color: var(--text-secondary);
-            display: block;
-            line-height: 1.2;
+        .stat-card .gauge {
+            flex-shrink: 0;
+            width: 44px;
+            height: 44px;
+            position: relative;
         }
-        .stat-box .value {
-            font-size: 12px;
+        .stat-card .gauge svg {
+            transform: rotate(-90deg);
+        }
+        .stat-card .gauge .bg {
+            fill: none;
+            stroke: rgba(255, 255, 255, 0.06);
+            stroke-width: 4;
+        }
+        .stat-card .gauge .fill {
+            fill: none;
+            stroke-width: 4;
+            stroke-linecap: round;
+            transition: stroke-dashoffset 0.6s ease, stroke 0.6s ease;
+        }
+        .stat-card .gauge .center-label {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 10px;
             font-weight: 800;
-            font-variant-numeric: tabular-nums;
-            direction: ltr;
+            color: var(--text-primary);
+            text-align: center;
+            line-height: 1.1;
         }
-        .stat-box .value.gold {
+        .stat-card .gauge .center-label small {
+            display: block;
+            font-size: 6px;
+            font-weight: 400;
+            color: var(--text-muted);
+        }
+        .stat-card .info {
+            flex: 1;
+        }
+        .stat-card .info .label {
+            font-size: 9px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .stat-card .info .value {
+            font-size: 16px;
+            font-weight: 800;
+            direction: ltr;
+            font-variant-numeric: tabular-nums;
+        }
+        .stat-card .info .value.gold {
             color: var(--gold);
         }
-        .stat-box .value.orange {
+        .stat-card .info .value.orange {
             color: var(--orange);
         }
-        .stat-box .sub {
-            font-size: 7px;
+        .stat-card .info .sub {
+            font-size: 9px;
             color: var(--text-muted);
             font-weight: 400;
         }
-        .stat-box .bar-track {
-            width: 100%;
-            height: 2.5px;
-            background: rgba(255, 255, 255, 0.04);
-            border-radius: 10px;
-            overflow: hidden;
-            margin-top: 1px;
-        }
-        .stat-box .bar-track .bar-fill {
-            height: 100%;
-            border-radius: 10px;
-            transition: width 0.4s ease;
-        }
 
-        /* Timer Warning (يأخذ عرض الصفين) */
+        /* TIMER WARNING (spans both columns) */
         .timer-warning {
             grid-column: span 2;
-            text-align: center;
             background: rgba(255, 77, 109, 0.04);
-            border-radius: 8px;
-            padding: 2px 4px;
-            border: 1px solid rgba(255, 77, 109, 0.05);
-            font-size: 8px;
+            border-radius: var(--radius-sm);
+            padding: 4px 10px;
+            border: 1px solid rgba(255, 77, 109, 0.06);
+            text-align: center;
+            font-size: 10px;
             font-weight: 600;
             color: var(--text-secondary);
-            height: 20px;
-            line-height: 16px;
+            height: 28px;
+            line-height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
         }
-        .timer-warning span {
-            font-weight: 800;
-        }
-        .timer-warning .ok {
+        .timer-warning .status-text.ok {
             color: var(--green);
         }
-        .timer-warning .warn {
+        .timer-warning .status-text.warn {
             color: var(--orange);
         }
-        .timer-warning .danger {
+        .timer-warning .status-text.danger {
             color: var(--red);
         }
-        .timer-warning .cool {
+        .timer-warning .status-text.cool {
             color: var(--cyan);
         }
-        .timer-warning #timerCountdown {
+        .timer-warning .countdown {
             font-weight: 800;
             direction: ltr;
+            font-variant-numeric: tabular-nums;
         }
 
-        /* Action Bar (مضغوط) */
+        /* ACTION BUTTONS */
         .action-bar {
             display: flex;
-            gap: 3px;
-            margin-top: 4px;
+            gap: 6px;
+            margin-top: 10px;
         }
         .action-bar .btn {
             flex: 1;
-            padding: 3px 2px;
-            border-radius: 8px;
-            border: 1px solid rgba(255, 255, 255, 0.04);
+            padding: 8px 4px;
+            border-radius: var(--radius-sm);
+            border: 1px solid rgba(255, 255, 255, 0.05);
             background: rgba(0, 0, 0, 0.25);
             color: var(--text-secondary);
             font-weight: 600;
-            font-size: 8px;
+            font-size: 10px;
             cursor: pointer;
-            transition: 0.15s;
+            transition: var(--transition);
             text-align: center;
-            height: 22px;
-            line-height: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+        }
+        .action-bar .btn:hover {
+            background: rgba(255, 255, 255, 0.04);
         }
         .action-bar .btn:active {
             transform: scale(0.94);
         }
         .action-bar .btn-collect {
-            background: rgba(0, 229, 255, 0.06);
+            background: rgba(72, 201, 255, 0.06);
             color: var(--cyan);
-            border-color: rgba(0, 229, 255, 0.06);
+            border-color: rgba(72, 201, 255, 0.08);
+        }
+        .action-bar .btn-collect:hover {
+            background: rgba(72, 201, 255, 0.1);
         }
         .action-bar .btn-auto {
-            background: rgba(57, 255, 20, 0.04);
+            background: rgba(74, 222, 128, 0.04);
             color: var(--green);
-            border-color: rgba(57, 255, 20, 0.04);
+            border-color: rgba(74, 222, 128, 0.06);
+        }
+        .action-bar .btn-auto:hover {
+            background: rgba(74, 222, 128, 0.08);
         }
         .action-bar .btn-auto.active {
             background: rgba(255, 180, 50, 0.08);
             color: var(--orange);
-            border-color: rgba(255, 180, 50, 0.1);
+            border-color: rgba(255, 180, 50, 0.12);
         }
         .action-bar .btn-log {
             background: rgba(255, 255, 255, 0.02);
         }
 
-        /* Log (مضغوط جداً) */
+        /* LOG */
         .log-container {
-            max-height: 38px;
+            max-height: 44px;
             overflow-y: auto;
             background: rgba(0, 0, 0, 0.2);
-            border-radius: 8px;
-            padding: 1px 6px;
+            border-radius: var(--radius-sm);
+            padding: 2px 10px;
             border: 1px solid rgba(255, 255, 255, 0.03);
-            margin-top: 3px;
-            font-size: 7px;
+            margin-top: 6px;
+            font-size: 9px;
         }
         .log-container .log-item {
             display: flex;
             justify-content: space-between;
-            padding: 1px 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.02);
+            padding: 2px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
             color: var(--text-secondary);
         }
         .log-container .log-item .time {
             color: var(--text-muted);
+            font-size: 8px;
         }
 
-        /* ============================================================
-           WALLET / SHOP / SETTINGS (مضغوط)
-           ============================================================ */
+        /* ================================================================
+               WALLET / SHOP / SETTINGS (minimal)
+            ================================================================ */
         .card {
             background: var(--bg-card);
-            backdrop-filter: blur(6px);
-            border-radius: 12px;
+            backdrop-filter: blur(8px);
+            border-radius: var(--radius-card);
             border: 1px solid rgba(255, 255, 255, 0.04);
-            padding: 8px 10px;
-            margin-bottom: 4px;
+            padding: 14px 16px;
+            margin-bottom: 8px;
+        }
+        .card-title {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
         }
         .wallet-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 4px;
+            gap: 8px;
         }
         .wallet-item {
-            background: rgba(0, 0, 0, 0.2);
-            border-radius: 8px;
-            padding: 6px;
+            background: rgba(0, 0, 0, 0.15);
+            border-radius: var(--radius-sm);
+            padding: 8px;
             text-align: center;
+        }
+        .wallet-item .symbol {
             font-size: 10px;
+            color: var(--text-secondary);
         }
         .wallet-item .balance {
-            font-size: 13px;
+            font-size: 16px;
             font-weight: 700;
         }
         .wallet-item .balance.nc {
@@ -587,20 +713,21 @@
 
         .shop-category-tabs {
             display: flex;
-            gap: 2px;
+            gap: 4px;
+            margin-bottom: 6px;
             flex-wrap: wrap;
-            margin-bottom: 4px;
         }
         .shop-category-tabs .tab-btn {
             flex: 1;
-            padding: 2px 2px;
+            padding: 4px 2px;
             border-radius: 30px;
             border: 1px solid rgba(255, 255, 255, 0.04);
             background: transparent;
             color: var(--text-secondary);
-            font-size: 7px;
-            cursor: pointer;
+            font-size: 9px;
             font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
             text-align: center;
         }
         .shop-category-tabs .tab-btn.active {
@@ -611,42 +738,42 @@
         .shop-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 3px;
-            max-height: 140px;
+            gap: 6px;
+            max-height: 180px;
             overflow-y: auto;
         }
-        .shop-item-card {
+        .shop-item {
             background: rgba(0, 0, 0, 0.15);
-            border-radius: 8px;
-            padding: 4px;
+            border-radius: var(--radius-sm);
+            padding: 8px 6px;
             text-align: center;
         }
-        .shop-item-card .item-icon {
-            font-size: 14px;
+        .shop-item .icon {
+            font-size: 18px;
         }
-        .shop-item-card .item-name {
-            font-size: 8px;
+        .shop-item .name {
+            font-size: 10px;
             font-weight: 700;
         }
-        .shop-item-card .item-price {
-            font-size: 8px;
+        .shop-item .price {
+            font-size: 9px;
             color: var(--gold);
             font-weight: 700;
         }
-        .shop-item-card .btn {
-            margin-top: 1px;
-            padding: 1px 6px;
+        .shop-item .btn {
+            margin-top: 4px;
+            padding: 2px 10px;
             border-radius: 30px;
             border: none;
-            font-size: 7px;
+            font-size: 8px;
             font-weight: 700;
             cursor: pointer;
-            background: rgba(57, 255, 20, 0.08);
+            background: rgba(74, 222, 128, 0.08);
             color: var(--green);
-            border: 1px solid rgba(57, 255, 20, 0.06);
+            border: 1px solid rgba(74, 222, 128, 0.06);
             width: 100%;
         }
-        .shop-item-card .btn:disabled {
+        .shop-item .btn:disabled {
             opacity: 0.3;
             cursor: not-allowed;
         }
@@ -654,18 +781,18 @@
         .settings-item {
             display: flex;
             justify-content: space-between;
-            padding: 4px 0;
+            padding: 6px 0;
             border-bottom: 1px solid rgba(255, 255, 255, 0.03);
             align-items: center;
-            font-size: 10px;
+            font-size: 11px;
             color: var(--text-secondary);
         }
         .switch input {
             display: none;
         }
         .switch .slider {
-            width: 22px;
-            height: 12px;
+            width: 28px;
+            height: 15px;
             background: rgba(255, 255, 255, 0.08);
             border-radius: 30px;
             display: inline-block;
@@ -676,78 +803,83 @@
         .switch .slider::after {
             content: '';
             position: absolute;
-            width: 8px;
-            height: 8px;
+            width: 9px;
+            height: 9px;
             background: #fff;
             border-radius: 50%;
-            top: 2px;
-            left: 2px;
+            top: 3px;
+            left: 3px;
             transition: 0.3s;
         }
         .switch input:checked+.slider {
-            background: var(--cyan);
+            background: var(--gold);
         }
         .switch input:checked+.slider::after {
-            left: 12px;
-        }
-        .profile-trigger {
-            display: flex;
-            align-items: center;
-            gap: 3px;
-            cursor: pointer;
-            background: rgba(201, 168, 76, 0.08);
-            padding: 1px 8px;
-            border-radius: 30px;
-            border: 1px solid var(--gold-dim);
-            color: var(--gold);
-            font-weight: 700;
-            font-size: 9px;
+            left: 16px;
         }
 
-        /* ============================================================
-           BOTTOM NAV (ثابت في الأسفل - تم إصلاحه)
-           ============================================================ */
+        /* ================================================================
+               BOTTOM NAV (FIXED)
+            ================================================================ */
         .bottom-nav {
             flex-shrink: 0;
-            background: rgba(7, 10, 18, 0.95);
+            background: rgba(8, 12, 24, 0.95);
             backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
             border-top: 1px solid rgba(255, 255, 255, 0.04);
             display: flex;
             justify-content: space-around;
-            padding: 2px 0 3px;
-            margin-top: auto;
-            height: 38px;
+            padding: 4px 0 6px;
+            min-height: 44px;
             align-items: center;
         }
         .bottom-nav .nav-item {
             display: flex;
             flex-direction: column;
             align-items: center;
-            color: var(--text-secondary);
-            font-size: 6px;
+            color: var(--text-muted);
+            font-size: 8px;
             cursor: pointer;
-            transition: 0.2s;
-            padding: 0 2px;
+            transition: var(--transition);
+            padding: 0 6px;
+            text-decoration: none;
+            gap: 1px;
         }
         .bottom-nav .nav-item i {
-            font-size: 14px;
-            margin-bottom: 0px;
+            font-size: 16px;
+            transition: var(--transition);
         }
         .bottom-nav .nav-item.active {
             color: var(--gold);
         }
+        .bottom-nav .nav-item.active i {
+            text-shadow: 0 0 20px var(--gold-dim);
+        }
 
-        /* Profile Slide */
+        /* ================================================================
+               PROFILE SLIDE
+            ================================================================ */
+        .profile-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(4px);
+            z-index: 999;
+            display: none;
+        }
+        .profile-overlay.show {
+            display: block;
+        }
         .profile-slide {
             position: fixed;
             top: 0;
             right: -100%;
             width: 100%;
-            max-width: 340px;
+            max-width: 360px;
             height: 100%;
             background: var(--bg-secondary);
             z-index: 1000;
-            transition: 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+            transition: right 0.35s cubic-bezier(0.22, 1, 0.36, 1);
             border-left: 1px solid rgba(255, 255, 255, 0.04);
             display: flex;
             flex-direction: column;
@@ -755,22 +887,8 @@
         .profile-slide.open {
             right: 0;
         }
-        .profile-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 999;
-            display: none;
-            backdrop-filter: blur(3px);
-        }
-        .profile-overlay.show {
-            display: block;
-        }
         .profile-slide .header {
-            padding: 10px 16px;
+            padding: 16px 20px;
             border-bottom: 1px solid rgba(255, 255, 255, 0.04);
             display: flex;
             justify-content: space-between;
@@ -778,44 +896,52 @@
         }
         .profile-slide .header h2 {
             color: var(--gold);
-            font-size: 14px;
+            font-size: 16px;
+            font-weight: 700;
         }
         .profile-slide .header .close-btn {
             background: none;
             border: none;
             color: var(--text-secondary);
-            font-size: 18px;
+            font-size: 20px;
             cursor: pointer;
         }
         .profile-slide .body {
             flex: 1;
             overflow-y: auto;
-            padding: 14px;
+            padding: 20px;
         }
         .profile-slide .input-field {
             width: 100%;
-            padding: 6px 10px;
-            background: rgba(0, 0, 0, 0.3);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            border-radius: 8px;
+            padding: 10px 14px;
+            background: rgba(0, 0, 0, 0.25);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: var(--radius-sm);
             color: var(--text-primary);
-            font-size: 12px;
-            margin-bottom: 8px;
+            font-size: 14px;
+            margin-bottom: 12px;
         }
         .profile-slide .save-btn {
             width: 100%;
-            padding: 8px;
+            padding: 12px;
             background: var(--gold);
             border: none;
-            border-radius: 30px;
+            border-radius: 40px;
             font-weight: 700;
-            font-size: 12px;
-            color: #0A0E18;
+            font-size: 14px;
+            color: #080C18;
             cursor: pointer;
+            transition: var(--transition);
+        }
+        .profile-slide .save-btn:hover {
+            background: var(--gold-light);
         }
 
+        /* ================================================================
+               SCROLLBAR
+            ================================================================ */
         ::-webkit-scrollbar {
-            width: 2px;
+            width: 3px;
         }
         ::-webkit-scrollbar-track {
             background: transparent;
@@ -824,94 +950,219 @@
             background: var(--gold);
             border-radius: 10px;
         }
+
+        /* ================================================================
+               RESPONSIVE FINE-TUNE
+            ================================================================ */
+        @media (max-width: 420px) {
+            .corp-header {
+                padding: 10px 14px 8px;
+                min-height: 56px;
+            }
+            .corp-header .brand .logo-icon {
+                width: 30px;
+                height: 30px;
+                font-size: 13px;
+            }
+            .corp-header .brand .corp-name {
+                font-size: 16px;
+            }
+            .corp-header .badge {
+                font-size: 7px;
+                padding: 2px 10px;
+            }
+            .fan-svg {
+                width: 54px;
+                height: 54px;
+            }
+            .fan-wrapper {
+                flex: 0 0 62px;
+            }
+            .rig-center .title {
+                font-size: 14px;
+            }
+            .rig-center .pending {
+                font-size: 11px;
+                height: 20px;
+                line-height: 20px;
+                padding: 0 10px;
+            }
+            .led {
+                width: 22px;
+                height: 6px;
+            }
+            .leds-group {
+                flex: 0 0 28px;
+                gap: 4px;
+            }
+            .stat-card .gauge {
+                width: 38px;
+                height: 38px;
+            }
+            .stat-card .info .value {
+                font-size: 14px;
+            }
+            .action-bar .btn {
+                font-size: 9px;
+                padding: 6px 2px;
+            }
+            .bottom-nav {
+                min-height: 38px;
+            }
+            .bottom-nav .nav-item i {
+                font-size: 14px;
+            }
+            .bottom-nav .nav-item {
+                font-size: 7px;
+            }
+            .mining-rig {
+                padding: 12px 10px 10px;
+            }
+            .timer-warning {
+                font-size: 9px;
+                height: 24px;
+                line-height: 16px;
+            }
+        }
+        @media (max-width: 360px) {
+            .fan-svg {
+                width: 46px;
+                height: 46px;
+            }
+            .fan-wrapper {
+                flex: 0 0 54px;
+            }
+            .rig-center .title {
+                font-size: 12px;
+            }
+            .rig-center .pending {
+                font-size: 10px;
+            }
+            .stat-card .gauge {
+                width: 34px;
+                height: 34px;
+            }
+            .stat-card .info .value {
+                font-size: 12px;
+            }
+        }
     </style>
 </head>
 <body>
 
     <div class="app" id="app">
 
-        <!-- HEADER -->
-        <div class="corp-header">
-            <h1>🏛️ HyeX</h1>
-            <div class="badge"><i class="fas fa-shield-alt"></i> GPU V4</div>
+        <!-- ============================================================
+        HEADER - NC.CORP
+        ============================================================ -->
+        <header class="corp-header">
+            <div class="brand">
+                <div class="logo-icon">⛁</div>
+                <div class="corp-name">NC<span>.CORP</span></div>
+            </div>
+            <div class="badge"><i class="fas fa-shield-alt"></i> v4.2</div>
+        </header>
+
+        <!-- ============================================================
+        TICKER BAR
+        ============================================================ -->
+        <div class="ticker-bar">
+            <div class="item"><span>⚡ السرعة</span> <span class="value" id="tickerMH">0.00</span> <span>MH/s</span></div>
+            <div class="item"><span>⛏️ العالق</span> <span class="value gold" id="tickerPending">0.0000</span> <span>NC</span></div>
         </div>
 
-        <!-- TICKER -->
-        <div class="price-ticker">
-            <span>⚡ السرعة: <span class="value" id="tickerMH">0.00</span> MH/s</span>
-            <span>⛏️ Pending: <span class="value" id="tickerPending">0.0000</span></span>
-        </div>
-
-        <!-- TAB: MINING -->
+        <!-- ============================================================
+        TAB: MINING
+        ============================================================ -->
         <div id="tab-mining" class="tab-content active">
             <div class="mining-rig" id="rigContainer">
 
                 <!-- Status Bar -->
-                <div class="rig-status-bar">
-                    <div class="status-dot">
-                        <span class="dot online" id="statusDot"></span>
+                <div class="rig-status">
+                    <div class="status-group">
+                        <span class="status-dot online" id="statusDot"></span>
                         <span id="statusText">تشغيل</span>
                     </div>
                     <div class="hash-rate" id="hashRateDisplay">0.00 MH/s</div>
                 </div>
 
-                <!-- MAIN LAYOUT -->
-                <div class="rig-main-layout">
-                    <!-- LEFT: GPU Fan -->
-                    <div class="rig-fan-wrapper" id="fanClickArea">
-                        <div class="fan-svg-container" id="fanSvgContainer">
-                            <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-                                <g id="fanBladesGroup">
-                                    <path class="fan-blade" d="M 50 50 C 55 25, 70 15, 80 25 C 85 32, 78 45, 70 50 Z" />
-                                    <path class="fan-blade" d="M 50 50 C 55 25, 70 15, 80 25 C 85 32, 78 45, 70 50 Z" transform="rotate(51.4 50 50)" />
-                                    <path class="fan-blade" d="M 50 50 C 55 25, 70 15, 80 25 C 85 32, 78 45, 70 50 Z" transform="rotate(102.8 50 50)" />
-                                    <path class="fan-blade" d="M 50 50 C 55 25, 70 15, 80 25 C 85 32, 78 45, 70 50 Z" transform="rotate(154.2 50 50)" />
-                                    <path class="fan-blade" d="M 50 50 C 55 25, 70 15, 80 25 C 85 32, 78 45, 70 50 Z" transform="rotate(205.6 50 50)" />
-                                    <path class="fan-blade" d="M 50 50 C 55 25, 70 15, 80 25 C 85 32, 78 45, 70 50 Z" transform="rotate(257 50 50)" />
-                                    <path class="fan-blade" d="M 50 50 C 55 25, 70 15, 80 25 C 85 32, 78 45, 70 50 Z" transform="rotate(308.4 50 50)" />
-                                </g>
-                                <circle cx="50" cy="50" r="14" fill="#C9A84C" stroke="rgba(255,255,255,0.15)" stroke-width="2" />
-                                <circle cx="50" cy="50" r="6" fill="#7a5d2e" stroke="rgba(255,255,255,0.08)" stroke-width="1.5" />
-                                <circle cx="50" cy="50" r="2" fill="#fff" opacity="0.2" />
-                            </svg>
-                        </div>
-                        <div class="fan-label">السرعة <span id="fanSpeedDisplay">1</span> / 4</div>
+                <!-- Main Layout -->
+                <div class="rig-main">
+                    <!-- FAN -->
+                    <div class="fan-wrapper" id="fanClickArea">
+                        <svg class="fan-svg" id="fanSvg" viewBox="0 0 100 100">
+                            <g id="fanBladesGroup">
+                                <path class="blade" d="M50 50 C55 28,68 18,78 28 C83 35,76 46,68 50 Z"/>
+                                <path class="blade" d="M50 50 C55 28,68 18,78 28 C83 35,76 46,68 50 Z" transform="rotate(51.4 50 50)"/>
+                                <path class="blade" d="M50 50 C55 28,68 18,78 28 C83 35,76 46,68 50 Z" transform="rotate(102.8 50 50)"/>
+                                <path class="blade" d="M50 50 C55 28,68 18,78 28 C83 35,76 46,68 50 Z" transform="rotate(154.2 50 50)"/>
+                                <path class="blade" d="M50 50 C55 28,68 18,78 28 C83 35,76 46,68 50 Z" transform="rotate(205.6 50 50)"/>
+                                <path class="blade" d="M50 50 C55 28,68 18,78 28 C83 35,76 46,68 50 Z" transform="rotate(257 50 50)"/>
+                                <path class="blade" d="M50 50 C55 28,68 18,78 28 C83 35,76 46,68 50 Z" transform="rotate(308.4 50 50)"/>
+                            </g>
+                            <circle class="hub" cx="50" cy="50" r="14"/>
+                            <circle class="hub-inner" cx="50" cy="50" r="7"/>
+                            <circle class="hub-center" cx="50" cy="50" r="2.5"/>
+                        </svg>
+                        <div class="fan-speed-label">السرعة <span id="fanSpeedDisplay">1</span> / 4</div>
                     </div>
 
                     <!-- CENTER -->
                     <div class="rig-center">
-                        <div class="main-title">
-                            <i class="fas fa-microchip"></i> NC Coins Mining
-                        </div>
-                        <div class="pending-display">
+                        <div class="title"><i class="fas fa-microchip"></i> NC Mining</div>
+                        <div class="pending">
                             <span id="pendingNC">0.00000000</span> <small>NC</small>
                         </div>
                     </div>
 
-                    <!-- RIGHT: 4 LEDs -->
-                    <div class="rig-leds-wrapper">
-                        <div class="led-btn" data-idx="0" id="led0"></div>
-                        <div class="led-btn" data-idx="1" id="led1"></div>
-                        <div class="led-btn" data-idx="2" id="led2"></div>
-                        <div class="led-btn" data-idx="3" id="led3"></div>
+                    <!-- LEDS -->
+                    <div class="leds-group" id="ledsGroup">
+                        <div class="led" data-idx="0" id="led0"></div>
+                        <div class="led" data-idx="1" id="led1"></div>
+                        <div class="led" data-idx="2" id="led2"></div>
+                        <div class="led" data-idx="3" id="led3"></div>
                     </div>
                 </div>
 
-                <!-- STATS GRID -->
-                <div class="rig-stats-grid">
-                    <div class="stat-box">
-                        <span class="label">🔋 البطارية</span>
-                        <span class="value gold" id="batteryDisplay">10000</span><span class="sub"> Ah</span>
-                        <div class="bar-track"><div class="bar-fill" id="batteryBar" style="width:100%;background:var(--green);"></div></div>
+                <!-- Stats: Circular Gauges -->
+                <div class="stats-grid">
+                    <!-- Battery -->
+                    <div class="stat-card">
+                        <div class="gauge">
+                            <svg viewBox="0 0 100 100">
+                                <circle class="bg" cx="50" cy="50" r="38"/>
+                                <circle class="fill" id="batteryGauge" cx="50" cy="50" r="38"
+                                stroke="#4ADE80" stroke-dasharray="238.76" stroke-dashoffset="0"/>
+                            </svg>
+                            <div class="center-label" id="batteryPercent">100<small>%</small></div>
+                        </div>
+                        <div class="info">
+                            <div class="label">🔋 البطارية</div>
+                            <div class="value gold" id="batteryDisplay">10000 <span class="sub">Ah</span></div>
+                        </div>
                     </div>
-                    <div class="stat-box">
-                        <span class="label">🌡️ الحرارة</span>
-                        <span class="value orange" id="heatDisplay">0%</span>
-                        <div class="bar-track"><div class="bar-fill" id="heatBar" style="width:0%;background:var(--cyan);"></div></div>
+
+                    <!-- Heat -->
+                    <div class="stat-card">
+                        <div class="gauge">
+                            <svg viewBox="0 0 100 100">
+                                <circle class="bg" cx="50" cy="50" r="38"/>
+                                <circle class="fill" id="heatGauge" cx="50" cy="50" r="38"
+                                stroke="#FFB347" stroke-dasharray="238.76" stroke-dashoffset="238.76"/>
+                            </svg>
+                            <div class="center-label" id="heatPercent">0<small>%</small></div>
+                        </div>
+                        <div class="info">
+                            <div class="label">🌡️ الحرارة</div>
+                            <div class="value orange" id="heatDisplay">0%</div>
+                        </div>
                     </div>
+
+                    <!-- Timer Warning (spans full width) -->
                     <div class="timer-warning" id="timerDisplay">
-                        ⏱️ <span id="miningStatusText" class="ok">مستقر</span>
-                        <span id="timerCountdown" style="display:none;">--:--</span>
+                        <span>⏱️</span>
+                        <span class="status-text ok" id="miningStatusText">مستقر</span>
+                        <span class="countdown" id="timerCountdown" style="display:none;">--:--</span>
                     </div>
                 </div>
 
@@ -923,7 +1174,7 @@
                 </div>
 
                 <!-- Log -->
-                <div id="logContainer" style="display:none; margin-top:2px;">
+                <div id="logContainer" style="display:none; margin-top:4px;">
                     <div class="log-container" id="logList">
                         <div class="log-item" style="justify-content:center;color:var(--text-muted);">لا توجد عمليات</div>
                     </div>
@@ -931,21 +1182,32 @@
             </div>
         </div>
 
-        <!-- TAB: WALLET -->
+        <!-- ============================================================
+        TAB: WALLET
+        ============================================================ -->
         <div id="tab-wallet" class="tab-content">
             <div class="card">
+                <div class="card-title">💰 الأرصدة <i class="fas fa-chevron-left" style="color:var(--gold);"></i></div>
                 <div class="wallet-grid">
-                    <div class="wallet-item"><div>NC</div><div class="balance nc" id="balNC">0.00</div></div>
-                    <div class="wallet-item"><div>Cash</div><div class="balance cash" id="balCash">0.00</div></div>
+                    <div class="wallet-item">
+                        <div class="symbol">NC</div>
+                        <div class="balance nc" id="balNC">0.00</div>
+                    </div>
+                    <div class="wallet-item">
+                        <div class="symbol">Cash</div>
+                        <div class="balance cash" id="balCash">0.00</div>
+                    </div>
                 </div>
             </div>
-            <div style="text-align:center;font-size:7px;color:var(--text-muted);">🔒 محاكاة ترفيهية</div>
+            <div style="text-align:center;font-size:9px;color:var(--text-muted);">🔒 جميع الأرصدة مشفرة (محاكاة ترفيهية)</div>
         </div>
 
-        <!-- TAB: SHOP -->
+        <!-- ============================================================
+        TAB: SHOP
+        ============================================================ -->
         <div id="tab-shop" class="tab-content">
             <div class="card">
-                <div style="display:flex;justify-content:space-between;font-weight:700;margin-bottom:4px;font-size:11px;">🛒 المتجر <span style="color:var(--gold);" id="shopBalance">0.00 NC</span></div>
+                <div class="card-title">🛒 المتجر الرسمي <span style="font-size:11px;color:var(--gold);" id="shopBalance">0.00 NC</span></div>
                 <div class="shop-category-tabs">
                     <button class="tab-btn active" data-cat="upgrades">🔧 ترقيات</button>
                     <button class="tab-btn" data-cat="boosters">⚡ تسريعات</button>
@@ -955,37 +1217,60 @@
             </div>
         </div>
 
-        <!-- TAB: SETTINGS -->
+        <!-- ============================================================
+        TAB: SETTINGS
+        ============================================================ -->
         <div id="tab-settings" class="tab-content">
             <div class="card">
-                <div class="settings-item"><span>👤 الملف</span>
-                    <div class="profile-trigger" onclick="toggleProfile()"><i class="fas fa-user"></i> <span id="settingsProfileName">مستخدم</span></div>
+                <div class="card-title">⚙️ الإعدادات</div>
+                <div class="settings-item">
+                    <span>👤 الملف الشخصي</span>
+                    <div class="profile-trigger" onclick="toggleProfile()" style="display:flex;align-items:center;gap:6px;cursor:pointer;background:rgba(200,168,78,0.06);padding:2px 12px;border-radius:30px;border:1px solid var(--gold-dim);color:var(--gold);font-weight:600;font-size:11px;">
+                        <i class="fas fa-user"></i>
+                        <span id="settingsProfileName">مستخدم</span>
+                    </div>
                 </div>
-                <div class="settings-item"><span>🌓 المظهر</span>
-                    <div><button id="themeDarkBtn" style="padding:1px 8px;border-radius:30px;border:1px solid var(--gold);background:transparent;color:var(--gold);font-size:8px;cursor:pointer;">داكن</button>
-                        <button id="themeLightBtn" style="padding:1px 8px;border-radius:30px;border:1px solid rgba(255,255,255,0.08);background:transparent;color:var(--text-secondary);font-size:8px;cursor:pointer;">فاتح</button></div>
+                <div class="settings-item">
+                    <span>🌓 المظهر</span>
+                    <div>
+                        <button id="themeDarkBtn" style="padding:1px 10px;border-radius:30px;border:1px solid var(--gold);background:transparent;color:var(--gold);font-size:9px;cursor:pointer;">داكن</button>
+                        <button id="themeLightBtn" style="padding:1px 10px;border-radius:30px;border:1px solid rgba(255,255,255,0.06);background:transparent;color:var(--text-secondary);font-size:9px;cursor:pointer;">فاتح</button>
+                    </div>
                 </div>
-                <div class="settings-item"><span>🔊 صوت</span> <label class="switch"><input type="checkbox" id="soundToggle" checked><span class="slider"></span></label></div>
-                <div class="settings-item"><span>🔄 إعادة تعيين</span> <button id="resetBtn" style="background:rgba(255,77,109,0.08);border:1px solid rgba(255,77,109,0.1);color:var(--red);padding:1px 12px;border-radius:30px;cursor:pointer;font-size:8px;">إعادة</button></div>
+                <div class="settings-item">
+                    <span>🔊 مؤثرات صوتية</span>
+                    <label class="switch"><input type="checkbox" id="soundToggle" checked><span class="slider"></span></label>
+                </div>
+                <div class="settings-item">
+                    <span>🔄 إعادة تعيين</span>
+                    <button id="resetBtn" style="background:rgba(255,107,122,0.06);border:1px solid rgba(255,107,122,0.1);color:var(--red);padding:1px 14px;border-radius:30px;cursor:pointer;font-size:9px;">إعادة</button>
+                </div>
             </div>
         </div>
 
-        <!-- BOTTOM NAV (الآن يظهر دائماً في الأسفل) -->
-        <div class="bottom-nav">
+        <!-- ============================================================
+        BOTTOM NAV - FIXED
+        ============================================================ -->
+        <nav class="bottom-nav">
             <div class="nav-item active" data-tab="mining"><i class="fas fa-microchip"></i><span>تعدين</span></div>
             <div class="nav-item" data-tab="wallet"><i class="fas fa-wallet"></i><span>محفظة</span></div>
             <div class="nav-item" data-tab="shop"><i class="fas fa-store"></i><span>متجر</span></div>
             <div class="nav-item" data-tab="settings"><i class="fas fa-cog"></i><span>إعدادات</span></div>
-        </div>
+        </nav>
     </div>
 
-    <!-- PROFILE SLIDE -->
+    <!-- ============================================================
+    PROFILE SLIDE
+    ============================================================ -->
     <div class="profile-overlay" id="profileOverlay" onclick="toggleProfile()"></div>
     <div class="profile-slide" id="profileSlide">
-        <div class="header"><h2>👤 ملفي</h2><button class="close-btn" onclick="toggleProfile()"><i class="fas fa-times"></i></button></div>
+        <div class="header">
+            <h2>👤 ملفي الشخصي</h2>
+            <button class="close-btn" onclick="toggleProfile()"><i class="fas fa-times"></i></button>
+        </div>
         <div class="body">
             <input type="text" id="profileNameInput" class="input-field" placeholder="الاسم" value="مستخدم">
-            <button class="save-btn" onclick="saveProfile()">💾 حفظ</button>
+            <button class="save-btn" onclick="saveProfile()">💾 حفظ التغييرات</button>
         </div>
     </div>
 
@@ -993,7 +1278,7 @@
         // ================================================================
         // 1. DATA & CONSTANTS
         // ================================================================
-        const STORAGE_KEY = 'hyex_gpu_v4';
+        const STORAGE_KEY = 'nccorp_v4_data';
         const BASE_SPEED = 0.008;
         const BATTERY_MAX = 10000;
         const DRAIN_PER_LEVEL = 2;
@@ -1020,7 +1305,7 @@
         };
 
         // ================================================================
-        // 2. SHOP
+        // 2. SHOP DB
         // ================================================================
         const SHOP_DB = {
             upgrades: [
@@ -1081,27 +1366,25 @@
         function saveData() { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); }
 
         // ================================================================
-        // 4. TRANSLATE
+        // 4. TRANSLATE (light)
         // ================================================================
-        const translations = {
-            ar: {
-                no_logs: 'لا توجد عمليات',
-                collected_all: '✅ تم جمع جميع العملات',
-                no_pending: '⚠️ لا توجد عملات',
-                battery_empty: '🔋 البطارية فارغة!',
-                overheat_shutdown: '🔥 تعطل التعدين! بدء التبريد...',
-                cooling_complete: '✅ انتهى التبريد، يمكن التشغيل مجدداً',
-                auto_on: '🤖 تلقائي مفعل',
-                auto_off: '⏹ تلقائي متوقف',
-                started: '▶️ بدء التعدين (سرعة {0})',
-                stopped: '⏹ إيقاف التعدين',
-            }
+        const t = {
+            no_logs: 'لا توجد عمليات',
+            collected_all: '✅ تم جمع جميع العملات',
+            no_pending: '⚠️ لا توجد عملات عالقة',
+            battery_empty: '🔋 البطارية فارغة!',
+            overheat: '🔥 تعطل التعدين! بدء التبريد...',
+            cooling_done: '✅ انتهى التبريد، يمكن التشغيل مجدداً',
+            auto_on: '🤖 تلقائي مفعل',
+            auto_off: '⏹ تلقائي متوقف',
+            started: '▶️ بدء التعدين (سرعة {0})',
+            stopped: '⏹ إيقاف التعدين',
         };
 
-        function translate(key, ...args) {
-            let text = translations['ar'][key] || key;
-            args.forEach((arg, i) => { text = text.replace(`{${i}}`, arg); });
-            return text;
+        function tr(key, ...args) {
+            let txt = t[key] || key;
+            args.forEach((a, i) => txt = txt.replace(`{${i}}`, a));
+            return txt;
         }
 
         // ================================================================
@@ -1116,13 +1399,12 @@
             speed *= (1 + data.upgrades.speed * 0.2);
             speed *= (1 + data.upgrades.power * 0.05);
             if (data.boosters.nc.active) speed *= data.boosters.nc.multiplier;
-            const heatPenalty = 1 - (data.heat.level / 150);
-            return speed * Math.max(0.3, heatPenalty);
+            const penalty = 1 - (data.heat.level / 150);
+            return speed * Math.max(0.3, penalty);
         }
 
         function getHeatForSpeed(speed) {
-            const map = { 0: 0, 1: 25, 2: 50, 3: 75, 4: 100 };
-            return map[speed] || 0;
+            return { 0: 0, 1: 25, 2: 50, 3: 75, 4: 100 } [speed] || 0;
         }
 
         // ================================================================
@@ -1130,15 +1412,12 @@
         // ================================================================
         function updateBatteryAndHeat() {
             const speed = data.fanSpeed;
-            const isMining = speed > 0 && !data.isOverheated && data.battery.ah > 0;
+            const mining = speed > 0 && !data.isOverheated && data.battery.ah > 0;
 
-            if (isMining) {
-                const drain = speed * DRAIN_PER_LEVEL;
-                data.battery.ah = Math.max(0, data.battery.ah - drain);
-            } else {
-                if (!data.isOverheated && data.battery.ah < data.battery.maxAh) {
-                    data.battery.ah = Math.min(data.battery.ah + CHARGE_RATE, data.battery.maxAh);
-                }
+            if (mining) {
+                data.battery.ah = Math.max(0, data.battery.ah - speed * DRAIN_PER_LEVEL);
+            } else if (!data.isOverheated && data.battery.ah < data.battery.maxAh) {
+                data.battery.ah = Math.min(data.battery.ah + CHARGE_RATE, data.battery.maxAh);
             }
             data.battery.percent = (data.battery.ah / data.battery.maxAh) * 100;
 
@@ -1148,7 +1427,7 @@
                 if (data.heat.level <= 0 && data.cooldownTimer <= 0) {
                     data.isOverheated = false;
                     data.heat.level = 0;
-                    addLog(translate('cooling_complete'));
+                    addLog(tr('cooling_done'));
                 }
             } else {
                 data.heat.level = getHeatForSpeed(speed);
@@ -1162,7 +1441,7 @@
                     data.overheatTimer = 0;
                     data.fanSpeed = 0;
                     data.heat.level = 100;
-                    addLog(translate('overheat_shutdown'));
+                    addLog(tr('overheat'));
                     renderRig();
                 }
             } else if (speed !== 4) {
@@ -1172,7 +1451,7 @@
             if (data.battery.ah <= 0 && data.fanSpeed > 0) {
                 data.fanSpeed = 0;
                 data.heat.level = getHeatForSpeed(0);
-                addLog(translate('battery_empty'));
+                addLog(tr('battery_empty'));
                 renderRig();
             }
 
@@ -1182,100 +1461,110 @@
         }
 
         // ================================================================
-        // 7. UI RENDERING (مضغوط)
+        // 7. UI RENDERING
         // ================================================================
         function renderRig() {
             const speed = data.fanSpeed;
-            const isActive = speed > 0 && !data.isOverheated && data.battery.ah > 0;
+            const active = speed > 0 && !data.isOverheated && data.battery.ah > 0;
 
-            const container = document.getElementById('fanSvgContainer');
-            container.className = 'fan-svg-container';
-            if (data.isOverheated) { container.classList.add('overheat'); } else if (isActive) {
-                if (speed === 1) container.classList.add('spin1');
-                else if (speed === 2) container.classList.add('spin2');
-                else if (speed === 3) container.classList.add('spin3');
-                else if (speed === 4) container.classList.add('spin4');
+            // Fan
+            const svg = document.getElementById('fanSvg');
+            svg.className = 'fan-svg';
+            if (data.isOverheated) svg.classList.add('overheat');
+            else if (active) {
+                if (speed === 1) svg.classList.add('spin-1');
+                else if (speed === 2) svg.classList.add('spin-2');
+                else if (speed === 3) svg.classList.add('spin-3');
+                else if (speed === 4) svg.classList.add('spin-4');
             }
-            const blades = document.querySelectorAll('.fan-blade');
-            blades.forEach(b => {
-                if (isActive) { b.setAttribute('fill', 'rgba(201, 168, 76, 0.2)');
-                    b.setAttribute('stroke', 'rgba(201, 168, 76, 0.5)'); } else if (data.isOverheated) { b
-                        .setAttribute('fill', 'rgba(255, 77, 109, 0.15)');
-                    b.setAttribute('stroke', 'rgba(255, 77, 109, 0.4)'); } else { b.setAttribute('fill',
-                        'rgba(255, 255, 255, 0.03)');
-                    b.setAttribute('stroke', 'rgba(201, 168, 76, 0.1)'); }
+            document.querySelectorAll('.fan-svg .blade').forEach(b => {
+                if (active) { b.setAttribute('fill', 'rgba(200,168,78,0.2)');
+                    b.setAttribute('stroke', 'rgba(200,168,78,0.5)'); } else if (data.isOverheated) { b
+                        .setAttribute('fill', 'rgba(255,107,122,0.15)');
+                    b.setAttribute('stroke', 'rgba(255,107,122,0.4)'); } else { b.setAttribute('fill',
+                        'rgba(255,255,255,0.03)');
+                    b.setAttribute('stroke', 'rgba(200,168,78,0.1)'); }
             });
-
             document.getElementById('fanSpeedDisplay').textContent = speed;
 
+            // LEDs
             for (let i = 0; i < 4; i++) {
                 const led = document.getElementById('led' + i);
-                led.className = 'led-btn';
+                led.className = 'led';
                 if (i < speed) { led.classList.add('active'); if (speed === 4) led.classList.add('max');
-                    else if (speed === 3) led.classList.add('high'); } else { led.classList.add('off'); }
-                if (data.isOverheated) { led.classList.remove('active', 'max', 'high');
-                    led.classList.add('off'); }
+                    else if (speed === 3) led.classList.add('high'); } else led.classList.add('off');
+                if (data.isOverheated) led.className = 'led off';
             }
 
+            // Hash & Pending
             const hash = getMiningSpeed();
             document.getElementById('hashRateDisplay').textContent = (hash * 1000000).toFixed(2) + ' MH/s';
             document.getElementById('tickerMH').textContent = (hash * 1000000).toFixed(2);
             document.getElementById('tickerPending').textContent = data.pending.nc.toFixed(4);
             document.getElementById('pendingNC').textContent = data.pending.nc.toFixed(8);
 
+            // Status
             const dot = document.getElementById('statusDot');
-            const statusText = document.getElementById('statusText');
-            if (data.isOverheated) { dot.className = 'dot cooling';
-                statusText.textContent = '🔄 تبريد'; } else if (speed > 0 && data.battery.ah > 0) { dot.className =
-                    'dot online';
-                statusText.textContent = '⚡ تشغيل'; } else { dot.className = 'dot offline';
-                statusText.textContent = '⏸ متوقف'; }
+            const statusTxt = document.getElementById('statusText');
+            if (data.isOverheated) { dot.className = 'status-dot cooling';
+                statusTxt.textContent = '🔄 تبريد'; } else if (speed > 0 && data.battery.ah > 0) { dot.className =
+                    'status-dot online';
+                statusTxt.textContent = '⚡ تشغيل'; } else { dot.className = 'status-dot offline';
+                statusTxt.textContent = '⏸ متوقف'; }
 
             updateStatsUI();
             saveData();
         }
 
         function updateStatsUI() {
-            const pct = Math.min(100, data.battery.percent);
-            document.getElementById('batteryDisplay').textContent = data.battery.ah.toFixed(1);
-            const bar = document.getElementById('batteryBar');
-            bar.style.width = pct + '%';
-            bar.style.background = pct > 30 ? 'var(--green)' : (pct > 15 ? 'var(--orange)' : 'var(--red)');
+            // Battery gauge
+            const batPct = Math.min(100, data.battery.percent);
+            const batCirc = 238.76;
+            const batOff = batCirc - (batPct / 100) * batCirc;
+            const batG = document.getElementById('batteryGauge');
+            batG.style.strokeDashoffset = batOff;
+            batG.style.stroke = batPct > 30 ? '#4ADE80' : (batPct > 15 ? '#FFB347' : '#FF6B7A');
+            document.getElementById('batteryPercent').innerHTML = Math.round(batPct) + '<small>%</small>';
+            document.getElementById('batteryDisplay').innerHTML = data.battery.ah.toFixed(1) + ' <span class="sub">Ah</span>';
 
+            // Heat gauge
             const heat = Math.min(100, data.heat.level);
+            const heatCirc = 238.76;
+            const heatOff = heatCirc - (heat / 100) * heatCirc;
+            const hG = document.getElementById('heatGauge');
+            hG.style.strokeDashoffset = heatOff;
+            hG.style.stroke = heat > 70 ? '#FF6B7A' : (heat > 40 ? '#FFB347' : '#48C9FF');
+            document.getElementById('heatPercent').innerHTML = Math.round(heat) + '<small>%</small>';
             document.getElementById('heatDisplay').textContent = Math.round(heat) + '%';
-            const heatBar = document.getElementById('heatBar');
-            heatBar.style.width = heat + '%';
-            heatBar.style.background = heat > 70 ? 'var(--red)' : (heat > 40 ? 'var(--orange)' : 'var(--cyan)');
 
-            const statusSpan = document.getElementById('miningStatusText');
-            const countdownSpan = document.getElementById('timerCountdown');
-
+            // Timer
+            const st = document.getElementById('miningStatusText');
+            const cd = document.getElementById('timerCountdown');
             if (data.isOverheated) {
-                statusSpan.className = 'cool';
-                statusSpan.textContent = '🔴 تبريد';
-                countdownSpan.style.display = 'inline';
-                const mins = Math.floor(data.cooldownTimer / 60);
-                const secs = Math.floor(data.cooldownTimer % 60);
-                countdownSpan.textContent = `${String(mins).padStart(2,'0')}:${String(secs).padStart(2,'0')}`;
-                countdownSpan.style.color = 'var(--cyan)';
+                st.className = 'status-text cool';
+                st.textContent = '🔴 تبريد';
+                cd.style.display = 'inline';
+                const m = Math.floor(data.cooldownTimer / 60),
+                    s = Math.floor(data.cooldownTimer % 60);
+                cd.textContent = `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+                cd.style.color = 'var(--cyan)';
             } else if (data.fanSpeed === 4 && data.battery.ah > 0) {
-                statusSpan.className = 'warn';
-                statusSpan.textContent = '⏳ تعطل خلال';
-                countdownSpan.style.display = 'inline';
-                const remaining = Math.max(0, OVERHEAT_TIME - data.overheatTimer);
-                const mins = Math.floor(remaining / 60);
-                const secs = Math.floor(remaining % 60);
-                countdownSpan.textContent = `${String(mins).padStart(2,'0')}:${String(secs).padStart(2,'0')}`;
-                countdownSpan.style.color = 'var(--orange)';
+                st.className = 'status-text warn';
+                st.textContent = '⏳ تعطل خلال';
+                cd.style.display = 'inline';
+                const rem = Math.max(0, OVERHEAT_TIME - data.overheatTimer);
+                const m = Math.floor(rem / 60),
+                    s = Math.floor(rem % 60);
+                cd.textContent = `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+                cd.style.color = 'var(--orange)';
             } else if (data.fanSpeed > 0 && data.battery.ah > 0) {
-                statusSpan.className = 'ok';
-                statusSpan.textContent = '✅ تعدين مستقر';
-                countdownSpan.style.display = 'none';
+                st.className = 'status-text ok';
+                st.textContent = '✅ تعدين مستقر';
+                cd.style.display = 'none';
             } else {
-                statusSpan.className = 'ok';
-                statusSpan.textContent = '⏸ متوقف';
-                countdownSpan.style.display = 'none';
+                st.className = 'status-text ok';
+                st.textContent = '⏸ متوقف';
+                cd.style.display = 'none';
             }
         }
 
@@ -1297,14 +1586,14 @@
         // ================================================================
         document.getElementById('fanClickArea').addEventListener('click', function() {
             if (data.isOverheated) { addLog('⚠️ الجهاز في حالة تبريد'); return; }
-            if (data.battery.ah <= 0) { addLog(translate('battery_empty')); return; }
-            let newSpeed = data.fanSpeed + 1;
-            if (newSpeed > 4) newSpeed = 0;
-            data.fanSpeed = newSpeed;
-            if (newSpeed > 0) { if (newSpeed !== 4) data.overheatTimer = 0;
-                addLog(translate('started', newSpeed)); } else { addLog(translate('stopped'));
+            if (data.battery.ah <= 0) { addLog(tr('battery_empty')); return; }
+            let ns = data.fanSpeed + 1;
+            if (ns > 4) ns = 0;
+            data.fanSpeed = ns;
+            if (ns > 0) { if (ns !== 4) data.overheatTimer = 0;
+                addLog(tr('started', ns)); } else { addLog(tr('stopped'));
                 data.overheatTimer = 0; }
-            data.heat.level = getHeatForSpeed(newSpeed);
+            data.heat.level = getHeatForSpeed(ns);
             renderRig();
             saveData();
         });
@@ -1316,11 +1605,11 @@
             if (data.pending.nc > 0.0001) {
                 data.wallet.NC += data.pending.nc;
                 data.pending.nc = 0;
-                addLog(translate('collected_all'));
+                addLog(tr('collected_all'));
                 renderRig();
                 updateWalletUI();
                 saveData();
-            } else { addLog(translate('no_pending')); }
+            } else addLog(tr('no_pending'));
         });
 
         // ================================================================
@@ -1331,16 +1620,16 @@
             const btn = this;
             if (data.autoMine) { btn.classList.add('active');
                 btn.innerHTML = '<i class="fas fa-robot"></i> تلقائي مفعل';
-                addLog(translate('auto_on'));
-                autoMineLoop(); } else { btn.classList.remove('active');
+                addLog(tr('auto_on'));
+                autoLoop(); } else { btn.classList.remove('active');
                 btn.innerHTML = '<i class="fas fa-robot"></i> تلقائي';
-                addLog(translate('auto_off')); }
+                addLog(tr('auto_off')); }
             saveData();
         });
 
         let autoTimer = null;
 
-        function autoMineLoop() {
+        function autoLoop() {
             if (!data.autoMine) return;
             if (data.isOverheated || data.battery.ah < 50) {
                 if (data.fanSpeed > 0) { data.fanSpeed = Math.max(0, data.fanSpeed - 1);
@@ -1352,7 +1641,7 @@
                     renderRig(); }
             }
             clearTimeout(autoTimer);
-            autoTimer = setTimeout(autoMineLoop, 2500);
+            autoTimer = setTimeout(autoLoop, 2500);
         }
 
         // ================================================================
@@ -1360,8 +1649,8 @@
         // ================================================================
         function addLog(text) {
             const now = new Date();
-            const timeStr = now.toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-            data.log.unshift({ time: timeStr, text: text });
+            const t = now.toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+            data.log.unshift({ time: t, text: text });
             if (data.log.length > 50) data.log.pop();
             saveData();
             renderLog();
@@ -1369,9 +1658,9 @@
 
         function renderLog() {
             const list = document.getElementById('logList');
-            if (data.log.length === 0) { list.innerHTML =
-                    '<div class="log-item" style="justify-content:center;color:var(--text-muted);">' + translate(
-                    'no_logs') + '</div>'; return; }
+            if (!data.log.length) { list.innerHTML =
+                    '<div class="log-item" style="justify-content:center;color:var(--text-muted);">' + tr('no_logs') +
+                    '</div>'; return; }
             list.innerHTML = data.log.slice(0, 20).map(l =>
                 `<div class="log-item"><span>${l.text}</span><span class="time">${l.time}</span></div>`
             ).join('');
@@ -1385,11 +1674,11 @@
         // 13. SHOP
         // ================================================================
         function renderShopAll() {
-            ['upgrades', 'boosters'].forEach(cat => renderShopCategory(cat));
+            ['upgrades', 'boosters'].forEach(c => renderShopCat(c));
             document.getElementById('shopBalance').textContent = data.wallet.NC.toFixed(2) + ' NC';
         }
 
-        function renderShopCategory(cat) {
+        function renderShopCat(cat) {
             const grid = document.getElementById(cat + 'Grid');
             if (!grid) return;
             const items = SHOP_DB[cat] || [];
@@ -1406,11 +1695,11 @@
                     canBuy = data.wallet[item.currency] >= price && !data.boosters.nc.active;
                 }
                 return `
-                            <div class="shop-item-card">
-                                <div class="item-icon">${item.icon}</div>
-                                <div class="item-name">${item.name}</div>
-                                <div class="item-price">${price.toFixed(2)} ${item.currency}</div>
-                                ${maxed ? '<div style="font-size:6px;color:var(--orange);">🔝 مكتمل</div>' : ''}
+                            <div class="shop-item">
+                                <div class="icon">${item.icon}</div>
+                                <div class="name">${item.name}</div>
+                                <div class="price">${price.toFixed(2)} ${item.currency}</div>
+                                ${maxed ? '<div style="font-size:7px;color:var(--orange);">🔝 مكتمل</div>' : ''}
                                 <button class="btn shop-buy-btn" data-id="${item.id}" data-cat="${cat}" ${!canBuy || maxed ? 'disabled' : ''}>${maxed ? 'مكتمل' : 'شراء'}</button>
                             </div>
                         `;
@@ -1461,7 +1750,7 @@
                 const cat = this.dataset.cat;
                 document.querySelectorAll('.shop-category-content').forEach(c => c.classList.remove('active'));
                 document.getElementById('shop-' + cat).classList.add('active');
-                renderShopCategory(cat);
+                renderShopCat(cat);
             });
         });
 
@@ -1482,8 +1771,8 @@
                 overlay = document.getElementById('profileOverlay');
             slide.classList.toggle('open');
             overlay.classList.toggle('show');
-            if (slide.classList.contains('open')) { document.getElementById('profileNameInput').value = data.profile
-                    .name || 'مستخدم'; }
+            if (slide.classList.contains('open')) document.getElementById('profileNameInput').value = data.profile
+                .name || 'مستخدم';
         }
 
         function saveProfile() {
@@ -1491,7 +1780,7 @@
             if (!name) { alert('أدخل اسماً'); return; }
             data.profile.name = name;
             document.getElementById('settingsProfileName').textContent = name;
-            addLog('✅ تم تحديث الاسم');
+            addLog('✅ تم تحديث الملف الشخصي');
             toggleProfile();
             saveData();
         }
@@ -1503,11 +1792,11 @@
             document.documentElement.setAttribute('data-theme', theme);
             data.settings.theme = theme;
             document.getElementById('themeDarkBtn').style.borderColor = theme === 'dark' ? 'var(--gold)' :
-                'rgba(255,255,255,0.08)';
+                'rgba(255,255,255,0.06)';
             document.getElementById('themeDarkBtn').style.color = theme === 'dark' ? 'var(--gold)' :
                 'var(--text-secondary)';
             document.getElementById('themeLightBtn').style.borderColor = theme === 'light' ? 'var(--gold)' :
-                'rgba(255,255,255,0.08)';
+                'rgba(255,255,255,0.06)';
             document.getElementById('themeLightBtn').style.color = theme === 'light' ? 'var(--gold)' :
                 'var(--text-secondary)';
             saveData();
@@ -1518,7 +1807,7 @@
             .checked;
             saveData(); });
         document.getElementById('resetBtn').addEventListener('click', function() {
-            if (confirm('حذف كل شيء؟')) { localStorage.removeItem(STORAGE_KEY);
+            if (confirm('حذف كل البيانات؟')) { localStorage.removeItem(STORAGE_KEY);
                 location.reload(); }
         });
 
@@ -1554,11 +1843,11 @@
             setInterval(() => { renderRig();
                 saveData(); }, 3000);
 
-            if (data.autoMine) autoMineLoop();
+            if (data.autoMine) autoLoop();
             data.heat.level = getHeatForSpeed(data.fanSpeed);
             renderRig();
-            addLog('🚀 تم تشغيل GPU Mining V4');
+            addLog('🏢 NC.CORP Mining Console V4');
         };
     </script>
 </body>
-</html>
+    </html>
