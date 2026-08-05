@@ -3,28 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>HyeX - NC Mining Rig V4</title>
+    <title>HyeX - GPU Mining Rig</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         /* ============================================================
-           ROOT
+           ROOT & RESET (تصميم مضغوط ليناسب الشاشة)
            ============================================================ */
         :root {
             --bg-primary: #070A12;
             --bg-secondary: #0D1424;
-            --bg-card: rgba(10, 18, 34, 0.8);
+            --bg-card: rgba(10, 18, 34, 0.85);
             --gold: #C9A84C;
-            --gold-dim: rgba(201, 168, 76, 0.25);
+            --gold-dim: rgba(201, 168, 76, 0.2);
             --cyan: #00E5FF;
             --green: #39FF14;
-            --green-dim: rgba(57, 255, 20, 0.2);
+            --green-dim: rgba(57, 255, 20, 0.15);
             --red: #FF4D6D;
             --orange: #FFB347;
             --text-primary: #E8EDF5;
             --text-secondary: #9AA8C7;
             --shadow: 0 20px 60px rgba(0, 0, 0, 0.7);
-            --radius: 20px;
-            --transition: 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            --radius: 16px;
+            --transition: 0.3s ease;
         }
         * {
             margin: 0;
@@ -38,11 +38,11 @@
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            padding: 12px;
+            padding: 8px;
             color: var(--text-primary);
         }
         .app {
-            max-width: 480px;
+            max-width: 460px;
             width: 100%;
             height: 100vh;
             max-height: 100vh;
@@ -50,7 +50,7 @@
             display: flex;
             flex-direction: column;
             overflow: hidden;
-            border-radius: 32px;
+            border-radius: 28px;
             box-shadow: var(--shadow);
             border: 1px solid rgba(255, 255, 255, 0.03);
         }
@@ -58,7 +58,7 @@
         /* Header */
         .corp-header {
             flex-shrink: 0;
-            padding: 14px 20px 10px;
+            padding: 10px 16px 8px;
             background: rgba(7, 10, 18, 0.7);
             backdrop-filter: blur(8px);
             border-bottom: 2px solid var(--gold-dim);
@@ -68,7 +68,7 @@
             z-index: 10;
         }
         .corp-header h1 {
-            font-size: 20px;
+            font-size: 18px;
             font-weight: 800;
             color: var(--gold);
             text-shadow: 0 0 20px var(--gold-dim);
@@ -76,9 +76,9 @@
         .corp-header .badge {
             background: rgba(201, 168, 76, 0.1);
             border: 1px solid var(--gold-dim);
-            padding: 4px 14px;
+            padding: 3px 12px;
             border-radius: 40px;
-            font-size: 9px;
+            font-size: 8px;
             color: var(--gold);
         }
 
@@ -86,11 +86,11 @@
         .price-ticker {
             flex-shrink: 0;
             background: rgba(0, 0, 0, 0.3);
-            padding: 6px 16px;
+            padding: 4px 12px;
             display: flex;
             justify-content: space-around;
             border-bottom: 1px solid rgba(255, 255, 255, 0.04);
-            font-size: 10px;
+            font-size: 9px;
             color: var(--text-secondary);
         }
         .price-ticker .value {
@@ -102,9 +102,9 @@
         .tab-content {
             flex: 1 1 auto;
             overflow-y: auto;
-            padding: 14px;
+            padding: 8px 10px 6px;
             display: none;
-            animation: fade 0.3s ease;
+            animation: fade 0.25s ease;
         }
         .tab-content.active {
             display: block;
@@ -112,7 +112,7 @@
         @keyframes fade {
             from {
                 opacity: 0;
-                transform: translateY(6px);
+                transform: translateY(4px);
             }
             to {
                 opacity: 1;
@@ -120,7 +120,7 @@
             }
         }
         .tab-content::-webkit-scrollbar {
-            width: 3px;
+            width: 2px;
         }
         .tab-content::-webkit-scrollbar-thumb {
             background: var(--gold);
@@ -128,20 +128,18 @@
         }
 
         /* ============================================================
-           MINING RIG - RECTANGLE
+           MINING RIG - (مضغوط ليناسب الشاشة)
            ============================================================ */
         .mining-rig {
             background: var(--bg-card);
             backdrop-filter: blur(12px);
             border-radius: var(--radius);
             border: 1px solid rgba(255, 255, 255, 0.06);
-            padding: 18px 16px 16px;
+            padding: 12px 12px 10px;
             position: relative;
             overflow: hidden;
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
-            transition: border-color 0.5s;
         }
-        /* Glow border */
         .mining-rig::before {
             content: '';
             position: absolute;
@@ -152,7 +150,7 @@
             border-radius: var(--radius);
             background: conic-gradient(from 0deg, transparent, var(--gold-dim), transparent, var(--cyan-dim), transparent);
             z-index: -1;
-            opacity: 0.6;
+            opacity: 0.5;
             animation: rotateGlow 10s linear infinite;
         }
         @keyframes rotateGlow {
@@ -164,42 +162,43 @@
             }
         }
 
-        /* Status Bar (top of rig) */
+        /* Status Bar */
         .rig-status-bar {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 14px;
+            margin-bottom: 6px;
             background: rgba(0, 0, 0, 0.3);
-            padding: 4px 14px;
-            border-radius: 40px;
+            padding: 2px 12px;
+            border-radius: 30px;
             border: 1px solid rgba(255, 255, 255, 0.04);
+            height: 26px;
         }
         .rig-status-bar .status-dot {
             display: flex;
             align-items: center;
-            gap: 8px;
-            font-size: 11px;
+            gap: 6px;
+            font-size: 10px;
             font-weight: 600;
         }
         .rig-status-bar .status-dot .dot {
-            width: 8px;
-            height: 8px;
+            width: 7px;
+            height: 7px;
             border-radius: 50%;
             transition: 0.3s;
         }
         .rig-status-bar .status-dot .dot.online {
             background: var(--green);
-            box-shadow: 0 0 12px var(--green);
+            box-shadow: 0 0 10px var(--green);
             animation: pulse 1.5s infinite;
         }
         .rig-status-bar .status-dot .dot.offline {
             background: var(--red);
-            box-shadow: 0 0 12px var(--red);
+            box-shadow: 0 0 10px var(--red);
         }
         .rig-status-bar .status-dot .dot.cooling {
             background: var(--cyan);
-            box-shadow: 0 0 12px var(--cyan);
+            box-shadow: 0 0 10px var(--cyan);
             animation: pulse 0.8s infinite;
         }
         @keyframes pulse {
@@ -214,90 +213,66 @@
             }
         }
         .rig-status-bar .hash-rate {
-            font-size: 13px;
+            font-size: 11px;
             font-weight: 700;
             color: var(--cyan);
             direction: ltr;
         }
 
-        /* Main Layout: Left (Fan) | Center (Text) | Right (LEDs) */
+        /* MAIN LAYOUT */
         .rig-main-layout {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            gap: 10px;
-            margin: 4px 0 10px;
+            gap: 6px;
+            margin: 2px 0 6px;
         }
 
-        /* --- LEFT: FAN --- */
+        /* --- LEFT: GPU FAN (SVG) --- */
         .rig-fan-wrapper {
-            flex: 0 0 80px;
+            flex: 0 0 72px;
             display: flex;
             flex-direction: column;
             align-items: center;
             cursor: pointer;
         }
-        .fan-blades {
-            width: 70px;
-            height: 70px;
+        .fan-svg-container {
+            width: 65px;
+            height: 65px;
             position: relative;
             transition: 0.3s;
         }
-        .fan-blades .blade {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 28px;
-            height: 8px;
-            background: linear-gradient(90deg, rgba(255, 255, 255, 0.15), rgba(201, 168, 76, 0.5));
-            border-radius: 20px;
-            transform-origin: 0% 50%;
-            transform: translate(-50%, -50%) rotate(var(--deg)) translateX(-8px);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            transition: background 0.3s;
+        .fan-svg-container svg {
+            width: 100%;
+            height: 100%;
+            display: block;
         }
-        .fan-blades .blade:nth-child(1) {
-            --deg: 0deg;
+        /* GPU Fan Blade styling */
+        .fan-blade {
+            fill: rgba(255, 255, 255, 0.05);
+            stroke: rgba(201, 168, 76, 0.2);
+            stroke-width: 1;
+            transition: fill 0.4s, stroke 0.4s;
         }
-        .fan-blades .blade:nth-child(2) {
-            --deg: 72deg;
-        }
-        .fan-blades .blade:nth-child(3) {
-            --deg: 144deg;
-        }
-        .fan-blades .blade:nth-child(4) {
-            --deg: 216deg;
-        }
-        .fan-blades .blade:nth-child(5) {
-            --deg: 288deg;
-        }
-        .fan-blades .center-hub {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 18px;
-            height: 18px;
-            background: radial-gradient(circle, var(--gold), #7a5d2e);
-            border-radius: 50%;
-            transform: translate(-50%, -50%);
-            box-shadow: 0 0 20px var(--gold-dim);
-            border: 2px solid rgba(255, 255, 255, 0.15);
-            z-index: 5;
+        .fan-center-ring {
+            fill: radial-gradient(circle, #C9A84C, #7a5d2e);
+            stroke: rgba(255, 255, 255, 0.2);
+            stroke-width: 2;
         }
         /* Fan animations */
-        .fan-blades.spin1 {
+        .fan-svg-container.spin1 {
             animation: spinFan 1.2s linear infinite;
         }
-        .fan-blades.spin2 {
+        .fan-svg-container.spin2 {
             animation: spinFan 0.8s linear infinite;
         }
-        .fan-blades.spin3 {
+        .fan-svg-container.spin3 {
             animation: spinFan 0.5s linear infinite;
         }
-        .fan-blades.spin4 {
+        .fan-svg-container.spin4 {
             animation: spinFan 0.25s linear infinite;
         }
-        .fan-blades.overheat {
+        .fan-svg-container.overheat {
             animation: shake 0.15s ease-in-out infinite alternate;
         }
         @keyframes spinFan {
@@ -310,152 +285,144 @@
         }
         @keyframes shake {
             0% {
-                transform: rotate(-6deg);
+                transform: rotate(-5deg);
             }
             100% {
-                transform: rotate(6deg);
+                transform: rotate(5deg);
             }
         }
 
         .rig-fan-wrapper .fan-label {
-            font-size: 9px;
+            font-size: 8px;
             color: var(--text-secondary);
-            margin-top: 4px;
+            margin-top: 2px;
             font-weight: 600;
             letter-spacing: 0.5px;
         }
         .rig-fan-wrapper .fan-label span {
             color: var(--gold);
-            font-size: 13px;
+            font-size: 12px;
         }
 
         /* --- CENTER: NC Coins Mining --- */
         .rig-center {
             flex: 1;
             text-align: center;
-            padding: 0 4px;
+            padding: 0 2px;
         }
         .rig-center .main-title {
-            font-size: 18px;
+            font-size: 15px;
             font-weight: 900;
             color: var(--gold);
-            text-shadow: 0 0 30px var(--gold-dim);
-            letter-spacing: 1px;
-            line-height: 1.1;
+            text-shadow: 0 0 25px var(--gold-dim);
+            letter-spacing: 0.5px;
+            line-height: 1.2;
         }
         .rig-center .main-title i {
-            font-size: 20px;
-            margin-left: 6px;
+            font-size: 16px;
+            margin-left: 4px;
         }
         .rig-center .pending-display {
-            margin-top: 4px;
-            font-size: 14px;
+            margin-top: 2px;
+            font-size: 12px;
             font-weight: 700;
             color: var(--cyan);
             direction: ltr;
             background: rgba(0, 0, 0, 0.3);
-            padding: 2px 12px;
+            padding: 1px 10px;
             border-radius: 30px;
             display: inline-block;
-            border: 1px solid rgba(0, 229, 255, 0.1);
+            border: 1px solid rgba(0, 229, 255, 0.08);
         }
         .rig-center .pending-display small {
-            font-size: 10px;
+            font-size: 8px;
             color: var(--text-secondary);
-            font-weight: 400;
         }
 
         /* --- RIGHT: 4 LED Buttons --- */
         .rig-leds-wrapper {
-            flex: 0 0 50px;
+            flex: 0 0 36px;
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            gap: 5px;
             align-items: center;
             justify-content: center;
         }
         .led-btn {
-            width: 36px;
-            height: 12px;
+            width: 28px;
+            height: 8px;
             border-radius: 20px;
             background: rgba(255, 255, 255, 0.04);
-            border: 1px solid rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.05);
             transition: 0.3s;
-            position: relative;
-            cursor: default;
         }
         .led-btn.active {
             background: var(--green);
             border-color: var(--green);
-            box-shadow: 0 0 16px var(--green-dim);
+            box-shadow: 0 0 12px var(--green-dim);
             animation: blinkGreen 0.8s ease-in-out infinite alternate;
         }
         .led-btn.active.high {
             background: var(--orange);
             border-color: var(--orange);
-            box-shadow: 0 0 16px rgba(255, 180, 50, 0.3);
+            box-shadow: 0 0 12px rgba(255, 180, 50, 0.3);
             animation: blinkOrange 0.6s ease-in-out infinite alternate;
         }
         .led-btn.active.max {
             background: var(--red);
             border-color: var(--red);
-            box-shadow: 0 0 16px rgba(255, 77, 109, 0.4);
+            box-shadow: 0 0 12px rgba(255, 77, 109, 0.4);
             animation: blinkRed 0.4s ease-in-out infinite alternate;
         }
         .led-btn.off {
-            opacity: 0.3;
+            opacity: 0.25;
         }
         @keyframes blinkGreen {
             0% {
                 opacity: 0.5;
-                box-shadow: 0 0 4px var(--green-dim);
             }
             100% {
                 opacity: 1;
-                box-shadow: 0 0 20px var(--green);
             }
         }
         @keyframes blinkOrange {
             0% {
-                opacity: 0.6;
-                box-shadow: 0 0 4px rgba(255, 180, 50, 0.2);
+                opacity: 0.5;
             }
             100% {
                 opacity: 1;
-                box-shadow: 0 0 20px var(--orange);
             }
         }
         @keyframes blinkRed {
             0% {
-                opacity: 0.5;
-                box-shadow: 0 0 4px rgba(255, 77, 109, 0.2);
+                opacity: 0.4;
             }
             100% {
                 opacity: 1;
-                box-shadow: 0 0 25px var(--red);
             }
         }
 
-        /* --- Bottom stats (Battery, Heat, Timers) --- */
+        /* --- STATS GRID (مضغوط) --- */
         .rig-stats-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 8px;
-            margin-top: 12px;
+            gap: 4px;
+            margin-top: 6px;
         }
         .stat-box {
-            background: rgba(0, 0, 0, 0.3);
-            border-radius: 12px;
-            padding: 6px 10px;
+            background: rgba(0, 0, 0, 0.25);
+            border-radius: 10px;
+            padding: 4px 8px;
             border: 1px solid rgba(255, 255, 255, 0.04);
         }
         .stat-box .label {
-            font-size: 8px;
+            font-size: 7px;
             color: var(--text-secondary);
             display: block;
+            line-height: 1.2;
         }
         .stat-box .value {
-            font-size: 16px;
+            font-size: 14px;
             font-weight: 800;
             font-variant-numeric: tabular-nums;
             direction: ltr;
@@ -463,26 +430,17 @@
         .stat-box .value.gold {
             color: var(--gold);
         }
-        .stat-box .value.green {
-            color: var(--green);
-        }
-        .stat-box .value.cyan {
-            color: var(--cyan);
-        }
-        .stat-box .value.red {
-            color: var(--red);
-        }
         .stat-box .value.orange {
             color: var(--orange);
         }
         .stat-box .sub {
-            font-size: 9px;
+            font-size: 8px;
             color: var(--text-secondary);
             font-weight: 400;
         }
         .stat-box .bar-track {
             width: 100%;
-            height: 4px;
+            height: 3px;
             background: rgba(255, 255, 255, 0.05);
             border-radius: 10px;
             overflow: hidden;
@@ -494,41 +452,49 @@
             transition: width 0.5s ease;
         }
 
-        /* Timer warning */
+        /* Timer Warning (يأخذ عرض الصفين) */
         .timer-warning {
             grid-column: span 2;
             text-align: center;
             background: rgba(255, 77, 109, 0.05);
-            border-radius: 12px;
-            padding: 6px;
-            border: 1px solid rgba(255, 77, 109, 0.1);
-            font-size: 11px;
+            border-radius: 10px;
+            padding: 3px 6px;
+            border: 1px solid rgba(255, 77, 109, 0.08);
+            font-size: 9px;
             font-weight: 600;
             color: var(--text-secondary);
         }
         .timer-warning span {
-            color: var(--orange);
             font-weight: 800;
+        }
+        .timer-warning .ok {
+            color: var(--green);
+        }
+        .timer-warning .warn {
+            color: var(--orange);
         }
         .timer-warning .danger {
             color: var(--red);
+        }
+        .timer-warning .cool {
+            color: var(--cyan);
         }
 
         /* Action Bar */
         .action-bar {
             display: flex;
-            gap: 6px;
-            margin-top: 10px;
+            gap: 4px;
+            margin-top: 6px;
         }
         .action-bar .btn {
             flex: 1;
-            padding: 8px 4px;
-            border-radius: 12px;
-            border: 1px solid rgba(255, 255, 255, 0.06);
+            padding: 5px 2px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
             background: rgba(0, 0, 0, 0.3);
             color: var(--text-secondary);
             font-weight: 600;
-            font-size: 11px;
+            font-size: 9px;
             cursor: pointer;
             transition: 0.2s;
             text-align: center;
@@ -539,63 +505,65 @@
         .action-bar .btn-collect {
             background: rgba(0, 229, 255, 0.06);
             color: var(--cyan);
-            border-color: rgba(0, 229, 255, 0.1);
+            border-color: rgba(0, 229, 255, 0.08);
         }
         .action-bar .btn-auto {
             background: rgba(57, 255, 20, 0.04);
             color: var(--green);
-            border-color: rgba(57, 255, 20, 0.08);
+            border-color: rgba(57, 255, 20, 0.06);
         }
         .action-bar .btn-auto.active {
             background: rgba(255, 180, 50, 0.1);
             color: var(--orange);
-            border-color: rgba(255, 180, 50, 0.2);
-        }
-        .action-bar .btn-log {
-            background: rgba(255, 255, 255, 0.03);
+            border-color: rgba(255, 180, 50, 0.15);
         }
 
-        /* Log */
+        /* Log (مضغوط) */
         .log-container {
-            max-height: 60px;
+            max-height: 45px;
             overflow-y: auto;
-            background: rgba(0, 0, 0, 0.3);
-            border-radius: 12px;
-            padding: 4px 10px;
+            background: rgba(0, 0, 0, 0.25);
+            border-radius: 10px;
+            padding: 2px 8px;
             border: 1px solid rgba(255, 255, 255, 0.04);
-            margin-top: 6px;
-            font-size: 9px;
+            margin-top: 4px;
+            font-size: 8px;
         }
         .log-container .log-item {
             display: flex;
             justify-content: space-between;
-            padding: 2px 0;
+            padding: 1px 0;
             border-bottom: 1px solid rgba(255, 255, 255, 0.03);
             color: var(--text-secondary);
         }
+        .log-container .log-item .time {
+            color: var(--text-muted);
+        }
 
-        /* Wallet / Shop / Settings (brief) */
+        /* ============================================================
+           WALLET / SHOP / SETTINGS (مضغوط)
+           ============================================================ */
         .card {
             background: var(--bg-card);
             backdrop-filter: blur(8px);
-            border-radius: 16px;
+            border-radius: 14px;
             border: 1px solid rgba(255, 255, 255, 0.04);
-            padding: 14px;
-            margin-bottom: 10px;
+            padding: 10px 12px;
+            margin-bottom: 6px;
         }
         .wallet-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 8px;
+            gap: 6px;
         }
         .wallet-item {
             background: rgba(0, 0, 0, 0.2);
-            border-radius: 12px;
-            padding: 10px;
+            border-radius: 10px;
+            padding: 8px;
             text-align: center;
         }
         .wallet-item .balance {
-            font-size: 16px;
+            font-size: 14px;
             font-weight: 700;
         }
         .wallet-item .balance.nc {
@@ -604,21 +572,20 @@
         .wallet-item .balance.cash {
             color: var(--green);
         }
-
         .shop-category-tabs {
             display: flex;
-            gap: 4px;
+            gap: 3px;
             flex-wrap: wrap;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
         }
         .shop-category-tabs .tab-btn {
             flex: 1;
-            padding: 4px 2px;
+            padding: 2px 2px;
             border-radius: 30px;
-            border: 1px solid rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.05);
             background: transparent;
             color: var(--text-secondary);
-            font-size: 9px;
+            font-size: 8px;
             cursor: pointer;
             font-weight: 600;
             text-align: center;
@@ -631,40 +598,39 @@
         .shop-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 6px;
-            max-height: 240px;
+            gap: 4px;
+            max-height: 180px;
             overflow-y: auto;
         }
         .shop-item-card {
             background: rgba(0, 0, 0, 0.2);
-            border-radius: 12px;
-            padding: 8px;
+            border-radius: 10px;
+            padding: 6px;
             text-align: center;
-            border: 1px solid rgba(255, 255, 255, 0.04);
         }
         .shop-item-card .item-icon {
-            font-size: 22px;
+            font-size: 18px;
         }
         .shop-item-card .item-name {
-            font-size: 10px;
+            font-size: 9px;
             font-weight: 700;
         }
         .shop-item-card .item-price {
-            font-size: 10px;
+            font-size: 9px;
             color: var(--gold);
             font-weight: 700;
         }
         .shop-item-card .btn {
-            margin-top: 4px;
-            padding: 2px 12px;
+            margin-top: 2px;
+            padding: 1px 8px;
             border-radius: 30px;
             border: none;
-            font-size: 9px;
+            font-size: 8px;
             font-weight: 700;
             cursor: pointer;
             background: rgba(57, 255, 20, 0.1);
             color: var(--green);
-            border: 1px solid rgba(57, 255, 20, 0.15);
+            border: 1px solid rgba(57, 255, 20, 0.1);
             width: 100%;
         }
         .shop-item-card .btn:disabled {
@@ -675,18 +641,18 @@
         .settings-item {
             display: flex;
             justify-content: space-between;
-            padding: 8px 0;
+            padding: 6px 0;
             border-bottom: 1px solid rgba(255, 255, 255, 0.04);
             align-items: center;
-            font-size: 12px;
+            font-size: 11px;
             color: var(--text-secondary);
         }
         .switch input {
             display: none;
         }
         .switch .slider {
-            width: 30px;
-            height: 16px;
+            width: 26px;
+            height: 14px;
             background: rgba(255, 255, 255, 0.1);
             border-radius: 30px;
             display: inline-block;
@@ -697,8 +663,8 @@
         .switch .slider::after {
             content: '';
             position: absolute;
-            width: 10px;
-            height: 10px;
+            width: 8px;
+            height: 8px;
             background: #fff;
             border-radius: 50%;
             top: 3px;
@@ -709,54 +675,60 @@
             background: var(--cyan);
         }
         .switch input:checked+.slider::after {
-            left: 17px;
+            left: 15px;
         }
         .profile-trigger {
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 4px;
             cursor: pointer;
             background: rgba(201, 168, 76, 0.1);
-            padding: 4px 12px;
+            padding: 2px 10px;
             border-radius: 30px;
             border: 1px solid var(--gold-dim);
             color: var(--gold);
             font-weight: 700;
-            font-size: 11px;
+            font-size: 10px;
         }
 
+        /* ============================================================
+           BOTTOM NAV (ثابت في الأسفل)
+           ============================================================ */
         .bottom-nav {
             flex-shrink: 0;
-            background: rgba(7, 10, 18, 0.9);
+            background: rgba(7, 10, 18, 0.95);
             backdrop-filter: blur(10px);
             border-top: 1px solid rgba(255, 255, 255, 0.04);
             display: flex;
             justify-content: space-around;
-            padding: 6px 0 10px;
+            padding: 4px 0 6px;
+            margin-top: auto;
         }
         .bottom-nav .nav-item {
             display: flex;
             flex-direction: column;
             align-items: center;
             color: var(--text-secondary);
-            font-size: 8px;
+            font-size: 7px;
             cursor: pointer;
             transition: 0.2s;
+            padding: 0 4px;
         }
         .bottom-nav .nav-item i {
-            font-size: 18px;
-            margin-bottom: 2px;
+            font-size: 16px;
+            margin-bottom: 1px;
         }
         .bottom-nav .nav-item.active {
             color: var(--gold);
         }
 
+        /* Profile Slide (مختصر) */
         .profile-slide {
             position: fixed;
             top: 0;
             right: -100%;
             width: 100%;
-            max-width: 380px;
+            max-width: 360px;
             height: 100%;
             background: var(--bg-secondary);
             z-index: 1000;
@@ -783,7 +755,7 @@
             display: block;
         }
         .profile-slide .header {
-            padding: 16px 20px;
+            padding: 14px 18px;
             border-bottom: 1px solid rgba(255, 255, 255, 0.04);
             display: flex;
             justify-content: space-between;
@@ -791,32 +763,33 @@
         }
         .profile-slide .header h2 {
             color: var(--gold);
+            font-size: 16px;
         }
         .profile-slide .header .close-btn {
             background: none;
             border: none;
             color: var(--text-secondary);
-            font-size: 22px;
+            font-size: 20px;
             cursor: pointer;
         }
         .profile-slide .body {
             flex: 1;
             overflow-y: auto;
-            padding: 20px;
+            padding: 16px;
         }
         .profile-slide .input-field {
             width: 100%;
-            padding: 10px 14px;
+            padding: 8px 12px;
             background: rgba(0, 0, 0, 0.3);
             border: 1px solid rgba(255, 255, 255, 0.06);
-            border-radius: 12px;
+            border-radius: 10px;
             color: var(--text-primary);
-            font-size: 14px;
-            margin-bottom: 12px;
+            font-size: 13px;
+            margin-bottom: 10px;
         }
         .profile-slide .save-btn {
             width: 100%;
-            padding: 12px;
+            padding: 10px;
             background: var(--gold);
             border: none;
             border-radius: 30px;
@@ -824,12 +797,8 @@
             color: #0A0E18;
             cursor: pointer;
         }
-
         ::-webkit-scrollbar {
-            width: 3px;
-        }
-        ::-webkit-scrollbar-track {
-            background: transparent;
+            width: 2px;
         }
         ::-webkit-scrollbar-thumb {
             background: var(--gold);
@@ -844,7 +813,7 @@
         <!-- HEADER -->
         <div class="corp-header">
             <h1>🏛️ HyeX</h1>
-            <div class="badge"><i class="fas fa-shield-alt"></i> NC Rig V4</div>
+            <div class="badge"><i class="fas fa-shield-alt"></i> GPU V4</div>
         </div>
 
         <!-- TICKER -->
@@ -866,33 +835,43 @@
                     <div class="hash-rate" id="hashRateDisplay">0.00 MH/s</div>
                 </div>
 
-                <!-- MAIN LAYOUT: FAN | CENTER | LEDS -->
+                <!-- MAIN LAYOUT: GPU FAN | CENTER | LEDS -->
                 <div class="rig-main-layout">
-                    <!-- LEFT: Fan -->
+                    <!-- LEFT: GPU Fan (SVG) -->
                     <div class="rig-fan-wrapper" id="fanClickArea">
-                        <div class="fan-blades" id="fanBlades">
-                            <div class="blade"></div>
-                            <div class="blade"></div>
-                            <div class="blade"></div>
-                            <div class="blade"></div>
-                            <div class="blade"></div>
-                            <div class="center-hub"></div>
+                        <div class="fan-svg-container" id="fanSvgContainer">
+                            <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                                <!-- 7 GPU-style curved blades -->
+                                <g id="fanBladesGroup">
+                                    <path class="fan-blade" d="M 50 50 C 55 25, 70 15, 80 25 C 85 32, 78 45, 70 50 Z" />
+                                    <path class="fan-blade" d="M 50 50 C 55 25, 70 15, 80 25 C 85 32, 78 45, 70 50 Z" transform="rotate(51.4 50 50)" />
+                                    <path class="fan-blade" d="M 50 50 C 55 25, 70 15, 80 25 C 85 32, 78 45, 70 50 Z" transform="rotate(102.8 50 50)" />
+                                    <path class="fan-blade" d="M 50 50 C 55 25, 70 15, 80 25 C 85 32, 78 45, 70 50 Z" transform="rotate(154.2 50 50)" />
+                                    <path class="fan-blade" d="M 50 50 C 55 25, 70 15, 80 25 C 85 32, 78 45, 70 50 Z" transform="rotate(205.6 50 50)" />
+                                    <path class="fan-blade" d="M 50 50 C 55 25, 70 15, 80 25 C 85 32, 78 45, 70 50 Z" transform="rotate(257 50 50)" />
+                                    <path class="fan-blade" d="M 50 50 C 55 25, 70 15, 80 25 C 85 32, 78 45, 70 50 Z" transform="rotate(308.4 50 50)" />
+                                </g>
+                                <!-- Center Hub (GPU style) -->
+                                <circle cx="50" cy="50" r="14" fill="#C9A84C" stroke="rgba(255,255,255,0.2)" stroke-width="2" />
+                                <circle cx="50" cy="50" r="6" fill="#7a5d2e" stroke="rgba(255,255,255,0.1)" stroke-width="1.5" />
+                                <circle cx="50" cy="50" r="2" fill="#fff" opacity="0.3" />
+                            </svg>
                         </div>
                         <div class="fan-label">السرعة <span id="fanSpeedDisplay">1</span> / 4</div>
                     </div>
 
-                    <!-- CENTER: NC Coins Mining -->
+                    <!-- CENTER -->
                     <div class="rig-center">
                         <div class="main-title">
-                            <i class="fas fa-coins"></i> NC Coins Mining
+                            <i class="fas fa-microchip"></i> NC Coins Mining
                         </div>
                         <div class="pending-display">
                             <span id="pendingNC">0.00000000</span> <small>NC</small>
                         </div>
                     </div>
 
-                    <!-- RIGHT: 4 LED Buttons -->
-                    <div class="rig-leds-wrapper" id="ledsWrapper">
+                    <!-- RIGHT: 4 LEDs -->
+                    <div class="rig-leds-wrapper">
                         <div class="led-btn" data-idx="0" id="led0"></div>
                         <div class="led-btn" data-idx="1" id="led1"></div>
                         <div class="led-btn" data-idx="2" id="led2"></div>
@@ -904,8 +883,7 @@
                 <div class="rig-stats-grid">
                     <div class="stat-box">
                         <span class="label">🔋 البطارية</span>
-                        <span class="value gold" id="batteryDisplay">10000</span>
-                        <span class="sub">Ah</span>
+                        <span class="value gold" id="batteryDisplay">10000</span><span class="sub"> Ah</span>
                         <div class="bar-track"><div class="bar-fill" id="batteryBar" style="width:100%;background:var(--green);"></div></div>
                     </div>
                     <div class="stat-box">
@@ -913,11 +891,9 @@
                         <span class="value orange" id="heatDisplay">0%</span>
                         <div class="bar-track"><div class="bar-fill" id="heatBar" style="width:0%;background:var(--cyan);"></div></div>
                     </div>
-
-                    <!-- Timer: Overheat / Cooldown -->
                     <div class="timer-warning" id="timerDisplay">
-                        ⏱️ حالة التعدين: <span id="miningStatusText" style="color:var(--green);">مستقر</span>
-                        <span id="timerCountdown" style="display:none; font-weight:800; color:var(--orange);">--:--</span>
+                        ⏱️ <span id="miningStatusText" class="ok">مستقر</span>
+                        <span id="timerCountdown" style="display:none; font-weight:800;">--:--</span>
                     </div>
                 </div>
 
@@ -929,7 +905,7 @@
                 </div>
 
                 <!-- Log -->
-                <div id="logContainer" style="display:none; margin-top:6px;">
+                <div id="logContainer" style="display:none; margin-top:4px;">
                     <div class="log-container" id="logList">
                         <div class="log-item" style="justify-content:center;color:var(--text-muted);">لا توجد عمليات</div>
                     </div>
@@ -945,13 +921,13 @@
                     <div class="wallet-item"><div>Cash</div><div class="balance cash" id="balCash">0.00</div></div>
                 </div>
             </div>
-            <div style="text-align:center;font-size:10px;color:var(--text-secondary);">🔒 محاكاة ترفيهية</div>
+            <div style="text-align:center;font-size:9px;color:var(--text-secondary);">🔒 محاكاة ترفيهية</div>
         </div>
 
-        <!-- TAB: SHOP (مختصر) -->
+        <!-- TAB: SHOP -->
         <div id="tab-shop" class="tab-content">
             <div class="card">
-                <div style="display:flex;justify-content:space-between;font-weight:700;margin-bottom:8px;">🛒 المتجر <span style="color:var(--gold);" id="shopBalance">0.00 NC</span></div>
+                <div style="display:flex;justify-content:space-between;font-weight:700;margin-bottom:6px;font-size:12px;">🛒 المتجر <span style="color:var(--gold);" id="shopBalance">0.00 NC</span></div>
                 <div class="shop-category-tabs">
                     <button class="tab-btn active" data-cat="upgrades">🔧 ترقيات</button>
                     <button class="tab-btn" data-cat="boosters">⚡ تسريعات</button>
@@ -968,15 +944,15 @@
                     <div class="profile-trigger" onclick="toggleProfile()"><i class="fas fa-user"></i> <span id="settingsProfileName">مستخدم</span></div>
                 </div>
                 <div class="settings-item"><span>🌓 المظهر</span>
-                    <div><button id="themeDarkBtn" style="padding:2px 12px;border-radius:30px;border:1px solid var(--gold);background:transparent;color:var(--gold);font-size:10px;cursor:pointer;">داكن</button>
-                        <button id="themeLightBtn" style="padding:2px 12px;border-radius:30px;border:1px solid rgba(255,255,255,0.1);background:transparent;color:var(--text-secondary);font-size:10px;cursor:pointer;">فاتح</button></div>
+                    <div><button id="themeDarkBtn" style="padding:1px 10px;border-radius:30px;border:1px solid var(--gold);background:transparent;color:var(--gold);font-size:9px;cursor:pointer;">داكن</button>
+                        <button id="themeLightBtn" style="padding:1px 10px;border-radius:30px;border:1px solid rgba(255,255,255,0.1);background:transparent;color:var(--text-secondary);font-size:9px;cursor:pointer;">فاتح</button></div>
                 </div>
                 <div class="settings-item"><span>🔊 صوت</span> <label class="switch"><input type="checkbox" id="soundToggle" checked><span class="slider"></span></label></div>
-                <div class="settings-item"><span>🔄 إعادة تعيين</span> <button id="resetBtn" style="background:rgba(255,77,109,0.1);border:1px solid rgba(255,77,109,0.2);color:var(--red);padding:2px 16px;border-radius:30px;cursor:pointer;font-size:10px;">إعادة</button></div>
+                <div class="settings-item"><span>🔄 إعادة تعيين</span> <button id="resetBtn" style="background:rgba(255,77,109,0.1);border:1px solid rgba(255,77,109,0.15);color:var(--red);padding:1px 14px;border-radius:30px;cursor:pointer;font-size:9px;">إعادة</button></div>
             </div>
         </div>
 
-        <!-- BOTTOM NAV -->
+        <!-- BOTTOM NAV (ثابت) -->
         <div class="bottom-nav">
             <div class="nav-item active" data-tab="mining"><i class="fas fa-microchip"></i><span>تعدين</span></div>
             <div class="nav-item" data-tab="wallet"><i class="fas fa-wallet"></i><span>محفظة</span></div>
@@ -985,7 +961,7 @@
         </div>
     </div>
 
-    <!-- PROFILE SLIDE (مختصر) -->
+    <!-- PROFILE SLIDE -->
     <div class="profile-overlay" id="profileOverlay" onclick="toggleProfile()"></div>
     <div class="profile-slide" id="profileSlide">
         <div class="header"><h2>👤 ملفي</h2><button class="close-btn" onclick="toggleProfile()"><i class="fas fa-times"></i></button></div>
@@ -997,15 +973,15 @@
 
     <script>
         // ================================================================
-        // 1. DATA & CONSTANTS (NEW SPECS)
+        // 1. DATA & CONSTANTS
         // ================================================================
-        const STORAGE_KEY = 'hyex_v4_data';
+        const STORAGE_KEY = 'hyex_gpu_v4';
         const BASE_SPEED = 0.008;
-        const BATTERY_MAX = 10000; // 10,000 Ah
-        const DRAIN_PER_LEVEL = 2; // 2 Ah/sec per speed level
-        const CHARGE_RATE = 0.5; // 0.5 Ah/sec when off
-        const OVERHEAT_TIME = 300; // 5 minutes (300 sec)
-        const COOLDOWN_TIME = 300; // 5 minutes (300 sec)
+        const BATTERY_MAX = 10000;
+        const DRAIN_PER_LEVEL = 2;
+        const CHARGE_RATE = 0.5;
+        const OVERHEAT_TIME = 300;
+        const COOLDOWN_TIME = 300;
 
         let data = {
             wallet: { NC: 0, Cash: 100 },
@@ -1013,34 +989,31 @@
             log: [],
             upgrades: { speed: 0, power: 0 },
             settings: { sound: true, theme: 'dark' },
-            devices: { nc: { count: 1 } },
             boosters: { nc: { active: false, multiplier: 1, remaining: 0 } },
             profile: { name: 'مستخدم جديد' },
-            fanSpeed: 0, // 0-4
+            fanSpeed: 0,
             battery: { ah: BATTERY_MAX, maxAh: BATTERY_MAX, percent: 100 },
-            // Heat system: fixed by speed
-            heat: { level: 0 }, // 0, 25, 50, 75, 100
-            // Timer states
-            overheatTimer: 0, // seconds accumulated at speed 4
+            heat: { level: 0 },
+            overheatTimer: 0,
             isOverheated: false,
-            cooldownTimer: 0, // seconds remaining for cooldown
+            cooldownTimer: 0,
             totalMinedNC: 0,
             autoMine: false
         };
 
         // ================================================================
-        // 2. SHOP DB
+        // 2. SHOP
         // ================================================================
         const SHOP_DB = {
             upgrades: [
-                { id: 'upg_speed', name: 'ترقية السرعة', icon: '🚀', desc: '+20% سرعة', price: 0.5, currency: 'NC',
-                    type: 'upgrade', target: 'speed', maxLevel: 10 },
-                { id: 'upg_power', name: 'ترقية الطاقة', icon: '💡', desc: '+5 طاقة', price: 0.6, currency: 'NC',
-                    type: 'upgrade', target: 'power', maxLevel: 10 },
+                { id: 'upg_speed', name: 'ترقية السرعة', icon: '🚀', price: 0.5, currency: 'NC', type: 'upgrade',
+                    target: 'speed', maxLevel: 10 },
+                { id: 'upg_power', name: 'ترقية الطاقة', icon: '💡', price: 0.6, currency: 'NC', type: 'upgrade',
+                    target: 'power', maxLevel: 10 },
             ],
             boosters: [
-                { id: 'boost_2x', name: 'مضاعف ×2', icon: '⚡', desc: '5 دقائق ×2', price: 0.3, currency: 'NC',
-                    type: 'booster', target: 'nc', duration: 300, multiplier: 2 },
+                { id: 'boost_2x', name: 'مضاعف ×2', icon: '⚡', price: 0.3, currency: 'NC', type: 'booster',
+                    target: 'nc', duration: 300, multiplier: 2 },
             ]
         };
 
@@ -1090,7 +1063,7 @@
         function saveData() { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); }
 
         // ================================================================
-        // 4. TRANSLATE (brief)
+        // 4. TRANSLATE
         // ================================================================
         const translations = {
             ar: {
@@ -1104,24 +1077,11 @@
                 auto_off: '⏹ تلقائي متوقف',
                 started: '▶️ بدء التعدين (سرعة {0})',
                 stopped: '⏹ إيقاف التعدين',
-            },
-            en: {
-                no_logs: 'No logs',
-                collected_all: '✅ Collected all coins',
-                no_pending: '⚠️ No pending coins',
-                battery_empty: '🔋 Battery empty!',
-                overheat_shutdown: '🔥 Mining halted! Cooling...',
-                cooling_complete: '✅ Cooling done, ready to mine',
-                auto_on: '🤖 Auto On',
-                auto_off: '⏹ Auto Off',
-                started: '▶️ Mining started (Speed {0})',
-                stopped: '⏹ Mining stopped',
             }
         };
 
         function translate(key, ...args) {
-            const lang = 'ar';
-            let text = translations[lang]?.[key] || translations['ar'][key] || key;
+            let text = translations['ar'][key] || key;
             args.forEach((arg, i) => { text = text.replace(`{${i}}`, arg); });
             return text;
         }
@@ -1142,7 +1102,6 @@
             return speed * Math.max(0.3, heatPenalty);
         }
 
-        // Get heat percentage based on speed (fixed)
         function getHeatForSpeed(speed) {
             const map = { 0: 0, 1: 25, 2: 50, 3: 75, 4: 100 };
             return map[speed] || 0;
@@ -1155,21 +1114,19 @@
             const speed = data.fanSpeed;
             const isMining = speed > 0 && !data.isOverheated && data.battery.ah > 0;
 
-            // 1. Battery
+            // Battery
             if (isMining) {
                 const drain = speed * DRAIN_PER_LEVEL;
                 data.battery.ah = Math.max(0, data.battery.ah - drain);
             } else {
-                // Charging only if not overheated and speed is 0 (or off)
                 if (!data.isOverheated && data.battery.ah < data.battery.maxAh) {
                     data.battery.ah = Math.min(data.battery.ah + CHARGE_RATE, data.battery.maxAh);
                 }
             }
             data.battery.percent = (data.battery.ah / data.battery.maxAh) * 100;
 
-            // 2. Heat (set fixed level)
+            // Heat
             if (data.isOverheated) {
-                // During cooldown, heat decreases gradually
                 data.heat.level = Math.max(0, data.heat.level - (100 / COOLDOWN_TIME));
                 data.cooldownTimer = Math.max(0, data.cooldownTimer - 1);
                 if (data.heat.level <= 0 && data.cooldownTimer <= 0) {
@@ -1181,25 +1138,22 @@
                 data.heat.level = getHeatForSpeed(speed);
             }
 
-            // 3. Overheat timer (only at speed 4)
+            // Overheat timer (speed 4)
             if (speed === 4 && !data.isOverheated && data.battery.ah > 0) {
                 data.overheatTimer += 1;
                 if (data.overheatTimer >= OVERHEAT_TIME) {
-                    // TRIGGER OVERHEAT
                     data.isOverheated = true;
                     data.cooldownTimer = COOLDOWN_TIME;
                     data.overheatTimer = 0;
-                    data.fanSpeed = 0; // force stop
+                    data.fanSpeed = 0;
                     data.heat.level = 100;
                     addLog(translate('overheat_shutdown'));
                     renderRig();
                 }
             } else if (speed !== 4) {
-                // Reset timer if not at speed 4
                 data.overheatTimer = 0;
             }
 
-            // If battery empty, stop mining
             if (data.battery.ah <= 0 && data.fanSpeed > 0) {
                 data.fanSpeed = 0;
                 data.heat.level = getHeatForSpeed(0);
@@ -1207,7 +1161,6 @@
                 renderRig();
             }
 
-            // Update UI
             updateStatsUI();
             renderRig();
             saveData();
@@ -1220,20 +1173,35 @@
             const speed = data.fanSpeed;
             const isActive = speed > 0 && !data.isOverheated && data.battery.ah > 0;
 
-            // Fan
-            const blades = document.getElementById('fanBlades');
-            blades.className = 'fan-blades';
+            // Fan SVG
+            const container = document.getElementById('fanSvgContainer');
+            container.className = 'fan-svg-container';
             if (data.isOverheated) {
-                blades.classList.add('overheat');
+                container.classList.add('overheat');
             } else if (isActive) {
-                if (speed === 1) blades.classList.add('spin1');
-                else if (speed === 2) blades.classList.add('spin2');
-                else if (speed === 3) blades.classList.add('spin3');
-                else if (speed === 4) blades.classList.add('spin4');
+                if (speed === 1) container.classList.add('spin1');
+                else if (speed === 2) container.classList.add('spin2');
+                else if (speed === 3) container.classList.add('spin3');
+                else if (speed === 4) container.classList.add('spin4');
             }
+            // Change blade color when active
+            const blades = document.querySelectorAll('.fan-blade');
+            blades.forEach(b => {
+                if (isActive) {
+                    b.setAttribute('fill', 'rgba(201, 168, 76, 0.25)');
+                    b.setAttribute('stroke', 'rgba(201, 168, 76, 0.6)');
+                } else if (data.isOverheated) {
+                    b.setAttribute('fill', 'rgba(255, 77, 109, 0.2)');
+                    b.setAttribute('stroke', 'rgba(255, 77, 109, 0.5)');
+                } else {
+                    b.setAttribute('fill', 'rgba(255, 255, 255, 0.04)');
+                    b.setAttribute('stroke', 'rgba(201, 168, 76, 0.15)');
+                }
+            });
+
             document.getElementById('fanSpeedDisplay').textContent = speed;
 
-            // LEDs (4 buttons)
+            // LEDs
             for (let i = 0; i < 4; i++) {
                 const led = document.getElementById('led' + i);
                 led.className = 'led-btn';
@@ -1244,10 +1212,8 @@
                 } else {
                     led.classList.add('off');
                 }
-                if (data.isOverheated) {
-                    led.classList.remove('active', 'max', 'high');
-                    led.classList.add('off');
-                }
+                if (data.isOverheated) { led.classList.remove('active', 'max', 'high');
+                    led.classList.add('off'); }
             }
 
             // Hash & Pending
@@ -1255,11 +1221,9 @@
             document.getElementById('hashRateDisplay').textContent = (hash * 1000000).toFixed(2) + ' MH/s';
             document.getElementById('tickerMH').textContent = (hash * 1000000).toFixed(2);
             document.getElementById('tickerPending').textContent = data.pending.nc.toFixed(4);
-
-            // Pending central
             document.getElementById('pendingNC').textContent = data.pending.nc.toFixed(8);
 
-            // Status dot
+            // Status
             const dot = document.getElementById('statusDot');
             const statusText = document.getElementById('statusText');
             if (data.isOverheated) {
@@ -1292,22 +1256,21 @@
             heatBar.style.width = heat + '%';
             heatBar.style.background = heat > 70 ? 'var(--red)' : (heat > 40 ? 'var(--orange)' : 'var(--cyan)');
 
-            // Timer display
-            const timerDiv = document.getElementById('timerDisplay');
+            // Timer
             const statusSpan = document.getElementById('miningStatusText');
             const countdownSpan = document.getElementById('timerCountdown');
 
             if (data.isOverheated) {
+                statusSpan.className = 'cool';
                 statusSpan.textContent = '🔴 تبريد';
-                statusSpan.style.color = 'var(--cyan)';
                 countdownSpan.style.display = 'inline';
                 const mins = Math.floor(data.cooldownTimer / 60);
                 const secs = Math.floor(data.cooldownTimer % 60);
                 countdownSpan.textContent = `${String(mins).padStart(2,'0')}:${String(secs).padStart(2,'0')}`;
                 countdownSpan.style.color = 'var(--cyan)';
             } else if (data.fanSpeed === 4 && data.battery.ah > 0) {
+                statusSpan.className = 'warn';
                 statusSpan.textContent = '⏳ تعطل خلال';
-                statusSpan.style.color = 'var(--orange)';
                 countdownSpan.style.display = 'inline';
                 const remaining = Math.max(0, OVERHEAT_TIME - data.overheatTimer);
                 const mins = Math.floor(remaining / 60);
@@ -1315,18 +1278,18 @@
                 countdownSpan.textContent = `${String(mins).padStart(2,'0')}:${String(secs).padStart(2,'0')}`;
                 countdownSpan.style.color = 'var(--orange)';
             } else if (data.fanSpeed > 0 && data.battery.ah > 0) {
+                statusSpan.className = 'ok';
                 statusSpan.textContent = '✅ تعدين مستقر';
-                statusSpan.style.color = 'var(--green)';
                 countdownSpan.style.display = 'none';
             } else {
+                statusSpan.className = 'ok';
                 statusSpan.textContent = '⏸ متوقف';
-                statusSpan.style.color = 'var(--text-secondary)';
                 countdownSpan.style.display = 'none';
             }
         }
 
         // ================================================================
-        // 8. MINING TICK (pending coins)
+        // 8. MINING TICK
         // ================================================================
         function runMiningTick() {
             const speed = getMiningSpeed();
@@ -1339,29 +1302,17 @@
         }
 
         // ================================================================
-        // 9. FAN CLICK (Change speed)
+        // 9. FAN CLICK
         // ================================================================
         document.getElementById('fanClickArea').addEventListener('click', function() {
-            if (data.isOverheated) {
-                addLog('⚠️ الجهاز في حالة تبريد، انتظر حتى ينتهي.');
-                return;
-            }
-            if (data.battery.ah <= 0) {
-                addLog(translate('battery_empty'));
-                return;
-            }
+            if (data.isOverheated) { addLog('⚠️ الجهاز في حالة تبريد'); return; }
+            if (data.battery.ah <= 0) { addLog(translate('battery_empty')); return; }
             let newSpeed = data.fanSpeed + 1;
             if (newSpeed > 4) newSpeed = 0;
             data.fanSpeed = newSpeed;
-            if (newSpeed > 0) {
-                // Reset overheat timer if not speed 4
-                if (newSpeed !== 4) data.overheatTimer = 0;
-                addLog(translate('started', newSpeed));
-            } else {
-                addLog(translate('stopped'));
-                data.overheatTimer = 0;
-            }
-            // Set heat immediately
+            if (newSpeed > 0) { if (newSpeed !== 4) data.overheatTimer = 0;
+                addLog(translate('started', newSpeed)); } else { addLog(translate('stopped'));
+                data.overheatTimer = 0; }
             data.heat.level = getHeatForSpeed(newSpeed);
             renderRig();
             saveData();
@@ -1378,9 +1329,7 @@
                 renderRig();
                 updateWalletUI();
                 saveData();
-            } else {
-                addLog(translate('no_pending'));
-            }
+            } else { addLog(translate('no_pending')); }
         });
 
         // ================================================================
@@ -1389,16 +1338,12 @@
         document.getElementById('autoMineBtn').addEventListener('click', function() {
             data.autoMine = !data.autoMine;
             const btn = this;
-            if (data.autoMine) {
-                btn.classList.add('active');
+            if (data.autoMine) { btn.classList.add('active');
                 btn.innerHTML = '<i class="fas fa-robot"></i> تلقائي مفعل';
                 addLog(translate('auto_on'));
-                autoMineLoop();
-            } else {
-                btn.classList.remove('active');
+                autoMineLoop(); } else { btn.classList.remove('active');
                 btn.innerHTML = '<i class="fas fa-robot"></i> تلقائي';
-                addLog(translate('auto_off'));
-            }
+                addLog(translate('auto_off')); }
             saveData();
         });
 
@@ -1446,7 +1391,7 @@
         });
 
         // ================================================================
-        // 13. SHOP (brief)
+        // 13. SHOP
         // ================================================================
         function renderShopAll() {
             ['upgrades', 'boosters'].forEach(cat => renderShopCategory(cat));
@@ -1470,14 +1415,14 @@
                     canBuy = data.wallet[item.currency] >= price && !data.boosters.nc.active;
                 }
                 return `
-                        <div class="shop-item-card">
-                            <div class="item-icon">${item.icon}</div>
-                            <div class="item-name">${item.name}</div>
-                            <div class="item-price">${price.toFixed(2)} ${item.currency}</div>
-                            ${maxed ? '<div style="font-size:8px;color:var(--orange);">🔝 مكتمل</div>' : ''}
-                            <button class="btn shop-buy-btn" data-id="${item.id}" data-cat="${cat}" ${!canBuy || maxed ? 'disabled' : ''}>${maxed ? 'مكتمل' : 'شراء'}</button>
-                        </div>
-                    `;
+                            <div class="shop-item-card">
+                                <div class="item-icon">${item.icon}</div>
+                                <div class="item-name">${item.name}</div>
+                                <div class="item-price">${price.toFixed(2)} ${item.currency}</div>
+                                ${maxed ? '<div style="font-size:7px;color:var(--orange);">🔝 مكتمل</div>' : ''}
+                                <button class="btn shop-buy-btn" data-id="${item.id}" data-cat="${cat}" ${!canBuy || maxed ? 'disabled' : ''}>${maxed ? 'مكتمل' : 'شراء'}</button>
+                            </div>
+                        `;
             }).join('');
             grid.querySelectorAll('.shop-buy-btn').forEach(btn => {
                 btn.addEventListener('click', function() { buyItem(this.dataset.id, this.dataset.cat); });
@@ -1530,7 +1475,7 @@
         });
 
         // ================================================================
-        // 14. WALLET UI
+        // 14. WALLET
         // ================================================================
         function updateWalletUI() {
             document.getElementById('balNC').textContent = data.wallet.NC.toFixed(6);
@@ -1546,9 +1491,8 @@
                 overlay = document.getElementById('profileOverlay');
             slide.classList.toggle('open');
             overlay.classList.toggle('show');
-            if (slide.classList.contains('open')) {
-                document.getElementById('profileNameInput').value = data.profile.name || 'مستخدم';
-            }
+            if (slide.classList.contains('open')) { document.getElementById('profileNameInput').value = data.profile
+                    .name || 'مستخدم'; }
         }
 
         function saveProfile() {
@@ -1562,33 +1506,31 @@
         }
 
         // ================================================================
-        // 16. THEME
+        // 16. THEME & NAV
         // ================================================================
         function setTheme(theme) {
             document.documentElement.setAttribute('data-theme', theme);
             data.settings.theme = theme;
             document.getElementById('themeDarkBtn').style.borderColor = theme === 'dark' ? 'var(--gold)' :
-            'rgba(255,255,255,0.1)';
+                'rgba(255,255,255,0.1)';
             document.getElementById('themeDarkBtn').style.color = theme === 'dark' ? 'var(--gold)' :
-            'var(--text-secondary)';
+                'var(--text-secondary)';
             document.getElementById('themeLightBtn').style.borderColor = theme === 'light' ? 'var(--gold)' :
-            'rgba(255,255,255,0.1)';
+                'rgba(255,255,255,0.1)';
             document.getElementById('themeLightBtn').style.color = theme === 'light' ? 'var(--gold)' :
-            'var(--text-secondary)';
+                'var(--text-secondary)';
             saveData();
         }
         document.getElementById('themeDarkBtn').addEventListener('click', () => setTheme('dark'));
         document.getElementById('themeLightBtn').addEventListener('click', () => setTheme('light'));
-        document.getElementById('soundToggle').addEventListener('change', function() { data.settings.sound = this.checked;
+        document.getElementById('soundToggle').addEventListener('change', function() { data.settings.sound = this
+            .checked;
             saveData(); });
         document.getElementById('resetBtn').addEventListener('click', function() {
             if (confirm('حذف كل شيء؟')) { localStorage.removeItem(STORAGE_KEY);
                 location.reload(); }
         });
 
-        // ================================================================
-        // 17. NAVIGATION
-        // ================================================================
         document.querySelectorAll('.nav-item').forEach(item => {
             item.addEventListener('click', function() {
                 document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
@@ -1603,7 +1545,7 @@
         });
 
         // ================================================================
-        // 18. INIT
+        // 17. INIT
         // ================================================================
         window.onload = function() {
             loadData();
@@ -1616,19 +1558,16 @@
             renderShopAll();
             renderLog();
 
-            // Start loops
             setInterval(runMiningTick, 1000);
             setInterval(updateBatteryAndHeat, 1000);
             setInterval(() => { renderRig();
                 saveData(); }, 3000);
 
             if (data.autoMine) autoMineLoop();
-
-            addLog('🚀 تم تشغيل جهاز NC Rig V4');
-            // If fan was on, restore heat
             data.heat.level = getHeatForSpeed(data.fanSpeed);
             renderRig();
+            addLog('🚀 تم تشغيل جهاز GPU Mining V4');
         };
     </script>
 </body>
-                                                                                                        </html>
+</html>
