@@ -4,7 +4,6 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>NC.CORP</title>
-    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800&display=swap" rel="stylesheet" />
@@ -24,15 +23,14 @@
             --text-secondary: #a0a0b8;
             --accent: #c9a84c;
             --accent-dim: #a08030;
-            --accent-glow: rgba(201, 168, 76, 0.15);
-            --shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
-            --radius: 16px;
-            --radius-sm: 10px;
-            --transition: 0.25s ease;
+            --accent-glow: rgba(201, 168, 76, 0.12);
+            --shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+            --radius: 12px;
+            --radius-sm: 8px;
+            --transition: 0.2s ease;
             --font: 'Cairo', sans-serif;
-            --header-height: 70px;
-            --tab-height: 56px;
-            --mining-speed: 1;
+            --header-height: 56px;
+            --tab-height: 44px;
         }
         .light-mode {
             --bg: #f0f0f5;
@@ -41,8 +39,8 @@
             --border: #d0d0dd;
             --text: #14142a;
             --text-secondary: #5a5a72;
-            --shadow: 0 8px 32px rgba(0, 0, 0, 0.10);
-            --accent-glow: rgba(201, 168, 76, 0.20);
+            --shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            --accent-glow: rgba(201, 168, 76, 0.15);
         }
         html,
         body {
@@ -52,13 +50,14 @@
             color: var(--text);
             transition: background var(--transition), color var(--transition);
             overflow: hidden;
+            font-size: 15px;
         }
         a,
         button {
             font-family: inherit;
         }
         ::-webkit-scrollbar {
-            width: 5px;
+            width: 4px;
         }
         ::-webkit-scrollbar-track {
             background: var(--bg);
@@ -84,24 +83,21 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 0 28px;
+            padding: 0 20px;
             height: var(--header-height);
             min-height: var(--header-height);
             background: var(--bg-card);
             border-bottom: 1px solid var(--border);
             transition: background var(--transition), border var(--transition);
             flex-shrink: 0;
-            gap: 16px;
-            flex-wrap: nowrap;
         }
         .header-brand {
             display: flex;
             align-items: center;
-            gap: 10px;
-            font-weight: 800;
-            font-size: 1.5rem;
-            letter-spacing: 1px;
-            white-space: nowrap;
+            gap: 8px;
+            font-weight: 700;
+            font-size: 1.2rem;
+            letter-spacing: 0.5px;
         }
         .header-brand .accent {
             color: var(--accent);
@@ -110,44 +106,13 @@
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            width: 38px;
-            height: 38px;
+            width: 32px;
+            height: 32px;
             background: var(--accent);
             color: #0b0b16;
-            border-radius: 10px;
+            border-radius: 8px;
             font-weight: 900;
-            font-size: 1.2rem;
-        }
-        .header-actions {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            flex-shrink: 0;
-        }
-        .header-actions .lang-toggle,
-        .header-actions .theme-toggle {
-            background: transparent;
-            border: 1px solid var(--border);
-            color: var(--text-secondary);
-            padding: 6px 14px;
-            border-radius: var(--radius-sm);
-            cursor: pointer;
-            font-size: 0.85rem;
-            transition: all var(--transition);
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            white-space: nowrap;
-        }
-        .header-actions .lang-toggle:hover,
-        .header-actions .theme-toggle:hover {
-            border-color: var(--accent);
-            color: var(--text);
-        }
-        .header-actions .lang-toggle .badge,
-        .header-actions .theme-toggle .badge {
-            font-size: 0.7rem;
-            opacity: 0.6;
+            font-size: 1rem;
         }
 
         /* ===== TABS ===== */
@@ -155,7 +120,7 @@
             display: flex;
             align-items: center;
             gap: 2px;
-            padding: 0 28px;
+            padding: 0 16px;
             height: var(--tab-height);
             min-height: var(--tab-height);
             background: var(--bg-card);
@@ -177,8 +142,8 @@
             background: transparent;
             border: none;
             color: var(--text-secondary);
-            padding: 8px 20px;
-            font-size: 0.95rem;
+            padding: 6px 14px;
+            font-size: 0.85rem;
             font-weight: 600;
             cursor: pointer;
             border-radius: var(--radius-sm);
@@ -206,15 +171,16 @@
             border-radius: 2px;
         }
         .tab-btn .tab-icon {
-            margin-left: 6px;
+            margin-left: 5px;
             display: inline-block;
+            font-size: 0.9rem;
         }
 
         /* ===== CONTENT ===== */
         .content {
             flex: 1;
             overflow-y: auto;
-            padding: 20px 28px 28px;
+            padding: 16px 20px 20px;
             transition: background var(--transition);
             background: var(--bg);
             min-height: 0;
@@ -228,7 +194,7 @@
         }
         .tab-panel {
             display: none;
-            animation: fadeIn 0.3s ease;
+            animation: fadeIn 0.25s ease;
         }
         .tab-panel.active {
             display: block;
@@ -236,7 +202,7 @@
         @keyframes fadeIn {
             from {
                 opacity: 0;
-                transform: translateY(6px);
+                transform: translateY(4px);
             }
             to {
                 opacity: 1;
@@ -249,37 +215,37 @@
             background: var(--bg-card);
             border-radius: var(--radius);
             border: 1px solid var(--border);
-            padding: 24px 28px;
-            margin-bottom: 20px;
+            padding: 16px 20px;
+            margin-bottom: 16px;
             transition: background var(--transition), border var(--transition);
             box-shadow: var(--shadow);
         }
         .card-title {
-            font-size: 1.1rem;
+            font-size: 0.95rem;
             font-weight: 700;
-            margin-bottom: 14px;
+            margin-bottom: 10px;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
             color: var(--text);
         }
         .card-title .sub {
             font-weight: 400;
-            font-size: 0.85rem;
+            font-size: 0.75rem;
             color: var(--text-secondary);
         }
 
         .grid-2 {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 20px;
+            gap: 16px;
         }
         .grid-3 {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
+            gap: 16px;
         }
-        @media (max-width: 900px) {
+        @media (max-width: 820px) {
             .grid-2 {
                 grid-template-columns: 1fr;
             }
@@ -287,47 +253,47 @@
                 grid-template-columns: 1fr 1fr;
             }
         }
-        @media (max-width: 600px) {
+        @media (max-width: 540px) {
             .grid-3 {
                 grid-template-columns: 1fr;
             }
             .header {
-                padding: 0 16px;
-            }
-            .tabs {
                 padding: 0 12px;
             }
+            .tabs {
+                padding: 0 8px;
+            }
             .content {
-                padding: 14px 14px 20px;
+                padding: 12px 12px 16px;
             }
             .card {
-                padding: 16px 18px;
+                padding: 12px 14px;
             }
             .tab-btn {
-                padding: 6px 12px;
-                font-size: 0.8rem;
-            }
-            .header-brand {
-                font-size: 1.2rem;
-            }
-            .header-actions .lang-toggle,
-            .header-actions .theme-toggle {
                 padding: 4px 10px;
                 font-size: 0.75rem;
             }
+            .header-brand {
+                font-size: 1rem;
+            }
+            .header-brand .logo-icon {
+                width: 26px;
+                height: 26px;
+                font-size: 0.8rem;
+            }
         }
 
-        /* ===== MINING SECTION ===== */
+        /* ===== MINING DEVICE ===== */
         .mining-device {
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 20px 0 10px;
+            padding: 8px 0 6px;
             position: relative;
         }
         .device-visual {
-            width: 180px;
-            height: 180px;
+            width: 140px;
+            height: 140px;
             border-radius: 50%;
             background: radial-gradient(circle at 30% 30%, #1a1a3a, #0b0b16);
             border: 2px solid var(--border);
@@ -337,18 +303,18 @@
             justify-content: center;
             position: relative;
             transition: border var(--transition);
-            margin-bottom: 12px;
+            margin-bottom: 8px;
         }
         .device-visual .fan {
-            width: 80px;
-            height: 80px;
+            width: 64px;
+            height: 64px;
             border-radius: 50%;
             background: radial-gradient(circle at 40% 40%, #2a2a4a, #0f0f1f);
             border: 2px solid #3a3a5a;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 2.4rem;
+            font-size: 1.8rem;
             transition: transform 0.1s linear;
             color: var(--text-secondary);
         }
@@ -368,45 +334,45 @@
         }
         .device-visual .led {
             position: absolute;
-            width: 12px;
-            height: 12px;
+            width: 8px;
+            height: 8px;
             border-radius: 50%;
             background: #444;
             transition: all 0.3s;
             box-shadow: 0 0 4px rgba(0, 0, 0, 0.5);
         }
         .device-visual .led.l1 {
-            top: 16px;
-            right: 30px;
+            top: 12px;
+            right: 22px;
         }
         .device-visual .led.l2 {
-            top: 16px;
-            left: 30px;
+            top: 12px;
+            left: 22px;
         }
         .device-visual .led.l3 {
-            bottom: 16px;
-            right: 30px;
+            bottom: 12px;
+            right: 22px;
         }
         .device-visual .led.l4 {
-            bottom: 16px;
-            left: 30px;
+            bottom: 12px;
+            left: 22px;
         }
         .device-visual .led.on {
             background: #4caf50;
-            box-shadow: 0 0 12px rgba(76, 175, 80, 0.6);
+            box-shadow: 0 0 10px rgba(76, 175, 80, 0.5);
         }
         .device-visual .led.on.speed-2 {
             background: #ffeb3b;
-            box-shadow: 0 0 16px rgba(255, 235, 59, 0.7);
+            box-shadow: 0 0 14px rgba(255, 235, 59, 0.6);
         }
         .device-visual .led.on.speed-3 {
             background: #ff5722;
-            box-shadow: 0 0 20px rgba(255, 87, 34, 0.8);
+            box-shadow: 0 0 18px rgba(255, 87, 34, 0.7);
         }
         .device-status {
-            font-size: 0.9rem;
+            font-size: 0.8rem;
             color: var(--text-secondary);
-            margin-top: 4px;
+            margin-top: 2px;
         }
         .device-status .highlight {
             color: var(--accent);
@@ -416,26 +382,25 @@
             color: #42a5f5;
         }
 
-        /* Speed buttons */
         .speed-controls {
             display: flex;
-            gap: 10px;
-            margin: 12px 0 8px;
+            gap: 6px;
+            margin: 8px 0 4px;
             flex-wrap: wrap;
             justify-content: center;
         }
         .speed-btn {
-            padding: 8px 20px;
+            padding: 5px 14px;
             border: 1px solid var(--border);
             background: transparent;
             color: var(--text-secondary);
             border-radius: var(--radius-sm);
             cursor: pointer;
             font-weight: 600;
-            font-size: 0.9rem;
+            font-size: 0.75rem;
             transition: all var(--transition);
             font-family: var(--font);
-            min-width: 56px;
+            min-width: 44px;
         }
         .speed-btn:hover {
             border-color: var(--accent);
@@ -447,31 +412,31 @@
             border-color: var(--accent);
         }
         .speed-btn:disabled {
-            opacity: 0.4;
+            opacity: 0.35;
             cursor: not-allowed;
         }
 
-        /* Battery & Temp */
+        /* Meters */
         .meter-row {
             display: flex;
             align-items: center;
-            gap: 14px;
-            margin: 6px 0;
+            gap: 10px;
+            margin: 4px 0;
             flex-wrap: wrap;
         }
         .meter-label {
-            min-width: 80px;
-            font-size: 0.85rem;
+            min-width: 60px;
+            font-size: 0.75rem;
             color: var(--text-secondary);
             font-weight: 600;
         }
         .meter-track {
             flex: 1;
-            height: 8px;
+            height: 6px;
             background: var(--bg);
             border-radius: 10px;
             overflow: hidden;
-            min-width: 60px;
+            min-width: 40px;
             position: relative;
         }
         .meter-fill {
@@ -487,8 +452,8 @@
             background: linear-gradient(90deg, #4caf50, #ffeb3b, #f44336);
         }
         .meter-value {
-            min-width: 52px;
-            font-size: 0.85rem;
+            min-width: 44px;
+            font-size: 0.75rem;
             font-weight: 600;
             text-align: left;
             color: var(--text);
@@ -496,50 +461,49 @@
         }
         .meter-value .unit {
             font-weight: 400;
-            font-size: 0.7rem;
+            font-size: 0.6rem;
             color: var(--text-secondary);
         }
 
-        /* Mining stats */
         .mining-stats {
             display: flex;
-            gap: 24px;
+            gap: 16px;
             flex-wrap: wrap;
             justify-content: center;
-            padding: 10px 0 4px;
+            padding: 6px 0 2px;
         }
         .mining-stats .stat {
             text-align: center;
         }
         .mining-stats .stat .num {
-            font-size: 1.8rem;
+            font-size: 1.4rem;
             font-weight: 800;
             color: var(--accent);
-            letter-spacing: 1px;
+            letter-spacing: 0.5px;
         }
         .mining-stats .stat .label {
-            font-size: 0.75rem;
+            font-size: 0.65rem;
             color: var(--text-secondary);
-            margin-top: 2px;
+            margin-top: 0px;
         }
         .mining-actions {
             display: flex;
-            gap: 14px;
+            gap: 10px;
             flex-wrap: wrap;
             justify-content: center;
-            margin: 10px 0 4px;
+            margin: 8px 0 2px;
         }
         .btn {
-            padding: 10px 28px;
+            padding: 6px 18px;
             border: none;
             border-radius: var(--radius-sm);
             font-weight: 700;
-            font-size: 0.95rem;
+            font-size: 0.8rem;
             cursor: pointer;
             transition: all var(--transition);
             display: inline-flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
             font-family: var(--font);
         }
         .btn-primary {
@@ -549,7 +513,7 @@
         .btn-primary:hover {
             background: var(--accent-dim);
             transform: translateY(-1px);
-            box-shadow: 0 4px 16px rgba(201, 168, 76, 0.3);
+            box-shadow: 0 4px 12px rgba(201, 168, 76, 0.25);
         }
         .btn-primary:disabled {
             opacity: 0.4;
@@ -574,55 +538,55 @@
             background: #b71c1c;
         }
         .btn-sm {
-            padding: 6px 16px;
-            font-size: 0.8rem;
+            padding: 4px 12px;
+            font-size: 0.7rem;
         }
 
         /* ===== WALLET ===== */
         .wallet-balance {
             display: flex;
-            gap: 32px;
+            gap: 24px;
             flex-wrap: wrap;
             justify-content: center;
-            padding: 12px 0;
+            padding: 8px 0;
         }
         .wallet-balance .item {
             text-align: center;
         }
         .wallet-balance .item .num {
-            font-size: 2.6rem;
+            font-size: 2rem;
             font-weight: 800;
             color: var(--accent);
-            letter-spacing: 1px;
+            letter-spacing: 0.5px;
         }
         .wallet-balance .item .label {
-            font-size: 0.85rem;
+            font-size: 0.75rem;
             color: var(--text-secondary);
         }
         .wallet-balance .item .rate {
-            font-size: 0.8rem;
+            font-size: 0.7rem;
             color: var(--text-secondary);
-            margin-top: 4px;
+            margin-top: 2px;
             background: var(--bg);
-            padding: 2px 14px;
+            padding: 0 12px;
             border-radius: 20px;
             display: inline-block;
         }
         .wallet-history {
-            max-height: 200px;
+            max-height: 160px;
             overflow-y: auto;
-            margin-top: 8px;
+            margin-top: 4px;
         }
         .wallet-history .entry {
             display: flex;
             justify-content: space-between;
-            padding: 8px 0;
+            padding: 6px 0;
             border-bottom: 1px solid var(--border);
-            font-size: 0.9rem;
+            font-size: 0.8rem;
         }
         .wallet-history .entry .date {
             color: var(--text-secondary);
-            font-size: 0.8rem;
+            font-size: 0.7rem;
         }
         .wallet-history .entry .amount {
             font-weight: 600;
@@ -638,12 +602,12 @@
         .store-item {
             background: var(--bg);
             border-radius: var(--radius-sm);
-            padding: 18px 20px;
+            padding: 12px 14px;
             border: 1px solid var(--border);
             transition: all var(--transition);
             display: flex;
             flex-direction: column;
-            gap: 6px;
+            gap: 4px;
         }
         .store-item:hover {
             border-color: var(--accent);
@@ -651,37 +615,38 @@
         }
         .store-item .name {
             font-weight: 700;
-            font-size: 1rem;
+            font-size: 0.85rem;
         }
         .store-item .desc {
-            font-size: 0.8rem;
+            font-size: 0.7rem;
             color: var(--text-secondary);
         }
         .store-item .price {
             font-weight: 700;
             color: var(--accent);
-            font-size: 1rem;
-            margin: 4px 0;
+            font-size: 0.9rem;
+            margin: 2px 0;
         }
         .store-item .price .sym {
             font-weight: 400;
-            font-size: 0.75rem;
+            font-size: 0.65rem;
             color: var(--text-secondary);
         }
         .store-item .owned {
-            font-size: 0.75rem;
+            font-size: 0.65rem;
             color: var(--text-secondary);
         }
         .store-item .btn {
-            margin-top: 6px;
+            margin-top: 4px;
             width: 100%;
             justify-content: center;
+            font-size: 0.75rem;
         }
 
         /* ===== SETTINGS ===== */
         .settings-profile {
             display: flex;
-            gap: 28px;
+            gap: 20px;
             flex-wrap: wrap;
             align-items: flex-start;
         }
@@ -689,45 +654,45 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 10px;
+            gap: 6px;
         }
         .settings-profile .avatar-wrap img {
-            width: 100px;
-            height: 100px;
+            width: 72px;
+            height: 72px;
             border-radius: 50%;
             object-fit: cover;
-            border: 3px solid var(--accent);
+            border: 2px solid var(--accent);
             background: var(--bg);
         }
         .settings-profile .avatar-wrap .upload-btn {
-            font-size: 0.75rem;
-            padding: 4px 14px;
+            font-size: 0.65rem;
+            padding: 2px 10px;
         }
         .settings-profile .fields {
             flex: 1;
             display: flex;
             flex-direction: column;
-            gap: 14px;
-            min-width: 200px;
+            gap: 10px;
+            min-width: 160px;
         }
         .settings-profile .fields .field {
             display: flex;
             flex-direction: column;
-            gap: 4px;
+            gap: 2px;
         }
         .settings-profile .fields .field label {
-            font-size: 0.8rem;
+            font-size: 0.7rem;
             color: var(--text-secondary);
             font-weight: 600;
         }
         .settings-profile .fields .field input {
-            padding: 10px 14px;
+            padding: 6px 10px;
             border-radius: var(--radius-sm);
             border: 1px solid var(--border);
             background: var(--bg);
             color: var(--text);
             font-family: var(--font);
-            font-size: 0.95rem;
+            font-size: 0.85rem;
             transition: border var(--transition);
             width: 100%;
         }
@@ -742,25 +707,25 @@
 
         .settings-toggles {
             display: flex;
-            gap: 16px;
+            gap: 12px;
             flex-wrap: wrap;
-            margin: 8px 0 12px;
+            margin: 4px 0 8px;
         }
         .settings-toggles .toggle-item {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
             background: var(--bg);
-            padding: 8px 18px;
+            padding: 4px 12px;
             border-radius: var(--radius-sm);
             border: 1px solid var(--border);
         }
         .settings-toggles .toggle-item .label {
-            font-size: 0.85rem;
+            font-size: 0.75rem;
         }
         .settings-toggles .toggle-item .switch {
-            width: 44px;
-            height: 24px;
+            width: 36px;
+            height: 20px;
             background: var(--border);
             border-radius: 20px;
             cursor: pointer;
@@ -769,8 +734,8 @@
             flex-shrink: 0;
         }
         .settings-toggles .toggle-item .switch .knob {
-            width: 18px;
-            height: 18px;
+            width: 14px;
+            height: 14px;
             background: #fff;
             border-radius: 50%;
             position: absolute;
@@ -782,23 +747,23 @@
             background: var(--accent);
         }
         .settings-toggles .toggle-item .switch.active .knob {
-            left: 23px;
+            left: 19px;
         }
         .settings-reset {
-            margin-top: 12px;
+            margin-top: 8px;
         }
 
-        /* ===== MODAL ===== */
+        /* ===== MODALS ===== */
         .modal-overlay {
             position: fixed;
             inset: 0;
-            background: rgba(0, 0, 0, 0.7);
-            backdrop-filter: blur(6px);
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(4px);
             display: none;
             align-items: center;
             justify-content: center;
             z-index: 1000;
-            padding: 20px;
+            padding: 16px;
         }
         .modal-overlay.open {
             display: flex;
@@ -807,16 +772,16 @@
             background: var(--bg-card);
             border-radius: var(--radius);
             border: 1px solid var(--border);
-            padding: 32px 36px;
-            max-width: 440px;
+            padding: 24px 28px;
+            max-width: 400px;
             width: 100%;
             box-shadow: var(--shadow);
-            animation: modalIn 0.25s ease;
+            animation: modalIn 0.2s ease;
         }
         @keyframes modalIn {
             from {
                 opacity: 0;
-                transform: scale(0.96) translateY(10px);
+                transform: scale(0.96) translateY(8px);
             }
             to {
                 opacity: 1;
@@ -824,36 +789,36 @@
             }
         }
         .modal-box .modal-title {
-            font-size: 1.3rem;
+            font-size: 1.1rem;
             font-weight: 700;
-            margin-bottom: 10px;
+            margin-bottom: 6px;
         }
         .modal-box .modal-body {
             color: var(--text-secondary);
-            margin-bottom: 20px;
-            line-height: 1.6;
+            margin-bottom: 16px;
+            line-height: 1.5;
+            font-size: 0.9rem;
         }
         .modal-box .modal-actions {
             display: flex;
-            gap: 12px;
+            gap: 10px;
             justify-content: flex-end;
         }
 
-        /* ===== HISTORY MODAL ===== */
         .history-list {
-            max-height: 300px;
+            max-height: 260px;
             overflow-y: auto;
         }
         .history-list .h-entry {
             display: flex;
             justify-content: space-between;
-            padding: 8px 0;
+            padding: 6px 0;
             border-bottom: 1px solid var(--border);
-            font-size: 0.9rem;
+            font-size: 0.8rem;
         }
         .history-list .h-entry .h-date {
             color: var(--text-secondary);
-            font-size: 0.8rem;
+            font-size: 0.7rem;
         }
         .history-list .h-entry .h-amount {
             font-weight: 600;
@@ -868,28 +833,28 @@
         /* ===== TOAST ===== */
         .toast-container {
             position: fixed;
-            bottom: 30px;
-            right: 30px;
+            bottom: 20px;
+            right: 20px;
             z-index: 2000;
             display: flex;
             flex-direction: column;
-            gap: 10px;
-            max-width: 360px;
+            gap: 8px;
+            max-width: 320px;
             pointer-events: none;
         }
         .toast {
             background: var(--bg-card);
             border: 1px solid var(--border);
             border-radius: var(--radius-sm);
-            padding: 14px 22px;
+            padding: 10px 18px;
             box-shadow: var(--shadow);
-            animation: toastIn 0.3s ease;
+            animation: toastIn 0.25s ease;
             pointer-events: auto;
             display: flex;
             align-items: center;
-            gap: 12px;
-            font-size: 0.9rem;
-            border-right: 4px solid var(--accent);
+            gap: 10px;
+            font-size: 0.8rem;
+            border-right: 3px solid var(--accent);
         }
         .toast.success {
             border-right-color: #4caf50;
@@ -903,7 +868,7 @@
         @keyframes toastIn {
             from {
                 opacity: 0;
-                transform: translateX(20px);
+                transform: translateX(16px);
             }
             to {
                 opacity: 1;
@@ -911,32 +876,26 @@
             }
         }
 
-        /* ===== MISC ===== */
+        /* ===== UTILITIES ===== */
         .text-center {
             text-align: center;
         }
-        .mt-4 {
-            margin-top: 16px;
+        .mt-2 {
+            margin-top: 8px;
         }
-        .mb-4 {
-            margin-bottom: 16px;
+        .mb-2 {
+            margin-bottom: 8px;
         }
         .flex-center {
             display: flex;
             align-items: center;
             justify-content: center;
         }
-        .gap-8 {
-            gap: 8px;
-        }
-        .gap-12 {
-            gap: 12px;
+        .gap-6 {
+            gap: 6px;
         }
         .w-full {
             width: 100%;
-        }
-        .op-6 {
-            opacity: 0.6;
         }
         .text-accent {
             color: var(--accent);
@@ -951,16 +910,30 @@
             display: inline-block;
             background: var(--accent-glow);
             color: var(--accent);
-            padding: 2px 12px;
+            padding: 0 10px;
             border-radius: 20px;
-            font-size: 0.7rem;
+            font-size: 0.6rem;
             font-weight: 700;
         }
         .empty-state {
             color: var(--text-secondary);
-            font-size: 0.9rem;
-            padding: 20px 0;
+            font-size: 0.8rem;
+            padding: 12px 0;
             text-align: center;
+        }
+        .sub-info {
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin: 4px 0 6px;
+        }
+        .sub-info span {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
         }
     </style>
 </head>
@@ -973,16 +946,7 @@
                 <span class="logo-icon">N</span>
                 <span>NC.<span class="accent">CORP</span></span>
             </div>
-            <div class="header-actions">
-                <button class="lang-toggle" id="langToggle" title="تبديل اللغة">
-                    <span id="langLabel">🇸🇦 عربي</span>
-                    <span class="badge" id="langBadge">AR</span>
-                </button>
-                <button class="theme-toggle" id="themeToggle" title="تبديل السمة">
-                    <span id="themeIcon">🌙</span>
-                    <span id="themeLabel">داكن</span>
-                </button>
-            </div>
+            <!-- Removed theme/lang toggles as requested -->
         </header>
 
         <!-- ===== TABS ===== -->
@@ -1054,7 +1018,7 @@
                             <div class="meter-track"><div class="meter-fill temp" id="tempFill" style="width:0%"></div></div>
                             <span class="meter-value" id="tempValue">0 <span class="unit">°C</span></span>
                         </div>
-                        <div style="font-size:0.8rem;color:var(--text-secondary);margin:6px 0 10px;display:flex;gap:16px;flex-wrap:wrap;justify-content:center;">
+                        <div class="sub-info">
                             <span>⚡ استهلاك: <strong id="consumptionDisplay">0</strong> <span class="unit">mA/ث</span></span>
                             <span>🔋 شحن: <strong id="chargeDisplay">0</strong> <span class="unit">mA/ث</span></span>
                             <span id="tempRateDisplay">🌡️ +0°/د</span>
@@ -1083,7 +1047,7 @@
                             <div class="rate">1,000 NC = 1 SYP</div>
                         </div>
                     </div>
-                    <div style="margin-top:8px;display:flex;justify-content:center;">
+                    <div style="margin-top:6px;display:flex;justify-content:center;">
                         <button class="btn btn-primary btn-sm" id="convertBtn">🔄 تحويل NC → SYP</button>
                     </div>
                 </div>
@@ -1099,17 +1063,17 @@
             <section class="tab-panel" id="panel-store">
                 <div class="card">
                     <div class="card-title">🛒 المتجر <span class="sub">اشتري تحسينات بعملة SYP</span></div>
-                    <div style="margin-bottom:16px;font-size:0.9rem;color:var(--text-secondary);">
+                    <div style="margin-bottom:12px;font-size:0.85rem;color:var(--text-secondary);">
                         رصيدك: <strong class="text-accent" id="storeSypBalance">0.0000</strong> SYP
                     </div>
 
-                    <h4 style="margin:16px 0 10px;color:var(--text-secondary);font-weight:600;">🚀 تسريعات التعدين</h4>
+                    <h4 style="margin:12px 0 6px;color:var(--text-secondary);font-weight:600;font-size:0.9rem;">🚀 تسريعات التعدين</h4>
                     <div class="grid-3" id="storeBoosters"></div>
 
-                    <h4 style="margin:24px 0 10px;color:var(--text-secondary);font-weight:600;">🔋 بطاريات بسعة أكبر</h4>
+                    <h4 style="margin:18px 0 6px;color:var(--text-secondary);font-weight:600;font-size:0.9rem;">🔋 بطاريات بسعة أكبر</h4>
                     <div class="grid-3" id="storeBatteries"></div>
 
-                    <h4 style="margin:24px 0 10px;color:var(--text-secondary);font-weight:600;">☀️ ألواح طاقة (شحن أسرع)</h4>
+                    <h4 style="margin:18px 0 6px;color:var(--text-secondary);font-weight:600;font-size:0.9rem;">☀️ ألواح طاقة (شحن أسرع)</h4>
                     <div class="grid-3" id="storePanels"></div>
                 </div>
             </section>
@@ -1137,7 +1101,7 @@
                                 <label>البريد الإلكتروني</label>
                                 <input type="email" id="profileEmail" placeholder="example@email.com" />
                             </div>
-                            <button class="btn btn-primary btn-sm" id="saveProfileBtn" style="align-self:flex-start;margin-top:4px;">💾 حفظ الملف</button>
+                            <button class="btn btn-primary btn-sm" id="saveProfileBtn" style="align-self:flex-start;margin-top:2px;">💾 حفظ الملف</button>
                         </div>
                     </div>
                 </div>
@@ -1158,7 +1122,7 @@
 
                 <div class="card">
                     <div class="card-title">⚠️ إعادة التعيين</div>
-                    <p style="color:var(--text-secondary);font-size:0.9rem;margin-bottom:14px;">
+                    <p style="color:var(--text-secondary);font-size:0.8rem;margin-bottom:10px;">
                         سيؤدي هذا إلى حذف جميع بياناتك بما في ذلك الأرصدة والعناصر المشتراة وإعادة الموقع إلى حالته الأولية.
                     </p>
                     <button class="btn btn-danger" id="resetBtn">🔄 إعادة تعيين كل شيء</button>
@@ -1182,12 +1146,12 @@
 
     <!-- ===== MODAL: HISTORY ===== -->
     <div class="modal-overlay" id="historyModal">
-        <div class="modal-box" style="max-width:560px;">
+        <div class="modal-box" style="max-width:520px;">
             <div class="modal-title">📜 سجل التعدين</div>
             <div class="history-list" id="historyList">
                 <div class="empty-state">لا توجد سجلات</div>
             </div>
-            <div class="modal-actions" style="margin-top:16px;">
+            <div class="modal-actions" style="margin-top:12px;">
                 <button class="btn btn-secondary" id="historyClose">إغلاق</button>
             </div>
         </div>
@@ -1198,7 +1162,7 @@
 
     <script>
         // ================================================================
-        //  NC.CORP — Full Application Logic
+        //  NC.CORP — Full Application Logic (same as before, but with refined UI)
         // ================================================================
 
         (function() {
@@ -1273,7 +1237,7 @@
                 store: {
                     boosters: [
                         { id: 'b1', name: 'تسريع أساسي', desc: '×2 سرعة التعدين', price: 50, owned: false,
-                        multiplier: 2 },
+                            multiplier: 2 },
                         { id: 'b2', name: 'تسريع متقدم', desc: '×3 سرعة التعدين', price: 150, owned: false,
                             multiplier: 3 },
                         { id: 'b3', name: 'تسريع احترافي', desc: '×5 سرعة التعدين', price: 500, owned: false,
@@ -1289,7 +1253,7 @@
                     ],
                     panels: [
                         { id: 'p1', name: 'لوح شمسي أساسي', desc: 'شحن ×2', price: 75, owned: false,
-                        chargeMult: 2 },
+                            chargeMult: 2 },
                         { id: 'p2', name: 'لوح شمسي متقدم', desc: 'شحن ×3', price: 200, owned: false,
                             chargeMult: 3 },
                         { id: 'p3', name: 'لوح شمسي احترافي', desc: 'شحن ×5', price: 600, owned: false,
@@ -1325,7 +1289,6 @@
                     const raw = localStorage.getItem('nccorp_state');
                     if (raw) {
                         const parsed = JSON.parse(raw);
-                        // Merge with defaults to handle new fields
                         state = deepMerge(DEFAULT_STATE, parsed);
                         return true;
                     }
@@ -1357,7 +1320,6 @@
             function getMiningRate() {
                 let base = 0.01;
                 let mult = state.mining.boostMultiplier || 1;
-                // also check owned boosters
                 state.store.boosters.forEach(b => {
                     if (b.owned) mult = Math.max(mult, b.multiplier);
                 });
@@ -1393,7 +1355,7 @@
             function getConsumption() {
                 const speed = state.mining.speed;
                 if (speed === 0) return 0;
-                return speed * 2; // 2A per speed level
+                return speed * 2;
             }
 
             function isMiningActive() {
@@ -1411,7 +1373,7 @@
                 container.appendChild(el);
                 setTimeout(() => {
                     el.style.opacity = '0';
-                    el.style.transform = 'translateX(20px)';
+                    el.style.transform = 'translateX(16px)';
                     setTimeout(() => el.remove(), 300);
                 }, 3500);
                 Sound.click();
@@ -1470,16 +1432,6 @@
                 renderSettings();
                 renderTheme();
                 renderLanguage();
-                renderHeader();
-            }
-
-            function renderHeader() {
-                const isAr = state.settings.language === 'ar';
-                document.getElementById('langLabel').textContent = isAr ? '🇸🇦 عربي' : '🇬🇧 English';
-                document.getElementById('langBadge').textContent = isAr ? 'AR' : 'EN';
-                const isDark = state.settings.theme === 'dark';
-                document.getElementById('themeIcon').textContent = isDark ? '🌙' : '☀️';
-                document.getElementById('themeLabel').textContent = isDark ? 'داكن' : 'فاتح';
             }
 
             function renderMining() {
@@ -1506,7 +1458,6 @@
                 const tempRate = state.mining.isCooling ? '🔄 تبريد' : (state.mining.isMining ? '+1°/د' : '0°/د');
                 document.getElementById('tempRateDisplay').textContent = `🌡️ ${tempRate}`;
 
-                // Speed buttons
                 const speed = state.mining.speed;
                 $$('.speed-btn').forEach(btn => {
                     const s = parseInt(btn.dataset.speed);
@@ -1514,7 +1465,6 @@
                     btn.disabled = state.mining.isCooling || state.mining.battery <= 0;
                 });
 
-                // Device visual
                 const fan = document.getElementById('fanEl');
                 fan.className = 'fan';
                 if (isMiningActive()) {
@@ -1532,7 +1482,6 @@
                     }
                 });
 
-                // Status
                 const status = document.getElementById('deviceStatus');
                 if (state.mining.isCooling) {
                     status.innerHTML = `<span class="cooling">❄️</span> تبريد ... ${Math.ceil(state.mining.coolingRemaining)} ثانية`;
@@ -1546,7 +1495,6 @@
                     status.innerHTML = `<span class="highlight">●</span> جاهز للتعدين`;
                 }
 
-                // Collect button
                 document.getElementById('collectBtn').disabled = state.mining.nc < 0.0001;
             }
 
@@ -1572,7 +1520,6 @@
             function renderStore() {
                 document.getElementById('storeSypBalance').textContent = formatNum(state.wallet.syp, 4);
 
-                // Boosters
                 const bContainer = document.getElementById('storeBoosters');
                 bContainer.innerHTML = state.store.boosters.map(b =>
                     `<div class="store-item">
@@ -1586,7 +1533,6 @@
                         </div>`
                 ).join('');
 
-                // Batteries
                 const batContainer = document.getElementById('storeBatteries');
                 batContainer.innerHTML = state.store.batteries.map(b =>
                     `<div class="store-item">
@@ -1600,7 +1546,6 @@
                         </div>`
                 ).join('');
 
-                // Panels
                 const pContainer = document.getElementById('storePanels');
                 pContainer.innerHTML = state.store.panels.map(p =>
                     `<div class="store-item">
@@ -1614,7 +1559,6 @@
                         </div>`
                 ).join('');
 
-                // Attach store events
                 document.querySelectorAll('[data-store]').forEach(btn => {
                     btn.onclick = function() {
                         const type = this.dataset.store;
@@ -1632,11 +1576,9 @@
                 if (u.avatar) {
                     document.getElementById('profileAvatar').src = u.avatar;
                 }
-                // Theme toggle
                 const isDark = state.settings.theme === 'dark';
                 const sw = document.getElementById('themeSwitch');
                 sw.classList.toggle('active', isDark);
-                // Lang toggle
                 const isAr = state.settings.language === 'ar';
                 const lsw = document.getElementById('langSwitch');
                 lsw.classList.toggle('active', isAr);
@@ -1647,12 +1589,8 @@
             }
 
             function renderLanguage() {
-                // For now just update header; content is in Arabic with some English labels
-                // Full i18n would require more work, but we handle the toggle UI
+                // Update tab texts (already in Arabic, but we keep dynamic)
                 const isAr = state.settings.language === 'ar';
-                document.getElementById('langLabel').textContent = isAr ? '🇸🇦 عربي' : '🇬🇧 English';
-                document.getElementById('langBadge').textContent = isAr ? 'AR' : 'EN';
-                // Update tab texts
                 const tabNames = isAr ?
                     ['⛏️ التعدين', '💼 المحفظة', '🛒 المتجر', '⚙️ الاعدادات'] :
                     ['⛏️ Mining', '💼 Wallet', '🛒 Store', '⚙️ Settings'];
@@ -1702,7 +1640,6 @@
                 toast('تم إيقاف التعدين.', 'info');
                 saveState();
                 renderAll();
-                // charging will start automatically via tick
             }
 
             function startTick() {
@@ -1711,15 +1648,13 @@
             }
 
             function tick() {
-                // --- Temperature ---
                 if (state.mining.isMining && !state.mining.isCooling) {
                     state.mining.temperature = clamp(state.mining.temperature + 1, 0, 100);
                     if (state.mining.temperature >= 100) {
                         state.mining.temperature = 100;
-                        // Start cooling
                         state.mining.isMining = false;
                         state.mining.isCooling = true;
-                        state.mining.coolingRemaining = 300; // 5 minutes
+                        state.mining.coolingRemaining = 300;
                         Sound.cooling();
                         toast('🌡️ الحرارة 100°C! بدء التبريد لمدة 5 دقائق.', 'warning');
                         saveState();
@@ -1729,10 +1664,8 @@
                     }
                 }
 
-                // --- Battery ---
                 const consumption = getConsumption();
                 if (state.mining.isMining && !state.mining.isCooling) {
-                    // Drain
                     state.mining.battery = clamp(state.mining.battery - consumption, 0, getMaxBattery());
                     if (state.mining.battery <= 0) {
                         state.mining.isMining = false;
@@ -1743,19 +1676,16 @@
                         return;
                     }
                 } else {
-                    // Charge
                     const rate = getChargeRate();
                     state.mining.battery = clamp(state.mining.battery + rate, 0, getMaxBattery());
                 }
 
-                // --- Mining generation ---
                 if (isMiningActive()) {
                     const rate = getMiningRate();
                     state.mining.nc += rate;
                     state.mining.nc = parseFloat(state.mining.nc.toFixed(6));
                 }
 
-                // --- Update cooling timer ---
                 if (state.mining.isCooling) {
                     state.mining.coolingRemaining -= 1;
                     if (state.mining.coolingRemaining <= 0) {
@@ -1808,7 +1738,6 @@
                 }, 1000);
             }
 
-            // ---------- SPEED CONTROL ----------
             function setSpeed(speed) {
                 if (state.mining.isCooling) {
                     toast('الجهاز في تبريد، لا يمكن تغيير السرعة.', 'warning');
@@ -1816,7 +1745,6 @@
                 }
                 const oldSpeed = state.mining.speed;
                 if (speed === oldSpeed && speed > 0) {
-                    // Toggle off if same speed
                     state.mining.speed = 0;
                     state.mining.isMining = false;
                     Sound.miningStop();
@@ -1841,7 +1769,6 @@
                 if (!tickInterval) startTick();
             }
 
-            // ---------- COLLECT ----------
             function collectNC() {
                 const amount = state.mining.nc;
                 if (amount < 0.0001) {
@@ -1850,14 +1777,12 @@
                 }
                 state.wallet.nc += amount;
                 state.mining.nc = 0;
-                // Add to mining history
                 state.mining.history.push({
                     date: new Date().toLocaleString(),
                     type: 'collect',
                     amount: amount,
                     note: 'جمع تعدين'
                 });
-                // Add to wallet transactions
                 state.wallet.transactions.push({
                     date: new Date().toLocaleString(),
                     amount: amount,
@@ -1870,7 +1795,6 @@
                 renderAll();
             }
 
-            // ---------- CONVERT NC → SYP ----------
             function convertToSYP() {
                 const amount = state.wallet.nc;
                 if (amount < 1000) {
@@ -1892,20 +1816,15 @@
                 renderAll();
             }
 
-            // ---------- STORE PURCHASE ----------
             function handleStorePurchase(type, id) {
                 let item = null;
-                let category = null;
                 let price = 0;
                 if (type === 'booster') {
                     item = state.store.boosters.find(b => b.id === id);
-                    category = 'boosters';
                 } else if (type === 'battery') {
                     item = state.store.batteries.find(b => b.id === id);
-                    category = 'batteries';
                 } else if (type === 'panel') {
                     item = state.store.panels.find(p => p.id === id);
-                    category = 'panels';
                 }
                 if (!item || item.owned) return;
                 price = item.price;
@@ -1914,21 +1833,16 @@
                     Sound.error();
                     return;
                 }
-                // Confirm purchase
                 openConfirm('💳 تأكيد الشراء',
                     `هل تريد شراء "${item.name}" بسعر ${price} SYP؟`,
                     () => {
                         state.wallet.syp -= price;
                         item.owned = true;
-                        // Apply effects
                         if (type === 'booster') {
                             state.mining.boostMultiplier = Math.max(state.mining.boostMultiplier || 1, item
                             .multiplier);
                         } else if (type === 'battery') {
-                            // battery capacity increases, also refill a bit?
                             const oldMax = getMaxBattery();
-                            state.mining.maxBattery = item.capacity;
-                            // add some charge to new capacity
                             state.mining.battery = clamp(state.mining.battery + (item.capacity - oldMax) * 0.5,
                                 0, item.capacity);
                         } else if (type === 'panel') {
@@ -1949,7 +1863,6 @@
                 );
             }
 
-            // ---------- SETTINGS ----------
             function saveProfile() {
                 const name = document.getElementById('profileName').value.trim() || 'المستخدم';
                 const birthdate = document.getElementById('profileBirthdate').value;
@@ -1977,16 +1890,14 @@
             }
 
             function toggleTheme() {
-                const isDark = state.settings.theme === 'dark';
-                state.settings.theme = isDark ? 'light' : 'dark';
+                state.settings.theme = state.settings.theme === 'dark' ? 'light' : 'dark';
                 Sound.click();
                 saveState();
                 renderAll();
             }
 
             function toggleLanguage() {
-                const isAr = state.settings.language === 'ar';
-                state.settings.language = isAr ? 'en' : 'ar';
+                state.settings.language = state.settings.language === 'ar' ? 'en' : 'ar';
                 Sound.click();
                 saveState();
                 renderAll();
@@ -1997,8 +1908,6 @@
                     'سيتم حذف جميع البيانات: الأرصدة، العناصر المشتراة، الملف الشخصي، والسجل. هل أنت متأكد؟',
                     () => {
                         state = JSON.parse(JSON.stringify(DEFAULT_STATE));
-                        // Keep theme/language preference?
-                        // Actually reset everything
                         if (miningInterval) { clearInterval(miningInterval);
                             miningInterval = null; }
                         if (tickInterval) { clearInterval(tickInterval);
@@ -2026,7 +1935,6 @@
                 if (panel) panel.classList.add('active');
                 const btn = document.querySelector(`.tab-btn[data-tab="${tabId}"]`);
                 if (btn) btn.classList.add('active');
-                // Re-render store when switching to store tab
                 if (tabId === 'store') renderStore();
                 if (tabId === 'wallet') renderWallet();
             }
@@ -2035,25 +1943,19 @@
             function init() {
                 Sound.init();
 
-                // Load state
                 const loaded = loadState();
                 if (!loaded) {
-                    // First run, set defaults
                     state = JSON.parse(JSON.stringify(DEFAULT_STATE));
                     saveState();
                 }
 
-                // Ensure consistent state
                 state.mining.maxBattery = getMaxBattery();
                 state.mining.battery = clamp(state.mining.battery, 0, getMaxBattery());
 
-                // Render
                 renderAll();
                 startTick();
 
                 // ---- Events ----
-
-                // Tabs
                 $$('.tab-btn').forEach(btn => {
                     btn.addEventListener('click', function() {
                         const tab = this.dataset.tab;
@@ -2062,7 +1964,6 @@
                     });
                 });
 
-                // Speed buttons
                 $$('.speed-btn').forEach(btn => {
                     btn.addEventListener('click', function() {
                         const speed = parseInt(this.dataset.speed);
@@ -2070,19 +1971,10 @@
                     });
                 });
 
-                // Collect
                 document.getElementById('collectBtn').addEventListener('click', collectNC);
-
-                // History
                 document.getElementById('historyBtn').addEventListener('click', openHistoryModal);
-
-                // Convert
                 document.getElementById('convertBtn').addEventListener('click', convertToSYP);
-
-                // Profile save
                 document.getElementById('saveProfileBtn').addEventListener('click', saveProfile);
-
-                // Avatar upload
                 document.getElementById('avatarUploadBtn').addEventListener('click', () => {
                     document.getElementById('avatarInput').click();
                 });
@@ -2093,20 +1985,10 @@
                     this.value = '';
                 });
 
-                // Theme toggle (header button)
-                document.getElementById('themeToggle').addEventListener('click', toggleTheme);
-                // Theme switch (settings)
                 document.getElementById('themeSwitch').addEventListener('click', toggleTheme);
-
-                // Language toggle (header button)
-                document.getElementById('langToggle').addEventListener('click', toggleLanguage);
-                // Language switch (settings)
                 document.getElementById('langSwitch').addEventListener('click', toggleLanguage);
-
-                // Reset
                 document.getElementById('resetBtn').addEventListener('click', resetAll);
 
-                // Modal overlay clicks to close
                 document.getElementById('confirmModal').addEventListener('click', (e) => {
                     if (e.target === e.currentTarget) {
                         document.getElementById('confirmModal').classList.remove('open');
@@ -2114,7 +1996,6 @@
                     }
                 });
 
-                // Keyboard shortcuts: Escape closes modals
                 document.addEventListener('keydown', (e) => {
                     if (e.key === 'Escape') {
                         document.getElementById('confirmModal').classList.remove('open');
@@ -2123,13 +2004,11 @@
                     }
                 });
 
-                // Auto-start mining if speed was set
                 if (state.mining.speed > 0 && !state.mining.isCooling && state.mining.battery > 0) {
                     state.mining.isMining = true;
                     Sound.miningStart();
                 }
 
-                // Handle cooling if state was saved mid-cooling
                 if (state.mining.isCooling && state.mining.coolingRemaining > 0) {
                     startCoolingTimer();
                 }
@@ -2138,10 +2017,8 @@
                 renderAll();
 
                 console.log('🏢 NC.CORP initialized');
-                console.log('📊 State:', state);
             }
 
-            // Run
             if (document.readyState === 'loading') {
                 document.addEventListener('DOMContentLoaded', init);
             } else {
