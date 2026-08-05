@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>HyeX Exchange - التعدين المتطور</title>
+    <title>HyeX Exchange - Rig Miner</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         /* ===== CSS Variables ===== */
@@ -107,103 +107,124 @@
         .tab-content::-webkit-scrollbar-track { background: var(--bg-input); }
         .tab-content::-webkit-scrollbar-thumb { background: var(--blue); border-radius: 10px; }
 
-        /* ===== MAIN CARD (Mining Section) ===== */
-        .mining-main-card {
+        /* ===== MINING RIG (Modern Mining Rig) ===== */
+        .mining-rig {
             background: var(--bg-card);
             border-radius: var(--card-radius);
-            padding: 14px;
             border: 1px solid var(--border-color);
             box-shadow: var(--shadow);
+            padding: 16px 14px;
             transition: background 0.3s, border-color 0.3s, box-shadow 0.3s;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            margin-bottom: 6px;
+            position: relative;
         }
-
-        /* ===== MINING GRID (Fans) ===== */
-        .mining-grid {
+        .mining-rig .rig-header {
             display: flex;
-            flex-direction: column;
-            gap: 8px;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
         }
-        .mining-row {
+        .mining-rig .rig-header .rig-title {
+            font-size: 12px;
+            color: var(--text-muted);
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
+        .mining-rig .rig-header .rig-hash {
+            font-size: 12px;
+            color: var(--gold);
+            font-weight: 700;
+            direction: ltr;
+        }
+        .mining-rig .rig-body {
             display: flex;
             align-items: center;
-            justify-content: space-between;
-            background: var(--bg-input);
-            border-radius: 12px;
-            padding: 8px 12px;
-            border: 1px solid var(--border-color);
-            transition: all 0.3s;
+            gap: 10px;
         }
-        .mining-row .currency-name {
-            font-weight: 700;
-            color: var(--text-secondary);
-            font-size: 14px;
-            min-width: 50px;
-        }
-        .mining-row .pending-amount {
-            font-size: 14px;
-            font-weight: 600;
-            color: var(--gold);
-            font-variant-numeric: tabular-nums;
+        /* Fans area (left side) */
+        .rig-fans {
+            display: flex;
+            gap: 6px;
             flex: 1;
-            text-align: center;
+            justify-content: flex-start;
         }
-        .mining-row .fan-btn {
-            width: 36px;
-            height: 36px;
+        .rig-fan {
+            width: 44px;
+            height: 44px;
             border-radius: 50%;
             border: 2px solid var(--border-color);
-            background: var(--bg-card);
-            color: var(--text-muted);
-            font-size: 18px;
-            cursor: pointer;
-            transition: 0.3s;
+            background: var(--bg-input);
             display: flex;
             align-items: center;
             justify-content: center;
-            flex-shrink: 0;
+            font-size: 20px;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+            box-shadow: inset 0 2px 6px rgba(0,0,0,0.4);
         }
-        .mining-row .fan-btn:hover { border-color: var(--gold); color: var(--gold); }
-        .mining-row .fan-btn.active { border-color: var(--green); color: var(--green); animation: spin-fan 1s linear infinite; }
-        .mining-row .fan-btn.active::after {
-            content: '';
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            border: 2px dashed var(--green);
-            animation: spin-fan 2s linear infinite;
-            opacity: 0.3;
+        .rig-fan:hover { border-color: var(--gold); }
+        .rig-fan.active {
+            border-color: var(--green);
+            color: var(--green);
+            box-shadow: 0 0 12px var(--green), inset 0 0 8px var(--green);
         }
-        .mining-row .fan-btn .fa-fan { transition: transform 0.3s; }
-        .mining-row .fan-btn.active .fa-fan { transform: rotate(360deg); }
-        .mining-row .fan-btn.overheat {
+        .rig-fan.active .fa-fan {
+            animation: spin-fan 1s linear infinite;
+        }
+        .rig-fan .fa-fan { transition: transform 0.3s; }
+        .rig-fan.active .fa-fan { transform: rotate(360deg); }
+        .rig-fan.overheat {
             border-color: var(--red);
             color: var(--red);
+            box-shadow: 0 0 12px var(--red);
             animation: none;
         }
         @keyframes spin-fan { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-        /* ===== INDICATORS ===== */
-        .mining-indicators {
+        /* LED indicators (right side) */
+        .rig-leds {
+            display: flex;
+            gap: 6px;
+            flex-shrink: 0;
+        }
+        .rig-led {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--red);
+            box-shadow: 0 0 4px var(--red);
+            transition: all 0.3s;
+            opacity: 0.6;
+        }
+        .rig-led.active {
+            background: var(--green);
+            box-shadow: 0 0 12px var(--green);
+            opacity: 1;
+        }
+        .rig-led.overheat {
+            background: var(--orange);
+            box-shadow: 0 0 12px var(--orange);
+            opacity: 1;
+        }
+
+        /* Status bar (heat, battery, etc) */
+        .rig-stats {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 8px;
-            margin: 2px 0;
+            gap: 6px;
+            margin-top: 12px;
         }
-        .indicator-box {
+        .rig-stat {
             background: var(--bg-input);
-            border-radius: 12px;
-            padding: 8px 10px;
+            border-radius: 10px;
+            padding: 6px 10px;
             border: 1px solid var(--border-color);
             text-align: center;
         }
-        .indicator-box .label { font-size: 8px; color: var(--text-muted); display: block; }
-        .indicator-box .value { font-size: 16px; font-weight: 700; color: var(--gold); font-variant-numeric: tabular-nums; }
-        .indicator-box .bar-track {
+        .rig-stat .label { font-size: 8px; color: var(--text-muted); display: block; }
+        .rig-stat .value { font-size: 14px; font-weight: 700; color: var(--gold); font-variant-numeric: tabular-nums; }
+        .rig-stat .bar-track {
             width: 100%;
             height: 4px;
             background: var(--border-color);
@@ -211,17 +232,16 @@
             overflow: hidden;
             margin-top: 4px;
         }
-        .indicator-box .bar-track .bar-fill {
+        .rig-stat .bar-track .bar-fill {
             height: 100%;
             border-radius: 4px;
             transition: width 0.5s ease;
             background: var(--green);
         }
-        .indicator-box .bar-track .bar-fill.warning { background: var(--orange); }
-        .indicator-box .bar-track .bar-fill.danger { background: var(--red); }
-
+        .rig-stat .bar-track .bar-fill.warning { background: var(--orange); }
+        .rig-stat .bar-track .bar-fill.danger { background: var(--red); }
         .heat-status-text {
-            font-size: 10px;
+            font-size: 9px;
             font-weight: 600;
             margin-top: 2px;
         }
@@ -230,69 +250,32 @@
         .heat-status-text.danger { color: var(--red); }
         .heat-status-text.cooling { color: var(--blue); }
 
-        /* ===== BATTERY ===== */
-        .battery-container {
-            background: var(--bg-input);
-            border-radius: 12px;
-            padding: 8px 12px;
-            border: 1px solid var(--border-color);
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-        }
-        .battery-container .battery-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 11px;
-            color: var(--text-secondary);
-        }
-        .battery-container .battery-header .battery-icon {
-            font-size: 20px;
-            color: var(--green);
-        }
-        .battery-container .battery-track {
-            width: 100%;
-            height: 10px;
-            background: var(--border-color);
-            border-radius: 8px;
-            overflow: hidden;
-        }
-        .battery-container .battery-track .battery-fill {
-            height: 100%;
-            border-radius: 8px;
-            transition: width 0.5s ease;
-            background: linear-gradient(90deg, var(--red), var(--orange), var(--green));
-        }
-        .battery-container .battery-details {
+        /* Battery details */
+        .battery-details {
             display: flex;
             justify-content: space-between;
             font-size: 10px;
             color: var(--text-muted);
             margin-top: 2px;
         }
-        .battery-container .battery-details .battery-ah {
-            font-weight: 700;
-            color: var(--gold);
-        }
-        .battery-container .battery-details .battery-rate {
-            font-weight: 600;
-        }
-        .battery-container .battery-details .battery-rate.discharge { color: var(--orange); }
-        .battery-container .battery-details .battery-rate.charge { color: var(--green); }
-        .battery-container .battery-time {
+        .battery-details .battery-ah { font-weight: 700; color: var(--gold); }
+        .battery-details .battery-rate { font-weight: 600; }
+        .battery-details .battery-rate.discharge { color: var(--orange); }
+        .battery-details .battery-rate.charge { color: var(--green); }
+        .battery-time {
             font-size: 10px;
             color: var(--text-muted);
             text-align: center;
             margin-top: 2px;
         }
-        .battery-container .battery-time span { font-weight: 700; color: var(--gold); }
+        .battery-time span { font-weight: 700; color: var(--gold); }
 
         /* ===== PROFIT INDICATORS ===== */
         .profit-indicators {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 6px;
+            margin-top: 10px;
         }
         .profit-box {
             background: var(--bg-input);
@@ -314,6 +297,7 @@
             padding: 8px 12px;
             border: 1px solid var(--border-color);
             font-size: 13px;
+            margin-top: 8px;
         }
         .mining-total-pending .label { color: var(--text-muted); }
         .mining-total-pending .value { color: var(--green); font-weight: 700; }
@@ -330,7 +314,7 @@
             align-items: center;
             z-index: 5;
             transition: background 0.3s, border-color 0.3s;
-            margin-top: 6px;
+            margin-top: 8px;
         }
         .action-bar .btn {
             padding: 6px 0;
@@ -650,7 +634,7 @@
             <h1>🏛️ HyeX Exchange</h1>
             <div class="subtitle" data-i18n="subtitle">المنصة الرقمية الرسمية | نسخة تجريبية</div>
         </div>
-        <div class="badge"><i class="fas fa-shield-alt"></i> v26.1</div>
+        <div class="badge"><i class="fas fa-shield-alt"></i> v27.0</div>
     </div>
 
     <!-- PRICE TICKER -->
@@ -660,34 +644,40 @@
 
     <!-- TAB: MINING -->
     <div id="tab-mining" class="tab-content active">
-        <div class="mining-main-card heat-bg normal" id="heatBgCard">
-            <!-- قائمة العملات مع المراوح (NC فقط) -->
-            <div class="mining-grid" id="miningList"></div>
+        <div class="mining-rig heat-bg normal" id="heatBgCard">
+            <!-- Rig Header -->
+            <div class="rig-header">
+                <span class="rig-title">⚡ جهاز التعدين</span>
+                <span class="rig-hash" id="rigHash">0.00 MH/s</span>
+            </div>
 
-            <!-- المؤشرات الأساسية -->
-            <div class="mining-indicators">
-                <div class="indicator-box">
+            <!-- Rig Body: Fans + LEDs -->
+            <div class="rig-body">
+                <div class="rig-fans" id="rigFans">
+                    <!-- 4 Fans will be generated by JS -->
+                </div>
+                <div class="rig-leds" id="rigLEDs">
+                    <!-- 4 LEDs will be generated by JS -->
+                </div>
+            </div>
+
+            <!-- Rig Stats (Heat, Battery) -->
+            <div class="rig-stats">
+                <div class="rig-stat">
                     <span class="label" data-i18n="heat_indicator">🌡️ الحرارة</span>
                     <span class="value" id="heatValue">0%</span>
                     <div class="bar-track"><div class="bar-fill" id="heatBar" style="width:0%;"></div></div>
                     <div class="heat-status-text normal" id="heatStatus" data-i18n="heat_normal">🟢 عادية</div>
                 </div>
-                <div class="indicator-box">
+                <div class="rig-stat">
                     <span class="label" data-i18n="battery">🔋 البطارية</span>
                     <span class="value" id="batteryPercent">100%</span>
                     <div class="bar-track"><div class="bar-fill" id="batteryBar" style="width:100%;"></div></div>
                 </div>
             </div>
 
-            <!-- تفاصيل البطارية -->
-            <div class="battery-container">
-                <div class="battery-header">
-                    <span class="battery-icon" id="batteryIcon">🔋</span>
-                    <span data-i18n="battery_status" id="batteryStatus">🟢 مشحونة بالكامل</span>
-                </div>
-                <div class="battery-track">
-                    <div class="battery-fill" id="batteryFill" style="width:100%;"></div>
-                </div>
+            <!-- Battery Details -->
+            <div style="margin-top:6px; background:var(--bg-input); border-radius:12px; padding:6px 12px; border:1px solid var(--border-color);">
                 <div class="battery-details">
                     <span id="batteryAhDisplay">⚡ 10000.0 Ah</span>
                     <span id="batteryRateDisplay" class="battery-rate charge">الشحن: 0.0 Ah/د</span>
@@ -695,7 +685,7 @@
                 <div class="battery-time" id="batteryTimeDisplay">⏱️ الوقت المتبقي: <span>--</span></div>
             </div>
 
-            <!-- مؤشرات الأرباح -->
+            <!-- Profit Indicators -->
             <div class="profit-indicators">
                 <div class="profit-box"><span class="label" data-i18n="profit_hour">⏱️ الساعة</span><span class="value" id="profitHour">0.00</span></div>
                 <div class="profit-box"><span class="label" data-i18n="profit_day">📅 اليوم</span><span class="value" id="profitDay">0.00</span></div>
@@ -703,21 +693,21 @@
                 <div class="profit-box"><span class="label" data-i18n="profit_year">📆 السنة</span><span class="value" id="profitYear">0.00</span></div>
             </div>
 
-            <!-- الإجمالي -->
+            <!-- Total Pending -->
             <div class="mining-total-pending">
                 <span class="label" data-i18n="total_pending_cash">💰 الإجمالي العالق (Cash):</span>
                 <span class="value" id="pendingDisplayCash">0.00</span>
             </div>
         </div>
 
-        <!-- ACTION BAR (خارج البطاقة الرئيسية) -->
+        <!-- ACTION BAR -->
         <div class="action-bar" id="actionBar">
             <button class="btn btn-collect" id="collectBtn" data-i18n="collect"><i class="fas fa-wallet"></i> جمع</button>
             <button class="btn btn-auto" id="autoMineBtn" data-i18n="auto_mine"><i class="fas fa-robot"></i> تلقائي</button>
             <button class="btn btn-log" id="logToggleBtn" data-i18n="log"><i class="fas fa-list-ul"></i> السجل</button>
         </div>
 
-        <!-- سجل التعدين (منبثق) -->
+        <!-- LOG -->
         <div id="logContainer" style="display:none; margin-top:6px;">
             <div class="card" style="padding:8px; background:var(--bg-card); border:1px solid var(--border-color); border-radius:var(--card-radius);">
                 <div class="card-title"><span data-i18n="mining_log">📋 سجل التعدين</span> <span id="logCount">0</span></div>
@@ -832,7 +822,7 @@
 
 <script>
     // ================================================================
-    // 1. DATA
+    // 1. DATA (4 Fans)
     // ================================================================
     const STORAGE_KEY = 'hyex_data';
     let data = {
@@ -846,7 +836,7 @@
         },
         settings: { sound: true, vibe: true, theme: 'dark', lang: 'ar' },
         devices: {
-            nc: { count: 1, level: 0 }
+            nc: { count: 1, level: 0 } // number of fans
         },
         boosters: {
             nc: { active: false, remaining: 0, multiplier: 1 }
@@ -855,7 +845,7 @@
             nc: { health: 100 }
         },
         profile: { name: 'مستخدم جديد', level: 1, xp: 0, totalProfit: 0, totalMined: 0, image: null },
-        miningActive: { nc: true },
+        fanStates: [true, false, false, false], // 4 fans, first one on by default
         heat: {
             level: 0,
             activeFans: 1,
@@ -876,11 +866,11 @@
     };
 
     // ================================================================
-    // 2. SHOP DATABASE (NC فقط)
+    // 2. SHOP DATABASE
     // ================================================================
     const SHOP_DB = {
         miners: [
-            { id: 'miner_nc', name: 'مروحة NC إضافية', icon: '🌀', desc: '+1 مروحة لتعدين NC', price: 0.5, currency: 'NC', type: 'miner', target: 'nc' },
+            { id: 'miner_nc', name: 'مروحة إضافية', icon: '🌀', desc: '+1 مروحة لتعدين NC', price: 0.5, currency: 'NC', type: 'miner', target: 'nc' },
         ],
         boosters: [
             { id: 'booster_nc_2x', name: 'مضاعف NC ×2', icon: '⚡', desc: 'مدة 5 دقائق', price: 0.3, currency: 'NC', type: 'booster', target: 'nc', duration: 300, multiplier: 2 },
@@ -924,8 +914,8 @@
                         for (let b in parsed.boosters) data.boosters[b] = parsed.boosters[b] || { active: false, remaining: 0, multiplier: 1 };
                     } else if (key === 'maintenance') {
                         for (let m in parsed.maintenance) data.maintenance[m] = parsed.maintenance[m] || { health: 100 };
-                    } else if (key === 'miningActive') {
-                        for (let a in parsed.miningActive) data.miningActive[a] = parsed.miningActive[a] !== undefined ? parsed.miningActive[a] : false;
+                    } else if (key === 'fanStates') {
+                        if (parsed.fanStates && parsed.fanStates.length === 4) data.fanStates = parsed.fanStates;
                     } else if (key === 'heat') {
                         for (let h in parsed.heat) data.heat[h] = parsed.heat[h] !== undefined ? parsed.heat[h] : (h === 'activeFans' ? 1 : 0);
                     } else if (key === 'battery') {
@@ -944,7 +934,7 @@
         if (!data.boosters) data.boosters = { nc: { active: false, remaining: 0, multiplier: 1 } };
         if (!data.maintenance) data.maintenance = { nc: { health: 100 } };
         if (!data.profile) data.profile = { name: 'مستخدم جديد', level: 1, xp: 0, totalProfit: 0, totalMined: 0, image: null };
-        if (!data.miningActive) data.miningActive = { nc: true };
+        if (!data.fanStates || data.fanStates.length !== 4) data.fanStates = [true, false, false, false];
         if (!data.heat) data.heat = { level: 0, activeFans: 1, elapsed: 0, isOverheated: false, cooldownRemaining: 0 };
         if (!data.battery) data.battery = { ah: 10000, maxAh: 10000, percent: 100, consumptionRate: 0 };
         if (data.battery.ah === 0 && !saved) data.battery.ah = 10000;
@@ -954,6 +944,8 @@
         if (!data.settings) data.settings = { sound: true, vibe: true, theme: 'dark', lang: 'ar' };
         if (!data.settings.theme) data.settings.theme = 'dark';
         if (!data.settings.lang) data.settings.lang = 'ar';
+        // Sync activeFans with fanStates
+        data.heat.activeFans = data.fanStates.filter(s => s).length;
     }
 
     function saveData() { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); }
@@ -1008,15 +1000,16 @@
     }
 
     // ================================================================
-    // 6. MINING SYSTEM (NC فقط)
+    // 6. MINING SYSTEM (4 Fans)
     // ================================================================
     const CURRENCIES = ['nc'];
     const CURRENCY_NAMES = { nc: 'NC' };
     const BASE_SPEED = 0.00001;
 
     function getMiningSpeed() {
-        const currency = 'nc';
-        const deviceCount = data.devices.nc?.count || 0;
+        const activeCount = data.fanStates.filter(s => s).length;
+        if (activeCount === 0) return 0;
+        const deviceCount = activeCount;
         const level = data.devices.nc?.level || 0;
         const speedUpgrade = data.upgrades.speed || 0;
         const efficiency = data.upgrades.efficiency || 0;
@@ -1025,8 +1018,8 @@
         const health = data.maintenance.nc?.health || 100;
         const healthPenalty = 1 - (100 - health) / 200;
         const heatEfficiency = 1 - (data.heat.level / 150);
-        let speed = BASE_SPEED;
-        speed *= (1 + (deviceCount - 1) * 0.1);
+        let speed = BASE_SPEED * deviceCount;
+        speed *= (1 + (deviceCount - 1) * 0.05);
         speed *= (1 + level * 0.05);
         speed *= (1 + speedUpgrade * 0.2);
         speed *= (1 + efficiency * 0.1);
@@ -1038,10 +1031,8 @@
     }
 
     function getTotalCashPerSecond() {
-        if (data.miningActive.nc) {
-            return getMiningSpeed() * 1;
-        }
-        return 0;
+        const speed = getMiningSpeed();
+        return speed * 1; // 1 NC = 1 Cash
     }
 
     // ================================================================
@@ -1058,12 +1049,12 @@
     }
 
     function updateBattery() {
-        const activeCount = data.miningActive.nc ? 1 : 0;
+        const activeCount = data.fanStates.filter(s => s).length;
         const isOverheated = data.heat.isOverheated;
         const fansRunning = activeCount > 0 && !isOverheated;
 
         if (fansRunning) {
-            const consumption = AH_PER_FAN_PER_SECOND;
+            const consumption = activeCount * AH_PER_FAN_PER_SECOND;
             data.battery.ah = Math.max(0, data.battery.ah - consumption);
             data.battery.consumptionRate = consumption;
         } else {
@@ -1079,10 +1070,11 @@
         if (data.battery.ah <= 0) {
             data.battery.ah = 0;
             data.battery.percent = 0;
-            if (data.miningActive.nc) {
-                stopMining();
-                addLog(translate('battery_empty_stop'));
-            }
+            // Stop all fans if battery empty
+            data.fanStates = data.fanStates.map(() => false);
+            data.heat.activeFans = 0;
+            renderRig();
+            addLog(translate('battery_empty_stop'));
             playBeep(200, 0.3);
             doVibe();
         }
@@ -1106,7 +1098,12 @@
         const ah = data.battery.ah;
         document.getElementById('batteryPercent').textContent = percent + '%';
         document.getElementById('batteryAhDisplay').textContent = '⚡ ' + ah.toFixed(1) + ' Ah';
-        document.getElementById('batteryFill').style.width = percent + '%';
+        document.getElementById('batteryBar').style.width = percent + '%';
+        // Battery fill color
+        const fill = document.getElementById('batteryBar');
+        if (percent > 70) fill.style.background = 'linear-gradient(90deg, var(--green), var(--green))';
+        else if (percent > 30) fill.style.background = 'linear-gradient(90deg, var(--orange), var(--orange))';
+        else fill.style.background = 'linear-gradient(90deg, var(--red), var(--red))';
 
         const icon = document.getElementById('batteryIcon');
         const status = document.getElementById('batteryStatus');
@@ -1129,7 +1126,8 @@
         }
 
         const rateDisplay = document.getElementById('batteryRateDisplay');
-        const fansRunning = data.miningActive.nc && !data.heat.isOverheated;
+        const activeCount = data.fanStates.filter(s => s).length;
+        const fansRunning = activeCount > 0 && !data.heat.isOverheated;
         if (fansRunning) {
             const dischargePerMin = data.battery.consumptionRate * 60;
             rateDisplay.textContent = 'التصريف: ' + dischargePerMin.toFixed(1) + ' Ah/د';
@@ -1147,10 +1145,11 @@
     function updateBatteryTime() {
         const timeDisplay = document.getElementById('batteryTimeDisplay');
         const span = timeDisplay.querySelector('span');
-        const fansRunning = data.miningActive.nc && !data.heat.isOverheated;
+        const activeCount = data.fanStates.filter(s => s).length;
+        const fansRunning = activeCount > 0 && !data.heat.isOverheated;
 
         if (fansRunning) {
-            const remainingTime = data.battery.ah / AH_PER_FAN_PER_SECOND;
+            const remainingTime = data.battery.ah / (activeCount * AH_PER_FAN_PER_SECOND);
             const mins = Math.floor(remainingTime / 60);
             const secs = Math.floor(remainingTime % 60);
             if (remainingTime > 0) {
@@ -1176,7 +1175,7 @@
     // 8. HEAT SYSTEM
     // ================================================================
     function updateHeatSystem() {
-        const activeCount = data.miningActive.nc ? 1 : 0;
+        const activeCount = data.fanStates.filter(s => s).length;
         data.heat.activeFans = activeCount;
 
         if (data.heat.isOverheated) {
@@ -1187,7 +1186,8 @@
                 data.heat.elapsed = 0;
                 addLog(translate('cooling_complete'));
                 playBeep(600, 0.2);
-                if (data.miningActive.nc) startMining();
+                // Fans may restart if they were on
+                renderRig();
             }
             updateHeatUI();
             return;
@@ -1200,7 +1200,7 @@
             return;
         }
 
-        const timeToOverheat = 3600;
+        const timeToOverheat = 3600 / activeCount; // Less fans = longer time
         data.heat.elapsed += 1;
         data.heat.level = Math.min(100, (data.heat.elapsed / timeToOverheat) * 100);
 
@@ -1208,7 +1208,10 @@
             data.heat.isOverheated = true;
             data.heat.cooldownRemaining = 600;
             data.heat.level = 100;
-            if (data.miningActive.nc) stopMining();
+            // Stop all fans
+            data.fanStates = data.fanStates.map(() => false);
+            data.heat.activeFans = 0;
+            renderRig();
             addLog(translate('overheat_shutdown'));
             playBeep(200, 0.5);
             doVibe();
@@ -1224,13 +1227,13 @@
 
         const bgCard = document.getElementById('heatBgCard');
         if (data.heat.isOverheated) {
-            bgCard.className = 'mining-main-card heat-bg cooling';
+            bgCard.className = 'mining-rig heat-bg cooling';
         } else if (heatVal > 80) {
-            bgCard.className = 'mining-main-card heat-bg danger';
+            bgCard.className = 'mining-rig heat-bg danger';
         } else if (heatVal > 50) {
-            bgCard.className = 'mining-main-card heat-bg warning';
+            bgCard.className = 'mining-rig heat-bg warning';
         } else {
-            bgCard.className = 'mining-main-card heat-bg normal';
+            bgCard.className = 'mining-rig heat-bg normal';
         }
 
         if (data.heat.isOverheated) {
@@ -1262,87 +1265,83 @@
     }
 
     // ================================================================
-    // 9. MINING START/STOP
+    // 9. RIG RENDER (Fans + LEDs)
     // ================================================================
-    let miningInterval = null;
+    function renderRig() {
+        const fansContainer = document.getElementById('rigFans');
+        const ledsContainer = document.getElementById('rigLEDs');
+        fansContainer.innerHTML = '';
+        ledsContainer.innerHTML = '';
 
-    function startMining() {
-        if (miningInterval) return;
+        const activeCount = data.fanStates.filter(s => s).length;
+
+        for (let i = 0; i < 4; i++) {
+            // Fan
+            const fan = document.createElement('div');
+            fan.className = 'rig-fan' + (data.fanStates[i] ? ' active' : '');
+            if (data.heat.isOverheated) fan.classList.add('overheat');
+            fan.dataset.index = i;
+            fan.innerHTML = '<i class="fas fa-fan"></i>';
+            fan.addEventListener('click', function() {
+                toggleFan(parseInt(this.dataset.index));
+            });
+            fansContainer.appendChild(fan);
+
+            // LED
+            const led = document.createElement('div');
+            led.className = 'rig-led' + (data.fanStates[i] ? ' active' : '');
+            if (data.heat.isOverheated) led.classList.add('overheat');
+            ledsContainer.appendChild(led);
+        }
+
+        // Update hash rate
+        const speed = getMiningSpeed();
+        document.getElementById('rigHash').textContent = (speed * 1000000).toFixed(2) + ' MH/s';
+
+        // Update pending amount for NC
+        const pendingEl = document.querySelector(`.pending-amount`);
+        if (pendingEl) pendingEl.textContent = (data.pending.nc || 0).toFixed(8);
+
+        updateTotalPendingCash();
+        updateProfitIndicators();
+        updateHeatUI();
+        updateBatteryUI();
+        saveData();
+    }
+
+    // ================================================================
+    // 10. TOGGLE FAN
+    // ================================================================
+    function toggleFan(index) {
         if (data.heat.isOverheated) {
             addLog(translate('cannot_mine_overheat'));
+            playBeep(300,0.15);
             return;
         }
         if (data.battery.ah <= 0) {
             addLog(translate('battery_empty'));
-            playBeep(300, 0.15);
+            playBeep(300,0.15);
             return;
         }
-        data.miningActive.nc = true;
-        const btn = document.querySelector(`.fan-btn[data-currency="nc"]`);
-        if (btn) btn.classList.add('active');
-        if (data.settings.sound) playFanSound();
-
-        miningInterval = setInterval(() => {
-            if (data.heat.isOverheated || data.battery.ah <= 0) {
-                if (data.battery.ah <= 0) {
-                    addLog(translate('battery_empty_stop'));
-                }
-                stopMining();
-                return;
-            }
-            const speed = getMiningSpeed();
-            data.pending.nc += speed;
-            data.profile.totalMined += speed;
-            data.totalMinedNC += speed;
-            const pendingEl = document.querySelector(`.pending-amount[data-currency="nc"]`);
-            if (pendingEl) pendingEl.textContent = data.pending.nc.toFixed(8);
-            updateTotalPendingCash();
-            updateSpeedsUI();
-            saveData();
-        }, 100);
-        updateTotalPendingCash();
-        updateProfitIndicators();
-    }
-
-    function stopMining() {
-        if (miningInterval) {
-            clearInterval(miningInterval);
-            miningInterval = null;
+        data.fanStates[index] = !data.fanStates[index];
+        data.heat.activeFans = data.fanStates.filter(s => s).length;
+        const fanName = 'مروحة ' + (index+1);
+        if (data.fanStates[index]) {
+            addLog(translate('started_mining', fanName));
+            playBeep(800,0.1);
+            doVibe();
+            if (data.settings.sound) playFanSound();
+        } else {
+            addLog(translate('stopped_mining', fanName));
         }
-        data.miningActive.nc = false;
-        const btn = document.querySelector(`.fan-btn[data-currency="nc"]`);
-        if (btn) btn.classList.remove('active');
+        renderRig();
         updateTotalPendingCash();
         updateProfitIndicators();
         saveData();
     }
 
-    function toggleMining() {
-        if (data.heat.isOverheated) {
-            addLog(translate('cannot_mine_overheat'));
-            playBeep(300,0.15);
-            return;
-        }
-        if (data.battery.ah <= 0) {
-            addLog(translate('battery_empty'));
-            playBeep(300,0.15);
-            return;
-        }
-        if (data.miningActive.nc) {
-            stopMining();
-            addLog(translate('stopped_mining', 'NC'));
-        } else {
-            startMining();
-            addLog(translate('started_mining', 'NC'));
-            playBeep(800,0.1);
-            doVibe();
-        }
-        updateTotalPendingCash();
-        updateProfitIndicators();
-    }
-
     // ================================================================
-    // 10. AUTO-MINE
+    // 11. AUTO-MINE
     // ================================================================
     function toggleAutoMine() {
         data.autoMine = !data.autoMine;
@@ -1363,38 +1362,40 @@
     let autoMineTimer = null;
     function autoMineLoop() {
         if (!data.autoMine) return;
-        if (data.battery.ah > 1000 && data.heat.level < 70 && !data.heat.isOverheated) {
-            if (!data.miningActive.nc) startMining();
-        } else if (data.heat.level > 80 || data.battery.ah < 500) {
-            if (data.miningActive.nc) stopMining();
+        const activeCount = data.fanStates.filter(s => s).length;
+        const batteryOk = data.battery.ah > 1000;
+        const heatOk = data.heat.level < 70 && !data.heat.isOverheated;
+
+        if (batteryOk && heatOk) {
+            // Turn on any off fans
+            for (let i = 0; i < data.fanStates.length; i++) {
+                if (!data.fanStates[i]) {
+                    data.fanStates[i] = true;
+                    data.heat.activeFans = data.fanStates.filter(s => s).length;
+                }
+            }
+        } else if (data.battery.ah < 500 || data.heat.level > 80) {
+            // Turn off some fans
+            let count = data.fanStates.filter(s => s).length;
+            if (count > 0) {
+                for (let i = 0; i < data.fanStates.length && count > 0; i++) {
+                    if (data.fanStates[i]) {
+                        data.fanStates[i] = false;
+                        count--;
+                        data.heat.activeFans = data.fanStates.filter(s => s).length;
+                        if (count === 0) break;
+                    }
+                }
+            }
         }
+        renderRig();
         clearTimeout(autoMineTimer);
         autoMineTimer = setTimeout(autoMineLoop, 3000);
     }
 
     // ================================================================
-    // 11. RENDER MINING LIST
+    // 12. UPDATE FUNCTIONS
     // ================================================================
-    function renderMiningList() {
-        const container = document.getElementById('miningList');
-        container.innerHTML = '';
-        const curr = 'nc';
-        const isActive = data.miningActive[curr] || false;
-        const pendingAmount = data.pending[curr] || 0;
-        const row = document.createElement('div');
-        row.className = 'mining-row';
-        row.innerHTML = `
-            <span class="currency-name">${CURRENCY_NAMES[curr]}</span>
-            <span class="pending-amount" data-currency="${curr}">${pendingAmount.toFixed(8)}</span>
-            <button class="fan-btn ${isActive ? 'active' : ''}" data-currency="${curr}" onclick="toggleMining()">
-                <i class="fas fa-fan"></i>
-            </button>
-        `;
-        container.appendChild(row);
-        updateTotalPendingCash();
-        updateProfitIndicators();
-    }
-
     function updateTotalPendingCash() {
         const amount = data.pending.nc || 0;
         document.getElementById('pendingDisplayCash').textContent = amount.toFixed(2);
@@ -1403,6 +1404,7 @@
     function updateSpeedsUI() {
         const speed = getMiningSpeed();
         document.getElementById('tickerNC').textContent = speed.toFixed(6);
+        document.getElementById('rigHash').textContent = (speed * 1000000).toFixed(2) + ' MH/s';
     }
 
     function updateProfitIndicators() {
@@ -1418,7 +1420,25 @@
     }
 
     // ================================================================
-    // 12. SHOP
+    // 13. COLLECT
+    // ================================================================
+    document.getElementById('collectBtn').addEventListener('click', function() {
+        if (data.pending.nc > 0) {
+            data.wallet.NC += data.pending.nc;
+            data.pending.nc = 0;
+            addLog(translate('collected_all'));
+            playBeep(1000,0.2); doVibe();
+            renderRig();
+            updateAllUI();
+            saveData();
+        } else {
+            addLog(translate('no_pending'));
+            playBeep(300,0.1);
+        }
+    });
+
+    // ================================================================
+    // 14. SHOP
     // ================================================================
     function renderShopAll() {
         renderShopCategory('miners');
@@ -1505,6 +1525,11 @@
         if (item.type === 'miner') {
             data.devices[item.target].count = (data.devices[item.target].count || 1) + 1;
             addLog(translate('bought_miner', 'NC'));
+            // Add a new fan if we have less than 4
+            if (data.fanStates.length < 4) {
+                data.fanStates.push(false);
+            }
+            renderRig();
         } else if (item.type === 'upgrade') {
             data.upgrades[item.target] = (data.upgrades[item.target] || 0) + 1;
             addLog(translate('bought_upgrade', item.name));
@@ -1525,8 +1550,10 @@
             addLog(translate('repaired_device', item.target));
         } else if (item.type === 'special') {
             item.items.forEach(sub => {
-                if (sub.type === 'miner') data.devices[sub.target].count = (data.devices[sub.target].count || 1) + 1;
-                else if (sub.type === 'booster') {
+                if (sub.type === 'miner') {
+                    data.devices[sub.target].count = (data.devices[sub.target].count || 1) + 1;
+                    if (data.fanStates.length < 4) data.fanStates.push(false);
+                } else if (sub.type === 'booster') {
                     data.boosters[sub.target].active = true;
                     data.boosters[sub.target].remaining = sub.duration;
                     data.boosters[sub.target].multiplier = sub.multiplier;
@@ -1541,6 +1568,7 @@
             doVibe();
         }
         playBeep(1000,0.2); doVibe();
+        renderRig();
         updateAllUI(); saveData();
     }
 
@@ -1564,7 +1592,7 @@
     }
 
     // ================================================================
-    // 13. WALLET & UI UPDATES
+    // 15. WALLET & UI UPDATES
     // ================================================================
     function updateWalletUI() {
         document.getElementById('balNC').textContent = data.wallet.NC.toFixed(6);
@@ -1580,41 +1608,12 @@
         renderLog();
         updateProfileUI();
         saveData();
-        renderMiningList();
+        renderRig();
         updateBatteryTime();
     }
 
     // ================================================================
-    // 14. COLLECT
-    // ================================================================
-    document.getElementById('collectBtn').addEventListener('click', function() {
-        if (data.pending.nc > 0) {
-            data.wallet.NC += data.pending.nc;
-            data.pending.nc = 0;
-            addLog(translate('collected_all'));
-            playBeep(1000,0.2); doVibe();
-            updateAllUI();
-            renderMiningList();
-            saveData();
-        } else {
-            addLog(translate('no_pending'));
-            playBeep(300,0.1);
-        }
-    });
-
-    document.getElementById('autoMineBtn').addEventListener('click', toggleAutoMine);
-
-    let logVisible = false;
-    document.getElementById('logToggleBtn').addEventListener('click', function() {
-        const container = document.getElementById('logContainer');
-        logVisible = !logVisible;
-        container.style.display = logVisible ? 'block' : 'none';
-        if (logVisible) renderLog();
-        playBeep(400,0.05);
-    });
-
-    // ================================================================
-    // 15. PROFILE
+    // 16. PROFILE
     // ================================================================
     function toggleProfile() {
         const slide = document.getElementById('profileSlide');
@@ -1685,7 +1684,7 @@
     }
 
     // ================================================================
-    // 16. THEME & LANGUAGE
+    // 17. THEME & LANGUAGE
     // ================================================================
     function setTheme(theme) {
         document.documentElement.setAttribute('data-theme', theme);
@@ -1714,7 +1713,7 @@
     document.getElementById('themeLightBtn').addEventListener('click', function() { setTheme('light'); });
 
     // ================================================================
-    // 17. LANGUAGE
+    // 18. LANGUAGE
     // ================================================================
     const translations = {
         ar: {
@@ -1789,7 +1788,7 @@
             cooling_complete: '✅ تم التبريد. يمكن إعادة تشغيل المراوح.',
             cannot_mine_overheat: '⚠️ لا يمكن التعدين، الجهاز في حالة تبريد.',
             battery_empty: '⚠️ البطارية فارغة! انتظر حتى تشحن.',
-            battery_empty_stop: '🔋 البطارية فارغة! تم إيقاف تعدين {0}.',
+            battery_empty_stop: '🔋 البطارية فارغة! تم إيقاف تعدين.',
             quick_charge_activated: '⚡ تم تفعيل الشاحن السريع!',
             quick_charge_expired: '⏹ انتهى مفعول الشاحن السريع.',
             auto_mine_activated: '🤖 تم تفعيل التعدين التلقائي.',
@@ -1867,7 +1866,7 @@
             cooling_complete: '✅ Cooling complete. Fans can be restarted.',
             cannot_mine_overheat: '⚠️ Cannot mine, device is cooling down.',
             battery_empty: '⚠️ Battery empty! Wait for recharge.',
-            battery_empty_stop: '🔋 Battery empty! Stopped mining {0}.',
+            battery_empty_stop: '🔋 Battery empty! Stopped mining.',
             quick_charge_activated: '⚡ Quick charge activated!',
             quick_charge_expired: '⏹ Quick charge expired.',
             auto_mine_activated: '🤖 Auto-mining activated.',
@@ -1914,7 +1913,7 @@
     });
 
     // ================================================================
-    // 18. NAVIGATION
+    // 19. NAVIGATION
     // ================================================================
     document.querySelectorAll('.nav-item').forEach(item => {
         item.addEventListener('click', function() {
@@ -1928,7 +1927,7 @@
             if (tabId === 'shop') updateShopUI();
             if (tabId === 'settings') { updateProfileUI(); applyLanguage(); }
             if (tabId === 'mining') { 
-                renderMiningList(); 
+                renderRig(); 
                 updateTotalPendingCash(); 
                 updateProfitIndicators(); 
                 updateBatteryUI();
@@ -1939,7 +1938,7 @@
     });
 
     // ================================================================
-    // 19. SETTINGS EVENTS
+    // 20. SETTINGS EVENTS
     // ================================================================
     document.getElementById('soundToggle').addEventListener('change', function() { data.settings.sound = this.checked; saveData(); });
     document.getElementById('vibeToggle').addEventListener('change', function() { data.settings.vibe = this.checked; saveData(); });
@@ -1951,7 +1950,7 @@
     });
 
     // ================================================================
-    // 20. INIT
+    // 21. INIT
     // ================================================================
     window.onload = function() {
         loadData();
@@ -1960,10 +1959,12 @@
         document.getElementById('langSelect').value = data.settings.lang || 'ar';
         setTheme(data.settings.theme || 'dark');
         applyLanguage();
-        renderMiningList();
-        if (data.miningActive.nc && !data.heat.isOverheated && data.battery.ah > 0) {
-            startMining();
+        // Ensure first fan is on if none are
+        if (data.fanStates.every(s => !s)) {
+            data.fanStates[0] = true;
+            data.heat.activeFans = 1;
         }
+        renderRig();
         updateAllUI();
         renderLog();
         updateProfileUI();
