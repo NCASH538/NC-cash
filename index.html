@@ -363,7 +363,7 @@
         /* ===== WALLET ===== */
         .wallet-grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: 1fr 1fr;
             gap: 6px;
         }
         .wallet-item {
@@ -377,9 +377,6 @@
         .wallet-item .symbol { font-weight: 700; font-size: 12px; color: var(--gold); }
         .wallet-item .balance { font-weight: 700; font-size: 14px; margin-top: 2px; }
         .wallet-item .balance.nc { color: var(--blue); }
-        .wallet-item .balance.ncplus { color: #A29BFE; }
-        .wallet-item .balance.minicash { color: #FFA500; }
-        .wallet-item .balance.litnc { color: #FF6B8A; }
         .wallet-item .balance.cash { color: var(--green); }
 
         /* ===== SHOP ===== */
@@ -644,21 +641,18 @@
             <h1>🏛️ HyeX Exchange</h1>
             <div class="subtitle" data-i18n="subtitle">المنصة الرقمية الرسمية | نسخة تجريبية</div>
         </div>
-        <div class="badge"><i class="fas fa-shield-alt"></i> v25.0</div>
+        <div class="badge"><i class="fas fa-shield-alt"></i> v26.0</div>
     </div>
 
     <!-- PRICE TICKER -->
     <div class="price-ticker" id="priceTicker">
         <div class="ticker-item"><span class="label">NC:</span> <span class="value" id="tickerNC">0.0000</span> <span class="unit">/ث</span></div>
-        <div class="ticker-item"><span class="label">NC+:</span> <span class="value" id="tickerNCplus">0.0000</span> <span class="unit">/ث</span></div>
-        <div class="ticker-item"><span class="label">mini-cash:</span> <span class="value" id="tickerMiniCash">0.0000</span> <span class="unit">/ث</span></div>
-        <div class="ticker-item"><span class="label">LitNC:</span> <span class="value" id="tickerLitNC">0.0000</span> <span class="unit">/ث</span></div>
     </div>
 
     <!-- TAB: MINING -->
     <div id="tab-mining" class="tab-content active">
         <div class="card heat-bg normal" id="heatBgCard">
-            <!-- قائمة العملات مع المراوح -->
+            <!-- قائمة العملات مع المراوح (NC فقط) -->
             <div class="mining-grid" id="miningList"></div>
 
             <!-- المؤشرات الأساسية -->
@@ -729,9 +723,6 @@
             <div class="card-title"><span data-i18n="balances">💰 الأرصدة</span> <i class="fas fa-chevron-left text-gold"></i></div>
             <div class="wallet-grid" id="walletGrid">
                 <div class="wallet-item"><div class="symbol">NC</div><div class="balance nc" id="balNC">0.00</div></div>
-                <div class="wallet-item"><div class="symbol">NC+</div><div class="balance ncplus" id="balNCplus">0.00</div></div>
-                <div class="wallet-item"><div class="symbol">mini-cash</div><div class="balance minicash" id="balMiniCash">0.00</div></div>
-                <div class="wallet-item"><div class="symbol">LitNC</div><div class="balance litnc" id="balLitNC">0.00</div></div>
                 <div class="wallet-item"><div class="symbol">Cash</div><div class="balance cash" id="balCash">0.00</div></div>
             </div>
         </div>
@@ -832,42 +823,30 @@
 
 <script>
     // ================================================================
-    // 1. DATA
+    // 1. DATA (تم حذف جميع العملات الأخرى وترك NC و Cash فقط)
     // ================================================================
     const STORAGE_KEY = 'hyex_data';
     let data = {
-        wallet: { NC: 0, NCplus: 0, miniCash: 0, LitNC: 0, Cash: 100 },
-        pending: { nc: 0, ncplus: 0, miniCash: 0, litnc: 0 },
+        wallet: { NC: 0, Cash: 100 },
+        pending: { nc: 0 },
         log: [],
         upgrades: {
             speed: 0,
-            ncplusSpeed: 0,
-            miniCashSpeed: 0,
-            litncSpeed: 0,
             power: 0,
             efficiency: 0
         },
         settings: { sound: true, vibe: true, theme: 'dark', lang: 'ar' },
         devices: {
-            nc: { count: 1, level: 0 },
-            ncplus: { count: 0, level: 0 },
-            miniCash: { count: 0, level: 0 },
-            litnc: { count: 0, level: 0 }
+            nc: { count: 1, level: 0 } // عدد المراوح
         },
         boosters: {
-            nc: { active: false, remaining: 0, multiplier: 1 },
-            ncplus: { active: false, remaining: 0, multiplier: 1 },
-            miniCash: { active: false, remaining: 0, multiplier: 1 },
-            litnc: { active: false, remaining: 0, multiplier: 1 }
+            nc: { active: false, remaining: 0, multiplier: 1 }
         },
         maintenance: {
-            nc: { health: 100 },
-            ncplus: { health: 100 },
-            miniCash: { health: 100 },
-            litnc: { health: 100 }
+            nc: { health: 100 }
         },
         profile: { name: 'مستخدم جديد', level: 1, xp: 0, totalProfit: 0, totalMined: 0, image: null },
-        miningActive: { nc: true, ncplus: false, miniCash: false, litnc: false },
+        miningActive: { nc: true },
         heat: {
             level: 0,
             activeFans: 1,
@@ -888,32 +867,26 @@
     };
 
     // ================================================================
-    // 2. SHOP DATABASE
+    // 2. SHOP DATABASE (تم تعديل المتجر ليتناسب مع عملة NC فقط)
     // ================================================================
     const SHOP_DB = {
         miners: [
-            { id: 'miner_ncplus', name: 'جهاز NC+', icon: '⛏️', desc: 'يعدن NC+', price: 0.5, currency: 'NC', type: 'miner', target: 'ncplus' },
-            { id: 'miner_miniCash', name: 'جهاز mini-cash', icon: '⛏️', desc: 'يعدن mini-cash', price: 0.4, currency: 'NC', type: 'miner', target: 'miniCash' },
-            { id: 'miner_litnc', name: 'جهاز LitNC', icon: '⛏️', desc: 'يعدن LitNC', price: 0.7, currency: 'NC', type: 'miner', target: 'litnc' },
+            // أجهزة NC إضافية (تزيد من عدد المراوح)
+            { id: 'miner_nc', name: 'مروحة NC إضافية', icon: '🌀', desc: '+1 مروحة لتعدين NC', price: 0.5, currency: 'NC', type: 'miner', target: 'nc' },
         ],
         boosters: [
             { id: 'booster_nc_2x', name: 'مضاعف NC ×2', icon: '⚡', desc: 'مدة 5 دقائق', price: 0.3, currency: 'NC', type: 'booster', target: 'nc', duration: 300, multiplier: 2 },
-            { id: 'booster_all_2x', name: 'مضاعف الكل ×2', icon: '🔥', desc: 'جميع العملات مدة 3 دقائق', price: 0.6, currency: 'NC', type: 'booster', target: 'all', duration: 180, multiplier: 2 },
         ],
         upgrades: [
-            { id: 'upgrade_nc_speed', name: 'ترقية سرعة NC', icon: '🔧', desc: '+20%', price: 0.4, currency: 'NC', type: 'upgrade', target: 'nc_speed', maxLevel: 10 },
+            { id: 'upgrade_nc_speed', name: 'ترقية سرعة NC', icon: '🔧', desc: '+20% سرعة NC', price: 0.4, currency: 'NC', type: 'upgrade', target: 'nc_speed', maxLevel: 10 },
             { id: 'upgrade_power', name: 'ترقية الطاقة', icon: '💡', desc: '+5 طاقة', price: 0.6, currency: 'NC', type: 'upgrade', target: 'power', maxLevel: 10 },
             { id: 'upgrade_efficiency', name: 'ترقية الكفاءة', icon: '📈', desc: '+10% كفاءة', price: 0.5, currency: 'NC', type: 'upgrade', target: 'efficiency', maxLevel: 8 },
         ],
         maintenance: [
-            { id: 'repair_nc', name: 'صيانة NC', icon: '🛠️', desc: 'إصلاح كامل', price: 0.05, currency: 'NC', type: 'repair', target: 'nc' },
-            { id: 'repair_ncplus', name: 'صيانة NC+', icon: '🛠️', desc: 'إصلاح كامل', price: 0.08, currency: 'NC', type: 'repair', target: 'ncplus' },
-            { id: 'repair_miniCash', name: 'صيانة mini-cash', icon: '🛠️', desc: 'إصلاح كامل', price: 0.06, currency: 'NC', type: 'repair', target: 'miniCash' },
-            { id: 'repair_litnc', name: 'صيانة LitNC', icon: '🛠️', desc: 'إصلاح كامل', price: 0.09, currency: 'NC', type: 'repair', target: 'litnc' },
+            { id: 'repair_nc', name: 'صيانة المروحة', icon: '🛠️', desc: 'إصلاح المروحة بالكامل', price: 0.05, currency: 'NC', type: 'repair', target: 'nc' },
         ],
         specials: [
-            { id: 'special_startup', name: 'حزمة البداية', icon: '🎁', desc: 'جهاز NC+ + مضاعف 2x 10د', price: 0.6, currency: 'NC', type: 'special', items: [{ type: 'miner', target: 'ncplus' }, { type: 'booster', target: 'ncplus', duration: 600, multiplier: 2 }] },
-            { id: 'special_mega', name: 'الحزمة العملاقة', icon: '🚀', desc: 'جميع الأجهزة + مضاعف 3x 5د', price: 2.5, currency: 'NC', type: 'special', items: [{ type: 'miner', target: 'ncplus' }, { type: 'miner', target: 'miniCash' }, { type: 'miner', target: 'litnc' }, { type: 'booster', target: 'all', duration: 300, multiplier: 3 }] },
+            { id: 'special_startup', name: 'حزمة البداية', icon: '🎁', desc: 'مروحة إضافية + مضاعف 2x 10د', price: 0.6, currency: 'NC', type: 'special', items: [{ type: 'miner', target: 'nc' }, { type: 'booster', target: 'nc', duration: 600, multiplier: 2 }] },
             { id: 'quick_charger', name: 'شاحن سريع', icon: '🔋', desc: 'مضاعفة سرعة الشحن 3x لمدة 5 دقائق', price: 1.0, currency: 'NC', type: 'quick_charge', duration: 300, multiplier: 3 },
         ]
     };
@@ -927,13 +900,15 @@
             if (saved) {
                 const parsed = JSON.parse(saved);
                 for (let key in parsed) {
-                    if (key === 'wallet') for (let c in parsed.wallet) data.wallet[c] = parsed.wallet[c] || 0;
-                    else if (key === 'pending') for (let p in parsed.pending) data.pending[p] = parsed.pending[p] || 0;
-                    else if (key === 'upgrades') for (let u in parsed.upgrades) data.upgrades[u] = parsed.upgrades[u] || 0;
-                    else if (key === 'settings') {
+                    if (key === 'wallet') {
+                        for (let c in parsed.wallet) data.wallet[c] = parsed.wallet[c] || 0;
+                    } else if (key === 'pending') {
+                        for (let p in parsed.pending) data.pending[p] = parsed.pending[p] || 0;
+                    } else if (key === 'upgrades') {
+                        for (let u in parsed.upgrades) data.upgrades[u] = parsed.upgrades[u] || 0;
+                    } else if (key === 'settings') {
                         for (let s in parsed.settings) data.settings[s] = parsed.settings[s] !== undefined ? parsed.settings[s] : true;
-                    }
-                    else if (key === 'profile') {
+                    } else if (key === 'profile') {
                         for (let p in parsed.profile) data.profile[p] = parsed.profile[p] || (p === 'name' ? 'مستخدم جديد' : (p === 'level' ? 1 : 0));
                     } else if (key === 'devices') {
                         for (let d in parsed.devices) data.devices[d] = parsed.devices[d] || { count: 0, level: 0 };
@@ -955,13 +930,14 @@
                 }
             }
         } catch (e) {}
+        // التأكد من وجود البيانات الافتراضية
         if (!data.log) data.log = [];
-        if (!data.upgrades) data.upgrades = { speed: 0, ncplusSpeed: 0, miniCashSpeed: 0, litncSpeed: 0, power: 0, efficiency: 0 };
-        if (!data.devices) data.devices = { nc: { count: 1, level: 0 }, ncplus: { count: 0, level: 0 }, miniCash: { count: 0, level: 0 }, litnc: { count: 0, level: 0 } };
-        if (!data.boosters) data.boosters = { nc: { active: false, remaining: 0, multiplier: 1 }, ncplus: { active: false, remaining: 0, multiplier: 1 }, miniCash: { active: false, remaining: 0, multiplier: 1 }, litnc: { active: false, remaining: 0, multiplier: 1 } };
-        if (!data.maintenance) data.maintenance = { nc: { health: 100 }, ncplus: { health: 100 }, miniCash: { health: 100 }, litnc: { health: 100 } };
+        if (!data.upgrades) data.upgrades = { speed: 0, power: 0, efficiency: 0 };
+        if (!data.devices) data.devices = { nc: { count: 1, level: 0 } };
+        if (!data.boosters) data.boosters = { nc: { active: false, remaining: 0, multiplier: 1 } };
+        if (!data.maintenance) data.maintenance = { nc: { health: 100 } };
         if (!data.profile) data.profile = { name: 'مستخدم جديد', level: 1, xp: 0, totalProfit: 0, totalMined: 0, image: null };
-        if (!data.miningActive) data.miningActive = { nc: true, ncplus: false, miniCash: false, litnc: false };
+        if (!data.miningActive) data.miningActive = { nc: true };
         if (!data.heat) data.heat = { level: 0, activeFans: 1, elapsed: 0, isOverheated: false, cooldownRemaining: 0 };
         if (!data.battery) data.battery = { ah: 10000, maxAh: 10000, percent: 100, consumptionRate: 0 };
         if (data.battery.ah === 0 && !saved) data.battery.ah = 10000;
@@ -972,6 +948,7 @@
         if (!data.settings.theme) data.settings.theme = 'dark';
         if (!data.settings.lang) data.settings.lang = 'ar';
     }
+
     function saveData() { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); }
 
     // ================================================================
@@ -1024,26 +1001,25 @@
     }
 
     // ================================================================
-    // 6. MINING SYSTEM (سرعة أساسية 0.00001)
+    // 6. MINING SYSTEM (NC فقط)
     // ================================================================
-    const CURRENCIES = ['nc', 'ncplus', 'miniCash', 'litnc'];
-    const CURRENCY_NAMES = { nc: 'NC', ncplus: 'NC+', miniCash: 'mini-cash', litnc: 'LitNC' };
-    const BASE_SPEEDS = { nc: 0.00001, ncplus: 0.0001, miniCash: 0.001, litnc: 0.01 };
-    const RATES = { nc: 1, ncplus: 0.8, miniCash: 0.6, litnc: 0.4 };
+    const CURRENCIES = ['nc'];
+    const CURRENCY_NAMES = { nc: 'NC' };
+    const BASE_SPEED = 0.00001;
 
-    function getMiningSpeed(currency) {
-        const deviceCount = data.devices[currency]?.count || 0;
-        const level = data.devices[currency]?.level || 0;
-        const speedUpgrade = data.upgrades[currency === 'nc' ? 'speed' : currency + 'Speed'] || 0;
+    function getMiningSpeed() {
+        const currency = 'nc';
+        const deviceCount = data.devices.nc?.count || 0;
+        const level = data.devices.nc?.level || 0;
+        const speedUpgrade = data.upgrades.speed || 0;
         const efficiency = data.upgrades.efficiency || 0;
-        const booster = data.boosters[currency];
+        const booster = data.boosters.nc;
         const multiplier = (booster?.active ? booster.multiplier : 1);
-        const health = data.maintenance[currency]?.health || 100;
+        const health = data.maintenance.nc?.health || 100;
         const healthPenalty = 1 - (100 - health) / 200;
-        // تأثير الحرارة على الكفاءة (تأثير تدريجي)
-        const heatEfficiency = 1 - (data.heat.level / 150); // 0% حرارة => 1, 100% حرارة => 0.33
-        let speed = BASE_SPEEDS[currency] || 0;
-        speed *= (1 + deviceCount * 0.1);
+        const heatEfficiency = 1 - (data.heat.level / 150);
+        let speed = BASE_SPEED;
+        speed *= (1 + (deviceCount - 1) * 0.1); // المروحة الأولى لا تضاعف، الإضافية تزيد
         speed *= (1 + level * 0.05);
         speed *= (1 + speedUpgrade * 0.2);
         speed *= (1 + efficiency * 0.1);
@@ -1055,14 +1031,10 @@
     }
 
     function getTotalCashPerSecond() {
-        let totalCash = 0;
-        CURRENCIES.forEach(curr => {
-            if (data.miningActive[curr]) {
-                const speed = getMiningSpeed(curr);
-                totalCash += speed * RATES[curr];
-            }
-        });
-        return totalCash;
+        if (data.miningActive.nc) {
+            return getMiningSpeed() * 1; // 1 NC = 1 Cash
+        }
+        return 0;
     }
 
     // ================================================================
@@ -1079,12 +1051,12 @@
     }
 
     function updateBattery() {
-        const activeCount = CURRENCIES.filter(c => data.miningActive[c]).length;
+        const activeCount = data.miningActive.nc ? 1 : 0;
         const isOverheated = data.heat.isOverheated;
         const fansRunning = activeCount > 0 && !isOverheated;
 
         if (fansRunning) {
-            const consumption = activeCount * AH_PER_FAN_PER_SECOND;
+            const consumption = AH_PER_FAN_PER_SECOND;
             data.battery.ah = Math.max(0, data.battery.ah - consumption);
             data.battery.consumptionRate = consumption;
         } else {
@@ -1100,17 +1072,14 @@
         if (data.battery.ah <= 0) {
             data.battery.ah = 0;
             data.battery.percent = 0;
-            CURRENCIES.forEach(curr => {
-                if (data.miningActive[curr]) {
-                    stopMiningForCurrency(curr, true);
-                    addLog(translate('battery_empty_stop', CURRENCY_NAMES[curr]));
-                }
-            });
+            if (data.miningActive.nc) {
+                stopMining();
+                addLog(translate('battery_empty_stop'));
+            }
             playBeep(200, 0.3);
             doVibe();
         }
 
-        // تحديث الشحن السريع
         if (data.quickChargeActive) {
             data.quickChargeRemaining -= 1;
             if (data.quickChargeRemaining <= 0) {
@@ -1153,9 +1122,7 @@
         }
 
         const rateDisplay = document.getElementById('batteryRateDisplay');
-        const activeCount = CURRENCIES.filter(c => data.miningActive[c]).length;
-        const isOverheated = data.heat.isOverheated;
-        const fansRunning = activeCount > 0 && !isOverheated;
+        const fansRunning = data.miningActive.nc && !data.heat.isOverheated;
         if (fansRunning) {
             const dischargePerMin = data.battery.consumptionRate * 60;
             rateDisplay.textContent = 'التصريف: ' + dischargePerMin.toFixed(1) + ' Ah/د';
@@ -1171,15 +1138,12 @@
     }
 
     function updateBatteryTime() {
-        const activeCount = CURRENCIES.filter(c => data.miningActive[c]).length;
-        const isOverheated = data.heat.isOverheated;
-        const fansRunning = activeCount > 0 && !isOverheated;
         const timeDisplay = document.getElementById('batteryTimeDisplay');
         const span = timeDisplay.querySelector('span');
+        const fansRunning = data.miningActive.nc && !data.heat.isOverheated;
 
         if (fansRunning) {
-            // وقت التفريغ المتبقي
-            const remainingTime = data.battery.ah / (activeCount * AH_PER_FAN_PER_SECOND);
+            const remainingTime = data.battery.ah / AH_PER_FAN_PER_SECOND;
             const mins = Math.floor(remainingTime / 60);
             const secs = Math.floor(remainingTime % 60);
             if (remainingTime > 0) {
@@ -1188,7 +1152,6 @@
                 span.textContent = 'البطارية فارغة';
             }
         } else {
-            // وقت الشحن المتبقي للوصول إلى 100%
             const needed = data.battery.maxAh - data.battery.ah;
             if (needed > 0) {
                 const chargeRate = getChargeRate();
@@ -1203,11 +1166,11 @@
     }
 
     // ================================================================
-    // 8. HEAT SYSTEM (الوقت 60 دقيقة للمروحة الواحدة)
+    // 8. HEAT SYSTEM
     // ================================================================
     function updateHeatSystem() {
-        const activeCount = CURRENCIES.filter(c => data.miningActive[c]).length;
-        data.heat.activeFans = activeCount || 0;
+        const activeCount = data.miningActive.nc ? 1 : 0;
+        data.heat.activeFans = activeCount;
 
         if (data.heat.isOverheated) {
             data.heat.cooldownRemaining = Math.max(0, data.heat.cooldownRemaining - 1);
@@ -1217,43 +1180,33 @@
                 data.heat.elapsed = 0;
                 addLog(translate('cooling_complete'));
                 playBeep(600, 0.2);
-                CURRENCIES.forEach(c => {
-                    if (data.miningActive[c]) startMiningForCurrency(c);
-                });
+                if (data.miningActive.nc) startMining();
             }
             updateHeatUI();
             return;
         }
 
         if (activeCount === 0) {
-            // تبريد تدريجي
             data.heat.level = Math.max(0, data.heat.level - 0.5);
             data.heat.elapsed = Math.max(0, data.heat.elapsed - 1);
             updateHeatUI();
             return;
         }
 
-        const timeToOverheat = getTimeToOverheat(activeCount);
+        const timeToOverheat = 3600; // 60 دقيقة لمروحة واحدة
         data.heat.elapsed += 1;
         data.heat.level = Math.min(100, (data.heat.elapsed / timeToOverheat) * 100);
 
         if (data.heat.level >= 100) {
             data.heat.isOverheated = true;
-            data.heat.cooldownRemaining = 600; // 10 دقائق تبريد
+            data.heat.cooldownRemaining = 600;
             data.heat.level = 100;
-            CURRENCIES.forEach(c => {
-                if (data.miningActive[c]) stopMiningForCurrency(c, true);
-            });
+            if (data.miningActive.nc) stopMining();
             addLog(translate('overheat_shutdown'));
             playBeep(200, 0.5);
             doVibe();
         }
         updateHeatUI();
-    }
-
-    function getTimeToOverheat(count) {
-        const times = { 1: 3600, 2: 2400, 3: 1200, 4: 600 };
-        return times[count] || 3600;
     }
 
     function updateHeatUI() {
@@ -1262,7 +1215,6 @@
         const heatBar = document.getElementById('heatBar');
         const heatStatus = document.getElementById('heatStatus');
 
-        // تحديث لون الخلفية
         const bgCard = document.getElementById('heatBgCard');
         if (data.heat.isOverheated) {
             bgCard.className = 'card heat-bg cooling';
@@ -1305,10 +1257,10 @@
     // ================================================================
     // 9. MINING START/STOP
     // ================================================================
-    let miningIntervals = {};
+    let miningInterval = null;
 
-    function startMiningForCurrency(currency) {
-        if (miningIntervals[currency]) return;
+    function startMining() {
+        if (miningInterval) return;
         if (data.heat.isOverheated) {
             addLog(translate('cannot_mine_overheat'));
             return;
@@ -1318,25 +1270,25 @@
             playBeep(300, 0.15);
             return;
         }
-        data.miningActive[currency] = true;
-        const btn = document.querySelector(`.fan-btn[data-currency="${currency}"]`);
+        data.miningActive.nc = true;
+        const btn = document.querySelector(`.fan-btn[data-currency="nc"]`);
         if (btn) btn.classList.add('active');
         if (data.settings.sound) playFanSound();
 
-        miningIntervals[currency] = setInterval(() => {
+        miningInterval = setInterval(() => {
             if (data.heat.isOverheated || data.battery.ah <= 0) {
                 if (data.battery.ah <= 0) {
-                    addLog(translate('battery_empty_stop', CURRENCY_NAMES[currency]));
+                    addLog(translate('battery_empty_stop'));
                 }
-                stopMiningForCurrency(currency, true);
+                stopMining();
                 return;
             }
-            const speed = getMiningSpeed(currency);
-            data.pending[currency] += speed;
+            const speed = getMiningSpeed();
+            data.pending.nc += speed;
             data.profile.totalMined += speed;
             data.totalMinedNC += speed;
-            const pendingEl = document.querySelector(`.pending-amount[data-currency="${currency}"]`);
-            if (pendingEl) pendingEl.textContent = data.pending[currency].toFixed(8);
+            const pendingEl = document.querySelector(`.pending-amount[data-currency="nc"]`);
+            if (pendingEl) pendingEl.textContent = data.pending.nc.toFixed(8);
             updateTotalPendingCash();
             updateSpeedsUI();
             saveData();
@@ -1345,22 +1297,20 @@
         updateProfitIndicators();
     }
 
-    function stopMiningForCurrency(currency, silent = false) {
-        if (miningIntervals[currency]) {
-            clearInterval(miningIntervals[currency]);
-            delete miningIntervals[currency];
+    function stopMining() {
+        if (miningInterval) {
+            clearInterval(miningInterval);
+            miningInterval = null;
         }
-        data.miningActive[currency] = false;
-        const btn = document.querySelector(`.fan-btn[data-currency="${currency}"]`);
+        data.miningActive.nc = false;
+        const btn = document.querySelector(`.fan-btn[data-currency="nc"]`);
         if (btn) btn.classList.remove('active');
-        if (!silent) {
-            updateTotalPendingCash();
-            updateProfitIndicators();
-        }
+        updateTotalPendingCash();
+        updateProfitIndicators();
         saveData();
     }
 
-    function toggleMining(currency) {
+    function toggleMining() {
         if (data.heat.isOverheated) {
             addLog(translate('cannot_mine_overheat'));
             playBeep(300,0.15);
@@ -1371,12 +1321,12 @@
             playBeep(300,0.15);
             return;
         }
-        if (data.miningActive[currency]) {
-            stopMiningForCurrency(currency);
-            addLog(translate('stopped_mining', CURRENCY_NAMES[currency]));
+        if (data.miningActive.nc) {
+            stopMining();
+            addLog(translate('stopped_mining', 'NC'));
         } else {
-            startMiningForCurrency(currency);
-            addLog(translate('started_mining', CURRENCY_NAMES[currency]));
+            startMining();
+            addLog(translate('started_mining', 'NC'));
             playBeep(800,0.1);
             doVibe();
         }
@@ -1406,63 +1356,46 @@
     let autoMineTimer = null;
     function autoMineLoop() {
         if (!data.autoMine) return;
-        const activeCount = CURRENCIES.filter(c => data.miningActive[c]).length;
         if (data.battery.ah > 1000 && data.heat.level < 70 && !data.heat.isOverheated) {
-            CURRENCIES.forEach(curr => {
-                if (!data.miningActive[curr] && data.battery.ah > 500) {
-                    startMiningForCurrency(curr);
-                }
-            });
+            if (!data.miningActive.nc) startMining();
         } else if (data.heat.level > 80 || data.battery.ah < 500) {
-            let toStop = CURRENCIES.filter(c => data.miningActive[c]);
-            if (toStop.length > 1) {
-                stopMiningForCurrency(toStop[0], true);
-                stopMiningForCurrency(toStop[1], true);
-            }
+            if (data.miningActive.nc) stopMining();
         }
         clearTimeout(autoMineTimer);
         autoMineTimer = setTimeout(autoMineLoop, 3000);
     }
 
     // ================================================================
-    // 11. RENDER MINING LIST
+    // 11. RENDER MINING LIST (NC فقط)
     // ================================================================
     function renderMiningList() {
         const container = document.getElementById('miningList');
         container.innerHTML = '';
-        CURRENCIES.forEach(curr => {
-            const isActive = data.miningActive[curr] || false;
-            const pendingAmount = data.pending[curr] || 0;
-            const row = document.createElement('div');
-            row.className = 'mining-row';
-            row.innerHTML = `
-                <span class="currency-name">${CURRENCY_NAMES[curr]}</span>
-                <span class="pending-amount" data-currency="${curr}">${pendingAmount.toFixed(8)}</span>
-                <button class="fan-btn ${isActive ? 'active' : ''}" data-currency="${curr}" onclick="toggleMining('${curr}')">
-                    <i class="fas fa-fan"></i>
-                </button>
-            `;
-            container.appendChild(row);
-        });
+        const curr = 'nc';
+        const isActive = data.miningActive[curr] || false;
+        const pendingAmount = data.pending[curr] || 0;
+        const row = document.createElement('div');
+        row.className = 'mining-row';
+        row.innerHTML = `
+            <span class="currency-name">${CURRENCY_NAMES[curr]}</span>
+            <span class="pending-amount" data-currency="${curr}">${pendingAmount.toFixed(8)}</span>
+            <button class="fan-btn ${isActive ? 'active' : ''}" data-currency="${curr}" onclick="toggleMining()">
+                <i class="fas fa-fan"></i>
+            </button>
+        `;
+        container.appendChild(row);
         updateTotalPendingCash();
         updateProfitIndicators();
     }
 
     function updateTotalPendingCash() {
-        let totalCash = 0;
-        CURRENCIES.forEach(curr => {
-            const amount = data.pending[curr] || 0;
-            totalCash += amount * RATES[curr];
-        });
-        document.getElementById('pendingDisplayCash').textContent = totalCash.toFixed(2);
+        const amount = data.pending.nc || 0;
+        document.getElementById('pendingDisplayCash').textContent = amount.toFixed(2);
     }
 
     function updateSpeedsUI() {
-        CURRENCIES.forEach(curr => {
-            const speed = getMiningSpeed(curr);
-            const tickerId = 'ticker' + (curr === 'nc' ? 'NC' : curr === 'ncplus' ? 'NCplus' : curr === 'miniCash' ? 'MiniCash' : 'LitNC');
-            document.getElementById(tickerId).textContent = speed.toFixed(6);
-        });
+        const speed = getMiningSpeed();
+        document.getElementById('tickerNC').textContent = speed.toFixed(6);
     }
 
     function updateProfitIndicators() {
@@ -1478,7 +1411,7 @@
     }
 
     // ================================================================
-    // 12. SHOP
+    // 12. SHOP (تم تعديله ليدعم NC فقط)
     // ================================================================
     function renderShopAll() {
         renderShopCategory('miners');
@@ -1488,7 +1421,7 @@
         renderShopCategory('specials');
         let totalItems = 0; for (let cat in SHOP_DB) totalItems += SHOP_DB[cat].length;
         document.getElementById('shopCount').textContent = totalItems + ' عنصر';
-        let totalDevices = 0; for (let d in data.devices) totalDevices += data.devices[d].count;
+        let totalDevices = data.devices.nc?.count || 0;
         document.getElementById('shopDevices').textContent = totalDevices;
         document.getElementById('shopPower').textContent = data.upgrades.power || 0;
     }
@@ -1502,7 +1435,7 @@
             let owned = false, canBuy = true, price = item.price, currency = item.currency || 'NC', maxLevelReached = false;
             if (item.type === 'miner') {
                 const dev = data.devices[item.target];
-                owned = dev && dev.count > 0;
+                owned = dev && dev.count > 1; // المروحة الأولى موجودة بالفعل
                 canBuy = data.wallet[currency] >= price;
             } else if (item.type === 'upgrade') {
                 const currentLevel = data.upgrades[item.target] || 0;
@@ -1512,7 +1445,7 @@
                 const levelFactor = 1 + currentLevel * 0.2;
                 price = item.price * levelFactor;
             } else if (item.type === 'booster') {
-                const boost = data.boosters[item.target] || data.boosters['nc'];
+                const boost = data.boosters[item.target];
                 owned = boost.active;
                 canBuy = data.wallet[currency] >= price && !boost.active;
             } else if (item.type === 'repair') {
@@ -1563,66 +1496,33 @@
         }
         data.wallet[currency] -= price;
         if (item.type === 'miner') {
-            data.devices[item.target].count = (data.devices[item.target].count || 0) + 1;
-            addLog(translate('bought_miner', item.target));
+            data.devices[item.target].count = (data.devices[item.target].count || 1) + 1;
+            addLog(translate('bought_miner', 'NC'));
         } else if (item.type === 'upgrade') {
             data.upgrades[item.target] = (data.upgrades[item.target] || 0) + 1;
             addLog(translate('bought_upgrade', item.name));
         } else if (item.type === 'booster') {
-            const target = item.target === 'all' ? 'nc' : item.target;
-            if (item.target === 'all') {
-                CURRENCIES.forEach(c => {
-                    data.boosters[c].active = true;
-                    data.boosters[c].remaining = item.duration;
-                    data.boosters[c].multiplier = item.multiplier;
-                });
-                if (window.boosterTimer) clearInterval(window.boosterTimer);
-                window.boosterTimer = setInterval(() => {
-                    let allDone = true;
-                    CURRENCIES.forEach(c => {
-                        if (data.boosters[c].active) {
-                            data.boosters[c].remaining--;
-                            if (data.boosters[c].remaining <= 0) {
-                                data.boosters[c].active = false;
-                                data.boosters[c].remaining = 0;
-                                data.boosters[c].multiplier = 1;
-                            } else { allDone = false; }
-                        }
-                    });
-                    if (allDone) clearInterval(window.boosterTimer);
-                    saveData();
-                }, 1000);
-            } else {
-                data.boosters[target].active = true;
-                data.boosters[target].remaining = item.duration;
-                data.boosters[target].multiplier = item.multiplier;
-                setTimeout(() => {
-                    data.boosters[target].active = false;
-                    data.boosters[target].remaining = 0;
-                    data.boosters[target].multiplier = 1;
-                    saveData(); updateShopUI();
-                }, item.duration * 1000);
-            }
+            const target = item.target;
+            data.boosters[target].active = true;
+            data.boosters[target].remaining = item.duration;
+            data.boosters[target].multiplier = item.multiplier;
+            setTimeout(() => {
+                data.boosters[target].active = false;
+                data.boosters[target].remaining = 0;
+                data.boosters[target].multiplier = 1;
+                saveData(); updateShopUI();
+            }, item.duration * 1000);
             addLog(translate('activated_booster', item.name));
         } else if (item.type === 'repair') {
             data.maintenance[item.target].health = 100;
             addLog(translate('repaired_device', item.target));
         } else if (item.type === 'special') {
             item.items.forEach(sub => {
-                if (sub.type === 'miner') data.devices[sub.target].count = (data.devices[sub.target].count || 0) + 1;
+                if (sub.type === 'miner') data.devices[sub.target].count = (data.devices[sub.target].count || 1) + 1;
                 else if (sub.type === 'booster') {
-                    const t = sub.target === 'all' ? 'nc' : sub.target;
-                    if (sub.target === 'all') {
-                        CURRENCIES.forEach(c => {
-                            data.boosters[c].active = true;
-                            data.boosters[c].remaining = sub.duration;
-                            data.boosters[c].multiplier = sub.multiplier;
-                        });
-                    } else {
-                        data.boosters[t].active = true;
-                        data.boosters[t].remaining = sub.duration;
-                        data.boosters[t].multiplier = sub.multiplier;
-                    }
+                    data.boosters[sub.target].active = true;
+                    data.boosters[sub.target].remaining = sub.duration;
+                    data.boosters[sub.target].multiplier = sub.multiplier;
                 }
             });
             addLog(translate('bought_special', item.name));
@@ -1651,7 +1551,7 @@
     function updateShopUI() {
         renderShopAll();
         document.getElementById('shopBalance').textContent = data.wallet.NC.toFixed(2) + ' NC';
-        let totalDevices = 0; for (let d in data.devices) totalDevices += data.devices[d].count;
+        let totalDevices = data.devices.nc?.count || 0;
         document.getElementById('shopDevices').textContent = totalDevices;
         document.getElementById('shopPower').textContent = data.upgrades.power || 0;
     }
@@ -1661,9 +1561,6 @@
     // ================================================================
     function updateWalletUI() {
         document.getElementById('balNC').textContent = data.wallet.NC.toFixed(6);
-        document.getElementById('balNCplus').textContent = data.wallet.NCplus.toFixed(6);
-        document.getElementById('balMiniCash').textContent = data.wallet.miniCash.toFixed(6);
-        document.getElementById('balLitNC').textContent = data.wallet.LitNC.toFixed(6);
         document.getElementById('balCash').textContent = data.wallet.Cash.toFixed(2);
         document.getElementById('shopBalance').textContent = data.wallet.NC.toFixed(2) + ' NC';
         updateSpeedsUI();
@@ -1684,21 +1581,18 @@
     // 14. COLLECT
     // ================================================================
     document.getElementById('collectBtn').addEventListener('click', function() {
-        let collected = false;
-        CURRENCIES.forEach(curr => {
-            if (data.pending[curr] > 0) {
-                const key = curr === 'nc' ? 'NC' : curr === 'ncplus' ? 'NCplus' : curr === 'miniCash' ? 'miniCash' : 'LitNC';
-                data.wallet[key] += data.pending[curr];
-                data.pending[curr] = 0;
-                collected = true;
-            }
-        });
-        if (!collected) { addLog(translate('no_pending')); playBeep(300,0.1); return; }
-        playBeep(1000,0.2); doVibe();
-        addLog(translate('collected_all'));
-        updateAllUI();
-        renderMiningList();
-        saveData();
+        if (data.pending.nc > 0) {
+            data.wallet.NC += data.pending.nc;
+            data.pending.nc = 0;
+            addLog(translate('collected_all'));
+            playBeep(1000,0.2); doVibe();
+            updateAllUI();
+            renderMiningList();
+            saveData();
+        } else {
+            addLog(translate('no_pending'));
+            playBeep(300,0.1);
+        }
     });
 
     document.getElementById('autoMineBtn').addEventListener('click', toggleAutoMine);
@@ -1730,7 +1624,7 @@
         }
     }
     function updateProfileUI() {
-        let totalDevices = 0; for (let d in data.devices) totalDevices += data.devices[d].count;
+        let totalDevices = data.devices.nc?.count || 0;
         let xp = data.profile.totalMined * 100 + data.profile.totalProfit * 0.5 +
             totalDevices * 2 + data.upgrades.speed * 5 + data.upgrades.power * 10;
         data.profile.xp = Math.floor(xp);
@@ -2061,7 +1955,7 @@
         applyLanguage();
         renderMiningList();
         if (data.miningActive.nc && !data.heat.isOverheated && data.battery.ah > 0) {
-            startMiningForCurrency('nc');
+            startMining();
         }
         updateAllUI();
         renderLog();
@@ -2075,14 +1969,12 @@
         addLog('🏛️ ' + translate('subtitle'));
         updateTotalPendingCash();
 
-        // تحديث البطارية والحرارة كل ثانية
         setInterval(() => {
             updateBattery();
         }, 1000);
         setInterval(() => {
             updateHeatSystem();
         }, 1000);
-        // تحديث المؤشرات كل 5 ثوانٍ
         setInterval(() => {
             updateProfitIndicators();
             updateTotalPendingCash();
