@@ -29,6 +29,9 @@
             --radius-sm: 10px;
             --transition: 0.25s ease;
             --font: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+            --header-height: 64px;
+            --nav-height: 52px;
+            --ticker-height: 28px;
         }
 
         /* ================================================================
@@ -63,14 +66,16 @@
             overflow: hidden;
             box-shadow: 0 0 60px rgba(0, 0, 0, 0.8);
             position: relative;
+            border-radius: 0;
+            /* no rounded corners for full-screen feel */;
         }
 
         /* ================================================================
-               HEADER - NC.CORP BRANDING
+               HEADER - NC.CORP (محصور)
             ================================================================ */
         .corp-header {
             flex-shrink: 0;
-            padding: 14px 20px 10px;
+            padding: 12px 20px;
             background: linear-gradient(180deg, rgba(8, 12, 24, 0.95) 0%, rgba(8, 12, 24, 0.7) 100%);
             backdrop-filter: blur(6px);
             -webkit-backdrop-filter: blur(6px);
@@ -79,25 +84,30 @@
             justify-content: space-between;
             align-items: center;
             z-index: 10;
-            min-height: 64px;
+            height: var(--header-height);
+            min-height: var(--header-height);
+            max-height: var(--header-height);
+            width: 100%;
+            overflow: hidden;
         }
         .corp-header .brand {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
         }
         .corp-header .brand .logo-icon {
-            width: 36px;
-            height: 36px;
+            width: 38px;
+            height: 38px;
             background: linear-gradient(135deg, var(--gold), #A8893A);
             border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: 900;
-            font-size: 16px;
+            font-size: 18px;
             color: #080C18;
             box-shadow: 0 0 20px var(--gold-dim);
+            flex-shrink: 0;
         }
         .corp-header .brand .corp-name {
             font-size: 20px;
@@ -105,6 +115,7 @@
             letter-spacing: 1px;
             color: var(--gold);
             text-shadow: 0 0 30px var(--gold-dim);
+            white-space: nowrap;
         }
         .corp-header .brand .corp-name span {
             font-weight: 300;
@@ -122,27 +133,34 @@
             color: var(--gold-light);
             text-transform: uppercase;
             letter-spacing: 0.5px;
+            white-space: nowrap;
+            flex-shrink: 0;
         }
 
         /* ================================================================
-               TICKER - MARKET DATA
+               TICKER BAR (محصور)
             ================================================================ */
         .ticker-bar {
             flex-shrink: 0;
             background: rgba(0, 0, 0, 0.25);
-            padding: 4px 16px;
+            padding: 0 20px;
             display: flex;
             justify-content: space-between;
+            align-items: center;
             border-bottom: 1px solid rgba(255, 255, 255, 0.03);
             font-size: 10px;
             color: var(--text-secondary);
-            height: 28px;
-            align-items: center;
+            height: var(--ticker-height);
+            min-height: var(--ticker-height);
+            max-height: var(--ticker-height);
+            width: 100%;
+            overflow: hidden;
         }
         .ticker-bar .item {
             display: flex;
             align-items: center;
             gap: 4px;
+            white-space: nowrap;
         }
         .ticker-bar .value {
             color: var(--cyan);
@@ -154,12 +172,12 @@
         }
 
         /* ================================================================
-               TAB CONTENT
+               TAB CONTENT (يأخذ باقي المساحة مع تمرير داخلي)
             ================================================================ */
         .tab-content {
             flex: 1 1 auto;
             overflow-y: auto;
-            padding: 10px 12px 6px;
+            padding: 16px 16px 12px;
             display: none;
             animation: fadeIn 0.25s ease;
         }
@@ -177,7 +195,7 @@
             }
         }
         .tab-content::-webkit-scrollbar {
-            width: 3px;
+            width: 4px;
         }
         .tab-content::-webkit-scrollbar-track {
             background: transparent;
@@ -188,7 +206,7 @@
         }
 
         /* ================================================================
-               MINING RIG CARD - NC.CORP STYLE
+               MINING RIG CARD - مع مسافات مريحة
             ================================================================ */
         .mining-rig {
             background: var(--bg-card);
@@ -197,12 +215,11 @@
             border-radius: var(--radius-card);
             border: 1px solid rgba(255, 255, 255, 0.05);
             box-shadow: var(--shadow-card), inset 0 1px 0 rgba(255, 255, 255, 0.04);
-            padding: 16px 14px 14px;
+            padding: 18px 16px 16px;
             position: relative;
             overflow: hidden;
             transition: border-color 0.4s;
         }
-        /* Glow border (refined) */
         .mining-rig::before {
             content: '';
             position: absolute;
@@ -232,39 +249,39 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 10px;
+            margin-bottom: 14px;
             background: rgba(0, 0, 0, 0.2);
-            padding: 4px 14px;
+            padding: 6px 16px;
             border-radius: 40px;
             border: 1px solid rgba(255, 255, 255, 0.04);
-            height: 28px;
+            height: 32px;
         }
         .rig-status .status-group {
             display: flex;
             align-items: center;
-            gap: 8px;
-            font-size: 11px;
+            gap: 10px;
+            font-size: 12px;
             font-weight: 600;
             color: var(--text-secondary);
         }
         .rig-status .status-dot {
-            width: 8px;
-            height: 8px;
+            width: 9px;
+            height: 9px;
             border-radius: 50%;
             transition: 0.3s;
         }
         .rig-status .status-dot.online {
             background: var(--green);
-            box-shadow: 0 0 12px var(--green);
+            box-shadow: 0 0 14px var(--green);
             animation: pulse-dot 1.8s infinite;
         }
         .rig-status .status-dot.offline {
             background: var(--red);
-            box-shadow: 0 0 12px var(--red);
+            box-shadow: 0 0 14px var(--red);
         }
         .rig-status .status-dot.cooling {
             background: var(--cyan);
-            box-shadow: 0 0 12px var(--cyan);
+            box-shadow: 0 0 14px var(--cyan);
             animation: pulse-dot 0.8s infinite;
         }
         @keyframes pulse-dot {
@@ -279,7 +296,7 @@
             }
         }
         .rig-status .hash-rate {
-            font-size: 13px;
+            font-size: 14px;
             font-weight: 700;
             color: var(--cyan);
             direction: ltr;
@@ -291,13 +308,13 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            gap: 6px;
-            margin: 4px 0 8px;
+            gap: 10px;
+            margin: 6px 0 12px;
         }
 
         /* FAN (Left) */
         .fan-wrapper {
-            flex: 0 0 72px;
+            flex: 0 0 80px;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -308,8 +325,8 @@
             transform: scale(0.94);
         }
         .fan-svg {
-            width: 64px;
-            height: 64px;
+            width: 72px;
+            height: 72px;
         }
         .fan-svg .blade {
             fill: rgba(255, 255, 255, 0.04);
@@ -330,15 +347,15 @@
         }
 
         .fan-wrapper .fan-speed-label {
-            font-size: 9px;
+            font-size: 10px;
             color: var(--text-secondary);
-            margin-top: 2px;
+            margin-top: 4px;
             font-weight: 600;
             letter-spacing: 0.5px;
         }
         .fan-wrapper .fan-speed-label span {
             color: var(--gold);
-            font-size: 14px;
+            font-size: 15px;
             font-weight: 800;
         }
 
@@ -379,51 +396,51 @@
         .rig-center {
             flex: 1;
             text-align: center;
-            padding: 0 2px;
+            padding: 0 4px;
         }
         .rig-center .title {
-            font-size: 16px;
+            font-size: 17px;
             font-weight: 800;
             color: var(--gold);
             text-shadow: 0 0 25px var(--gold-dim);
             letter-spacing: 0.5px;
         }
         .rig-center .title i {
-            font-size: 14px;
+            font-size: 15px;
             margin-left: 4px;
         }
         .rig-center .pending {
-            margin-top: 2px;
-            font-size: 13px;
+            margin-top: 4px;
+            font-size: 14px;
             font-weight: 700;
             color: var(--cyan);
             direction: ltr;
             background: rgba(0, 0, 0, 0.25);
-            padding: 0 14px;
+            padding: 0 16px;
             border-radius: 40px;
             display: inline-block;
             border: 1px solid rgba(72, 201, 255, 0.08);
-            height: 24px;
-            line-height: 24px;
+            height: 28px;
+            line-height: 28px;
         }
         .rig-center .pending small {
-            font-size: 9px;
+            font-size: 10px;
             color: var(--text-secondary);
             font-weight: 400;
         }
 
         /* LEDS (Right) */
         .leds-group {
-            flex: 0 0 32px;
+            flex: 0 0 36px;
             display: flex;
             flex-direction: column;
-            gap: 5px;
+            gap: 6px;
             align-items: center;
             justify-content: center;
         }
         .led {
-            width: 26px;
-            height: 7px;
+            width: 30px;
+            height: 8px;
             border-radius: 20px;
             background: rgba(255, 255, 255, 0.04);
             border: 1px solid rgba(255, 255, 255, 0.04);
@@ -473,26 +490,26 @@
             }
         }
 
-        /* STATS GRID - CIRCULAR GAUGES */
+        /* STATS GRID - مع مسافات مريحة */
         .stats-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 8px;
-            margin-top: 10px;
+            gap: 12px;
+            margin-top: 14px;
         }
         .stat-card {
             background: rgba(0, 0, 0, 0.2);
             border-radius: var(--radius-sm);
-            padding: 6px 10px;
+            padding: 10px 12px;
             border: 1px solid rgba(255, 255, 255, 0.04);
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 12px;
         }
         .stat-card .gauge {
             flex-shrink: 0;
-            width: 44px;
-            height: 44px;
+            width: 50px;
+            height: 50px;
             position: relative;
         }
         .stat-card .gauge svg {
@@ -514,7 +531,7 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            font-size: 10px;
+            font-size: 11px;
             font-weight: 800;
             color: var(--text-primary);
             text-align: center;
@@ -522,21 +539,22 @@
         }
         .stat-card .gauge .center-label small {
             display: block;
-            font-size: 6px;
+            font-size: 7px;
             font-weight: 400;
             color: var(--text-muted);
         }
         .stat-card .info {
             flex: 1;
+            min-width: 0;
         }
         .stat-card .info .label {
-            font-size: 9px;
+            font-size: 10px;
             color: var(--text-secondary);
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
         .stat-card .info .value {
-            font-size: 16px;
+            font-size: 17px;
             font-weight: 800;
             direction: ltr;
             font-variant-numeric: tabular-nums;
@@ -548,7 +566,7 @@
             color: var(--orange);
         }
         .stat-card .info .sub {
-            font-size: 9px;
+            font-size: 10px;
             color: var(--text-muted);
             font-weight: 400;
         }
@@ -558,18 +576,18 @@
             grid-column: span 2;
             background: rgba(255, 77, 109, 0.04);
             border-radius: var(--radius-sm);
-            padding: 4px 10px;
+            padding: 6px 14px;
             border: 1px solid rgba(255, 77, 109, 0.06);
             text-align: center;
-            font-size: 10px;
+            font-size: 11px;
             font-weight: 600;
             color: var(--text-secondary);
-            height: 28px;
+            height: 32px;
             line-height: 20px;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 6px;
+            gap: 8px;
         }
         .timer-warning .status-text.ok {
             color: var(--green);
@@ -592,25 +610,25 @@
         /* ACTION BUTTONS */
         .action-bar {
             display: flex;
-            gap: 6px;
-            margin-top: 10px;
+            gap: 8px;
+            margin-top: 14px;
         }
         .action-bar .btn {
             flex: 1;
-            padding: 8px 4px;
+            padding: 10px 4px;
             border-radius: var(--radius-sm);
             border: 1px solid rgba(255, 255, 255, 0.05);
             background: rgba(0, 0, 0, 0.25);
             color: var(--text-secondary);
             font-weight: 600;
-            font-size: 10px;
+            font-size: 11px;
             cursor: pointer;
             transition: var(--transition);
             text-align: center;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 4px;
+            gap: 6px;
         }
         .action-bar .btn:hover {
             background: rgba(255, 255, 255, 0.04);
@@ -645,63 +663,63 @@
 
         /* LOG */
         .log-container {
-            max-height: 44px;
+            max-height: 52px;
             overflow-y: auto;
             background: rgba(0, 0, 0, 0.2);
             border-radius: var(--radius-sm);
-            padding: 2px 10px;
+            padding: 4px 14px;
             border: 1px solid rgba(255, 255, 255, 0.03);
-            margin-top: 6px;
-            font-size: 9px;
+            margin-top: 8px;
+            font-size: 10px;
         }
         .log-container .log-item {
             display: flex;
             justify-content: space-between;
-            padding: 2px 0;
+            padding: 3px 0;
             border-bottom: 1px solid rgba(255, 255, 255, 0.03);
             color: var(--text-secondary);
         }
         .log-container .log-item .time {
             color: var(--text-muted);
-            font-size: 8px;
+            font-size: 9px;
         }
 
         /* ================================================================
-               WALLET / SHOP / SETTINGS (minimal)
+               WALLET / SHOP / SETTINGS (مع مسافات مريحة)
             ================================================================ */
         .card {
             background: var(--bg-card);
             backdrop-filter: blur(8px);
             border-radius: var(--radius-card);
             border: 1px solid rgba(255, 255, 255, 0.04);
-            padding: 14px 16px;
-            margin-bottom: 8px;
+            padding: 16px 18px;
+            margin-bottom: 12px;
         }
         .card-title {
-            font-size: 13px;
+            font-size: 14px;
             font-weight: 700;
             color: var(--text-primary);
-            margin-bottom: 8px;
+            margin-bottom: 10px;
             display: flex;
             justify-content: space-between;
         }
         .wallet-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 8px;
+            gap: 10px;
         }
         .wallet-item {
             background: rgba(0, 0, 0, 0.15);
             border-radius: var(--radius-sm);
-            padding: 8px;
+            padding: 10px;
             text-align: center;
         }
         .wallet-item .symbol {
-            font-size: 10px;
+            font-size: 11px;
             color: var(--text-secondary);
         }
         .wallet-item .balance {
-            font-size: 16px;
+            font-size: 17px;
             font-weight: 700;
         }
         .wallet-item .balance.nc {
@@ -713,22 +731,23 @@
 
         .shop-category-tabs {
             display: flex;
-            gap: 4px;
-            margin-bottom: 6px;
+            gap: 6px;
+            margin-bottom: 8px;
             flex-wrap: wrap;
         }
         .shop-category-tabs .tab-btn {
             flex: 1;
-            padding: 4px 2px;
+            padding: 6px 4px;
             border-radius: 30px;
             border: 1px solid rgba(255, 255, 255, 0.04);
             background: transparent;
             color: var(--text-secondary);
-            font-size: 9px;
+            font-size: 10px;
             font-weight: 600;
             cursor: pointer;
             transition: var(--transition);
             text-align: center;
+            min-width: 60px;
         }
         .shop-category-tabs .tab-btn.active {
             background: var(--gold-dim);
@@ -738,34 +757,34 @@
         .shop-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 6px;
-            max-height: 180px;
+            gap: 8px;
+            max-height: 200px;
             overflow-y: auto;
         }
         .shop-item {
             background: rgba(0, 0, 0, 0.15);
             border-radius: var(--radius-sm);
-            padding: 8px 6px;
+            padding: 10px 6px;
             text-align: center;
         }
         .shop-item .icon {
-            font-size: 18px;
+            font-size: 20px;
         }
         .shop-item .name {
-            font-size: 10px;
+            font-size: 11px;
             font-weight: 700;
         }
         .shop-item .price {
-            font-size: 9px;
+            font-size: 10px;
             color: var(--gold);
             font-weight: 700;
         }
         .shop-item .btn {
-            margin-top: 4px;
-            padding: 2px 10px;
+            margin-top: 6px;
+            padding: 3px 12px;
             border-radius: 30px;
             border: none;
-            font-size: 8px;
+            font-size: 9px;
             font-weight: 700;
             cursor: pointer;
             background: rgba(74, 222, 128, 0.08);
@@ -781,18 +800,18 @@
         .settings-item {
             display: flex;
             justify-content: space-between;
-            padding: 6px 0;
+            padding: 8px 0;
             border-bottom: 1px solid rgba(255, 255, 255, 0.03);
             align-items: center;
-            font-size: 11px;
+            font-size: 12px;
             color: var(--text-secondary);
         }
         .switch input {
             display: none;
         }
         .switch .slider {
-            width: 28px;
-            height: 15px;
+            width: 30px;
+            height: 16px;
             background: rgba(255, 255, 255, 0.08);
             border-radius: 30px;
             display: inline-block;
@@ -803,8 +822,8 @@
         .switch .slider::after {
             content: '';
             position: absolute;
-            width: 9px;
-            height: 9px;
+            width: 10px;
+            height: 10px;
             background: #fff;
             border-radius: 50%;
             top: 3px;
@@ -815,11 +834,24 @@
             background: var(--gold);
         }
         .switch input:checked+.slider::after {
-            left: 16px;
+            left: 17px;
+        }
+        .profile-trigger {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+            background: rgba(200, 168, 78, 0.06);
+            padding: 4px 14px;
+            border-radius: 30px;
+            border: 1px solid var(--gold-dim);
+            color: var(--gold);
+            font-weight: 600;
+            font-size: 12px;
         }
 
         /* ================================================================
-               BOTTOM NAV (FIXED)
+               BOTTOM NAV (محصور)
             ================================================================ */
         .bottom-nav {
             flex-shrink: 0;
@@ -829,8 +861,12 @@
             border-top: 1px solid rgba(255, 255, 255, 0.04);
             display: flex;
             justify-content: space-around;
-            padding: 4px 0 6px;
-            min-height: 44px;
+            padding: 6px 0 8px;
+            height: var(--nav-height);
+            min-height: var(--nav-height);
+            max-height: var(--nav-height);
+            width: 100%;
+            overflow: hidden;
             align-items: center;
         }
         .bottom-nav .nav-item {
@@ -838,15 +874,15 @@
             flex-direction: column;
             align-items: center;
             color: var(--text-muted);
-            font-size: 8px;
+            font-size: 9px;
             cursor: pointer;
             transition: var(--transition);
-            padding: 0 6px;
+            padding: 0 8px;
             text-decoration: none;
-            gap: 1px;
+            gap: 2px;
         }
         .bottom-nav .nav-item i {
-            font-size: 16px;
+            font-size: 18px;
             transition: var(--transition);
         }
         .bottom-nav .nav-item.active {
@@ -941,7 +977,7 @@
                SCROLLBAR
             ================================================================ */
         ::-webkit-scrollbar {
-            width: 3px;
+            width: 4px;
         }
         ::-webkit-scrollbar-track {
             background: transparent;
@@ -952,98 +988,138 @@
         }
 
         /* ================================================================
-               RESPONSIVE FINE-TUNE
+               RESPONSIVE - أحجام متوازنة
             ================================================================ */
         @media (max-width: 420px) {
+            :root {
+                --header-height: 58px;
+                --nav-height: 48px;
+                --ticker-height: 26px;
+            }
             .corp-header {
-                padding: 10px 14px 8px;
-                min-height: 56px;
+                padding: 8px 14px;
             }
             .corp-header .brand .logo-icon {
-                width: 30px;
-                height: 30px;
-                font-size: 13px;
+                width: 32px;
+                height: 32px;
+                font-size: 15px;
             }
             .corp-header .brand .corp-name {
-                font-size: 16px;
+                font-size: 17px;
             }
             .corp-header .badge {
-                font-size: 7px;
+                font-size: 8px;
                 padding: 2px 10px;
             }
+            .ticker-bar {
+                padding: 0 14px;
+                font-size: 9px;
+            }
+            .tab-content {
+                padding: 12px 12px 8px;
+            }
+            .mining-rig {
+                padding: 14px 12px 12px;
+            }
             .fan-svg {
-                width: 54px;
-                height: 54px;
+                width: 60px;
+                height: 60px;
             }
             .fan-wrapper {
-                flex: 0 0 62px;
+                flex: 0 0 68px;
             }
             .rig-center .title {
-                font-size: 14px;
+                font-size: 15px;
+            }
+            .rig-center .pending {
+                font-size: 12px;
+                height: 24px;
+                line-height: 24px;
+                padding: 0 12px;
+            }
+            .led {
+                width: 24px;
+                height: 7px;
+            }
+            .leds-group {
+                flex: 0 0 30px;
+                gap: 5px;
+            }
+            .stat-card {
+                padding: 8px 10px;
+                gap: 8px;
+            }
+            .stat-card .gauge {
+                width: 42px;
+                height: 42px;
+            }
+            .stat-card .info .value {
+                font-size: 15px;
+            }
+            .action-bar .btn {
+                font-size: 10px;
+                padding: 8px 2px;
+            }
+            .timer-warning {
+                font-size: 10px;
+                height: 28px;
+                line-height: 18px;
+                padding: 4px 10px;
+            }
+            .bottom-nav .nav-item i {
+                font-size: 16px;
+            }
+            .bottom-nav .nav-item {
+                font-size: 8px;
+                padding: 0 4px;
+            }
+            .card {
+                padding: 12px 14px;
+            }
+            .wallet-item .balance {
+                font-size: 15px;
+            }
+        }
+
+        @media (max-width: 360px) {
+            :root {
+                --header-height: 54px;
+                --nav-height: 44px;
+                --ticker-height: 24px;
+            }
+            .corp-header .brand .corp-name {
+                font-size: 15px;
+            }
+            .fan-svg {
+                width: 52px;
+                height: 52px;
+            }
+            .fan-wrapper {
+                flex: 0 0 60px;
+            }
+            .rig-center .title {
+                font-size: 13px;
             }
             .rig-center .pending {
                 font-size: 11px;
-                height: 20px;
-                line-height: 20px;
+                height: 22px;
+                line-height: 22px;
                 padding: 0 10px;
             }
+            .stat-card .gauge {
+                width: 36px;
+                height: 36px;
+            }
+            .stat-card .info .value {
+                font-size: 13px;
+            }
             .led {
-                width: 22px;
+                width: 20px;
                 height: 6px;
             }
             .leds-group {
-                flex: 0 0 28px;
+                flex: 0 0 26px;
                 gap: 4px;
-            }
-            .stat-card .gauge {
-                width: 38px;
-                height: 38px;
-            }
-            .stat-card .info .value {
-                font-size: 14px;
-            }
-            .action-bar .btn {
-                font-size: 9px;
-                padding: 6px 2px;
-            }
-            .bottom-nav {
-                min-height: 38px;
-            }
-            .bottom-nav .nav-item i {
-                font-size: 14px;
-            }
-            .bottom-nav .nav-item {
-                font-size: 7px;
-            }
-            .mining-rig {
-                padding: 12px 10px 10px;
-            }
-            .timer-warning {
-                font-size: 9px;
-                height: 24px;
-                line-height: 16px;
-            }
-        }
-        @media (max-width: 360px) {
-            .fan-svg {
-                width: 46px;
-                height: 46px;
-            }
-            .fan-wrapper {
-                flex: 0 0 54px;
-            }
-            .rig-center .title {
-                font-size: 12px;
-            }
-            .rig-center .pending {
-                font-size: 10px;
-            }
-            .stat-card .gauge {
-                width: 34px;
-                height: 34px;
-            }
-            .stat-card .info .value {
-                font-size: 12px;
             }
         }
     </style>
@@ -1060,7 +1136,7 @@
                 <div class="logo-icon">⛁</div>
                 <div class="corp-name">NC<span>.CORP</span></div>
             </div>
-            <div class="badge"><i class="fas fa-shield-alt"></i> v4.2</div>
+            <div class="badge"><i class="fas fa-shield-alt"></i> v4.3</div>
         </header>
 
         <!-- ============================================================
@@ -1174,7 +1250,7 @@
                 </div>
 
                 <!-- Log -->
-                <div id="logContainer" style="display:none; margin-top:4px;">
+                <div id="logContainer" style="display:none; margin-top:6px;">
                     <div class="log-container" id="logList">
                         <div class="log-item" style="justify-content:center;color:var(--text-muted);">لا توجد عمليات</div>
                     </div>
@@ -1199,7 +1275,7 @@
                     </div>
                 </div>
             </div>
-            <div style="text-align:center;font-size:9px;color:var(--text-muted);">🔒 جميع الأرصدة مشفرة (محاكاة ترفيهية)</div>
+            <div style="text-align:center;font-size:10px;color:var(--text-muted);">🔒 جميع الأرصدة مشفرة (محاكاة ترفيهية)</div>
         </div>
 
         <!-- ============================================================
@@ -1207,7 +1283,7 @@
         ============================================================ -->
         <div id="tab-shop" class="tab-content">
             <div class="card">
-                <div class="card-title">🛒 المتجر الرسمي <span style="font-size:11px;color:var(--gold);" id="shopBalance">0.00 NC</span></div>
+                <div class="card-title">🛒 المتجر الرسمي <span style="font-size:12px;color:var(--gold);" id="shopBalance">0.00 NC</span></div>
                 <div class="shop-category-tabs">
                     <button class="tab-btn active" data-cat="upgrades">🔧 ترقيات</button>
                     <button class="tab-btn" data-cat="boosters">⚡ تسريعات</button>
@@ -1225,7 +1301,7 @@
                 <div class="card-title">⚙️ الإعدادات</div>
                 <div class="settings-item">
                     <span>👤 الملف الشخصي</span>
-                    <div class="profile-trigger" onclick="toggleProfile()" style="display:flex;align-items:center;gap:6px;cursor:pointer;background:rgba(200,168,78,0.06);padding:2px 12px;border-radius:30px;border:1px solid var(--gold-dim);color:var(--gold);font-weight:600;font-size:11px;">
+                    <div class="profile-trigger" onclick="toggleProfile()">
                         <i class="fas fa-user"></i>
                         <span id="settingsProfileName">مستخدم</span>
                     </div>
@@ -1233,8 +1309,8 @@
                 <div class="settings-item">
                     <span>🌓 المظهر</span>
                     <div>
-                        <button id="themeDarkBtn" style="padding:1px 10px;border-radius:30px;border:1px solid var(--gold);background:transparent;color:var(--gold);font-size:9px;cursor:pointer;">داكن</button>
-                        <button id="themeLightBtn" style="padding:1px 10px;border-radius:30px;border:1px solid rgba(255,255,255,0.06);background:transparent;color:var(--text-secondary);font-size:9px;cursor:pointer;">فاتح</button>
+                        <button id="themeDarkBtn" style="padding:2px 12px;border-radius:30px;border:1px solid var(--gold);background:transparent;color:var(--gold);font-size:10px;cursor:pointer;">داكن</button>
+                        <button id="themeLightBtn" style="padding:2px 12px;border-radius:30px;border:1px solid rgba(255,255,255,0.06);background:transparent;color:var(--text-secondary);font-size:10px;cursor:pointer;">فاتح</button>
                     </div>
                 </div>
                 <div class="settings-item">
@@ -1243,13 +1319,13 @@
                 </div>
                 <div class="settings-item">
                     <span>🔄 إعادة تعيين</span>
-                    <button id="resetBtn" style="background:rgba(255,107,122,0.06);border:1px solid rgba(255,107,122,0.1);color:var(--red);padding:1px 14px;border-radius:30px;cursor:pointer;font-size:9px;">إعادة</button>
+                    <button id="resetBtn" style="background:rgba(255,107,122,0.06);border:1px solid rgba(255,107,122,0.1);color:var(--red);padding:2px 16px;border-radius:30px;cursor:pointer;font-size:10px;">إعادة</button>
                 </div>
             </div>
         </div>
 
         <!-- ============================================================
-        BOTTOM NAV - FIXED
+        BOTTOM NAV - محصور
         ============================================================ -->
         <nav class="bottom-nav">
             <div class="nav-item active" data-tab="mining"><i class="fas fa-microchip"></i><span>تعدين</span></div>
@@ -1699,7 +1775,7 @@
                                 <div class="icon">${item.icon}</div>
                                 <div class="name">${item.name}</div>
                                 <div class="price">${price.toFixed(2)} ${item.currency}</div>
-                                ${maxed ? '<div style="font-size:7px;color:var(--orange);">🔝 مكتمل</div>' : ''}
+                                ${maxed ? '<div style="font-size:8px;color:var(--orange);">🔝 مكتمل</div>' : ''}
                                 <button class="btn shop-buy-btn" data-id="${item.id}" data-cat="${cat}" ${!canBuy || maxed ? 'disabled' : ''}>${maxed ? 'مكتمل' : 'شراء'}</button>
                             </div>
                         `;
@@ -1846,7 +1922,7 @@
             if (data.autoMine) autoLoop();
             data.heat.level = getHeatForSpeed(data.fanSpeed);
             renderRig();
-            addLog('🏢 NC.CORP Mining Console V4');
+            addLog('🏢 NC.CORP Mining Console V4.3');
         };
     </script>
 </body>
