@@ -3,36 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>HyeX Exchange - Rig Miner V3</title>
+    <title>HyeX - NC Mining Rig V4</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         /* ============================================================
-               ROOT VARIABLES & RESET
-            ============================================================ */
+           ROOT
+           ============================================================ */
         :root {
             --bg-primary: #070A12;
             --bg-secondary: #0D1424;
-            --bg-card: rgba(16, 26, 46, 0.65);
-            --border-glow: rgba(201, 168, 76, 0.3);
-            --text-primary: #E8EDF5;
-            --text-secondary: #9AA8C7;
+            --bg-card: rgba(10, 18, 34, 0.8);
             --gold: #C9A84C;
-            --gold-dim: rgba(201, 168, 76, 0.2);
+            --gold-dim: rgba(201, 168, 76, 0.25);
             --cyan: #00E5FF;
-            --cyan-dim: rgba(0, 229, 255, 0.15);
-            --green: #7BED9F;
+            --green: #39FF14;
+            --green-dim: rgba(57, 255, 20, 0.2);
             --red: #FF4D6D;
             --orange: #FFB347;
-            --shadow-heavy: 0 20px 60px rgba(0, 0, 0, 0.8);
-            --radius-lg: 24px;
-            --radius-md: 16px;
-            --transition: 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            --text-primary: #E8EDF5;
+            --text-secondary: #9AA8C7;
+            --shadow: 0 20px 60px rgba(0, 0, 0, 0.7);
+            --radius: 20px;
+            --transition: 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
         }
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            font-family: 'Segoe UI', system-ui, sans-serif;
         }
         body {
             background: var(--bg-primary);
@@ -40,8 +38,8 @@
             justify-content: center;
             align-items: center;
             min-height: 100vh;
+            padding: 12px;
             color: var(--text-primary);
-            padding: 10px;
         }
         .app {
             max-width: 480px;
@@ -52,19 +50,16 @@
             display: flex;
             flex-direction: column;
             overflow: hidden;
-            border-radius: 28px;
-            box-shadow: var(--shadow-heavy);
+            border-radius: 32px;
+            box-shadow: var(--shadow);
             border: 1px solid rgba(255, 255, 255, 0.03);
-            position: relative;
         }
 
-        /* ============================================================
-               HEADER
-            ============================================================ */
+        /* Header */
         .corp-header {
             flex-shrink: 0;
             padding: 14px 20px 10px;
-            background: rgba(7, 10, 18, 0.8);
+            background: rgba(7, 10, 18, 0.7);
             backdrop-filter: blur(8px);
             border-bottom: 2px solid var(--gold-dim);
             display: flex;
@@ -77,7 +72,6 @@
             font-weight: 800;
             color: var(--gold);
             text-shadow: 0 0 20px var(--gold-dim);
-            letter-spacing: 0.5px;
         }
         .corp-header .badge {
             background: rgba(201, 168, 76, 0.1);
@@ -86,21 +80,13 @@
             border-radius: 40px;
             font-size: 9px;
             color: var(--gold);
-            font-weight: 600;
-        }
-        .corp-header .subtitle {
-            font-size: 8px;
-            color: var(--text-secondary);
-            letter-spacing: 1px;
         }
 
-        /* ============================================================
-               PRICE TICKER
-            ============================================================ */
+        /* Ticker */
         .price-ticker {
             flex-shrink: 0;
             background: rgba(0, 0, 0, 0.3);
-            padding: 5px 16px;
+            padding: 6px 16px;
             display: flex;
             justify-content: space-around;
             border-bottom: 1px solid rgba(255, 255, 255, 0.04);
@@ -110,26 +96,23 @@
         .price-ticker .value {
             color: var(--cyan);
             font-weight: 700;
-            font-variant-numeric: tabular-nums;
         }
 
-        /* ============================================================
-               TAB CONTENT
-            ============================================================ */
+        /* Tab Content */
         .tab-content {
             flex: 1 1 auto;
             overflow-y: auto;
-            padding: 14px 14px 8px;
+            padding: 14px;
             display: none;
-            animation: fadeIn 0.3s ease;
+            animation: fade 0.3s ease;
         }
         .tab-content.active {
             display: block;
         }
-        @keyframes fadeIn {
+        @keyframes fade {
             from {
                 opacity: 0;
-                transform: translateY(8px);
+                transform: translateY(6px);
             }
             to {
                 opacity: 1;
@@ -139,30 +122,26 @@
         .tab-content::-webkit-scrollbar {
             width: 3px;
         }
-        .tab-content::-webkit-scrollbar-track {
-            background: transparent;
-        }
         .tab-content::-webkit-scrollbar-thumb {
             background: var(--gold);
             border-radius: 10px;
         }
 
         /* ============================================================
-               NEW ADVANCED MINING RIG
-            ============================================================ */
+           MINING RIG - RECTANGLE
+           ============================================================ */
         .mining-rig {
             background: var(--bg-card);
             backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border-radius: var(--radius-lg);
+            border-radius: var(--radius);
             border: 1px solid rgba(255, 255, 255, 0.06);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.05);
             padding: 18px 16px 16px;
             position: relative;
             overflow: hidden;
-            transition: all 0.5s ease;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+            transition: border-color 0.5s;
         }
-        /* Glow border animation */
+        /* Glow border */
         .mining-rig::before {
             content: '';
             position: absolute;
@@ -170,11 +149,11 @@
             left: -2px;
             right: -2px;
             bottom: -2px;
-            border-radius: var(--radius-lg);
+            border-radius: var(--radius);
             background: conic-gradient(from 0deg, transparent, var(--gold-dim), transparent, var(--cyan-dim), transparent);
             z-index: -1;
-            opacity: 0.5;
-            animation: rotateGlow 8s linear infinite;
+            opacity: 0.6;
+            animation: rotateGlow 10s linear infinite;
         }
         @keyframes rotateGlow {
             0% {
@@ -185,47 +164,45 @@
             }
         }
 
-        /* Status Bar */
-        .rig-status {
+        /* Status Bar (top of rig) */
+        .rig-status-bar {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 14px;
             background: rgba(0, 0, 0, 0.3);
-            padding: 6px 14px;
+            padding: 4px 14px;
             border-radius: 40px;
             border: 1px solid rgba(255, 255, 255, 0.04);
         }
-        .rig-status .status-dot {
+        .rig-status-bar .status-dot {
             display: flex;
             align-items: center;
             gap: 8px;
             font-size: 11px;
             font-weight: 600;
-            color: var(--text-secondary);
         }
-        .rig-status .status-dot .dot {
+        .rig-status-bar .status-dot .dot {
             width: 8px;
             height: 8px;
             border-radius: 50%;
-            display: inline-block;
             transition: 0.3s;
         }
-        .rig-status .status-dot .dot.online {
+        .rig-status-bar .status-dot .dot.online {
             background: var(--green);
             box-shadow: 0 0 12px var(--green);
-            animation: pulseDot 1.5s infinite;
+            animation: pulse 1.5s infinite;
         }
-        .rig-status .status-dot .dot.offline {
+        .rig-status-bar .status-dot .dot.offline {
             background: var(--red);
             box-shadow: 0 0 12px var(--red);
         }
-        .rig-status .status-dot .dot.cooling {
+        .rig-status-bar .status-dot .dot.cooling {
             background: var(--cyan);
             box-shadow: 0 0 12px var(--cyan);
-            animation: pulseDot 0.8s infinite;
+            animation: pulse 0.8s infinite;
         }
-        @keyframes pulseDot {
+        @keyframes pulse {
             0%,
             100% {
                 opacity: 1;
@@ -236,81 +213,33 @@
                 transform: scale(0.8);
             }
         }
-        .rig-status .hash-rate {
-            font-size: 14px;
+        .rig-status-bar .hash-rate {
+            font-size: 13px;
             font-weight: 700;
             color: var(--cyan);
-            text-shadow: 0 0 20px var(--cyan-dim);
-            font-variant-numeric: tabular-nums;
-            letter-spacing: 0.5px;
             direction: ltr;
         }
 
-        /* Main Display (Gauges + Fan) */
-        .rig-main {
+        /* Main Layout: Left (Fan) | Center (Text) | Right (LEDs) */
+        .rig-main-layout {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            gap: 8px;
-            margin: 6px 0 12px;
+            gap: 10px;
+            margin: 4px 0 10px;
         }
 
-        /* SVG Gauges */
-        .gauge-container {
-            flex-shrink: 0;
-            width: 80px;
-            height: 80px;
-            position: relative;
-        }
-        .gauge-container svg {
-            transform: rotate(-90deg);
-        }
-        .gauge-container .gauge-bg {
-            fill: none;
-            stroke: rgba(255, 255, 255, 0.06);
-            stroke-width: 6;
-        }
-        .gauge-container .gauge-fill {
-            fill: none;
-            stroke-width: 6;
-            stroke-linecap: round;
-            transition: stroke-dashoffset 0.6s ease, stroke 0.6s ease;
-        }
-        .gauge-container .gauge-label {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 8px;
-            font-weight: 700;
-            color: var(--text-secondary);
-            text-align: center;
-            line-height: 1.2;
-        }
-        .gauge-container .gauge-label .big {
-            font-size: 14px;
-            font-weight: 800;
-            display: block;
-            color: var(--text-primary);
-        }
-        .gauge-container .gauge-label .big.heat-val {
-            color: var(--orange);
-        }
-        .gauge-container .gauge-label .big.bat-val {
-            color: var(--green);
-        }
-
-        /* Fan Center */
-        .fan-center {
-            flex: 1;
+        /* --- LEFT: FAN --- */
+        .rig-fan-wrapper {
+            flex: 0 0 80px;
             display: flex;
             flex-direction: column;
             align-items: center;
             cursor: pointer;
         }
         .fan-blades {
-            width: 90px;
-            height: 90px;
+            width: 70px;
+            height: 70px;
             position: relative;
             transition: 0.3s;
         }
@@ -318,15 +247,14 @@
             position: absolute;
             top: 50%;
             left: 50%;
-            width: 35px;
-            height: 12px;
-            background: linear-gradient(90deg, rgba(255, 255, 255, 0.1), rgba(201, 168, 76, 0.6));
+            width: 28px;
+            height: 8px;
+            background: linear-gradient(90deg, rgba(255, 255, 255, 0.15), rgba(201, 168, 76, 0.5));
             border-radius: 20px;
             transform-origin: 0% 50%;
-            transform: translate(-50%, -50%) rotate(var(--deg)) translateX(-10px);
-            box-shadow: 0 0 8px rgba(201, 168, 76, 0.2);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            transition: background 0.3s, box-shadow 0.3s;
+            transform: translate(-50%, -50%) rotate(var(--deg)) translateX(-8px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: background 0.3s;
         }
         .fan-blades .blade:nth-child(1) {
             --deg: 0deg;
@@ -347,26 +275,30 @@
             position: absolute;
             top: 50%;
             left: 50%;
-            width: 22px;
-            height: 22px;
+            width: 18px;
+            height: 18px;
             background: radial-gradient(circle, var(--gold), #7a5d2e);
             border-radius: 50%;
             transform: translate(-50%, -50%);
             box-shadow: 0 0 20px var(--gold-dim);
-            border: 2px solid rgba(255, 255, 255, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.15);
             z-index: 5;
         }
-        .fan-blades.spinning {
+        /* Fan animations */
+        .fan-blades.spin1 {
+            animation: spinFan 1.2s linear infinite;
+        }
+        .fan-blades.spin2 {
             animation: spinFan 0.8s linear infinite;
         }
-        .fan-blades.spinning-fast {
-            animation: spinFan 0.4s linear infinite;
+        .fan-blades.spin3 {
+            animation: spinFan 0.5s linear infinite;
         }
-        .fan-blades.spinning-max {
-            animation: spinFan 0.2s linear infinite;
+        .fan-blades.spin4 {
+            animation: spinFan 0.25s linear infinite;
         }
         .fan-blades.overheat {
-            animation: shakeFan 0.15s ease-in-out infinite alternate;
+            animation: shake 0.15s ease-in-out infinite alternate;
         }
         @keyframes spinFan {
             0% {
@@ -376,178 +308,259 @@
                 transform: rotate(360deg);
             }
         }
-        @keyframes shakeFan {
+        @keyframes shake {
             0% {
-                transform: rotate(-5deg);
+                transform: rotate(-6deg);
             }
             100% {
-                transform: rotate(5deg);
+                transform: rotate(6deg);
             }
         }
 
-        .fan-speed-label {
-            margin-top: 4px;
-            font-size: 10px;
+        .rig-fan-wrapper .fan-label {
+            font-size: 9px;
             color: var(--text-secondary);
+            margin-top: 4px;
             font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+        .rig-fan-wrapper .fan-label span {
+            color: var(--gold);
+            font-size: 13px;
+        }
+
+        /* --- CENTER: NC Coins Mining --- */
+        .rig-center {
+            flex: 1;
+            text-align: center;
+            padding: 0 4px;
+        }
+        .rig-center .main-title {
+            font-size: 18px;
+            font-weight: 900;
+            color: var(--gold);
+            text-shadow: 0 0 30px var(--gold-dim);
             letter-spacing: 1px;
+            line-height: 1.1;
         }
-        .fan-speed-label span {
-            color: var(--gold);
-            font-size: 14px;
+        .rig-center .main-title i {
+            font-size: 20px;
+            margin-left: 6px;
         }
-        .fan-center .click-hint {
-            font-size: 8px;
-            color: var(--text-secondary);
-            opacity: 0.6;
-            margin-top: 2px;
-        }
-
-        /* Speed LEDs (Shift indicators) */
-        .rig-speed-leds {
-            display: flex;
-            gap: 6px;
-            justify-content: center;
-            margin: 8px 0 12px;
-        }
-        .rig-speed-leds .led {
-            width: 28px;
-            height: 6px;
-            border-radius: 4px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            transition: 0.3s;
-        }
-        .rig-speed-leds .led.active {
-            background: var(--gold);
-            box-shadow: 0 0 16px var(--gold-dim);
-            border-color: var(--gold);
-        }
-        .rig-speed-leds .led.active.high {
-            background: var(--orange);
-            box-shadow: 0 0 16px rgba(255, 180, 50, 0.4);
-            border-color: var(--orange);
-        }
-        .rig-speed-leds .led.active.max {
-            background: var(--red);
-            box-shadow: 0 0 16px rgba(255, 77, 109, 0.5);
-            border-color: var(--red);
-        }
-        .rig-speed-leds .led.off {
-            opacity: 0.3;
-        }
-
-        /* Pending Display */
-        .rig-pending-area {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: rgba(0, 0, 0, 0.4);
-            border-radius: var(--radius-md);
-            padding: 8px 16px;
-            border: 1px solid rgba(255, 255, 255, 0.04);
+        .rig-center .pending-display {
             margin-top: 4px;
-        }
-        .rig-pending-area .label {
-            font-size: 10px;
-            color: var(--text-secondary);
-        }
-        .rig-pending-area .value {
-            font-size: 16px;
+            font-size: 14px;
             font-weight: 700;
-            color: var(--gold);
-            text-shadow: 0 0 20px var(--gold-dim);
+            color: var(--cyan);
             direction: ltr;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 2px 12px;
+            border-radius: 30px;
+            display: inline-block;
+            border: 1px solid rgba(0, 229, 255, 0.1);
         }
-        .rig-pending-area .sub-value {
-            font-size: 11px;
+        .rig-center .pending-display small {
+            font-size: 10px;
             color: var(--text-secondary);
             font-weight: 400;
         }
 
-        /* Profit Grid */
-        .profit-grid {
+        /* --- RIGHT: 4 LED Buttons --- */
+        .rig-leds-wrapper {
+            flex: 0 0 50px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            align-items: center;
+            justify-content: center;
+        }
+        .led-btn {
+            width: 36px;
+            height: 12px;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            transition: 0.3s;
+            position: relative;
+            cursor: default;
+        }
+        .led-btn.active {
+            background: var(--green);
+            border-color: var(--green);
+            box-shadow: 0 0 16px var(--green-dim);
+            animation: blinkGreen 0.8s ease-in-out infinite alternate;
+        }
+        .led-btn.active.high {
+            background: var(--orange);
+            border-color: var(--orange);
+            box-shadow: 0 0 16px rgba(255, 180, 50, 0.3);
+            animation: blinkOrange 0.6s ease-in-out infinite alternate;
+        }
+        .led-btn.active.max {
+            background: var(--red);
+            border-color: var(--red);
+            box-shadow: 0 0 16px rgba(255, 77, 109, 0.4);
+            animation: blinkRed 0.4s ease-in-out infinite alternate;
+        }
+        .led-btn.off {
+            opacity: 0.3;
+        }
+        @keyframes blinkGreen {
+            0% {
+                opacity: 0.5;
+                box-shadow: 0 0 4px var(--green-dim);
+            }
+            100% {
+                opacity: 1;
+                box-shadow: 0 0 20px var(--green);
+            }
+        }
+        @keyframes blinkOrange {
+            0% {
+                opacity: 0.6;
+                box-shadow: 0 0 4px rgba(255, 180, 50, 0.2);
+            }
+            100% {
+                opacity: 1;
+                box-shadow: 0 0 20px var(--orange);
+            }
+        }
+        @keyframes blinkRed {
+            0% {
+                opacity: 0.5;
+                box-shadow: 0 0 4px rgba(255, 77, 109, 0.2);
+            }
+            100% {
+                opacity: 1;
+                box-shadow: 0 0 25px var(--red);
+            }
+        }
+
+        /* --- Bottom stats (Battery, Heat, Timers) --- */
+        .rig-stats-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr 1fr 1fr;
-            gap: 4px;
-            margin-top: 10px;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin-top: 12px;
         }
-        .profit-grid .p-item {
-            background: rgba(0, 0, 0, 0.25);
-            border-radius: 10px;
-            padding: 4px 2px;
-            text-align: center;
-            border: 1px solid rgba(255, 255, 255, 0.03);
+        .stat-box {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 12px;
+            padding: 6px 10px;
+            border: 1px solid rgba(255, 255, 255, 0.04);
         }
-        .profit-grid .p-item .p-label {
-            font-size: 7px;
+        .stat-box .label {
+            font-size: 8px;
             color: var(--text-secondary);
             display: block;
         }
-        .profit-grid .p-item .p-value {
-            font-size: 11px;
-            font-weight: 700;
-            color: var(--green);
+        .stat-box .value {
+            font-size: 16px;
+            font-weight: 800;
             font-variant-numeric: tabular-nums;
+            direction: ltr;
+        }
+        .stat-box .value.gold {
+            color: var(--gold);
+        }
+        .stat-box .value.green {
+            color: var(--green);
+        }
+        .stat-box .value.cyan {
+            color: var(--cyan);
+        }
+        .stat-box .value.red {
+            color: var(--red);
+        }
+        .stat-box .value.orange {
+            color: var(--orange);
+        }
+        .stat-box .sub {
+            font-size: 9px;
+            color: var(--text-secondary);
+            font-weight: 400;
+        }
+        .stat-box .bar-track {
+            width: 100%;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            overflow: hidden;
+            margin-top: 2px;
+        }
+        .stat-box .bar-track .bar-fill {
+            height: 100%;
+            border-radius: 10px;
+            transition: width 0.5s ease;
         }
 
-        /* ============================================================
-               ACTION BAR
-            ============================================================ */
+        /* Timer warning */
+        .timer-warning {
+            grid-column: span 2;
+            text-align: center;
+            background: rgba(255, 77, 109, 0.05);
+            border-radius: 12px;
+            padding: 6px;
+            border: 1px solid rgba(255, 77, 109, 0.1);
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text-secondary);
+        }
+        .timer-warning span {
+            color: var(--orange);
+            font-weight: 800;
+        }
+        .timer-warning .danger {
+            color: var(--red);
+        }
+
+        /* Action Bar */
         .action-bar {
-            flex-shrink: 0;
             display: flex;
             gap: 6px;
-            padding: 8px 0;
-            margin-top: 8px;
+            margin-top: 10px;
         }
         .action-bar .btn {
             flex: 1;
             padding: 8px 4px;
+            border-radius: 12px;
             border: 1px solid rgba(255, 255, 255, 0.06);
-            border-radius: var(--radius-md);
             background: rgba(0, 0, 0, 0.3);
             color: var(--text-secondary);
             font-weight: 600;
             font-size: 11px;
             cursor: pointer;
             transition: 0.2s;
-            backdrop-filter: blur(4px);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
+            text-align: center;
         }
         .action-bar .btn:active {
             transform: scale(0.94);
         }
         .action-bar .btn-collect {
-            background: rgba(0, 229, 255, 0.08);
+            background: rgba(0, 229, 255, 0.06);
             color: var(--cyan);
-            border-color: var(--cyan-dim);
+            border-color: rgba(0, 229, 255, 0.1);
         }
         .action-bar .btn-auto {
-            background: rgba(123, 237, 159, 0.06);
+            background: rgba(57, 255, 20, 0.04);
             color: var(--green);
-            border-color: rgba(123, 237, 159, 0.15);
+            border-color: rgba(57, 255, 20, 0.08);
         }
         .action-bar .btn-auto.active {
-            background: rgba(255, 180, 50, 0.15);
+            background: rgba(255, 180, 50, 0.1);
             color: var(--orange);
-            border-color: rgba(255, 180, 50, 0.3);
+            border-color: rgba(255, 180, 50, 0.2);
         }
         .action-bar .btn-log {
             background: rgba(255, 255, 255, 0.03);
         }
 
-        /* ============================================================
-               LOG
-            ============================================================ */
+        /* Log */
         .log-container {
-            max-height: 70px;
+            max-height: 60px;
             overflow-y: auto;
             background: rgba(0, 0, 0, 0.3);
-            border-radius: var(--radius-md);
+            border-radius: 12px;
             padding: 4px 10px;
             border: 1px solid rgba(255, 255, 255, 0.04);
             margin-top: 6px;
@@ -557,31 +570,18 @@
             display: flex;
             justify-content: space-between;
             padding: 2px 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
             color: var(--text-secondary);
         }
-        .log-container .log-item .time {
-            color: var(--text-muted);
-        }
 
-        /* ============================================================
-               WALLET / SHOP / SETTINGS (Brief)
-            ============================================================ */
+        /* Wallet / Shop / Settings (brief) */
         .card {
             background: var(--bg-card);
             backdrop-filter: blur(8px);
-            border-radius: var(--radius-md);
+            border-radius: 16px;
             border: 1px solid rgba(255, 255, 255, 0.04);
             padding: 14px;
             margin-bottom: 10px;
-        }
-        .card-title {
-            font-size: 13px;
-            font-weight: 700;
-            color: var(--text-primary);
-            margin-bottom: 10px;
-            display: flex;
-            justify-content: space-between;
         }
         .wallet-grid {
             display: grid;
@@ -589,20 +589,14 @@
             gap: 8px;
         }
         .wallet-item {
-            background: rgba(0, 0, 0, 0.25);
+            background: rgba(0, 0, 0, 0.2);
             border-radius: 12px;
             padding: 10px;
             text-align: center;
-            border: 1px solid rgba(255, 255, 255, 0.04);
-        }
-        .wallet-item .symbol {
-            font-weight: 700;
-            color: var(--gold);
         }
         .wallet-item .balance {
-            font-weight: 700;
             font-size: 16px;
-            margin-top: 2px;
+            font-weight: 700;
         }
         .wallet-item .balance.nc {
             color: var(--cyan);
@@ -611,7 +605,6 @@
             color: var(--green);
         }
 
-        /* Shop */
         .shop-category-tabs {
             display: flex;
             gap: 4px;
@@ -628,8 +621,6 @@
             font-size: 9px;
             cursor: pointer;
             font-weight: 600;
-            transition: 0.2s;
-            min-width: 50px;
             text-align: center;
         }
         .shop-category-tabs .tab-btn.active {
@@ -641,7 +632,7 @@
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 6px;
-            max-height: 280px;
+            max-height: 240px;
             overflow-y: auto;
         }
         .shop-item-card {
@@ -671,9 +662,9 @@
             font-size: 9px;
             font-weight: 700;
             cursor: pointer;
-            background: rgba(123, 237, 159, 0.1);
+            background: rgba(57, 255, 20, 0.1);
             color: var(--green);
-            border: 1px solid rgba(123, 237, 159, 0.2);
+            border: 1px solid rgba(57, 255, 20, 0.15);
             width: 100%;
         }
         .shop-item-card .btn:disabled {
@@ -681,7 +672,6 @@
             cursor: not-allowed;
         }
 
-        /* Settings */
         .settings-item {
             display: flex;
             justify-content: space-between;
@@ -734,14 +724,7 @@
             font-weight: 700;
             font-size: 11px;
         }
-        .profile-trigger img {
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            object-fit: cover;
-        }
 
-        /* Bottom Nav */
         .bottom-nav {
             flex-shrink: 0;
             background: rgba(7, 10, 18, 0.9);
@@ -759,7 +742,6 @@
             font-size: 8px;
             cursor: pointer;
             transition: 0.2s;
-            padding: 0 6px;
         }
         .bottom-nav .nav-item i {
             font-size: 18px;
@@ -769,7 +751,6 @@
             color: var(--gold);
         }
 
-        /* Profile Slide */
         .profile-slide {
             position: fixed;
             top: 0;
@@ -810,7 +791,6 @@
         }
         .profile-slide .header h2 {
             color: var(--gold);
-            font-size: 18px;
         }
         .profile-slide .header .close-btn {
             background: none;
@@ -845,7 +825,6 @@
             cursor: pointer;
         }
 
-        /* Scrollbar global */
         ::-webkit-scrollbar {
             width: 3px;
         }
@@ -856,29 +835,6 @@
             background: var(--gold);
             border-radius: 10px;
         }
-
-        /* Responsive */
-        @media (max-width: 420px) {
-            .fan-blades {
-                width: 70px;
-                height: 70px;
-            }
-            .fan-blades .blade {
-                width: 25px;
-                height: 8px;
-            }
-            .fan-blades .center-hub {
-                width: 16px;
-                height: 16px;
-            }
-            .gauge-container {
-                width: 60px;
-                height: 60px;
-            }
-            .rig-status .hash-rate {
-                font-size: 11px;
-            }
-        }
     </style>
 </head>
 <body>
@@ -887,49 +843,33 @@
 
         <!-- HEADER -->
         <div class="corp-header">
-            <div>
-                <h1>🏛️ HyeX</h1>
-                <div class="subtitle">Rig Miner v3.0 | محاكاة متطورة</div>
-            </div>
-            <div class="badge"><i class="fas fa-shield-alt"></i> v28</div>
+            <h1>🏛️ HyeX</h1>
+            <div class="badge"><i class="fas fa-shield-alt"></i> NC Rig V4</div>
         </div>
 
         <!-- TICKER -->
         <div class="price-ticker">
-            <span>⛏️ NC/s: <span class="value" id="tickerNC">0.0000</span></span>
-            <span>⚡ MH/s: <span class="value" id="tickerMH">0.00</span></span>
+            <span>⚡ السرعة: <span class="value" id="tickerMH">0.00</span> MH/s</span>
+            <span>⛏️ Pending: <span class="value" id="tickerPending">0.0000</span></span>
         </div>
 
-        <!-- TAB: MINING (NEW DESIGN) -->
+        <!-- TAB: MINING -->
         <div id="tab-mining" class="tab-content active">
             <div class="mining-rig" id="rigContainer">
 
                 <!-- Status Bar -->
-                <div class="rig-status">
+                <div class="rig-status-bar">
                     <div class="status-dot">
                         <span class="dot online" id="statusDot"></span>
-                        <span id="statusText">Online</span>
+                        <span id="statusText">تشغيل</span>
                     </div>
                     <div class="hash-rate" id="hashRateDisplay">0.00 MH/s</div>
                 </div>
 
-                <!-- Main Display -->
-                <div class="rig-main">
-                    <!-- Heat Gauge -->
-                    <div class="gauge-container">
-                        <svg viewBox="0 0 100 100">
-                            <circle class="gauge-bg" cx="50" cy="50" r="40" />
-                            <circle class="gauge-fill" id="heatGauge" cx="50" cy="50" r="40"
-                            stroke="#FF4D6D" stroke-dasharray="251.2" stroke-dashoffset="251.2" />
-                        </svg>
-                        <div class="gauge-label">
-                            <span class="big heat-val" id="heatPercent">0%</span>
-                            🌡️
-                        </div>
-                    </div>
-
-                    <!-- Fan -->
-                    <div class="fan-center" id="fanClickArea">
+                <!-- MAIN LAYOUT: FAN | CENTER | LEDS -->
+                <div class="rig-main-layout">
+                    <!-- LEFT: Fan -->
+                    <div class="rig-fan-wrapper" id="fanClickArea">
                         <div class="fan-blades" id="fanBlades">
                             <div class="blade"></div>
                             <div class="blade"></div>
@@ -938,45 +878,47 @@
                             <div class="blade"></div>
                             <div class="center-hub"></div>
                         </div>
-                        <div class="fan-speed-label">السرعة: <span id="fanSpeedDisplay">1</span> / 4</div>
-                        <div class="click-hint"><i class="fas fa-mouse-pointer"></i> اضغط لتغيير السرعة</div>
+                        <div class="fan-label">السرعة <span id="fanSpeedDisplay">1</span> / 4</div>
                     </div>
 
-                    <!-- Battery Gauge -->
-                    <div class="gauge-container">
-                        <svg viewBox="0 0 100 100">
-                            <circle class="gauge-bg" cx="50" cy="50" r="40" />
-                            <circle class="gauge-fill" id="batteryGauge" cx="50" cy="50" r="40"
-                            stroke="#7BED9F" stroke-dasharray="251.2" stroke-dashoffset="0" />
-                        </svg>
-                        <div class="gauge-label">
-                            <span class="big bat-val" id="batteryPercent">100%</span>
-                            🔋
+                    <!-- CENTER: NC Coins Mining -->
+                    <div class="rig-center">
+                        <div class="main-title">
+                            <i class="fas fa-coins"></i> NC Coins Mining
+                        </div>
+                        <div class="pending-display">
+                            <span id="pendingNC">0.00000000</span> <small>NC</small>
                         </div>
                     </div>
+
+                    <!-- RIGHT: 4 LED Buttons -->
+                    <div class="rig-leds-wrapper" id="ledsWrapper">
+                        <div class="led-btn" data-idx="0" id="led0"></div>
+                        <div class="led-btn" data-idx="1" id="led1"></div>
+                        <div class="led-btn" data-idx="2" id="led2"></div>
+                        <div class="led-btn" data-idx="3" id="led3"></div>
+                    </div>
                 </div>
 
-                <!-- Speed LEDs -->
-                <div class="rig-speed-leds" id="speedLEDs">
-                    <div class="led" data-idx="0"></div>
-                    <div class="led" data-idx="1"></div>
-                    <div class="led" data-idx="2"></div>
-                    <div class="led" data-idx="3"></div>
-                </div>
+                <!-- STATS GRID -->
+                <div class="rig-stats-grid">
+                    <div class="stat-box">
+                        <span class="label">🔋 البطارية</span>
+                        <span class="value gold" id="batteryDisplay">10000</span>
+                        <span class="sub">Ah</span>
+                        <div class="bar-track"><div class="bar-fill" id="batteryBar" style="width:100%;background:var(--green);"></div></div>
+                    </div>
+                    <div class="stat-box">
+                        <span class="label">🌡️ الحرارة</span>
+                        <span class="value orange" id="heatDisplay">0%</span>
+                        <div class="bar-track"><div class="bar-fill" id="heatBar" style="width:0%;background:var(--cyan);"></div></div>
+                    </div>
 
-                <!-- Pending -->
-                <div class="rig-pending-area">
-                    <span class="label">🪙 العالق (Pending NC)</span>
-                    <span class="value" id="pendingNC">0.00000000</span>
-                    <span class="sub-value">≈ <span id="pendingCashEst">0.00</span> Cash</span>
-                </div>
-
-                <!-- Profit Grid -->
-                <div class="profit-grid">
-                    <div class="p-item"><span class="p-label">⏱️ ساعة</span><span class="p-value" id="profitHour">0.00</span></div>
-                    <div class="p-item"><span class="p-label">📅 يوم</span><span class="p-value" id="profitDay">0.00</span></div>
-                    <div class="p-item"><span class="p-label">🗓️ شهر</span><span class="p-value" id="profitMonth">0.00</span></div>
-                    <div class="p-item"><span class="p-label">📆 سنة</span><span class="p-value" id="profitYear">0.00</span></div>
+                    <!-- Timer: Overheat / Cooldown -->
+                    <div class="timer-warning" id="timerDisplay">
+                        ⏱️ حالة التعدين: <span id="miningStatusText" style="color:var(--green);">مستقر</span>
+                        <span id="timerCountdown" style="display:none; font-weight:800; color:var(--orange);">--:--</span>
+                    </div>
                 </div>
 
                 <!-- Action Bar -->
@@ -987,9 +929,9 @@
                 </div>
 
                 <!-- Log -->
-                <div id="logContainer" style="display:none; margin-top: 6px;">
+                <div id="logContainer" style="display:none; margin-top:6px;">
                     <div class="log-container" id="logList">
-                        <div class="log-item" style="color:var(--text-muted);text-align:center;justify-content:center;">لا توجد عمليات</div>
+                        <div class="log-item" style="justify-content:center;color:var(--text-muted);">لا توجد عمليات</div>
                     </div>
                 </div>
             </div>
@@ -998,66 +940,39 @@
         <!-- TAB: WALLET -->
         <div id="tab-wallet" class="tab-content">
             <div class="card">
-                <div class="card-title">💰 الأرصدة <i class="fas fa-chevron-left text-gold"></i></div>
                 <div class="wallet-grid">
-                    <div class="wallet-item"><div class="symbol">NC</div><div class="balance nc" id="balNC">0.00</div></div>
-                    <div class="wallet-item"><div class="symbol">Cash</div><div class="balance cash" id="balCash">0.00</div></div>
+                    <div class="wallet-item"><div>NC</div><div class="balance nc" id="balNC">0.00</div></div>
+                    <div class="wallet-item"><div>Cash</div><div class="balance cash" id="balCash">0.00</div></div>
                 </div>
             </div>
-            <div class="card" style="text-align:center;font-size:10px;color:var(--text-secondary);">🔒 جميع الأرصدة مشفرة (محاكاة ترفيهية)</div>
+            <div style="text-align:center;font-size:10px;color:var(--text-secondary);">🔒 محاكاة ترفيهية</div>
         </div>
 
-        <!-- TAB: SHOP -->
+        <!-- TAB: SHOP (مختصر) -->
         <div id="tab-shop" class="tab-content">
             <div class="card">
-                <div class="card-title">🛒 المتجر الرسمي <span style="font-size:10px;color:var(--cyan);" id="shopCount">0</span></div>
-                <div style="display:flex;gap:6px;margin-bottom:8px;flex-wrap:wrap;">
-                    <div class="shop-stats" style="display:flex;gap:6px;width:100%;">
-                        <div style="flex:1;background:rgba(0,0,0,0.2);border-radius:10px;padding:4px;text-align:center;"><span style="font-size:7px;color:var(--text-secondary);">💰 الرصيد</span><br><span style="font-weight:700;color:var(--gold);" id="shopBalance">0.00</span></div>
-                        <div style="flex:1;background:rgba(0,0,0,0.2);border-radius:10px;padding:4px;text-align:center;"><span style="font-size:7px;color:var(--text-secondary);">📦 الأجهزة</span><br><span style="font-weight:700;color:var(--cyan);" id="shopDevices">0</span></div>
-                        <div style="flex:1;background:rgba(0,0,0,0.2);border-radius:10px;padding:4px;text-align:center;"><span style="font-size:7px;color:var(--text-secondary);">⚡ الطاقة</span><br><span style="font-weight:700;color:var(--orange);" id="shopPower">0</span></div>
-                    </div>
-                </div>
+                <div style="display:flex;justify-content:space-between;font-weight:700;margin-bottom:8px;">🛒 المتجر <span style="color:var(--gold);" id="shopBalance">0.00 NC</span></div>
                 <div class="shop-category-tabs">
-                    <button class="tab-btn active" data-cat="miners">⛏️ أجهزة</button>
+                    <button class="tab-btn active" data-cat="upgrades">🔧 ترقيات</button>
                     <button class="tab-btn" data-cat="boosters">⚡ تسريعات</button>
-                    <button class="tab-btn" data-cat="upgrades">🔧 ترقيات</button>
-                    <button class="tab-btn" data-cat="specials">🎁 عروض</button>
                 </div>
-                <div class="shop-category-content active" id="shop-miners"><div class="shop-grid" id="minersGrid"></div></div>
+                <div class="shop-category-content active" id="shop-upgrades"><div class="shop-grid" id="upgradesGrid"></div></div>
                 <div class="shop-category-content" id="shop-boosters"><div class="shop-grid" id="boostersGrid"></div></div>
-                <div class="shop-category-content" id="shop-upgrades"><div class="shop-grid" id="upgradesGrid"></div></div>
-                <div class="shop-category-content" id="shop-specials"><div class="shop-grid" id="specialsGrid"></div></div>
             </div>
         </div>
 
         <!-- TAB: SETTINGS -->
         <div id="tab-settings" class="tab-content">
             <div class="card">
-                <div class="card-title">⚙️ الإعدادات</div>
-                <div class="settings-item">
-                    <span>👤 الملف الشخصي</span>
-                    <div class="profile-trigger" onclick="toggleProfile()">
-                        <i class="fas fa-user" id="settingsProfileIcon"></i>
-                        <img id="settingsProfileImage" style="display:none;" alt="">
-                        <span id="settingsProfileName">مستخدم</span>
-                    </div>
+                <div class="settings-item"><span>👤 الملف</span>
+                    <div class="profile-trigger" onclick="toggleProfile()"><i class="fas fa-user"></i> <span id="settingsProfileName">مستخدم</span></div>
                 </div>
                 <div class="settings-item"><span>🌓 المظهر</span>
-                    <div style="display:flex;gap:6px;">
-                        <button id="themeDarkBtn" style="padding:2px 12px;border-radius:30px;border:1px solid var(--gold);background:transparent;color:var(--gold);font-size:10px;cursor:pointer;">داكن</button>
-                        <button id="themeLightBtn" style="padding:2px 12px;border-radius:30px;border:1px solid rgba(255,255,255,0.1);background:transparent;color:var(--text-secondary);font-size:10px;cursor:pointer;">فاتح</button>
-                    </div>
+                    <div><button id="themeDarkBtn" style="padding:2px 12px;border-radius:30px;border:1px solid var(--gold);background:transparent;color:var(--gold);font-size:10px;cursor:pointer;">داكن</button>
+                        <button id="themeLightBtn" style="padding:2px 12px;border-radius:30px;border:1px solid rgba(255,255,255,0.1);background:transparent;color:var(--text-secondary);font-size:10px;cursor:pointer;">فاتح</button></div>
                 </div>
-                <div class="settings-item"><span>🌐 اللغة</span>
-                    <select id="langSelect" style="background:rgba(0,0,0,0.3);border:1px solid rgba(255,255,255,0.06);color:var(--text-primary);padding:4px 8px;border-radius:8px;font-size:12px;">
-                        <option value="ar">العربية</option>
-                        <option value="en">English</option>
-                    </select>
-                </div>
-                <div class="settings-item"><span>🔊 مؤثرات صوتية</span> <label class="switch"><input type="checkbox" id="soundToggle" checked><span class="slider"></span></label></div>
-                <div class="settings-item"><span>📳 الاهتزاز</span> <label class="switch"><input type="checkbox" id="vibeToggle" checked><span class="slider"></span></label></div>
-                <div class="settings-item"><span>🔄 إعادة تعيين</span> <button id="resetBtn" style="background:rgba(255,77,109,0.1);border:1px solid rgba(255,77,109,0.2);color:var(--red);padding:2px 16px;border-radius:30px;cursor:pointer;font-size:10px;">إعادة تعيين</button></div>
+                <div class="settings-item"><span>🔊 صوت</span> <label class="switch"><input type="checkbox" id="soundToggle" checked><span class="slider"></span></label></div>
+                <div class="settings-item"><span>🔄 إعادة تعيين</span> <button id="resetBtn" style="background:rgba(255,77,109,0.1);border:1px solid rgba(255,77,109,0.2);color:var(--red);padding:2px 16px;border-radius:30px;cursor:pointer;font-size:10px;">إعادة</button></div>
             </div>
         </div>
 
@@ -1070,84 +985,62 @@
         </div>
     </div>
 
-    <!-- PROFILE SLIDE -->
+    <!-- PROFILE SLIDE (مختصر) -->
     <div class="profile-overlay" id="profileOverlay" onclick="toggleProfile()"></div>
     <div class="profile-slide" id="profileSlide">
         <div class="header"><h2>👤 ملفي</h2><button class="close-btn" onclick="toggleProfile()"><i class="fas fa-times"></i></button></div>
         <div class="body">
-            <div style="text-align:center;margin-bottom:12px;">
-                <div style="width:80px;height:80px;border-radius:50%;background:rgba(201,168,76,0.1);border:3px solid var(--gold);margin:0 auto;display:flex;align-items:center;justify-content:center;font-size:36px;color:var(--gold);cursor:pointer;position:relative;" onclick="document.getElementById('profileUpload').click()">
-                    <i class="fas fa-user" id="modalProfileIcon"></i>
-                    <img id="modalProfileImage" style="display:none;width:100%;height:100%;border-radius:50%;object-fit:cover;" alt="">
-                    <input type="file" id="profileUpload" accept="image/*" style="display:none;" onchange="uploadProfileImage(event)">
-                </div>
-            </div>
-            <input type="text" id="profileNameInput" class="input-field" placeholder="اسم المستخدم" value="مستخدم جديد">
-            <div style="background:rgba(0,0,0,0.2);border-radius:12px;padding:12px;margin-bottom:12px;">
-                <div style="display:flex;justify-content:space-between;font-size:13px;"><span>المستوى</span><span style="color:var(--gold);font-weight:700;" id="modalLevelDisplay">1</span></div>
-                <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--text-secondary);"><span>نقاط الخبرة</span><span id="modalXPDisplay">0</span></div>
-                <div style="width:100%;height:4px;background:rgba(255,255,255,0.05);border-radius:10px;margin-top:4px;overflow:hidden;"><div id="modalLevelBar" style="height:100%;width:0%;background:linear-gradient(90deg,var(--gold),var(--cyan));border-radius:10px;"></div></div>
-            </div>
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:12px;">
-                <div style="background:rgba(0,0,0,0.2);border-radius:10px;padding:8px;text-align:center;"><span style="font-size:8px;color:var(--text-secondary);">💰 الأرباح</span><br><span style="font-weight:700;color:var(--green);" id="modalTotalProfit">0.00</span></div>
-                <div style="background:rgba(0,0,0,0.2);border-radius:10px;padding:8px;text-align:center;"><span style="font-size:8px;color:var(--text-secondary);">⛏️ إجمالي</span><br><span style="font-weight:700;color:var(--cyan);" id="modalTotalMined">0.00</span></div>
-            </div>
-            <button class="save-btn" onclick="saveProfile()">💾 حفظ التغييرات</button>
+            <input type="text" id="profileNameInput" class="input-field" placeholder="الاسم" value="مستخدم">
+            <button class="save-btn" onclick="saveProfile()">💾 حفظ</button>
         </div>
     </div>
 
     <script>
         // ================================================================
-        // 1. DATA (مع ثوابت سريعة لتجربة ممتعة)
+        // 1. DATA & CONSTANTS (NEW SPECS)
         // ================================================================
-        const STORAGE_KEY = 'hyex_v3_data';
-        const BASE_SPEED = 0.008; // سرعة أساسية جيدة
-        const BATTERY_MAX = 500; // 500 أمبير
-        const DRAIN_RATE = 15; // صرف 15 أمبير/ث لكل مروحة
-        const CHARGE_RATE = 10; // شحن 10 أمبير/ث
-        const HEAT_MAX_TIME = 60; // تصل للحرارة القصوى خلال 60 ثانية
-        const COOL_DOWN_RATE = 8; // تنخفض 8 درجات/ث
+        const STORAGE_KEY = 'hyex_v4_data';
+        const BASE_SPEED = 0.008;
+        const BATTERY_MAX = 10000; // 10,000 Ah
+        const DRAIN_PER_LEVEL = 2; // 2 Ah/sec per speed level
+        const CHARGE_RATE = 0.5; // 0.5 Ah/sec when off
+        const OVERHEAT_TIME = 300; // 5 minutes (300 sec)
+        const COOLDOWN_TIME = 300; // 5 minutes (300 sec)
 
         let data = {
             wallet: { NC: 0, Cash: 100 },
             pending: { nc: 0 },
             log: [],
-            upgrades: { speed: 0, power: 0, efficiency: 0 },
-            settings: { sound: true, vibe: true, theme: 'dark', lang: 'ar' },
-            devices: { nc: { count: 1, level: 0 } },
-            boosters: { nc: { active: false, remaining: 0, multiplier: 1 } },
-            profile: { name: 'مستخدم جديد', level: 1, xp: 0, totalProfit: 0, totalMined: 0, image: null },
-            fanSpeed: 1,
-            heat: { level: 0, isOverheated: false, cooldownRemaining: 0 },
+            upgrades: { speed: 0, power: 0 },
+            settings: { sound: true, theme: 'dark' },
+            devices: { nc: { count: 1 } },
+            boosters: { nc: { active: false, multiplier: 1, remaining: 0 } },
+            profile: { name: 'مستخدم جديد' },
+            fanSpeed: 0, // 0-4
             battery: { ah: BATTERY_MAX, maxAh: BATTERY_MAX, percent: 100 },
-            autoMine: false,
+            // Heat system: fixed by speed
+            heat: { level: 0 }, // 0, 25, 50, 75, 100
+            // Timer states
+            overheatTimer: 0, // seconds accumulated at speed 4
+            isOverheated: false,
+            cooldownTimer: 0, // seconds remaining for cooldown
             totalMinedNC: 0,
-            isMining: false
+            autoMine: false
         };
 
         // ================================================================
         // 2. SHOP DB
         // ================================================================
         const SHOP_DB = {
-            miners: [
-                { id: 'miner_nc', name: 'ترقية السرعة', icon: '🚀', desc: 'زيادة السرعة القصوى إلى 5', price: 0.5,
-                currency: 'NC', type: 'miner', target: 'nc' },
-            ],
-            boosters: [
-                { id: 'booster_nc_2x', name: 'مضاعف NC ×2', icon: '⚡', desc: 'مدة 5 دقائق', price: 0.3, currency: 'NC',
-                    type: 'booster', target: 'nc', duration: 300, multiplier: 2 },
-            ],
             upgrades: [
-                { id: 'upgrade_nc_speed', name: 'ترقية كفاءة NC', icon: '🔧', desc: '+20% سرعة', price: 0.4,
-                    currency: 'NC', type: 'upgrade', target: 'speed', maxLevel: 10 },
-                { id: 'upgrade_power', name: 'ترقية الطاقة', icon: '💡', desc: '+5 طاقة', price: 0.6, currency: 'NC',
+                { id: 'upg_speed', name: 'ترقية السرعة', icon: '🚀', desc: '+20% سرعة', price: 0.5, currency: 'NC',
+                    type: 'upgrade', target: 'speed', maxLevel: 10 },
+                { id: 'upg_power', name: 'ترقية الطاقة', icon: '💡', desc: '+5 طاقة', price: 0.6, currency: 'NC',
                     type: 'upgrade', target: 'power', maxLevel: 10 },
             ],
-            specials: [
-                { id: 'special_startup', name: 'حزمة البداية', icon: '🎁', desc: 'ترقية + مضاعف 2x 10د', price: 0.6,
-                    currency: 'NC', type: 'special', items: [{ type: 'miner', target: 'nc' }, { type: 'booster',
-                        target: 'nc', duration: 600, multiplier: 2 }
-                    ] },
+            boosters: [
+                { id: 'boost_2x', name: 'مضاعف ×2', icon: '⚡', desc: '5 دقائق ×2', price: 0.3, currency: 'NC',
+                    type: 'booster', target: 'nc', duration: 300, multiplier: 2 },
             ]
         };
 
@@ -1166,290 +1059,328 @@
                                 .upgrades[u] || 0; } else if (key === 'settings') { for (let s in parsed.settings) data
                                 .settings[s] = parsed.settings[s] !== undefined ? parsed.settings[s] : true; } else if (
                             key === 'profile') { for (let p in parsed.profile) data.profile[p] = parsed.profile[p] ||
-                            (p === 'name' ? 'مستخدم جديد' : 0); } else if (key === 'boosters') { for (let b in parsed
-                                .boosters) data.boosters[b] = parsed.boosters[b] || { active: false, remaining: 0,
-                                multiplier: 1 }; } else if (key === 'fanSpeed') data.fanSpeed = parsed.fanSpeed ||
-                            1; else if (key === 'heat') { for (let h in parsed.heat) data.heat[h] = parsed.heat[h] !==
-                            undefined ? parsed.heat[h] : 0; } else if (key === 'battery') { for (let b in parsed
-                                .battery) data.battery[b] = parsed.battery[b] !== undefined ? parsed.battery[b] :
-                                BATTERY_MAX; } else if (key === 'autoMine') data.autoMine = parsed.autoMine ||
-                        false; else if (key === 'totalMinedNC') data.totalMinedNC = parsed.totalMinedNC || 0;
-                        else data[key] = parsed[key];
+                            'مستخدم جديد'; } else if (key === 'boosters') { for (let b in parsed.boosters) data.boosters[
+                                b] = parsed.boosters[b] || { active: false, multiplier: 1, remaining: 0 }; } else if (
+                            key === 'fanSpeed') data.fanSpeed = parsed.fanSpeed || 0; else if (key === 'battery') { for (
+                                let b in parsed.battery) data.battery[b] = parsed.battery[b] !== undefined ? parsed
+                                .battery[b] : BATTERY_MAX; } else if (key === 'heat') { for (let h in parsed.heat) data
+                                .heat[h] = parsed.heat[h] !== undefined ? parsed.heat[h] : 0; } else if (key ===
+                            'overheatTimer') data.overheatTimer = parsed.overheatTimer || 0; else if (key ===
+                            'isOverheated') data.isOverheated = parsed.isOverheated || false; else if (key ===
+                            'cooldownTimer') data.cooldownTimer = parsed.cooldownTimer || 0; else if (key ===
+                            'totalMinedNC') data.totalMinedNC = parsed.totalMinedNC || 0; else if (key === 'autoMine')
+                            data.autoMine = parsed.autoMine || false;
                     }
                 }
             } catch (e) { console.warn('Load error', e); }
             if (!data.log) data.log = [];
-            if (!data.upgrades) data.upgrades = { speed: 0, power: 0, efficiency: 0 };
-            if (!data.boosters) data.boosters = { nc: { active: false, remaining: 0, multiplier: 1 } };
-            if (!data.profile) data.profile = { name: 'مستخدم جديد', level: 1, xp: 0, totalProfit: 0, totalMined: 0,
-            image: null };
-            if (!data.settings) data.settings = { sound: true, vibe: true, theme: 'dark', lang: 'ar' };
+            if (!data.upgrades) data.upgrades = { speed: 0, power: 0 };
+            if (!data.boosters) data.boosters = { nc: { active: false, multiplier: 1, remaining: 0 } };
+            if (!data.profile) data.profile = { name: 'مستخدم جديد' };
             if (!data.battery) data.battery = { ah: BATTERY_MAX, maxAh: BATTERY_MAX, percent: 100 };
-            if (data.fanSpeed < 0 || data.fanSpeed > 4) data.fanSpeed = 1;
-            if (data.battery.ah === 0) data.battery.ah = BATTERY_MAX;
+            if (data.fanSpeed < 0 || data.fanSpeed > 4) data.fanSpeed = 0;
             data.battery.maxAh = BATTERY_MAX;
             data.battery.percent = (data.battery.ah / data.battery.maxAh) * 100;
             if (data.wallet.Cash === 0 && !saved) data.wallet.Cash = 100;
-            data.heat.isOverheated = false;
-            data.heat.cooldownRemaining = 0;
+            if (data.heat.level < 0) data.heat.level = 0;
             if (data.heat.level > 100) data.heat.level = 100;
+            if (data.isOverheated && data.cooldownTimer <= 0) data.isOverheated = false;
         }
 
         function saveData() { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); }
 
         // ================================================================
-        // 4. TRANSLATE
+        // 4. TRANSLATE (brief)
         // ================================================================
         const translations = {
             ar: {
                 no_logs: 'لا توجد عمليات',
-                overheat_shutdown: '🔥 ارتفاع الحرارة! تم إيقاف التعدين للتبريد.',
-                cooling_complete: '✅ تم التبريد. يمكن استئناف التعدين.',
-                battery_empty: '🔋 البطارية فارغة! انتظر الشحن.',
-                collected_all: '✅ تم جمع جميع العملات العالقة.',
-                no_pending: '⚠️ لا توجد عملات عالقة.',
-                auto_mine_activated: '🤖 تم تفعيل التعدين التلقائي.',
-                auto_mine_deactivated: '⏹ تم إيقاف التعدين التلقائي.',
-                started_mining: '▶️ بدأ التعدين (السرعة {0})',
-                stopped_mining: '⏹ توقف التعدين (السرعة 0)',
-                bought_upgrade: '🔧 تم شراء {0}',
-                activated_booster: '⚡ تم تفعيل {0}',
-                bought_special: '🎁 تم شراء {0}',
-                profile_updated: '✅ تم تحديث الملف الشخصي: {0}',
-                enter_name: 'الرجاء إدخال اسم صحيح',
-                insufficient_balance_shop: '❌ رصيد غير كاف. تحتاج {0} {1}'
+                collected_all: '✅ تم جمع جميع العملات',
+                no_pending: '⚠️ لا توجد عملات',
+                battery_empty: '🔋 البطارية فارغة!',
+                overheat_shutdown: '🔥 تعطل التعدين! بدء التبريد...',
+                cooling_complete: '✅ انتهى التبريد، يمكن التشغيل مجدداً',
+                auto_on: '🤖 تلقائي مفعل',
+                auto_off: '⏹ تلقائي متوقف',
+                started: '▶️ بدء التعدين (سرعة {0})',
+                stopped: '⏹ إيقاف التعدين',
             },
             en: {
-                no_logs: 'No operations',
-                overheat_shutdown: '🔥 Overheat! Mining stopped for cooling.',
-                cooling_complete: '✅ Cooling complete. Mining can resume.',
-                battery_empty: '🔋 Battery empty! Wait for recharge.',
-                collected_all: '✅ Collected all pending coins.',
-                no_pending: '⚠️ No pending coins.',
-                auto_mine_activated: '🤖 Auto-mining activated.',
-                auto_mine_deactivated: '⏹ Auto-mining deactivated.',
-                started_mining: '▶️ Mining started (Speed {0})',
-                stopped_mining: '⏹ Mining stopped (Speed 0)',
-                bought_upgrade: '🔧 Bought {0}',
-                activated_booster: '⚡ Activated {0}',
-                bought_special: '🎁 Bought {0}',
-                profile_updated: '✅ Profile updated: {0}',
-                enter_name: 'Please enter a valid name',
-                insufficient_balance_shop: '❌ Insufficient balance. Need {0} {1}'
+                no_logs: 'No logs',
+                collected_all: '✅ Collected all coins',
+                no_pending: '⚠️ No pending coins',
+                battery_empty: '🔋 Battery empty!',
+                overheat_shutdown: '🔥 Mining halted! Cooling...',
+                cooling_complete: '✅ Cooling done, ready to mine',
+                auto_on: '🤖 Auto On',
+                auto_off: '⏹ Auto Off',
+                started: '▶️ Mining started (Speed {0})',
+                stopped: '⏹ Mining stopped',
             }
         };
 
         function translate(key, ...args) {
-            const lang = data.settings.lang || 'ar';
+            const lang = 'ar';
             let text = translations[lang]?.[key] || translations['ar'][key] || key;
             args.forEach((arg, i) => { text = text.replace(`{${i}}`, arg); });
             return text;
         }
 
         // ================================================================
-        // 5. CORE MINING LOGIC (FIXED)
+        // 5. CORE LOGIC
         // ================================================================
         function getActiveFans() { return data.fanSpeed; }
 
         function getMiningSpeed() {
             const active = getActiveFans();
-            if (active === 0 || data.heat.isOverheated || data.battery.ah <= 0) return 0;
+            if (active === 0 || data.isOverheated || data.battery.ah <= 0) return 0;
             let speed = BASE_SPEED * active;
             speed *= (1 + data.upgrades.speed * 0.2);
             speed *= (1 + data.upgrades.power * 0.05);
             if (data.boosters.nc.active) speed *= data.boosters.nc.multiplier;
             const heatPenalty = 1 - (data.heat.level / 150);
-            speed *= Math.max(0.3, heatPenalty);
-            return speed;
+            return speed * Math.max(0.3, heatPenalty);
+        }
+
+        // Get heat percentage based on speed (fixed)
+        function getHeatForSpeed(speed) {
+            const map = { 0: 0, 1: 25, 2: 50, 3: 75, 4: 100 };
+            return map[speed] || 0;
         }
 
         // ================================================================
-        // 6. BATTERY & HEAT UPDATES (FAST)
+        // 6. UPDATE LOOPS (every second)
         // ================================================================
-        function updateBattery() {
-            const active = getActiveFans();
-            const isRunning = active > 0 && !data.heat.isOverheated;
+        function updateBatteryAndHeat() {
+            const speed = data.fanSpeed;
+            const isMining = speed > 0 && !data.isOverheated && data.battery.ah > 0;
 
-            if (isRunning) {
-                data.battery.ah = Math.max(0, data.battery.ah - (active * DRAIN_RATE));
+            // 1. Battery
+            if (isMining) {
+                const drain = speed * DRAIN_PER_LEVEL;
+                data.battery.ah = Math.max(0, data.battery.ah - drain);
             } else {
-                if (data.battery.ah < data.battery.maxAh) {
-                    data.battery.ah = Math.min(data.battery.maxAh, data.battery.ah + CHARGE_RATE);
+                // Charging only if not overheated and speed is 0 (or off)
+                if (!data.isOverheated && data.battery.ah < data.battery.maxAh) {
+                    data.battery.ah = Math.min(data.battery.ah + CHARGE_RATE, data.battery.maxAh);
                 }
             }
             data.battery.percent = (data.battery.ah / data.battery.maxAh) * 100;
 
+            // 2. Heat (set fixed level)
+            if (data.isOverheated) {
+                // During cooldown, heat decreases gradually
+                data.heat.level = Math.max(0, data.heat.level - (100 / COOLDOWN_TIME));
+                data.cooldownTimer = Math.max(0, data.cooldownTimer - 1);
+                if (data.heat.level <= 0 && data.cooldownTimer <= 0) {
+                    data.isOverheated = false;
+                    data.heat.level = 0;
+                    addLog(translate('cooling_complete'));
+                }
+            } else {
+                data.heat.level = getHeatForSpeed(speed);
+            }
+
+            // 3. Overheat timer (only at speed 4)
+            if (speed === 4 && !data.isOverheated && data.battery.ah > 0) {
+                data.overheatTimer += 1;
+                if (data.overheatTimer >= OVERHEAT_TIME) {
+                    // TRIGGER OVERHEAT
+                    data.isOverheated = true;
+                    data.cooldownTimer = COOLDOWN_TIME;
+                    data.overheatTimer = 0;
+                    data.fanSpeed = 0; // force stop
+                    data.heat.level = 100;
+                    addLog(translate('overheat_shutdown'));
+                    renderRig();
+                }
+            } else if (speed !== 4) {
+                // Reset timer if not at speed 4
+                data.overheatTimer = 0;
+            }
+
+            // If battery empty, stop mining
             if (data.battery.ah <= 0 && data.fanSpeed > 0) {
                 data.fanSpeed = 0;
+                data.heat.level = getHeatForSpeed(0);
                 addLog(translate('battery_empty'));
                 renderRig();
             }
-            updateBatteryUI();
-        }
 
-        function updateHeat() {
-            const active = getActiveFans();
-            if (data.heat.isOverheated) {
-                data.heat.cooldownRemaining = Math.max(0, data.heat.cooldownRemaining - 1);
-                if (data.heat.cooldownRemaining <= 0) {
-                    data.heat.isOverheated = false;
-                    data.heat.level = 0;
-                    addLog(translate('cooling_complete'));
-                    renderRig();
-                }
-                updateHeatUI();
-                return;
-            }
-
-            if (active === 0) {
-                data.heat.level = Math.max(0, data.heat.level - COOL_DOWN_RATE);
-                updateHeatUI();
-                return;
-            }
-
-            const timeToOverheat = HEAT_MAX_TIME / active;
-            data.heat.level = Math.min(100, data.heat.level + (100 / timeToOverheat));
-
-            if (data.heat.level >= 100) {
-                data.heat.isOverheated = true;
-                data.heat.cooldownRemaining = 120; // 120 ثانية تبريد (~دقيقتين)
-                data.fanSpeed = 0;
-                addLog(translate('overheat_shutdown'));
-                renderRig();
-            }
-            updateHeatUI();
+            // Update UI
+            updateStatsUI();
+            renderRig();
+            saveData();
         }
 
         // ================================================================
-        // 7. UI UPDATES (GAUGES, FAN, LEDs)
+        // 7. UI RENDERING
         // ================================================================
-        function updateBatteryUI() {
-            const pct = Math.min(100, data.battery.percent);
-            document.getElementById('batteryPercent').textContent = Math.round(pct) + '%';
-            const gauge = document.getElementById('batteryGauge');
-            const circumference = 251.2;
-            const offset = circumference - (pct / 100) * circumference;
-            gauge.style.strokeDashoffset = offset;
-            const color = pct > 50 ? '#7BED9F' : (pct > 25 ? '#FFB347' : '#FF4D6D');
-            gauge.style.stroke = color;
-        }
-
-        function updateHeatUI() {
-            const lvl = Math.min(100, data.heat.level);
-            document.getElementById('heatPercent').textContent = Math.round(lvl) + '%';
-            const gauge = document.getElementById('heatGauge');
-            const circumference = 251.2;
-            const offset = circumference - (lvl / 100) * circumference;
-            gauge.style.strokeDashoffset = offset;
-            const color = lvl > 70 ? '#FF4D6D' : (lvl > 40 ? '#FFB347' : '#00E5FF');
-            gauge.style.stroke = color;
-
-            // Status dot
-            const dot = document.getElementById('statusDot');
-            const statusText = document.getElementById('statusText');
-            if (data.heat.isOverheated) {
-                dot.className = 'dot cooling';
-                statusText.textContent = '🔄 تبريد';
-            } else if (data.fanSpeed > 0 && data.battery.ah > 0) {
-                dot.className = 'dot online';
-                statusText.textContent = '⚡ يعمل';
-            } else {
-                dot.className = 'dot offline';
-                statusText.textContent = '⏸ متوقف';
-            }
-        }
-
         function renderRig() {
             const speed = data.fanSpeed;
-            const isActive = speed > 0 && !data.heat.isOverheated && data.battery.ah > 0;
-            const blades = document.getElementById('fanBlades');
+            const isActive = speed > 0 && !data.isOverheated && data.battery.ah > 0;
 
-            // Fan animation
+            // Fan
+            const blades = document.getElementById('fanBlades');
             blades.className = 'fan-blades';
-            if (data.heat.isOverheated) {
+            if (data.isOverheated) {
                 blades.classList.add('overheat');
             } else if (isActive) {
-                if (speed <= 2) blades.classList.add('spinning');
-                else if (speed === 3) blades.classList.add('spinning-fast');
-                else if (speed === 4) blades.classList.add('spinning-max');
+                if (speed === 1) blades.classList.add('spin1');
+                else if (speed === 2) blades.classList.add('spin2');
+                else if (speed === 3) blades.classList.add('spin3');
+                else if (speed === 4) blades.classList.add('spin4');
             }
+            document.getElementById('fanSpeedDisplay').textContent = speed;
 
-            // LEDs
-            document.querySelectorAll('.rig-speed-leds .led').forEach((led, idx) => {
-                led.className = 'led';
-                if (idx < speed) {
+            // LEDs (4 buttons)
+            for (let i = 0; i < 4; i++) {
+                const led = document.getElementById('led' + i);
+                led.className = 'led-btn';
+                if (i < speed) {
                     led.classList.add('active');
                     if (speed === 4) led.classList.add('max');
                     else if (speed === 3) led.classList.add('high');
                 } else {
                     led.classList.add('off');
                 }
-            });
+                if (data.isOverheated) {
+                    led.classList.remove('active', 'max', 'high');
+                    led.classList.add('off');
+                }
+            }
 
-            document.getElementById('fanSpeedDisplay').textContent = speed;
+            // Hash & Pending
             const hash = getMiningSpeed();
             document.getElementById('hashRateDisplay').textContent = (hash * 1000000).toFixed(2) + ' MH/s';
             document.getElementById('tickerMH').textContent = (hash * 1000000).toFixed(2);
-            document.getElementById('tickerNC').textContent = hash.toFixed(6);
+            document.getElementById('tickerPending').textContent = data.pending.nc.toFixed(4);
+
+            // Pending central
             document.getElementById('pendingNC').textContent = data.pending.nc.toFixed(8);
 
-            updateBatteryUI();
-            updateHeatUI();
-            updateProfitIndicators();
-            updateTotalPendingCash();
+            // Status dot
+            const dot = document.getElementById('statusDot');
+            const statusText = document.getElementById('statusText');
+            if (data.isOverheated) {
+                dot.className = 'dot cooling';
+                statusText.textContent = '🔄 تبريد';
+            } else if (speed > 0 && data.battery.ah > 0) {
+                dot.className = 'dot online';
+                statusText.textContent = '⚡ تشغيل';
+            } else {
+                dot.className = 'dot offline';
+                statusText.textContent = '⏸ متوقف';
+            }
+
+            updateStatsUI();
             saveData();
         }
 
+        function updateStatsUI() {
+            // Battery
+            const pct = Math.min(100, data.battery.percent);
+            document.getElementById('batteryDisplay').textContent = data.battery.ah.toFixed(1);
+            const bar = document.getElementById('batteryBar');
+            bar.style.width = pct + '%';
+            bar.style.background = pct > 30 ? 'var(--green)' : (pct > 15 ? 'var(--orange)' : 'var(--red)');
+
+            // Heat
+            const heat = Math.min(100, data.heat.level);
+            document.getElementById('heatDisplay').textContent = Math.round(heat) + '%';
+            const heatBar = document.getElementById('heatBar');
+            heatBar.style.width = heat + '%';
+            heatBar.style.background = heat > 70 ? 'var(--red)' : (heat > 40 ? 'var(--orange)' : 'var(--cyan)');
+
+            // Timer display
+            const timerDiv = document.getElementById('timerDisplay');
+            const statusSpan = document.getElementById('miningStatusText');
+            const countdownSpan = document.getElementById('timerCountdown');
+
+            if (data.isOverheated) {
+                statusSpan.textContent = '🔴 تبريد';
+                statusSpan.style.color = 'var(--cyan)';
+                countdownSpan.style.display = 'inline';
+                const mins = Math.floor(data.cooldownTimer / 60);
+                const secs = Math.floor(data.cooldownTimer % 60);
+                countdownSpan.textContent = `${String(mins).padStart(2,'0')}:${String(secs).padStart(2,'0')}`;
+                countdownSpan.style.color = 'var(--cyan)';
+            } else if (data.fanSpeed === 4 && data.battery.ah > 0) {
+                statusSpan.textContent = '⏳ تعطل خلال';
+                statusSpan.style.color = 'var(--orange)';
+                countdownSpan.style.display = 'inline';
+                const remaining = Math.max(0, OVERHEAT_TIME - data.overheatTimer);
+                const mins = Math.floor(remaining / 60);
+                const secs = Math.floor(remaining % 60);
+                countdownSpan.textContent = `${String(mins).padStart(2,'0')}:${String(secs).padStart(2,'0')}`;
+                countdownSpan.style.color = 'var(--orange)';
+            } else if (data.fanSpeed > 0 && data.battery.ah > 0) {
+                statusSpan.textContent = '✅ تعدين مستقر';
+                statusSpan.style.color = 'var(--green)';
+                countdownSpan.style.display = 'none';
+            } else {
+                statusSpan.textContent = '⏸ متوقف';
+                statusSpan.style.color = 'var(--text-secondary)';
+                countdownSpan.style.display = 'none';
+            }
+        }
+
         // ================================================================
-        // 8. MINING LOOP (THE FIX)
+        // 8. MINING TICK (pending coins)
         // ================================================================
         function runMiningTick() {
             const speed = getMiningSpeed();
-            if (speed > 0 && data.fanSpeed > 0 && !data.heat.isOverheated && data.battery.ah > 0) {
+            if (speed > 0 && data.fanSpeed > 0 && !data.isOverheated && data.battery.ah > 0) {
                 data.pending.nc += speed;
                 data.totalMinedNC += speed;
                 if (data.pending.nc > 999999) data.pending.nc = 999999;
                 document.getElementById('pendingNC').textContent = data.pending.nc.toFixed(8);
-                updateTotalPendingCash();
-                updateProfitIndicators();
-                renderRig();
             }
         }
 
         // ================================================================
-        // 9. COLLECT
-        // ================================================================
-        document.getElementById('collectBtn').addEventListener('click', function() {
-            if (data.pending.nc > 0.0001) {
-                data.wallet.NC += data.pending.nc;
-                data.profile.totalMined += data.pending.nc;
-                data.pending.nc = 0;
-                addLog(translate('collected_all'));
-                renderRig();
-                updateAllUI();
-                saveData();
-            } else {
-                addLog(translate('no_pending'));
-            }
-        });
-
-        // ================================================================
-        // 10. FAN CLICK (CHANGE SPEED)
+        // 9. FAN CLICK (Change speed)
         // ================================================================
         document.getElementById('fanClickArea').addEventListener('click', function() {
-            if (data.heat.isOverheated) { addLog('⚠️ الجهاز في حالة تبريد'); return; }
-            if (data.battery.ah <= 0) { addLog(translate('battery_empty')); return; }
+            if (data.isOverheated) {
+                addLog('⚠️ الجهاز في حالة تبريد، انتظر حتى ينتهي.');
+                return;
+            }
+            if (data.battery.ah <= 0) {
+                addLog(translate('battery_empty'));
+                return;
+            }
             let newSpeed = data.fanSpeed + 1;
             if (newSpeed > 4) newSpeed = 0;
             data.fanSpeed = newSpeed;
             if (newSpeed > 0) {
-                addLog(translate('started_mining', newSpeed));
+                // Reset overheat timer if not speed 4
+                if (newSpeed !== 4) data.overheatTimer = 0;
+                addLog(translate('started', newSpeed));
             } else {
-                addLog(translate('stopped_mining', 0));
+                addLog(translate('stopped'));
+                data.overheatTimer = 0;
             }
+            // Set heat immediately
+            data.heat.level = getHeatForSpeed(newSpeed);
             renderRig();
-            updateAllUI();
             saveData();
+        });
+
+        // ================================================================
+        // 10. COLLECT
+        // ================================================================
+        document.getElementById('collectBtn').addEventListener('click', function() {
+            if (data.pending.nc > 0.0001) {
+                data.wallet.NC += data.pending.nc;
+                data.pending.nc = 0;
+                addLog(translate('collected_all'));
+                renderRig();
+                updateWalletUI();
+                saveData();
+            } else {
+                addLog(translate('no_pending'));
+            }
         });
 
         // ================================================================
@@ -1461,11 +1392,12 @@
             if (data.autoMine) {
                 btn.classList.add('active');
                 btn.innerHTML = '<i class="fas fa-robot"></i> تلقائي مفعل';
-                addLog(translate('auto_mine_activated'));
+                addLog(translate('auto_on'));
+                autoMineLoop();
             } else {
                 btn.classList.remove('active');
                 btn.innerHTML = '<i class="fas fa-robot"></i> تلقائي';
-                addLog(translate('auto_mine_deactivated'));
+                addLog(translate('auto_off'));
             }
             saveData();
         });
@@ -1474,11 +1406,13 @@
 
         function autoMineLoop() {
             if (!data.autoMine) return;
-            if (data.heat.isOverheated || data.battery.ah < 100) {
+            if (data.isOverheated || data.battery.ah < 50) {
                 if (data.fanSpeed > 0) { data.fanSpeed = Math.max(0, data.fanSpeed - 1);
+                    data.heat.level = getHeatForSpeed(data.fanSpeed);
                     renderRig(); }
-            } else if (data.heat.level < 60 && data.battery.ah > 200) {
+            } else if (data.heat.level < 70 && data.battery.ah > 200) {
                 if (data.fanSpeed < 4) { data.fanSpeed = Math.min(4, data.fanSpeed + 1);
+                    data.heat.level = getHeatForSpeed(data.fanSpeed);
                     renderRig(); }
             }
             clearTimeout(autoTimer);
@@ -1492,7 +1426,7 @@
             const now = new Date();
             const timeStr = now.toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
             data.log.unshift({ time: timeStr, text: text });
-            if (data.log.length > 80) data.log.pop();
+            if (data.log.length > 50) data.log.pop();
             saveData();
             renderLog();
         }
@@ -1500,93 +1434,58 @@
         function renderLog() {
             const list = document.getElementById('logList');
             if (data.log.length === 0) { list.innerHTML =
-                    '<div class="log-item" style="color:var(--text-muted);text-align:center;justify-content:center;">' +
-                    translate('no_logs') + '</div>'; return; }
-            list.innerHTML = data.log.slice(0, 25).map(l =>
+                    '<div class="log-item" style="justify-content:center;color:var(--text-muted);">' + translate(
+                    'no_logs') + '</div>'; return; }
+            list.innerHTML = data.log.slice(0, 20).map(l =>
                 `<div class="log-item"><span>${l.text}</span><span class="time">${l.time}</span></div>`
             ).join('');
         }
-
         document.getElementById('logToggleBtn').addEventListener('click', function() {
-            const container = document.getElementById('logContainer');
-            container.style.display = container.style.display === 'none' ? 'block' : 'none';
+            const c = document.getElementById('logContainer');
+            c.style.display = c.style.display === 'none' ? 'block' : 'none';
         });
 
         // ================================================================
-        // 13. PROFIT INDICATORS
-        // ================================================================
-        function updateProfitIndicators() {
-            const speed = getMiningSpeed();
-            const hour = speed * 3600,
-                day = hour * 24,
-                month = day * 30,
-                year = day * 365;
-            document.getElementById('profitHour').textContent = hour.toFixed(2);
-            document.getElementById('profitDay').textContent = day.toFixed(2);
-            document.getElementById('profitMonth').textContent = month.toFixed(2);
-            document.getElementById('profitYear').textContent = year.toFixed(2);
-            document.getElementById('pendingCashEst').textContent = (data.pending.nc * 0.5).toFixed(2);
-        }
-
-        function updateTotalPendingCash() {
-            document.getElementById('pendingCashEst').textContent = (data.pending.nc * 0.5).toFixed(2);
-        }
-
-        // ================================================================
-        // 14. SHOP
+        // 13. SHOP (brief)
         // ================================================================
         function renderShopAll() {
-            ['miners', 'boosters', 'upgrades', 'specials'].forEach(cat => renderShopCategory(cat));
-            let total = 0;
-            for (let c in SHOP_DB) total += SHOP_DB[c].length;
-            document.getElementById('shopCount').textContent = total + ' عنصر';
-            document.getElementById('shopDevices').textContent = data.devices.nc?.count || 0;
-            document.getElementById('shopPower').textContent = data.upgrades.power || 0;
-            document.getElementById('shopBalance').textContent = data.wallet.NC.toFixed(2);
+            ['upgrades', 'boosters'].forEach(cat => renderShopCategory(cat));
+            document.getElementById('shopBalance').textContent = data.wallet.NC.toFixed(2) + ' NC';
         }
 
-        function renderShopCategory(category) {
-            const grid = document.getElementById(category + 'Grid');
+        function renderShopCategory(cat) {
+            const grid = document.getElementById(cat + 'Grid');
             if (!grid) return;
-            const items = SHOP_DB[category] || [];
+            const items = SHOP_DB[cat] || [];
             grid.innerHTML = items.map(item => {
                 let price = item.price,
                     canBuy = true,
-                    owned = false,
                     maxed = false;
                 if (item.type === 'upgrade') {
                     const lvl = data.upgrades[item.target] || 0;
                     maxed = lvl >= item.maxLevel;
                     price = item.price * (1 + lvl * 0.2);
                     canBuy = data.wallet[item.currency] >= price && !maxed;
-                    owned = lvl > 0;
                 } else if (item.type === 'booster') {
-                    const b = data.boosters[item.target];
-                    owned = b.active;
-                    canBuy = data.wallet[item.currency] >= price && !b.active;
-                } else if (item.type === 'miner') {
-                    canBuy = data.wallet[item.currency] >= price;
-                } else if (item.type === 'special') {
-                    canBuy = data.wallet[item.currency] >= price;
+                    canBuy = data.wallet[item.currency] >= price && !data.boosters.nc.active;
                 }
                 return `
                         <div class="shop-item-card">
                             <div class="item-icon">${item.icon}</div>
                             <div class="item-name">${item.name}</div>
                             <div class="item-price">${price.toFixed(2)} ${item.currency}</div>
-                            ${owned ? '<div style="font-size:8px;color:var(--green);">✅ مفعل</div>' : ''}
                             ${maxed ? '<div style="font-size:8px;color:var(--orange);">🔝 مكتمل</div>' : ''}
-                            <button class="btn shop-buy-btn" data-id="${item.id}" data-cat="${category}" ${!canBuy || maxed ? 'disabled' : ''}>${maxed ? 'مكتمل' : 'شراء'}</button>
+                            <button class="btn shop-buy-btn" data-id="${item.id}" data-cat="${cat}" ${!canBuy || maxed ? 'disabled' : ''}>${maxed ? 'مكتمل' : 'شراء'}</button>
                         </div>
                     `;
             }).join('');
             grid.querySelectorAll('.shop-buy-btn').forEach(btn => {
-                btn.addEventListener('click', function() { buyShopItem(this.dataset.id, this.dataset.cat); });
+                btn.addEventListener('click', function() { buyItem(this.dataset.id, this.dataset.cat); });
             });
         }
 
-        function buyShopItem(id, category) {
-            const item = SHOP_DB[category]?.find(i => i.id === id);
+        function buyItem(id, cat) {
+            const item = SHOP_DB[cat]?.find(i => i.id === id);
             if (!item) return;
             let price = item.price,
                 currency = item.currency;
@@ -1594,45 +1493,27 @@
                 const lvl = data.upgrades[item.target] || 0;
                 price = item.price * (1 + lvl * 0.2);
             }
-            if (data.wallet[currency] < price) {
-                alert(translate('insufficient_balance_shop', price.toFixed(2), currency));
-                return;
-            }
+            if (data.wallet[currency] < price) { alert('رصيد غير كاف!'); return; }
             data.wallet[currency] -= price;
-
-            if (item.type === 'miner') {
-                data.devices.nc.count = (data.devices.nc.count || 1) + 1;
-                data.upgrades.speed = (data.upgrades.speed || 0) + 0.5; // يزيد السرعة فعلاً
-                addLog(translate('bought_upgrade', 'ترقية السرعة'));
-            } else if (item.type === 'upgrade') {
+            if (item.type === 'upgrade') {
                 data.upgrades[item.target] = (data.upgrades[item.target] || 0) + 1;
-                addLog(translate('bought_upgrade', item.name));
+                addLog('🔧 تم شراء ' + item.name);
             } else if (item.type === 'booster') {
-                data.boosters[item.target].active = true;
-                data.boosters[item.target].remaining = item.duration;
-                data.boosters[item.target].multiplier = item.multiplier;
-                addLog(translate('activated_booster', item.name));
+                data.boosters.nc.active = true;
+                data.boosters.nc.multiplier = item.multiplier;
+                data.boosters.nc.remaining = item.duration;
+                addLog('⚡ تم تفعيل ' + item.name);
                 setTimeout(() => {
-                    data.boosters[item.target].active = false;
-                    data.boosters[item.target].remaining = 0;
-                    data.boosters[item.target].multiplier = 1;
+                    data.boosters.nc.active = false;
+                    data.boosters.nc.multiplier = 1;
+                    data.boosters.nc.remaining = 0;
                     saveData();
                     renderShopAll();
                 }, item.duration * 1000);
-            } else if (item.type === 'special') {
-                item.items.forEach(sub => {
-                    if (sub.type === 'miner') { data.devices.nc.count = (data.devices.nc.count || 1) + 1;
-                        data.upgrades.speed = (data.upgrades.speed || 0) + 0.5; }
-                    if (sub.type === 'booster') {
-                        data.boosters[sub.target].active = true;
-                        data.boosters[sub.target].remaining = sub.duration;
-                        data.boosters[sub.target].multiplier = sub.multiplier;
-                    }
-                });
-                addLog(translate('bought_special', item.name));
             }
             renderRig();
-            updateAllUI();
+            updateWalletUI();
+            renderShopAll();
             saveData();
         }
 
@@ -1649,25 +1530,16 @@
         });
 
         // ================================================================
-        // 15. WALLET UI
+        // 14. WALLET UI
         // ================================================================
         function updateWalletUI() {
             document.getElementById('balNC').textContent = data.wallet.NC.toFixed(6);
             document.getElementById('balCash').textContent = data.wallet.Cash.toFixed(2);
-            document.getElementById('shopBalance').textContent = data.wallet.NC.toFixed(2);
-        }
-
-        function updateAllUI() {
-            updateWalletUI();
-            renderShopAll();
-            renderLog();
-            updateProfileUI();
-            renderRig();
-            saveData();
+            document.getElementById('shopBalance').textContent = data.wallet.NC.toFixed(2) + ' NC';
         }
 
         // ================================================================
-        // 16. PROFILE
+        // 15. PROFILE
         // ================================================================
         function toggleProfile() {
             const slide = document.getElementById('profileSlide'),
@@ -1675,108 +1547,47 @@
             slide.classList.toggle('open');
             overlay.classList.toggle('show');
             if (slide.classList.contains('open')) {
-                document.getElementById('profileNameInput').value = data.profile.name;
-                updateProfileUI();
+                document.getElementById('profileNameInput').value = data.profile.name || 'مستخدم';
             }
-        }
-
-        function updateProfileUI() {
-            let xp = data.totalMinedNC * 100 + data.wallet.Cash * 0.5 + data.upgrades.speed * 10;
-            data.profile.xp = Math.floor(xp);
-            data.profile.level = Math.floor(xp / 300) + 1;
-            if (data.profile.level > 100) data.profile.level = 100;
-            const progress = ((xp % 300) / 300) * 100;
-            document.getElementById('modalLevelDisplay').textContent = data.profile.level;
-            document.getElementById('modalXPDisplay').textContent = data.profile.xp;
-            document.getElementById('modalLevelBar').style.width = Math.min(100, progress) + '%';
-            document.getElementById('modalTotalProfit').textContent = data.wallet.Cash.toFixed(2);
-            document.getElementById('modalTotalMined').textContent = data.totalMinedNC.toFixed(6);
-
-            document.getElementById('settingsProfileName').textContent = data.profile.name || 'مستخدم';
-            if (data.profile.image) {
-                document.getElementById('settingsProfileImage').src = data.profile.image;
-                document.getElementById('settingsProfileImage').style.display = 'block';
-                document.getElementById('settingsProfileIcon').style.display = 'none';
-                document.getElementById('modalProfileImage').src = data.profile.image;
-                document.getElementById('modalProfileImage').style.display = 'block';
-                document.getElementById('modalProfileIcon').style.display = 'none';
-            } else {
-                document.getElementById('settingsProfileImage').style.display = 'none';
-                document.getElementById('settingsProfileIcon').style.display = 'block';
-                document.getElementById('modalProfileImage').style.display = 'none';
-                document.getElementById('modalProfileIcon').style.display = 'block';
-            }
-        }
-
-        function uploadProfileImage(e) {
-            const file = e.target.files[0];
-            if (!file) return;
-            const reader = new FileReader();
-            reader.onload = function(ev) {
-                data.profile.image = ev.target.result;
-                updateProfileUI();
-                saveData();
-            };
-            reader.readAsDataURL(file);
         }
 
         function saveProfile() {
             const name = document.getElementById('profileNameInput').value.trim();
-            if (!name) { alert(translate('enter_name')); return; }
+            if (!name) { alert('أدخل اسماً'); return; }
             data.profile.name = name;
-            saveData();
-            updateProfileUI();
-            addLog(translate('profile_updated', name));
+            document.getElementById('settingsProfileName').textContent = name;
+            addLog('✅ تم تحديث الاسم');
             toggleProfile();
+            saveData();
         }
 
         // ================================================================
-        // 17. THEME & LANG
+        // 16. THEME
         // ================================================================
         function setTheme(theme) {
             document.documentElement.setAttribute('data-theme', theme);
             data.settings.theme = theme;
             document.getElementById('themeDarkBtn').style.borderColor = theme === 'dark' ? 'var(--gold)' :
             'rgba(255,255,255,0.1)';
-            document.getElementById('themeDarkBtn').style.color = theme === 'dark' ? 'var(--gold)' : 'var(--text-secondary)';
+            document.getElementById('themeDarkBtn').style.color = theme === 'dark' ? 'var(--gold)' :
+            'var(--text-secondary)';
             document.getElementById('themeLightBtn').style.borderColor = theme === 'light' ? 'var(--gold)' :
             'rgba(255,255,255,0.1)';
             document.getElementById('themeLightBtn').style.color = theme === 'light' ? 'var(--gold)' :
             'var(--text-secondary)';
             saveData();
         }
-
         document.getElementById('themeDarkBtn').addEventListener('click', () => setTheme('dark'));
         document.getElementById('themeLightBtn').addEventListener('click', () => setTheme('light'));
-
-        document.getElementById('langSelect').addEventListener('change', function() {
-            data.settings.lang = this.value;
-            saveData();
-            applyLanguage();
-        });
-
-        function applyLanguage() {
-            const lang = data.settings.lang || 'ar';
-            document.documentElement.lang = lang;
-            document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
-            renderLog();
-            document.getElementById('settingsProfileName').textContent = data.profile.name || 'مستخدم';
-        }
-
-        document.getElementById('soundToggle').addEventListener('change', function() { data.settings.sound = this
-            .checked;
-            saveData(); });
-        document.getElementById('vibeToggle').addEventListener('change', function() { data.settings.vibe = this.checked;
+        document.getElementById('soundToggle').addEventListener('change', function() { data.settings.sound = this.checked;
             saveData(); });
         document.getElementById('resetBtn').addEventListener('click', function() {
-            if (confirm('هل أنت متأكد؟ سيتم حذف جميع البيانات!')) {
-                localStorage.removeItem(STORAGE_KEY);
-                location.reload();
-            }
+            if (confirm('حذف كل شيء؟')) { localStorage.removeItem(STORAGE_KEY);
+                location.reload(); }
         });
 
         // ================================================================
-        // 18. NAVIGATION
+        // 17. NAVIGATION
         // ================================================================
         document.querySelectorAll('.nav-item').forEach(item => {
             item.addEventListener('click', function() {
@@ -1788,45 +1599,36 @@
                 if (tab === 'wallet') updateWalletUI();
                 if (tab === 'shop') renderShopAll();
                 if (tab === 'mining') renderRig();
-                if (tab === 'settings') updateProfileUI();
             });
         });
 
         // ================================================================
-        // 19. INIT
+        // 18. INIT
         // ================================================================
         window.onload = function() {
             loadData();
             document.getElementById('soundToggle').checked = data.settings.sound !== false;
-            document.getElementById('vibeToggle').checked = data.settings.vibe !== false;
-            document.getElementById('langSelect').value = data.settings.lang || 'ar';
             setTheme(data.settings.theme || 'dark');
+            document.getElementById('settingsProfileName').textContent = data.profile.name || 'مستخدم';
 
             renderRig();
-            updateAllUI();
+            updateWalletUI();
+            renderShopAll();
             renderLog();
-            updateProfileUI();
-            applyLanguage();
 
-            // Start the main mining loop (FIXED)
+            // Start loops
             setInterval(runMiningTick, 1000);
-            // Battery update every second
-            setInterval(updateBattery, 1000);
-            // Heat update every second
-            setInterval(updateHeat, 1000);
-            // UI refresh every 5 sec
-            setInterval(() => {
-                renderRig();
-                updateTotalPendingCash();
-                updateProfitIndicators();
-                saveData();
-            }, 3000);
+            setInterval(updateBatteryAndHeat, 1000);
+            setInterval(() => { renderRig();
+                saveData(); }, 3000);
 
-            // Start auto loop
             if (data.autoMine) autoMineLoop();
 
-            addLog('🚀 تم تشغيل جهاز التعدين المتطور V3');
+            addLog('🚀 تم تشغيل جهاز NC Rig V4');
+            // If fan was on, restore heat
+            data.heat.level = getHeatForSpeed(data.fanSpeed);
+            renderRig();
         };
     </script>
 </body>
-    </html>
+                                                                                                        </html>
